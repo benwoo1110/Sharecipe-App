@@ -2,7 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/recipe_procedure_ScrollView"
+    android:id="@+id/recipe_info_ScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,5 +11,14 @@
         android:id="@+id/recipe_ConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="40dp"/>
+        android:padding="40dp">
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="73dp"
+            android:layout_height="60dp"
+            app:srcCompat="@drawable/done"
+            tools:layout_editor_absoluteX="211dp"
+            tools:layout_editor_absoluteY="-22dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
