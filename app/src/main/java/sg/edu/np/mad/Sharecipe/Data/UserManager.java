@@ -3,7 +3,7 @@ package sg.edu.np.mad.Sharecipe.Data;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
 
 import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.Models.Account;
@@ -31,12 +31,12 @@ public class UserManager {
         CompletableFuture<ActionResult> future = new CompletableFuture<>();
         SharecipeRequests.accountRegister(username, password)
                 .thenAccept(response -> {
-                    JSONObject jsonObject = SharecipeRequests.DECODE_TO_JSON.apply(response);
+                    JsonObject json = SharecipeRequests.convertToJson(response);
                     if (!response.isSuccessful()) {
-                        future.complete(new ActionResult.Failed(jsonObject.optString("error", "Failed!")));
+                        future.complete(new ActionResult.Failed(json.get("error").getAsString()));
                         return;
                     }
-                    account = Account.fromJson(jsonObject);
+                    account = SharecipeRequests.convertToObject(json, Account.class);
                     if (account == null) {
                         future.complete(new ActionResult.Failed("Received invalid data. Failed to create account!"));
                     }
@@ -54,12 +54,12 @@ public class UserManager {
         CompletableFuture<ActionResult> future = new CompletableFuture<>();
         SharecipeRequests.accountLogin(username, password)
                 .thenAccept(response -> {
-                    JSONObject jsonObject = SharecipeRequests.DECODE_TO_JSON.apply(response);
+                    JsonObject json = SharecipeRequests.convertToJson(response);
                     if (!response.isSuccessful()) {
-                        future.complete(new ActionResult.Failed(jsonObject.optString("error", "Failed!")));
+                        future.complete(new ActionResult.Failed(json.get("error").getAsString()));
                         return;
                     }
-                    account = Account.fromJson(jsonObject);
+                    account = SharecipeRequests.convertToObject(json, Account.class);
                     if (account == null) {
                         future.complete(new ActionResult.Failed("Received invalid data. Failed to login!"));
                     }

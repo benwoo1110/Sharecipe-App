@@ -1,7 +1,5 @@
 package sg.edu.np.mad.Sharecipe.Models;
 
-import java.util.Objects;
-
 public class User {
     private String username;
     private String bio;
