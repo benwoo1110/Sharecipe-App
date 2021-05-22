@@ -25,17 +25,16 @@ public class RegisterActivity extends AppCompatActivity {
         signUp.setOnClickListener(v -> UserManager.getInstance()
                 .register(username.getText().toString(), password.getText().toString())
                 .thenAccept(result -> {
+                    RegisterActivity.this.runOnUiThread(() -> {
+                        Toast toast = new Toast(RegisterActivity.this);
+                        toast.setText(result.getMessage());
+                        toast.setDuration(Toast.LENGTH_SHORT);
+                        toast.show();
+                    });
                     if (result instanceof ActionResult.Success) {
                         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
-                    } else if (result instanceof ActionResult.Error) {
-                        RegisterActivity.this.runOnUiThread(() -> {
-                            Toast toast = new Toast(RegisterActivity.this);
-                            toast.setText(((ActionResult.Error) result).getErrorMessage());
-                            toast.setDuration(Toast.LENGTH_SHORT);
-                            toast.show();
-                        });
                     }
                 }));
     }

@@ -21,12 +21,8 @@ public class SharecipeRequests {
     private static final AsyncOkHttpClient client = new AsyncOkHttpClient();
 
     public static final Function<Response, JSONObject> DECODE_TO_JSON = (response) -> {
-        if (response.code() != 200) {
-            return null;
-        }
         try {
-            String data = response.body().string();
-            return new JSONObject(data);
+            return new JSONObject(response.body().string());
         } catch (IOException | JSONException e) {
             return null;
         }

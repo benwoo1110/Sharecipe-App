@@ -3,6 +3,8 @@ package sg.edu.np.mad.Sharecipe.Data;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.json.JSONObject;
+
 import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.Models.Account;
 import sg.edu.np.mad.Sharecipe.utils.ActionResult;
@@ -28,16 +30,20 @@ public class UserManager {
     public CompletableFuture<ActionResult> register(String username, String password) {
         CompletableFuture<ActionResult> future = new CompletableFuture<>();
         SharecipeRequests.accountRegister(username, password)
-                .thenApply(SharecipeRequests.DECODE_TO_JSON)
-                .thenAccept(jsonObject -> {
+                .thenAccept(response -> {
+                    JSONObject jsonObject = SharecipeRequests.DECODE_TO_JSON.apply(response);
+                    if (!response.isSuccessful()) {
+                        future.complete(new ActionResult.Failed(jsonObject.optString("error", "Failed!")));
+                        return;
+                    }
                     account = Account.fromJson(jsonObject);
                     if (account == null) {
-                        future.complete(ActionResult.GENERIC_ERROR);
+                        future.complete(new ActionResult.Failed("Received invalid data. Failed to create account!"));
                     }
-                    future.complete(ActionResult.GENERIC_SUCCESS);
+                    future.complete(new ActionResult.Success("Successfully create account!"));
                 })
                 .exceptionally(throwable -> {
-                    future.complete(ActionResult.GENERIC_ERROR);
+                    future.complete(new ActionResult.Error(throwable));
                     return null;
                 });
         return future;
@@ -47,16 +53,20 @@ public class UserManager {
     public CompletableFuture<ActionResult> login(String username, String password) {
         CompletableFuture<ActionResult> future = new CompletableFuture<>();
         SharecipeRequests.accountLogin(username, password)
-                .thenApply(SharecipeRequests.DECODE_TO_JSON)
-                .thenAccept(jsonObject -> {
+                .thenAccept(response -> {
+                    JSONObject jsonObject = SharecipeRequests.DECODE_TO_JSON.apply(response);
+                    if (!response.isSuccessful()) {
+                        future.complete(new ActionResult.Failed(jsonObject.optString("error", "Failed!")));
+                        return;
+                    }
                     account = Account.fromJson(jsonObject);
                     if (account == null) {
-                        future.complete(ActionResult.GENERIC_ERROR);
+                        future.complete(new ActionResult.Failed("Received invalid data. Failed to login!"));
                     }
-                    future.complete(ActionResult.GENERIC_SUCCESS);
+                    future.complete(new ActionResult.Success("Successfully logged in!"));
                 })
                 .exceptionally(throwable -> {
-                    future.complete(ActionResult.GENERIC_ERROR);
+                    future.complete(new ActionResult.Error(throwable));
                     return null;
                 });
         return future;
@@ -64,12 +74,12 @@ public class UserManager {
 
     @NonNull
     public ActionResult updateUser() {
-        return ActionResult.GENERIC_ERROR;
+        return ActionResult.GENERIC_FAILED;
     }
 
     @NonNull
     public ActionResult deleteUser() {
-        return ActionResult.GENERIC_ERROR;
+        return ActionResult.GENERIC_FAILED;
     }
 
     @Nullable

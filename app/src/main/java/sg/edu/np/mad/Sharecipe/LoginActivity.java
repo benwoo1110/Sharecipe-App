@@ -29,17 +29,16 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(v -> UserManager.getInstance()
                 .login(username.getText().toString(), password.getText().toString())
                 .thenAccept(result -> {
+                    LoginActivity.this.runOnUiThread(() -> {
+                        Toast toast = new Toast(LoginActivity.this);
+                        toast.setText(result.getMessage());
+                        toast.setDuration(Toast.LENGTH_SHORT);
+                        toast.show();
+                    });
                     if (result instanceof ActionResult.Success) {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         finish();
-                    } else if (result instanceof ActionResult.Error) {
-                        LoginActivity.this.runOnUiThread(() -> {
-                            Toast toast = new Toast(LoginActivity.this);
-                            toast.setText(((ActionResult.Error) result).getErrorMessage());
-                            toast.setDuration(Toast.LENGTH_SHORT);
-                            toast.show();
-                        });
                     }
                 }));
 
