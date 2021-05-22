@@ -2,7 +2,6 @@ package sg.edu.np.mad.Sharecipe;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -11,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.io.IOException;
 
+import sg.edu.np.mad.Sharecipe.Data.UserManager;
+import sg.edu.np.mad.Sharecipe.utils.ActionResult;
 import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
 public class LoginActivity extends AppCompatActivity {
@@ -25,14 +26,28 @@ public class LoginActivity extends AppCompatActivity {
         Button login = findViewById(R.id.buttonLogin);
         Button signUpNow = findViewById(R.id.buttonSignupNow);
 
-        //TODO Login
-        login.setOnClickListener(v -> { });
+        login.setOnClickListener(v -> UserManager.getInstance()
+                .login(username.getText().toString(), password.getText().toString())
+                .thenAccept(result -> {
+                    if (result instanceof ActionResult.Success) {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    } else if (result instanceof ActionResult.Error) {
+                        LoginActivity.this.runOnUiThread(() -> {
+                            Toast toast = new Toast(LoginActivity.this);
+                            toast.setText(((ActionResult.Error) result).getErrorMessage());
+                            toast.setDuration(Toast.LENGTH_SHORT);
+                            toast.show();
+                        });
+                    }
+                }));
 
         signUpNow.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
 
+        //TODO remove this. Just here to test web api is connected.
         SharecipeRequests.helloWorld().thenAccept(response -> {
             String data;
             try {

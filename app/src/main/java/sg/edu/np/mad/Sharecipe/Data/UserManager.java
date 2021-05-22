@@ -21,7 +21,7 @@ public class UserManager {
 
     private UserAuth userAuth;
 
-    public UserManager() {
+    private UserManager() {
     }
 
     @NonNull
@@ -44,8 +44,22 @@ public class UserManager {
     }
 
     @NonNull
-    public ActionResult login(String username, String password) {
-        return ActionResult.GENERIC_SUCCESS;
+    public CompletableFuture<ActionResult> login(String username, String password) {
+        CompletableFuture<ActionResult> future = new CompletableFuture<>();
+        SharecipeRequests.accountLogin(username, password)
+                .thenApply(SharecipeRequests.DECODE_TO_JSON)
+                .thenAccept(jsonObject -> {
+                    userAuth = UserAuth.fromJson(jsonObject);
+                    if (userAuth == null) {
+                        future.complete(ActionResult.GENERIC_ERROR);
+                    }
+                    future.complete(ActionResult.GENERIC_SUCCESS);
+                })
+                .exceptionally(throwable -> {
+                    future.complete(ActionResult.GENERIC_ERROR);
+                    return null;
+                });
+        return future;
     }
 
     @NonNull

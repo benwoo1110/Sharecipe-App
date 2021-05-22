@@ -32,6 +32,7 @@ public class SharecipeRequests {
         }
     };
 
+    @NonNull
     public static CompletableFuture<Response> helloWorld() {
         HttpUrl url = UrlPath.newBuilder()
                 .addPathSegment(UrlPath.HELLO)
@@ -43,6 +44,7 @@ public class SharecipeRequests {
                 .build());
     }
 
+    @NonNull
     public static CompletableFuture<Response> accountRegister(@NonNull String username, @NonNull String password) {
         String payload;
         try {
@@ -58,6 +60,27 @@ public class SharecipeRequests {
                 .url(UrlPath.newBuilder()
                         .addPathSegment(UrlPath.ACCOUNT)
                         .addPathSegment(UrlPath.REGISTER)
+                        .build())
+                .post(RequestBody.create(payload, JSON_TYPE))
+                .build());
+    }
+
+    @NonNull
+    public static CompletableFuture<Response> accountLogin(@NonNull String username, @NonNull String password) {
+        String payload;
+        try {
+            payload = new JSONObject()
+                    .put("username", username)
+                    .put("password", password)
+                    .toString();
+        } catch (JSONException e) {
+            return CompletableFuture.failedFuture(e);
+        }
+
+        return client.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.ACCOUNT)
+                        .addPathSegment(UrlPath.LOGIN)
                         .build())
                 .post(RequestBody.create(payload, JSON_TYPE))
                 .build());
