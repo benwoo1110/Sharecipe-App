@@ -5,15 +5,15 @@ import androidx.annotation.Nullable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class UserAuth {
+public class Account {
 
     @Nullable
-    public static UserAuth fromJson(@Nullable JSONObject jsonObject) {
+    public static Account fromJson(@Nullable JSONObject jsonObject) {
         if (jsonObject == null) {
             return null;
         }
         try {
-            return new UserAuth(
+            return new Account(
                     jsonObject.getInt("user_id"),
                     jsonObject.getString("access_token"),
                     jsonObject.getString("refresh_token")
@@ -27,7 +27,7 @@ public class UserAuth {
     private String accessToken;
     private String refreshToken;
 
-    public UserAuth(int userId, String accessToken, String refreshToken) {
+    public Account(int userId, String accessToken, String refreshToken) {
         this.userId = userId;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;

@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java9.util.concurrent.CompletableFuture;
-import sg.edu.np.mad.Sharecipe.Models.UserAuth;
+import sg.edu.np.mad.Sharecipe.Models.Account;
 import sg.edu.np.mad.Sharecipe.utils.ActionResult;
 import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
@@ -19,7 +19,7 @@ public class UserManager {
         return instance;
     }
 
-    private UserAuth userAuth;
+    private Account account;
 
     private UserManager() {
     }
@@ -30,8 +30,8 @@ public class UserManager {
         SharecipeRequests.accountRegister(username, password)
                 .thenApply(SharecipeRequests.DECODE_TO_JSON)
                 .thenAccept(jsonObject -> {
-                    userAuth = UserAuth.fromJson(jsonObject);
-                    if (userAuth == null) {
+                    account = Account.fromJson(jsonObject);
+                    if (account == null) {
                         future.complete(ActionResult.GENERIC_ERROR);
                     }
                     future.complete(ActionResult.GENERIC_SUCCESS);
@@ -49,8 +49,8 @@ public class UserManager {
         SharecipeRequests.accountLogin(username, password)
                 .thenApply(SharecipeRequests.DECODE_TO_JSON)
                 .thenAccept(jsonObject -> {
-                    userAuth = UserAuth.fromJson(jsonObject);
-                    if (userAuth == null) {
+                    account = Account.fromJson(jsonObject);
+                    if (account == null) {
                         future.complete(ActionResult.GENERIC_ERROR);
                     }
                     future.complete(ActionResult.GENERIC_SUCCESS);
@@ -67,8 +67,13 @@ public class UserManager {
         return ActionResult.GENERIC_ERROR;
     }
 
+    @NonNull
+    public ActionResult deleteUser() {
+        return ActionResult.GENERIC_ERROR;
+    }
+
     @Nullable
-    public UserAuth getUserAuth() {
-        return userAuth;
+    public Account getAccount() {
+        return account;
     }
 }
