@@ -106,4 +106,17 @@ public class SharecipeRequests {
                 .post(RequestBody.create(payload, JSON_TYPE))
                 .build());
     }
+
+    @NonNull
+    public static CompletableFuture<Response> getUserData(String accessToken, int userId) {
+        HttpUrl url = UrlPath.newBuilder()
+                .addPathSegment(UrlPath.USERS)
+                .addPathSegment(String.valueOf(userId))
+                .build();
+        return client.runAsync(new Request.Builder()
+                .url(url)
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
 }

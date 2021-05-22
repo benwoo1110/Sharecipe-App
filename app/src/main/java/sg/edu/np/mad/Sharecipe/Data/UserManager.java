@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 
 import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.Models.Account;
+import sg.edu.np.mad.Sharecipe.Models.User;
 import sg.edu.np.mad.Sharecipe.utils.ActionResult;
 import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
@@ -21,6 +22,7 @@ public class UserManager {
         return instance;
     }
 
+    private User loggedInUser;
     private Account account;
 
     private UserManager() {
@@ -73,13 +75,32 @@ public class UserManager {
     }
 
     @NonNull
-    public ActionResult updateUser() {
+    public ActionResult logout() {
         return ActionResult.GENERIC_FAILED;
     }
 
     @NonNull
-    public ActionResult deleteUser() {
+    public ActionResult delete() {
         return ActionResult.GENERIC_FAILED;
+    }
+
+    @NonNull
+    public CompletableFuture<User> getLoggedInUser() {
+        if (account == null) {
+            return CompletableFuture.completedFuture(null);
+        }
+        CompletableFuture<User> future = new CompletableFuture<>();
+        if (loggedInUser != null) {
+            future.complete(loggedInUser);
+            return future;
+        }
+        SharecipeRequests.getUserData(account.getAccessToken(), account.getUserId())
+                .thenAccept(response -> {
+                    JsonObject json = SharecipeRequests.convertToJson(response);
+                    loggedInUser = SharecipeRequests.convertToObject(json, User.class);
+                    future.complete(loggedInUser);
+                });
+        return future;
     }
 
     @Nullable

@@ -16,6 +16,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         TextView welcome = findViewById(R.id.textViewWelcome);
-        welcome.setText(UserManager.getInstance().getAccount().toString());
+
+        UserManager.getInstance().getLoggedInUser()
+                .thenAccept(user -> {
+                    MainActivity.this.runOnUiThread(() -> welcome.setText(String.valueOf(user)));
+                });
     }
 }
