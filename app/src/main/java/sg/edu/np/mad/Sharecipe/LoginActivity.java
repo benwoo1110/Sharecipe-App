@@ -1,23 +1,24 @@
 package sg.edu.np.mad.Sharecipe;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
+import java9.util.concurrent.CompletableFuture;
+import java9.util.function.Consumer;
+import java9.util.function.Function;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
@@ -36,21 +37,36 @@ public class LoginActivity extends AppCompatActivity {
 
         login.setOnClickListener(v -> {
             Request request = new Request.Builder()
-                    .url("https://sharecipe-backend.herokuapp.com/helo")
+                    .url("https://sharecipe-backend.herokuapp.com/hello")
                     .get()
                     .build();
+
+            CompletableFuture<Response> c = new CompletableFuture<>();
 
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                    LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_SHORT).show());
+                    c.completeExceptionally(e);
                 }
 
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                    String data = response.body().string();
-                    LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, data, Toast.LENGTH_SHORT).show());
+                    c.complete(response);
                 }
+            });
+
+            c.thenAccept(response -> {
+                String data;
+                try {
+                    data = response.body().string();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, data, Toast.LENGTH_SHORT).show());
+            }).exceptionally(throwable -> {
+                LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_SHORT).show());
+                return null;
             });
         });
 
