@@ -1,5 +1,6 @@
 package sg.edu.np.mad.Sharecipe;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,12 +26,9 @@ public class RegisterActivity extends AppCompatActivity {
                 .register(username.getText().toString(), password.getText().toString())
                 .thenAccept(result -> {
                     if (result instanceof ActionResult.Success) {
-                        RegisterActivity.this.runOnUiThread(() -> {
-                            Toast toast = new Toast(RegisterActivity.this);
-                            toast.setText("Success!");
-                            toast.setDuration(Toast.LENGTH_SHORT);
-                            toast.show();
-                        });
+                        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
                     } else if (result instanceof ActionResult.Error) {
                         RegisterActivity.this.runOnUiThread(() -> {
                             Toast toast = new Toast(RegisterActivity.this);

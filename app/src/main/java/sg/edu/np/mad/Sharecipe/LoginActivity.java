@@ -32,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
                     if (result instanceof ActionResult.Success) {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
+                        finish();
                     } else if (result instanceof ActionResult.Error) {
                         LoginActivity.this.runOnUiThread(() -> {
                             Toast toast = new Toast(LoginActivity.this);
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         signUpNow.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
+            finish();
         });
 
         //TODO remove this. Just here to test web api is connected.
