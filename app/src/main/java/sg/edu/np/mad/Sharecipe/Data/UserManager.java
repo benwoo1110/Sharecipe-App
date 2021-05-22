@@ -3,29 +3,44 @@ package sg.edu.np.mad.Sharecipe.Data;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import sg.edu.np.mad.Sharecipe.Models.User;
+import java9.util.concurrent.CompletableFuture;
+import sg.edu.np.mad.Sharecipe.Models.UserAuth;
 import sg.edu.np.mad.Sharecipe.utils.ActionResult;
+import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
 public class UserManager {
 
     private static UserManager instance;
 
-    public UserManager getInstance() {
+    public static UserManager getInstance() {
         if (instance == null) {
             instance = new UserManager();
         }
         return instance;
     }
 
-    private User user;
+    private UserAuth userAuth;
 
     public UserManager() {
     }
 
     @NonNull
-    public ActionResult register(String username, String password) {
-
-        return ActionResult.GENERIC_SUCCESS;
+    public CompletableFuture<ActionResult> register(String username, String password) {
+        CompletableFuture<ActionResult> future = new CompletableFuture<>();
+        SharecipeRequests.accountRegister(username, password)
+                .thenApply(SharecipeRequests.DECODE_TO_JSON)
+                .thenAccept(jsonObject -> {
+                    userAuth = UserAuth.fromJson(jsonObject);
+                    if (userAuth == null) {
+                        future.complete(ActionResult.GENERIC_ERROR);
+                    }
+                    future.complete(ActionResult.GENERIC_SUCCESS);
+                })
+                .exceptionally(throwable -> {
+                    future.complete(ActionResult.GENERIC_ERROR);
+                    return null;
+                });
+        return future;
     }
 
     @NonNull
@@ -39,7 +54,7 @@ public class UserManager {
     }
 
     @Nullable
-    public User getUser() {
-        return user;
+    public UserAuth getUserAuth() {
+        return userAuth;
     }
 }

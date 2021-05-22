@@ -1,6 +1,28 @@
 package sg.edu.np.mad.Sharecipe.Models;
 
+import androidx.annotation.Nullable;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class UserAuth {
+
+    @Nullable
+    public static UserAuth fromJson(@Nullable JSONObject jsonObject) {
+        if (jsonObject == null) {
+            return null;
+        }
+        try {
+            return new UserAuth(
+                    jsonObject.getInt("user_id"),
+                    jsonObject.getString("access_token"),
+                    jsonObject.getString("refresh_token")
+            );
+        } catch (JSONException e) {
+            return null;
+        }
+    }
+
     private int userId;
     private String accessToken;
     private String refreshToken;

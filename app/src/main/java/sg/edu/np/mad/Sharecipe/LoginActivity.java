@@ -2,6 +2,7 @@ package sg.edu.np.mad.Sharecipe;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -24,7 +25,15 @@ public class LoginActivity extends AppCompatActivity {
         Button login = findViewById(R.id.buttonLogin);
         Button signUpNow = findViewById(R.id.buttonSignupNow);
 
-        login.setOnClickListener(v -> SharecipeRequests.helloWorld().thenAccept(response -> {
+        //TODO Login
+        login.setOnClickListener(v -> { });
+
+        signUpNow.setOnClickListener(v -> {
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
+        });
+
+        SharecipeRequests.helloWorld().thenAccept(response -> {
             String data;
             try {
                 data = response.body().string();
@@ -34,13 +43,9 @@ public class LoginActivity extends AppCompatActivity {
             }
             LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, data, Toast.LENGTH_SHORT).show());
         }).exceptionally(throwable -> {
+            throwable.printStackTrace();
             LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_SHORT).show());
             return null;
-        }));
-
-        signUpNow.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-            startActivity(intent);
         });
     }
 }
