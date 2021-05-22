@@ -19,6 +19,7 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -34,46 +35,19 @@ public class LoginActivity extends AppCompatActivity {
         Button login = findViewById(R.id.buttonLogin);
         Button signUpNow = findViewById(R.id.buttonSignupNow);
 
-        login.setOnClickListener(v -> {
-            HttpUrl url = new HttpUrl.Builder()
-                    .scheme("https")
-                    .host("sharecipe-backend.herokuapp.com")
-                    .addPathSegment("hello")
-                    .build();
-
-            Request request = new Request.Builder()
-                    .url(url)
-                    .get()
-                    .build();
-
-            CompletableFuture<Response> c = new CompletableFuture<>();
-
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                    c.completeExceptionally(e);
-                }
-
-                @Override
-                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                    c.complete(response);
-                }
-            });
-
-            c.thenAccept(response -> {
-                String data;
-                try {
-                    data = response.body().string();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return;
-                }
-                LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, data, Toast.LENGTH_SHORT).show());
-            }).exceptionally(throwable -> {
-                LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_SHORT).show());
-                return null;
-            });
-        });
+        login.setOnClickListener(v -> SharecipeRequests.helloWorld().thenAccept(response -> {
+            String data;
+            try {
+                data = response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+            LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, data, Toast.LENGTH_SHORT).show());
+        }).exceptionally(throwable -> {
+            LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_SHORT).show());
+            return null;
+        }));
 
         signUpNow.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
