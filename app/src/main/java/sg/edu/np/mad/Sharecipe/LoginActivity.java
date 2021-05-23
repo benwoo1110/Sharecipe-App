@@ -2,6 +2,7 @@ package sg.edu.np.mad.Sharecipe;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
 
         TextInputLayout username = findViewById(R.id.loginUsername);
@@ -31,12 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(v -> UserManager.getInstance()
                 .login(username.getEditText().getText().toString(), password.getEditText().getText().toString())
                 .thenAccept(result -> {
-                    LoginActivity.this.runOnUiThread(() -> {
-                        Toast toast = new Toast(LoginActivity.this);
-                        toast.setText(result.getMessage());
-                        toast.setDuration(Toast.LENGTH_SHORT);
-                        toast.show();
-                    });
+                    LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show());
                     if (result instanceof ActionResult.Success) {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);

@@ -18,6 +18,7 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_register);
 
         TextInputLayout username = findViewById(R.id.registerUsername);
@@ -27,12 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
         signUp.setOnClickListener(v -> UserManager.getInstance()
                 .register(username.getEditText().getText().toString(), password.getEditText().getText().toString())
                 .thenAccept(result -> {
-                    RegisterActivity.this.runOnUiThread(() -> {
-                        Toast toast = new Toast(RegisterActivity.this);
-                        toast.setText(result.getMessage());
-                        toast.setDuration(Toast.LENGTH_SHORT);
-                        toast.show();
-                    });
+                    RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show());
                     if (result instanceof ActionResult.Success) {
                         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                         startActivity(intent);
