@@ -4,11 +4,14 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.Models.Account;
@@ -27,6 +30,9 @@ public class UserManager {
     }
 
     private final AccountManager accountManager;
+    private final Cache<Integer, User> userCache = CacheBuilder.newBuilder()
+            .expireAfterAccess(10, TimeUnit.MINUTES)
+            .build();
 
     public UserManager(AccountManager accountManager) {
         this.accountManager = accountManager;
@@ -59,12 +65,20 @@ public class UserManager {
         if (!accountManager.isLoggedIn()) {
             return CompletableFuture.completedFuture(null);
         }
+        User cacheUser = userCache.getIfPresent(userId);
+        if (cacheUser != null) {
+            return CompletableFuture.completedFuture(cacheUser);
+        }
         CompletableFuture<User> future = new CompletableFuture<>();
         Account account = accountManager.getAccount();
         SharecipeRequests.getUser(account.getAccessToken(), userId)
                 .thenAccept(response -> {
                     JsonObject json = (JsonObject) SharecipeRequests.convertToJson(response);
-                    future.complete(SharecipeRequests.convertToObject(json, User.class));
+                    User user = SharecipeRequests.convertToObject(json, User.class);
+                    if (user != null) {
+                        userCache.put(userId, user);
+                    }
+                    future.complete(user);
                 });
         return future;
     }
