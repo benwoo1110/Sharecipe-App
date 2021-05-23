@@ -1,11 +1,10 @@
 package sg.edu.np.mad.Sharecipe.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -13,11 +12,13 @@ import java.io.IOException;
 
 import sg.edu.np.mad.Sharecipe.Data.UserManager;
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 import sg.edu.np.mad.Sharecipe.utils.ActionResult;
 import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends DynamicFocusAppCompatActivity {
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

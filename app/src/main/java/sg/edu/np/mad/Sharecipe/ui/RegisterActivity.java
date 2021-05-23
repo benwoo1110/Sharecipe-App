@@ -5,15 +5,14 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.textfield.TextInputLayout;
 
 import sg.edu.np.mad.Sharecipe.Data.UserManager;
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 import sg.edu.np.mad.Sharecipe.utils.ActionResult;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends DynamicFocusAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
