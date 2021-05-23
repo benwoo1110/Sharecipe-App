@@ -1,10 +1,8 @@
-package sg.edu.np.mad.Sharecipe;
+package sg.edu.np.mad.Sharecipe.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +12,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.io.IOException;
 
 import sg.edu.np.mad.Sharecipe.Data.UserManager;
+import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.utils.ActionResult;
 import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
@@ -35,9 +34,9 @@ public class LoginActivity extends AppCompatActivity {
                 .thenAccept(result -> {
                     LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show());
                     if (result instanceof ActionResult.Success) {
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
-                        finish();
                     }
                 }));
 
