@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import java.io.IOException;
 
 import sg.edu.np.mad.Sharecipe.Data.UserManager;
@@ -21,13 +23,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        EditText username = findViewById(R.id.loginUsername);
-        EditText password = findViewById(R.id.loginPassword);
+        TextInputLayout username = findViewById(R.id.loginUsername);
+        TextInputLayout password = findViewById(R.id.loginPassword);
         Button login = findViewById(R.id.buttonLogin);
         Button signUpNow = findViewById(R.id.buttonSignupNow);
 
         login.setOnClickListener(v -> UserManager.getInstance()
-                .login(username.getText().toString(), password.getText().toString())
+                .login(username.getEditText().getText().toString(), password.getEditText().getText().toString())
                 .thenAccept(result -> {
                     LoginActivity.this.runOnUiThread(() -> {
                         Toast toast = new Toast(LoginActivity.this);
@@ -45,7 +47,6 @@ public class LoginActivity extends AppCompatActivity {
         signUpNow.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
-            finish();
         });
 
         //TODO remove this. Just here to test web api is connected.

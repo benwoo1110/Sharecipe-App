@@ -8,6 +8,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 import sg.edu.np.mad.Sharecipe.Data.UserManager;
 import sg.edu.np.mad.Sharecipe.utils.ActionResult;
 
@@ -18,12 +20,12 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        EditText username = findViewById(R.id.registerUsername);
-        EditText password = findViewById(R.id.registerPassword);
+        TextInputLayout username = findViewById(R.id.registerUsername);
+        TextInputLayout password = findViewById(R.id.registerPassword);
         Button signUp = findViewById(R.id.buttonSignup);
 
         signUp.setOnClickListener(v -> UserManager.getInstance()
-                .register(username.getText().toString(), password.getText().toString())
+                .register(username.getEditText().getText().toString(), password.getEditText().getText().toString())
                 .thenAccept(result -> {
                     RegisterActivity.this.runOnUiThread(() -> {
                         Toast toast = new Toast(RegisterActivity.this);
