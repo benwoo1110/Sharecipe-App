@@ -10,7 +10,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.IOException;
 
-import sg.edu.np.mad.Sharecipe.Data.UserManager;
+import sg.edu.np.mad.Sharecipe.Data.AccountManager;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 import sg.edu.np.mad.Sharecipe.utils.ActionResult;
@@ -32,7 +32,7 @@ public class LoginActivity extends DynamicFocusAppCompatActivity {
 
         login.setOnClickListener(v -> {
             hideSoftKeyBoard();
-            UserManager.getInstance(this)
+            AccountManager.getInstance(this)
                     .login(username.getEditText().getText().toString(), password.getEditText().getText().toString())
                     .thenAccept(result -> {
                         LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show());

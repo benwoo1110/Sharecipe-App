@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import sg.edu.np.mad.Sharecipe.Data.AccountManager;
 import sg.edu.np.mad.Sharecipe.Data.UserManager;
 import sg.edu.np.mad.Sharecipe.R;
 
@@ -19,7 +20,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         //TODO Check if logged in.
-        if (UserManager.getInstance(this).getAccount() == null) {
+        if (AccountManager.getInstance(this).getAccount() == null) {
             Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

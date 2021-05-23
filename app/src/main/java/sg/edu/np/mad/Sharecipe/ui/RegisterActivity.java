@@ -7,7 +7,7 @@ import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
-import sg.edu.np.mad.Sharecipe.Data.UserManager;
+import sg.edu.np.mad.Sharecipe.Data.AccountManager;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 import sg.edu.np.mad.Sharecipe.utils.ActionResult;
@@ -26,7 +26,7 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
 
         signUp.setOnClickListener(v -> {
             hideSoftKeyBoard();
-            UserManager.getInstance(this)
+            AccountManager.getInstance(this)
                     .register(username.getEditText().getText().toString(), password.getEditText().getText().toString())
                     .thenAccept(result -> {
                         RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show());
