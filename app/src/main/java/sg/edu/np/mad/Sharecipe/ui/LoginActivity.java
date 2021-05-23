@@ -30,16 +30,19 @@ public class LoginActivity extends DynamicFocusAppCompatActivity {
         Button login = findViewById(R.id.buttonLogin);
         Button signUpNow = findViewById(R.id.buttonSignupNow);
 
-        login.setOnClickListener(v -> UserManager.getInstance()
-                .login(username.getEditText().getText().toString(), password.getEditText().getText().toString())
-                .thenAccept(result -> {
-                    LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show());
-                    if (result instanceof ActionResult.Success) {
-                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                    }
-                }));
+        login.setOnClickListener(v -> {
+            hideSoftKeyBoard();
+            UserManager.getInstance()
+                    .login(username.getEditText().getText().toString(), password.getEditText().getText().toString())
+                    .thenAccept(result -> {
+                        LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show());
+                        if (result instanceof ActionResult.Success) {
+                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        }
+                    });
+        });
 
         signUpNow.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);

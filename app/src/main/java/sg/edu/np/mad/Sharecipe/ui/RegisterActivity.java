@@ -24,15 +24,18 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
         TextInputLayout password = findViewById(R.id.registerPassword);
         Button signUp = findViewById(R.id.buttonSignup);
 
-        signUp.setOnClickListener(v -> UserManager.getInstance()
-                .register(username.getEditText().getText().toString(), password.getEditText().getText().toString())
-                .thenAccept(result -> {
-                    RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show());
-                    if (result instanceof ActionResult.Success) {
-                        Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                    }
-                }));
+        signUp.setOnClickListener(v -> {
+            hideSoftKeyBoard();
+            UserManager.getInstance()
+                    .register(username.getEditText().getText().toString(), password.getEditText().getText().toString())
+                    .thenAccept(result -> {
+                        RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show());
+                        if (result instanceof ActionResult.Success) {
+                            Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        }
+                    });
+        });
     }
 }
