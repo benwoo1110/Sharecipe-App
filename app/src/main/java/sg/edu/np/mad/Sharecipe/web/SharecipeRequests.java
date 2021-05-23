@@ -23,6 +23,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+/**
+ * Handles web requests to the server.
+ */
 public class SharecipeRequests {
 
     private static final MediaType JSON_TYPE = MediaType.parse("application/json; charset=utf-8");
@@ -64,6 +67,11 @@ public class SharecipeRequests {
         }
     }
 
+    /**
+     * `/hello` endpoint.
+     *
+     * @return Response from server.
+     */
     @NonNull
     public static CompletableFuture<Response> helloWorld() {
         HttpUrl url = UrlPath.newBuilder()
@@ -76,6 +84,13 @@ public class SharecipeRequests {
                 .build());
     }
 
+    /**
+     * `/account/register` endpoint.
+     *
+     * @param username
+     * @param password
+     * @return Response from server.
+     */
     @NonNull
     public static CompletableFuture<Response> accountRegister(@NonNull String username, @NonNull String password) {
         String payload;
@@ -97,6 +112,13 @@ public class SharecipeRequests {
                 .build());
     }
 
+    /**
+     * `/account/register` endpoint.
+     *
+     * @param username
+     * @param password
+     * @return Response from server.
+     */
     @NonNull
     public static CompletableFuture<Response> accountLogin(@NonNull String username, @NonNull String password) {
         String payload;
@@ -118,8 +140,15 @@ public class SharecipeRequests {
                 .build());
     }
 
+    /**
+     * `/users/user_id` endpoint.
+     *
+     * @param accessToken
+     * @param userId
+     * @return Response from server.
+     */
     @NonNull
-    public static CompletableFuture<Response> getUserData(String accessToken, int userId) {
+    public static CompletableFuture<Response> getUserData(@NonNull String accessToken, int userId) {
         HttpUrl url = UrlPath.newBuilder()
                 .addPathSegment(UrlPath.USERS)
                 .addPathSegment(String.valueOf(userId))
