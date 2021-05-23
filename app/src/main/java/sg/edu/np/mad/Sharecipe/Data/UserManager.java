@@ -3,6 +3,7 @@ package sg.edu.np.mad.Sharecipe.Data;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -37,7 +38,7 @@ public class UserManager {
         CompletableFuture<ActionResult> future = new CompletableFuture<>();
         SharecipeRequests.accountRegister(username, password)
                 .thenAccept(response -> {
-                    JsonObject json = SharecipeRequests.convertToJson(response);
+                    JsonObject json = (JsonObject) SharecipeRequests.convertToJson(response);
                     if (!response.isSuccessful()) {
                         JsonElement message = json != null ? json.get("message") : null;
                         future.complete(new ActionResult.Failed(message != null ? message.getAsString() : "An unknown error occurred!"));
@@ -61,7 +62,7 @@ public class UserManager {
         CompletableFuture<ActionResult> future = new CompletableFuture<>();
         SharecipeRequests.accountLogin(username, password)
                 .thenAccept(response -> {
-                    JsonObject json = SharecipeRequests.convertToJson(response);
+                    JsonObject json = (JsonObject) SharecipeRequests.convertToJson(response);
                     if (!response.isSuccessful()) {
                         JsonElement message = json.get("message");
                         future.complete(new ActionResult.Failed(message != null ? message.getAsString() : "An unknown error occurred!"));
@@ -98,10 +99,14 @@ public class UserManager {
         CompletableFuture<List<User>> future = new CompletableFuture<>();
         SharecipeRequests.searchUsers(account.getAccessToken(), username)
                 .thenAccept(response -> {
-                    JsonObject json = SharecipeRequests.convertToJson(response);
+                    JsonElement json = SharecipeRequests.convertToJson(response);
+                    if (!response.isSuccessful()) {
+                        future.complete(null);
+                        return;
+                    }
                     List<User> userList = new ArrayList<>();
-                    for (String userId : json.keySet()) {
-                        userList.add(SharecipeRequests.convertToObject(json.get(userId), User.class));
+                    for (JsonElement userData : json.getAsJsonArray()) {
+                        userList.add(SharecipeRequests.convertToObject(userData, User.class));
                     }
                     future.complete(userList);
                 });
@@ -120,7 +125,7 @@ public class UserManager {
         }
         SharecipeRequests.getUser(account.getAccessToken(), account.getUserId())
                 .thenAccept(response -> {
-                    JsonObject json = SharecipeRequests.convertToJson(response);
+                    JsonObject json = (JsonObject) SharecipeRequests.convertToJson(response);
                     future.complete(SharecipeRequests.convertToObject(json, User.class));
                 });
         return future;
@@ -138,7 +143,7 @@ public class UserManager {
         }
         SharecipeRequests.getUser(account.getAccessToken(), account.getUserId())
                 .thenAccept(response -> {
-                    JsonObject json = SharecipeRequests.convertToJson(response);
+                    JsonObject json = (JsonObject) SharecipeRequests.convertToJson(response);
                     loggedInUser = SharecipeRequests.convertToObject(json, User.class);
                     future.complete(loggedInUser);
                 });

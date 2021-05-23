@@ -40,7 +40,7 @@ public class SharecipeRequests {
         }
     };
 
-    public static JsonObject convertToJson(Response response) {
+    public static JsonElement convertToJson(Response response) {
         String data;
         try {
             data = response.body().string();
@@ -51,7 +51,7 @@ public class SharecipeRequests {
             return json;
         }
         try {
-            return (JsonObject) JsonParser.parseString(data);
+            return JsonParser.parseString(data);
         } catch (JsonSyntaxException e) {
             JsonObject json = new JsonObject();
             json.addProperty("message", data);
