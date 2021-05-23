@@ -6,6 +6,9 @@ import androidx.annotation.Nullable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.Models.Account;
 import sg.edu.np.mad.Sharecipe.Models.User;
@@ -88,6 +91,42 @@ public class UserManager {
     }
 
     @NonNull
+    public CompletableFuture<List<User>> searchUsers(String username) {
+        if (account == null) {
+            return CompletableFuture.completedFuture(null);
+        }
+        CompletableFuture<List<User>> future = new CompletableFuture<>();
+        SharecipeRequests.searchUsers(account.getAccessToken(), username)
+                .thenAccept(response -> {
+                    JsonObject json = SharecipeRequests.convertToJson(response);
+                    List<User> userList = new ArrayList<>();
+                    for (String userId : json.keySet()) {
+                        userList.add(SharecipeRequests.convertToObject(json.get(userId), User.class));
+                    }
+                    future.complete(userList);
+                });
+        return future;
+    }
+
+    @NonNull
+    public CompletableFuture<User> getUser(int userId) {
+        if (account == null) {
+            return CompletableFuture.completedFuture(null);
+        }
+        CompletableFuture<User> future = new CompletableFuture<>();
+        if (loggedInUser != null) {
+            future.complete(loggedInUser);
+            return future;
+        }
+        SharecipeRequests.getUser(account.getAccessToken(), account.getUserId())
+                .thenAccept(response -> {
+                    JsonObject json = SharecipeRequests.convertToJson(response);
+                    future.complete(SharecipeRequests.convertToObject(json, User.class));
+                });
+        return future;
+    }
+
+    @NonNull
     public CompletableFuture<User> getLoggedInUser() {
         if (account == null) {
             return CompletableFuture.completedFuture(null);
@@ -97,7 +136,7 @@ public class UserManager {
             future.complete(loggedInUser);
             return future;
         }
-        SharecipeRequests.getUserData(account.getAccessToken(), account.getUserId())
+        SharecipeRequests.getUser(account.getAccessToken(), account.getUserId())
                 .thenAccept(response -> {
                     JsonObject json = SharecipeRequests.convertToJson(response);
                     loggedInUser = SharecipeRequests.convertToObject(json, User.class);

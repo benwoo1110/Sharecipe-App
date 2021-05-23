@@ -146,7 +146,7 @@ public class SharecipeRequests {
      * @return
      */
     @NonNull
-    public static CompletableFuture<Response> searchUserData(@NonNull String accessToken, @NonNull String username) {
+    public static CompletableFuture<Response> searchUsers(@NonNull String accessToken, @NonNull String username) {
         return client.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
                         .addPathSegment(UrlPath.USERS)
@@ -165,7 +165,7 @@ public class SharecipeRequests {
      * @return Response from server.
      */
     @NonNull
-    public static CompletableFuture<Response> getUserData(@NonNull String accessToken, int userId) {
+    public static CompletableFuture<Response> getUser(@NonNull String accessToken, int userId) {
         return client.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
                         .addPathSegment(UrlPath.USERS)
