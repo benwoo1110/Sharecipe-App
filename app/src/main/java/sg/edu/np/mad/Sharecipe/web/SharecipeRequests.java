@@ -74,12 +74,10 @@ public class SharecipeRequests {
      */
     @NonNull
     public static CompletableFuture<Response> helloWorld() {
-        HttpUrl url = UrlPath.newBuilder()
-                .addPathSegment(UrlPath.HELLO)
-                .build();
-        System.out.println(url.toString());
         return client.runAsync(new Request.Builder()
-                .url(url)
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.HELLO)
+                        .build())
                 .get()
                 .build());
     }
@@ -141,6 +139,25 @@ public class SharecipeRequests {
     }
 
     /**
+     * `/users` endpoint.
+     *
+     * @param accessToken
+     * @param username
+     * @return
+     */
+    @NonNull
+    public static CompletableFuture<Response> searchUserData(@NonNull String accessToken, @NonNull String username) {
+        return client.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addQueryParameter("username", username)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
+
+    /**
      * `/users/user_id` endpoint.
      *
      * @param accessToken
@@ -149,12 +166,11 @@ public class SharecipeRequests {
      */
     @NonNull
     public static CompletableFuture<Response> getUserData(@NonNull String accessToken, int userId) {
-        HttpUrl url = UrlPath.newBuilder()
-                .addPathSegment(UrlPath.USERS)
-                .addPathSegment(String.valueOf(userId))
-                .build();
         return client.runAsync(new Request.Builder()
-                .url(url)
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(userId))
+                        .build())
                 .header("Authorization", "Bearer " + accessToken)
                 .get()
                 .build());
