@@ -3,6 +3,7 @@ package sg.edu.np.mad.Sharecipe.Data;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java9.util.concurrent.CompletableFuture;
@@ -35,7 +36,8 @@ public class UserManager {
                 .thenAccept(response -> {
                     JsonObject json = SharecipeRequests.convertToJson(response);
                     if (!response.isSuccessful()) {
-                        future.complete(new ActionResult.Failed(json.get("error").getAsString()));
+                        JsonElement message = json != null ? json.get("message") : null;
+                        future.complete(new ActionResult.Failed(message != null ? message.getAsString() : "An unknown error occurred!"));
                         return;
                     }
                     account = SharecipeRequests.convertToObject(json, Account.class);
@@ -58,7 +60,8 @@ public class UserManager {
                 .thenAccept(response -> {
                     JsonObject json = SharecipeRequests.convertToJson(response);
                     if (!response.isSuccessful()) {
-                        future.complete(new ActionResult.Failed(json.get("error").getAsString()));
+                        JsonElement message = json.get("message");
+                        future.complete(new ActionResult.Failed(message != null ? message.getAsString() : "An unknown error occurred!"));
                         return;
                     }
                     account = SharecipeRequests.convertToObject(json, Account.class);

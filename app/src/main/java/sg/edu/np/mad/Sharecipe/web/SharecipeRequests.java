@@ -38,10 +38,21 @@ public class SharecipeRequests {
     };
 
     public static JsonObject convertToJson(Response response) {
+        String data;
         try {
-            return (JsonObject) JsonParser.parseString(response.body().string());
+            data = response.body().string();
         } catch (IOException e) {
-            return null;
+            e.printStackTrace();
+            JsonObject json = new JsonObject();
+            json.addProperty("message", "Error getting data.");
+            return json;
+        }
+        try {
+            return (JsonObject) JsonParser.parseString(data);
+        } catch (JsonSyntaxException e) {
+            JsonObject json = new JsonObject();
+            json.addProperty("message", data);
+            return json;
         }
     }
 
