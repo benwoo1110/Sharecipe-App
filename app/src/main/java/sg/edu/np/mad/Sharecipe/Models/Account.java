@@ -1,7 +1,7 @@
 package sg.edu.np.mad.Sharecipe.Models;
 
 public class Account {
-    private int userId;
+    private final int userId;
     private String accessToken;
     private String refreshToken;
 
@@ -13,10 +13,6 @@ public class Account {
 
     public int getUserId() {
         return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
     }
 
     public String getAccessToken() {
