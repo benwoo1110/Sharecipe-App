@@ -87,8 +87,23 @@ public class AccountManager {
     }
 
     @NonNull
-    public ActionResult refresh() {
-        return ActionResult.GENERIC_FAILED;
+    public CompletableFuture<ActionResult> refresh() {
+        if (account == null) {
+            return CompletableFuture.completedFuture(new ActionResult.Failed("You have yet to login!"));
+        }
+        CompletableFuture<ActionResult> future = new CompletableFuture<>();
+        SharecipeRequests.accountTokenRefresh(account.getRefreshToken(), account.getUserId())
+                .thenAccept(response -> {
+                    JsonObject json = (JsonObject) SharecipeRequests.convertToJson(response);
+                    String accessToken = json.get("access_token").getAsString();
+                    account.setAccessToken(accessToken);
+                    future.complete(new ActionResult.Success("Token refreshed!"));
+                })
+                .exceptionally(throwable -> {
+                    future.complete(new ActionResult.Error(throwable));
+                    return null;
+                });
+        return future;
     }
 
     @NonNull

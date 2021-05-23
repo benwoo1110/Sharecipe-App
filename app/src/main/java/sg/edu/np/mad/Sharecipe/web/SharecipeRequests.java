@@ -22,6 +22,7 @@ import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * Handles web requests to the server.
@@ -111,7 +112,7 @@ public class SharecipeRequests {
     }
 
     /**
-     * `/account/register` endpoint.
+     * `/account/login` endpoint.
      *
      * @param username
      * @param password
@@ -134,6 +135,27 @@ public class SharecipeRequests {
                         .addPathSegment(UrlPath.ACCOUNT)
                         .addPathSegment(UrlPath.LOGIN)
                         .build())
+                .post(RequestBody.create(payload, JSON_TYPE))
+                .build());
+    }
+
+    @NonNull
+    public static CompletableFuture<Response> accountTokenRefresh(@NonNull String refreshToken, int userId) {
+        String payload;
+        try {
+            payload = new JSONObject()
+                    .put("user_id", userId)
+                    .toString();
+        } catch (JSONException e) {
+            return CompletableFuture.failedFuture(e);
+        }
+
+        return client.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.ACCOUNT)
+                        .addPathSegment(UrlPath.REFRESH)
+                        .build())
+                .header("Authorization", "Bearer " + refreshToken)
                 .post(RequestBody.create(payload, JSON_TYPE))
                 .build());
     }

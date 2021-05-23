@@ -2,9 +2,12 @@ package sg.edu.np.mad.Sharecipe.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,9 +32,18 @@ public class HomeActivity extends AppCompatActivity {
         EditText searchText = findViewById(R.id.editTextSearch);
         ImageButton searchButton = findViewById(R.id.buttonSearch);
         TextView usersText = findViewById(R.id.textViewUsers);
+        Button refreshButton = findViewById(R.id.buttonRefresh);
 
         searchButton.setOnClickListener(v -> UserManager.getInstance(this)
                 .searchUsers(searchText.getText().toString())
                 .thenAccept(userList -> usersText.setText(userList == null ? "No users found!" : String.valueOf(userList))));
+
+        refreshButton.setOnClickListener(v -> AccountManager.getInstance(this)
+                .refresh()
+                .thenAccept(result -> {
+                    HomeActivity.this.runOnUiThread(() -> {
+                        Toast.makeText(HomeActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+                }));
     }
 }
