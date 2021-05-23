@@ -32,7 +32,7 @@ public class LoginActivity extends DynamicFocusAppCompatActivity {
 
         login.setOnClickListener(v -> {
             hideSoftKeyBoard();
-            UserManager.getInstance()
+            UserManager.getInstance(this)
                     .login(username.getEditText().getText().toString(), password.getEditText().getText().toString())
                     .thenAccept(result -> {
                         LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show());

@@ -3,7 +3,12 @@ package sg.edu.np.mad.Sharecipe.Models;
 public class Account {
     private final int userId;
     private String accessToken;
-    private String refreshToken;
+    private final String refreshToken;
+
+    public Account(int userId, String refreshToken) {
+        this.userId = userId;
+        this.refreshToken = refreshToken;
+    }
 
     public Account(int userId, String accessToken, String refreshToken) {
         this.userId = userId;
@@ -25,10 +30,6 @@ public class Account {
 
     public String getRefreshToken() {
         return refreshToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
     }
 
     @Override

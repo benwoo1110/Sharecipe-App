@@ -1,9 +1,11 @@
 package sg.edu.np.mad.Sharecipe.Data;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
@@ -20,17 +22,20 @@ public class UserManager {
 
     private static UserManager instance;
 
-    public static UserManager getInstance() {
+    public static UserManager getInstance(Context context) {
         if (instance == null) {
-            instance = new UserManager();
+            instance = new UserManager(context.getApplicationContext());
         }
         return instance;
     }
 
+    private final Context context;
     private User loggedInUser;
     private Account account;
 
-    private UserManager() {
+    private UserManager(Context context) {
+        this.context = context;
+        loadFromSharedPreference();
     }
 
     @NonNull
@@ -44,7 +49,7 @@ public class UserManager {
                         future.complete(new ActionResult.Failed(message != null ? message.getAsString() : "An unknown error occurred!"));
                         return;
                     }
-                    account = SharecipeRequests.convertToObject(json, Account.class);
+                    setAccount(SharecipeRequests.convertToObject(json, Account.class));
                     if (account == null) {
                         future.complete(new ActionResult.Failed("Received invalid data. Failed to create account!"));
                     }
@@ -68,7 +73,7 @@ public class UserManager {
                         future.complete(new ActionResult.Failed(message != null ? message.getAsString() : "An unknown error occurred!"));
                         return;
                     }
-                    account = SharecipeRequests.convertToObject(json, Account.class);
+                    setAccount(SharecipeRequests.convertToObject(json, Account.class));
                     if (account == null) {
                         future.complete(new ActionResult.Failed("Received invalid data. Failed to login!"));
                     }
@@ -82,6 +87,11 @@ public class UserManager {
     }
 
     @NonNull
+    public ActionResult refresh() {
+        return ActionResult.GENERIC_FAILED;
+    }
+
+    @NonNull
     public ActionResult logout() {
         return ActionResult.GENERIC_FAILED;
     }
@@ -89,6 +99,38 @@ public class UserManager {
     @NonNull
     public ActionResult delete() {
         return ActionResult.GENERIC_FAILED;
+    }
+
+    private void setAccount(@Nullable Account account) {
+        if (account == null || account.getUserId() == Integer.MIN_VALUE || account.getRefreshToken() == null) {
+            this.account = null;
+            return;
+        }
+        this.account = account;
+        saveToSharedPreference();
+    }
+
+    private void saveToSharedPreference() {
+        if (account == null) {
+            return;
+        }
+        context.getSharedPreferences("account", Context.MODE_PRIVATE)
+                .edit()
+                .putInt("userId", account.getUserId())
+                .putString("refreshToken", account.getRefreshToken())
+                .apply();
+    }
+
+    private void loadFromSharedPreference() {
+        SharedPreferences data = context.getSharedPreferences("account", Context.MODE_PRIVATE);
+        setAccount(new Account(data.getInt("userId", Integer.MIN_VALUE), data.getString("refreshToken", null)));
+    }
+
+    private void clearSharedPreference() {
+        context.getSharedPreferences("auth", Context.MODE_PRIVATE)
+                .edit()
+                .clear()
+                .apply();
     }
 
     @NonNull

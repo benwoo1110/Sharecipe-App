@@ -26,7 +26,7 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
 
         signUp.setOnClickListener(v -> {
             hideSoftKeyBoard();
-            UserManager.getInstance()
+            UserManager.getInstance(this)
                     .register(username.getEditText().getText().toString(), password.getEditText().getText().toString())
                     .thenAccept(result -> {
                         RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show());
