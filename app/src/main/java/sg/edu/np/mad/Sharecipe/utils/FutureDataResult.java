@@ -3,6 +3,11 @@ package sg.edu.np.mad.Sharecipe.utils;
 import java9.util.concurrent.CompletableFuture;
 import java9.util.function.Consumer;
 
+/**
+ * Wrapper for {@link CompletableFuture} to provide custom result handling of {@link DataResult}.
+ *
+ * @param <T> Type of data expected from future result.
+ */
 public class FutureDataResult<T> extends CompletableFuture<DataResult<T>> {
 
     public FutureDataResult<T> onSuccess(Consumer<T> consumer) {

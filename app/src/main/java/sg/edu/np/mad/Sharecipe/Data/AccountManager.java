@@ -16,10 +16,19 @@ import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
+/**
+ * Contains action for an account.
+ */
 public class AccountManager {
 
     private static AccountManager instance;
 
+    /**
+     * Gets common {@link AccountManager} instance throughout the app.
+     *
+     * @param context   Application context for share preference loading.
+     * @return The instance.
+     */
     public static AccountManager getInstance(Context context) {
         if (instance == null) {
             instance = new AccountManager(context.getApplicationContext());
@@ -36,6 +45,13 @@ public class AccountManager {
         // loadFromSharedPreference();
     }
 
+    /**
+     * Create a new user account async.
+     *
+     * @param username  New account's name.
+     * @param password  New account's password.
+     * @return Future result of account creation with account data if succeed.
+     */
     @NonNull
     public FutureDataResult<Account> register(String username, String password) {
         FutureDataResult<Account> future = new FutureDataResult<>();
@@ -60,6 +76,13 @@ public class AccountManager {
         return future;
     }
 
+    /**
+     * Login to existing user account async.
+     *
+     * @param username  Account's username credentials.
+     * @param password  Account's password credentials.
+     * @return Future result of account login with account data if succeed.
+     */
     @NonNull
     public FutureDataResult<Account> login(String username, String password) {
         FutureDataResult<Account> future = new FutureDataResult<>();
@@ -84,6 +107,11 @@ public class AccountManager {
         return future;
     }
 
+    /**
+     * Refreshes short live access token using the long live refresh token.
+     *
+     * @return Future result of refresh with account data if succeed.
+     */
     @NonNull
     public FutureDataResult<Account> refresh() {
         FutureDataResult<Account> future = new FutureDataResult<>();
@@ -115,6 +143,11 @@ public class AccountManager {
         return new FutureDataResult<>();
     }
 
+    /**
+     * Check if account is logged in.
+     *
+     * @return true if account logged in, else false.
+     */
     public boolean isLoggedIn() {
         return account != null;
     }

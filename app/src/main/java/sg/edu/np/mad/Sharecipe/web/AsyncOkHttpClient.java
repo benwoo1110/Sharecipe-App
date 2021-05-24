@@ -11,6 +11,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+/**
+ * Wraps {@link OkHttpClient} get call request data with {@link CompletableFuture}.
+ */
 public class AsyncOkHttpClient {
     private final OkHttpClient client = new OkHttpClient();
 

@@ -2,6 +2,9 @@ package sg.edu.np.mad.Sharecipe.web;
 
 import okhttp3.HttpUrl;
 
+/**
+ * Stores possible endpoints for easy reference and url building.
+ */
 public class UrlPath {
     //TODO remove on production.
     private static final boolean USER_LOCAL = false;

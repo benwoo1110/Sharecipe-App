@@ -1,7 +1,17 @@
 package sg.edu.np.mad.Sharecipe.utils;
 
+/**
+ * Result of an action that produces a data.
+ *
+ * @param <T>   Data type to get if result successful.
+ */
 public abstract class DataResult<T> {
 
+    /**
+     * When data is successfully received.
+     *
+     * @param <T>   Data type to get if result successful.
+     */
     public static class Success<T> extends DataResult<T> {
         private final T data;
 
@@ -14,6 +24,11 @@ public abstract class DataResult<T> {
         }
     }
 
+    /**
+     * Failed to get data due to issue with input.
+     *
+     * @param <T>   Data type to get if result successful.
+     */
     public static class Failed<T> extends DataResult<T> {
         private final String reason;
 
@@ -26,6 +41,11 @@ public abstract class DataResult<T> {
         }
     }
 
+    /**
+     * An exception occurred.
+     *
+     * @param <T>   Data type to get if result successful.
+     */
     public static class Error<T> extends DataResult<T> {
         private final Throwable error;
 

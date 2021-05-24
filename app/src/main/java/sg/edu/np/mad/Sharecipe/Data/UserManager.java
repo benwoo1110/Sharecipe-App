@@ -20,10 +20,19 @@ import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
+/**
+ * Contains action for getting users data.
+ */
 public class UserManager {
 
     private static UserManager instance;
 
+    /**
+     * Gets common {@link UserManager} instance throughout the app.
+     *
+     * @param context   Application context for share preference loading.
+     * @return The instance.
+     */
     public static UserManager getInstance(Context context) {
         if (instance == null) {
             instance = new UserManager(AccountManager.getInstance(context.getApplicationContext()));
@@ -40,6 +49,12 @@ public class UserManager {
         this.accountManager = accountManager;
     }
 
+    /**
+     * Search for users that starts with given username string.
+     *
+     * @param username  Target username to search on.
+     * @return Future result of search, with list of users from search result.
+     */
     @NonNull
     public FutureDataResult<List<User>> searchUsers(String username) {
         FutureDataResult<List<User>> future = new FutureDataResult<>();
@@ -68,6 +83,12 @@ public class UserManager {
         return future;
     }
 
+    /**
+     * Gets single user data.
+     *
+     * @param userId    Target user to get data of.
+     * @return Future result of user data.
+     */
     @NonNull
     public FutureDataResult<User> getUser(int userId) {
         FutureDataResult<User> future = new FutureDataResult<>();
@@ -99,6 +120,11 @@ public class UserManager {
         return future;
     }
 
+    /**
+     * Gets user data of logged in account.
+     *
+     * @return Future result of user data.
+     */
     @NonNull
     public FutureDataResult<User> getLoggedInUser() {
         if (!accountManager.isLoggedIn()) {
