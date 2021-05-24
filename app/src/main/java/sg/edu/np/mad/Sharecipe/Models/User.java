@@ -1,5 +1,7 @@
 package sg.edu.np.mad.Sharecipe.Models;
 
+import org.jetbrains.annotations.NotNull;
+
 public class User {
     private final int userId;
     private String username;
@@ -31,6 +33,7 @@ public class User {
         this.bio = bio;
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "User{" +

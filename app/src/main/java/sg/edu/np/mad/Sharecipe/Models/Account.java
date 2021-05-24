@@ -1,16 +1,17 @@
 package sg.edu.np.mad.Sharecipe.Models;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Account {
     private final int userId;
-    private String accessToken;
     private final String refreshToken;
+    private String accessToken;
 
     public Account(int userId, String refreshToken) {
-        this.userId = userId;
-        this.refreshToken = refreshToken;
+        this(userId, refreshToken, null);
     }
 
-    public Account(int userId, String accessToken, String refreshToken) {
+    public Account(int userId, String refreshToken, String accessToken) {
         this.userId = userId;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
@@ -18,6 +19,10 @@ public class Account {
 
     public int getUserId() {
         return userId;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
     }
 
     public String getAccessToken() {
@@ -28,16 +33,13 @@ public class Account {
         this.accessToken = accessToken;
     }
 
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
+    @NotNull
     @Override
     public String toString() {
         return "Account{" +
                 "userId=" + userId +
-                ", accessToken='" + accessToken + '\'' +
                 ", refreshToken='" + refreshToken + '\'' +
+                ", accessToken='" + accessToken + '\'' +
                 '}';
     }
 }
