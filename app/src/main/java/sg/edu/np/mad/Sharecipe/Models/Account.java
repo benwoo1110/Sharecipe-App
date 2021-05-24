@@ -3,6 +3,7 @@ package sg.edu.np.mad.Sharecipe.Models;
 import org.jetbrains.annotations.NotNull;
 
 public class Account {
+
     private final int userId;
     private final String refreshToken;
     private String accessToken;

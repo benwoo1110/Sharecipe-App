@@ -2,14 +2,6 @@ package sg.edu.np.mad.Sharecipe.web;
 
 import androidx.annotation.NonNull;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,12 +9,10 @@ import java.io.IOException;
 
 import java9.util.concurrent.CompletableFuture;
 import java9.util.function.Function;
-import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 /**
  * Handles web requests to the server.
@@ -30,8 +20,7 @@ import okhttp3.ResponseBody;
 public class SharecipeRequests {
 
     private static final MediaType JSON_TYPE = MediaType.parse("application/json; charset=utf-8");
-    private static final AsyncOkHttpClient client = new AsyncOkHttpClient();
-    private static final Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+    private static final AsyncOkHttpClient CLIENT = new AsyncOkHttpClient();
 
     public static final Function<Response, JSONObject> DECODE_TO_JSON = (response) -> {
         try {
@@ -41,33 +30,6 @@ public class SharecipeRequests {
         }
     };
 
-    public static JsonElement convertToJson(Response response) {
-        String data;
-        try {
-            data = response.body().string();
-        } catch (IOException e) {
-            e.printStackTrace();
-            JsonObject json = new JsonObject();
-            json.addProperty("message", "Error getting data.");
-            return json;
-        }
-        try {
-            return JsonParser.parseString(data);
-        } catch (JsonSyntaxException e) {
-            JsonObject json = new JsonObject();
-            json.addProperty("message", data);
-            return json;
-        }
-    }
-
-    public static <T> T convertToObject(JsonElement json, Class<T> tClass) {
-        try {
-            return gson.fromJson(json, tClass);
-        } catch (JsonSyntaxException e) {
-            return null;
-        }
-    }
-
     /**
      * `/hello` endpoint.
      *
@@ -75,7 +37,7 @@ public class SharecipeRequests {
      */
     @NonNull
     public static CompletableFuture<Response> helloWorld() {
-        return client.runAsync(new Request.Builder()
+        return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
                         .addPathSegment(UrlPath.HELLO)
                         .build())
@@ -102,7 +64,7 @@ public class SharecipeRequests {
             return CompletableFuture.failedFuture(e);
         }
 
-        return client.runAsync(new Request.Builder()
+        return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
                         .addPathSegment(UrlPath.ACCOUNT)
                         .addPathSegment(UrlPath.REGISTER)
@@ -130,7 +92,7 @@ public class SharecipeRequests {
             return CompletableFuture.failedFuture(e);
         }
 
-        return client.runAsync(new Request.Builder()
+        return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
                         .addPathSegment(UrlPath.ACCOUNT)
                         .addPathSegment(UrlPath.LOGIN)
@@ -150,7 +112,7 @@ public class SharecipeRequests {
             return CompletableFuture.failedFuture(e);
         }
 
-        return client.runAsync(new Request.Builder()
+        return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
                         .addPathSegment(UrlPath.ACCOUNT)
                         .addPathSegment(UrlPath.REFRESH)
@@ -169,7 +131,7 @@ public class SharecipeRequests {
      */
     @NonNull
     public static CompletableFuture<Response> searchUsers(@NonNull String accessToken, @NonNull String username) {
-        return client.runAsync(new Request.Builder()
+        return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addQueryParameter("username", username)
@@ -188,7 +150,7 @@ public class SharecipeRequests {
      */
     @NonNull
     public static CompletableFuture<Response> getUser(@NonNull String accessToken, int userId) {
-        return client.runAsync(new Request.Builder()
+        return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addPathSegment(String.valueOf(userId))

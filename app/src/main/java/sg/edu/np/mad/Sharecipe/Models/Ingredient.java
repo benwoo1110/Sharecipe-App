@@ -1,6 +1,7 @@
 package sg.edu.np.mad.Sharecipe.Models;
 
 public class Ingredient {
+
     private String name;
     private int quantity;
     private String unit;

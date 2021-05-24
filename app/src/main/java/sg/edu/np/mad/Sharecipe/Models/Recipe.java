@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.List;
 
 public class Recipe {
+
     private int userId;
     private int recipeId;
     private String name;

@@ -9,11 +9,11 @@ import androidx.annotation.Nullable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.Models.Account;
 import sg.edu.np.mad.Sharecipe.Models.User;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
+import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
 import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
 /**
@@ -57,13 +57,13 @@ public class AccountManager {
         FutureDataResult<Account> future = new FutureDataResult<>();
         SharecipeRequests.accountRegister(username, password)
                 .thenAccept(response -> {
-                    JsonObject json = (JsonObject) SharecipeRequests.convertToJson(response);
+                    JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
                     if (!response.isSuccessful()) {
                         JsonElement message = json != null ? json.get("message") : null;
                         future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
                         return;
                     }
-                    setAccount(SharecipeRequests.convertToObject(json, Account.class));
+                    setAccount(JsonUtils.convertToObject(json, Account.class));
                     if (account == null) {
                         future.complete(new DataResult.Failed<>("Received invalid data. Failed to create account!"));
                     }
@@ -88,13 +88,13 @@ public class AccountManager {
         FutureDataResult<Account> future = new FutureDataResult<>();
         SharecipeRequests.accountLogin(username, password)
                 .thenAccept(response -> {
-                    JsonObject json = (JsonObject) SharecipeRequests.convertToJson(response);
+                    JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
                     if (!response.isSuccessful()) {
                         JsonElement message = json.get("message");
                         future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
                         return;
                     }
-                    setAccount(SharecipeRequests.convertToObject(json, Account.class));
+                    setAccount(JsonUtils.convertToObject(json, Account.class));
                     if (account == null) {
                         future.complete(new DataResult.Failed<>("Received invalid data. Failed to login!"));
                     }
@@ -121,7 +121,7 @@ public class AccountManager {
         }
         SharecipeRequests.accountTokenRefresh(account.getRefreshToken(), account.getUserId())
                 .thenAccept(response -> {
-                    JsonObject json = (JsonObject) SharecipeRequests.convertToJson(response);
+                    JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
                     String accessToken = json.get("access_token").getAsString();
                     account.setAccessToken(accessToken);
                     future.complete(new DataResult.Success<>(account));

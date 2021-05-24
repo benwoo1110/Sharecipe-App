@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.Models.Account;
 import sg.edu.np.mad.Sharecipe.Models.User;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
+import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
 import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
 /**
@@ -64,7 +64,7 @@ public class UserManager {
         }
         SharecipeRequests.searchUsers(accountManager.getAccount().getAccessToken(), username)
                 .thenAccept(response -> {
-                    JsonElement json = SharecipeRequests.convertToJson(response);
+                    JsonElement json = JsonUtils.convertToJson(response);
                     if (!response.isSuccessful()) {
                         JsonElement message = json.getAsJsonObject().get("message");
                         future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
@@ -72,7 +72,7 @@ public class UserManager {
                     }
                     List<User> userList = new ArrayList<>();
                     for (JsonElement userData : json.getAsJsonArray()) {
-                        userList.add(SharecipeRequests.convertToObject(userData, User.class));
+                        userList.add(JsonUtils.convertToObject(userData, User.class));
                     }
                     future.complete(new DataResult.Success<>(userList));
                 })
@@ -104,8 +104,8 @@ public class UserManager {
         Account account = accountManager.getAccount();
         SharecipeRequests.getUser(account.getAccessToken(), userId)
                 .thenAccept(response -> {
-                    JsonObject json = (JsonObject) SharecipeRequests.convertToJson(response);
-                    User user = SharecipeRequests.convertToObject(json, User.class);
+                    JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
+                    User user = JsonUtils.convertToObject(json, User.class);
                     if (user == null) {
                         future.complete(new DataResult.Failed<>("Invalid user data."));
                         return;
