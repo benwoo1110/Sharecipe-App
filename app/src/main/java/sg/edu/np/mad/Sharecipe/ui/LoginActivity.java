@@ -13,7 +13,7 @@ import java.io.IOException;
 import sg.edu.np.mad.Sharecipe.Data.AccountManager;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
-import sg.edu.np.mad.Sharecipe.utils.ActionResult;
+import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
 public class LoginActivity extends DynamicFocusAppCompatActivity {
@@ -34,13 +34,16 @@ public class LoginActivity extends DynamicFocusAppCompatActivity {
             hideSoftKeyBoard();
             AccountManager.getInstance(this)
                     .login(username.getEditText().getText().toString(), password.getEditText().getText().toString())
-                    .thenAccept(result -> {
-                        LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show());
-                        if (result instanceof ActionResult.Success) {
-                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                        }
+                    .onSuccess(result -> {
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    })
+                    .onFailed(reason -> {
+                        LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, reason, Toast.LENGTH_SHORT).show());
+                    })
+                    .onError(error -> {
+                        LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show());
                     });
         });
 

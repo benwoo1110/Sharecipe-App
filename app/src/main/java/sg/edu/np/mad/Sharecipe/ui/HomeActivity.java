@@ -13,7 +13,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import sg.edu.np.mad.Sharecipe.Data.AccountManager;
 import sg.edu.np.mad.Sharecipe.Data.UserManager;
+import sg.edu.np.mad.Sharecipe.Models.Account;
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.utils.DataResult;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -40,9 +42,9 @@ public class HomeActivity extends AppCompatActivity {
 
         refreshButton.setOnClickListener(v -> AccountManager.getInstance(this)
                 .refresh()
-                .thenAccept(result -> {
+                .onSuccess(account -> {
                     HomeActivity.this.runOnUiThread(() -> {
-                        Toast.makeText(HomeActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HomeActivity.this, account.getAccessToken(), Toast.LENGTH_SHORT).show();
                     });
                 }));
     }

@@ -10,7 +10,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import sg.edu.np.mad.Sharecipe.Data.AccountManager;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
-import sg.edu.np.mad.Sharecipe.utils.ActionResult;
 
 public class RegisterActivity extends DynamicFocusAppCompatActivity {
 
@@ -28,13 +27,16 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
             hideSoftKeyBoard();
             AccountManager.getInstance(this)
                     .register(username.getEditText().getText().toString(), password.getEditText().getText().toString())
-                    .thenAccept(result -> {
-                        RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, result.getMessage(), Toast.LENGTH_SHORT).show());
-                        if (result instanceof ActionResult.Success) {
-                            Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                        }
+                    .onSuccess(account -> {
+                        Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                    })
+                    .onFailed(reason -> {
+                        RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, reason, Toast.LENGTH_SHORT).show());
+                    })
+                    .onError(error -> {
+                        RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show());
                     });
         });
     }
