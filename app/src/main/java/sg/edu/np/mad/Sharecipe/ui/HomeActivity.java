@@ -38,7 +38,9 @@ public class HomeActivity extends AppCompatActivity {
 
         searchButton.setOnClickListener(v -> UserManager.getInstance(this)
                 .searchUsers(searchText.getText().toString())
-                .thenAccept(userList -> usersText.setText(userList == null ? "No users found!" : String.valueOf(userList))));
+                .onSuccess(userList -> usersText.setText(userList == null ? "No users found!" : String.valueOf(userList)))
+                .onFailed(reason -> HomeActivity.this.runOnUiThread(() -> Toast.makeText(HomeActivity.this, reason, Toast.LENGTH_SHORT).show()))
+                .onError(error -> HomeActivity.this.runOnUiThread(() -> Toast.makeText(HomeActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show())));
 
         refreshButton.setOnClickListener(v -> AccountManager.getInstance(this)
                 .refresh()
