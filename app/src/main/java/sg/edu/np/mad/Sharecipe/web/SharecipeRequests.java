@@ -34,7 +34,7 @@ public class SharecipeRequests {
     };
 
     /**
-     * `/hello` endpoint.
+     * GET `/hello` endpoint.
      *
      * @return Response from server.
      */
@@ -49,7 +49,7 @@ public class SharecipeRequests {
     }
 
     /**
-     * `/account/register` endpoint.
+     * POST `/account/register` endpoint.
      *
      * @param username
      * @param password
@@ -77,7 +77,7 @@ public class SharecipeRequests {
     }
 
     /**
-     * `/account/login` endpoint.
+     * POST `/account/login` endpoint.
      *
      * @param username
      * @param password
@@ -104,6 +104,13 @@ public class SharecipeRequests {
                 .build());
     }
 
+    /**
+     * POST `/account/refresh` endpoint.
+     *
+     * @param refreshToken
+     * @param userId
+     * @return
+     */
     @NonNull
     public static CompletableFuture<Response> accountTokenRefresh(@NonNull String refreshToken, int userId) {
         String payload;
@@ -126,7 +133,7 @@ public class SharecipeRequests {
     }
 
     /**
-     * `/users` endpoint.
+     * GET `/users` endpoint.
      *
      * @param accessToken
      * @param username
@@ -145,7 +152,7 @@ public class SharecipeRequests {
     }
 
     /**
-     * `/users/user_id` endpoint.
+     * GET `/users/user_id` endpoint.
      *
      * @param accessToken
      * @param userId
@@ -164,7 +171,7 @@ public class SharecipeRequests {
     }
 
     /**
-     * `/users/user_id/recipes` endpoint.
+     * PUT `/users/user_id/recipes` endpoint.
      *
      * @param accessToken
      * @param userId
