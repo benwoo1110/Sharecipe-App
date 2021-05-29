@@ -6,7 +6,6 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonElement;
 
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import sg.edu.np.mad.Sharecipe.Models.Account;
@@ -54,6 +53,36 @@ public class RecipeManager {
         JsonElement recipeData = JsonUtils.convertToJson(newRecipe);
 
         SharecipeRequests.createRecipe(account.getAccessToken(), account.getUserId(), recipeData)
+                .thenAccept(response -> {
+                    JsonElement json = JsonUtils.convertToJson(response);
+                    if (!response.isSuccessful()) {
+                        JsonElement message = json.getAsJsonObject().get("message");
+                        future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
+                        return;
+                    }
+                    Recipe recipe = JsonUtils.convertToObject(json, Recipe.class);
+                    if (recipe == null) {
+                        future.complete(new DataResult.Failed<>("Received invalid data."));
+                        return;
+                    }
+                    future.complete(new DataResult.Success<>(recipe));
+                })
+                .exceptionally(throwable -> {
+                    future.complete(new DataResult.Error<>(throwable));
+                    return null;
+                });
+
+        return future;
+    }
+
+    public FutureDataResult<Recipe> getRecipe(int userId, int recipeId) {
+        FutureDataResult<Recipe> future = new FutureDataResult<>();
+        if (!accountManager.isLoggedIn()) {
+            future.complete(new DataResult.Failed<>("No account logged in!"));
+            return future;
+        }
+
+        SharecipeRequests.getRecipe(accountManager.getAccount().getAccessToken(), userId, recipeId)
                 .thenAccept(response -> {
                     JsonElement json = JsonUtils.convertToJson(response);
                     if (!response.isSuccessful()) {

@@ -181,4 +181,17 @@ public class SharecipeRequests {
                 .put(RequestBody.create(recipeData.toString(), JSON_TYPE))
                 .build());
     }
+
+    public static CompletableFuture<Response> getRecipe(@NonNull String accessToken, int userId, int recipeId) {
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(userId))
+                        .addPathSegment(UrlPath.RECIPES)
+                        .addPathSegment(String.valueOf(recipeId))
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
 }
