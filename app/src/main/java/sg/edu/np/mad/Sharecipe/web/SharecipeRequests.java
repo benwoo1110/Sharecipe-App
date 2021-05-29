@@ -25,14 +25,6 @@ public class SharecipeRequests {
     private static final MediaType JSON_TYPE = MediaType.parse("application/json; charset=utf-8");
     private static final AsyncOkHttpClient CLIENT = new AsyncOkHttpClient();
 
-    public static final Function<Response, JSONObject> DECODE_TO_JSON = (response) -> {
-        try {
-            return new JSONObject(response.body().string());
-        } catch (IOException | JSONException e) {
-            return null;
-        }
-    };
-
     /**
      * GET `/hello` endpoint.
      *
