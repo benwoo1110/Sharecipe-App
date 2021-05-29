@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.Data;
+package sg.edu.np.mad.Sharecipe.data;
 
 import android.content.Context;
 
@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import sg.edu.np.mad.Sharecipe.Models.Account;
-import sg.edu.np.mad.Sharecipe.Models.User;
+import sg.edu.np.mad.Sharecipe.models.Account;
+import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
@@ -56,7 +56,7 @@ public class UserManager {
      * @return Future result of search, with list of users from search result.
      */
     @NonNull
-    public FutureDataResult<List<User>> searchUsers(String username) {
+    public FutureDataResult<List<User>> search(String username) {
         FutureDataResult<List<User>> future = new FutureDataResult<>();
         if (!accountManager.isLoggedIn()) {
             future.complete(new DataResult.Failed<>("No account logged in!"));
@@ -90,7 +90,7 @@ public class UserManager {
      * @return Future result of user data.
      */
     @NonNull
-    public FutureDataResult<User> getUser(int userId) {
+    public FutureDataResult<User> get(int userId) {
         FutureDataResult<User> future = new FutureDataResult<>();
         if (!accountManager.isLoggedIn()) {
             future.complete(new DataResult.Failed<>("No account logged in!"));
@@ -126,12 +126,12 @@ public class UserManager {
      * @return Future result of user data.
      */
     @NonNull
-    public FutureDataResult<User> getLoggedInUser() {
+    public FutureDataResult<User> getLoggedIn() {
         if (!accountManager.isLoggedIn()) {
             FutureDataResult<User> future = new FutureDataResult<>();
             future.complete(new DataResult.Failed<>("No account logged in!"));
             return future;
         }
-        return getUser(accountManager.getAccount().getUserId());
+        return get(accountManager.getAccount().getUserId());
     }
 }

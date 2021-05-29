@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.Data;
+package sg.edu.np.mad.Sharecipe.data;
 
 import android.content.Context;
 
@@ -8,9 +8,8 @@ import com.google.gson.JsonElement;
 
 import java.util.concurrent.TimeUnit;
 
-import sg.edu.np.mad.Sharecipe.Models.Account;
-import sg.edu.np.mad.Sharecipe.Models.Recipe;
-import sg.edu.np.mad.Sharecipe.Models.User;
+import sg.edu.np.mad.Sharecipe.models.Account;
+import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
@@ -42,7 +41,7 @@ public class RecipeManager {
         this.accountManager = accountManager;
     }
 
-    public FutureDataResult<Recipe> saveNewRecipe(Recipe newRecipe) {
+    public FutureDataResult<Recipe> save(Recipe newRecipe) {
         FutureDataResult<Recipe> future = new FutureDataResult<>();
         if (!accountManager.isLoggedIn()) {
             future.complete(new DataResult.Failed<>("No account logged in!"));
@@ -75,7 +74,7 @@ public class RecipeManager {
         return future;
     }
 
-    public FutureDataResult<Recipe> getRecipe(int userId, int recipeId) {
+    public FutureDataResult<Recipe> get(int userId, int recipeId) {
         FutureDataResult<Recipe> future = new FutureDataResult<>();
         if (!accountManager.isLoggedIn()) {
             future.complete(new DataResult.Failed<>("No account logged in!"));

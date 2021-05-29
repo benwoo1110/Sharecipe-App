@@ -10,19 +10,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.gson.JsonElement;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import sg.edu.np.mad.Sharecipe.Data.AccountManager;
-import sg.edu.np.mad.Sharecipe.Data.RecipeManager;
-import sg.edu.np.mad.Sharecipe.Data.UserManager;
-import sg.edu.np.mad.Sharecipe.Models.Recipe;
-import sg.edu.np.mad.Sharecipe.Models.RecipeStep;
+import sg.edu.np.mad.Sharecipe.data.AccountManager;
+import sg.edu.np.mad.Sharecipe.data.RecipeManager;
+import sg.edu.np.mad.Sharecipe.data.UserManager;
+import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
-import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -46,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         searchButton.setOnClickListener(v -> {
             usersText.setText("Loading...");
             UserManager.getInstance(this)
-                    .searchUsers(searchText.getText().toString())
+                    .search(searchText.getText().toString())
                     .onSuccess(userList -> usersText.setText(userList == null ? "No users found!" : String.valueOf(userList)))
                     .onFailed(usersText::setText)
                     .onError(error -> HomeActivity.this.runOnUiThread(() -> Toast.makeText(HomeActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show()));
@@ -62,7 +58,7 @@ public class HomeActivity extends AppCompatActivity {
             }};
             newRecipe.setSteps(steps);
 
-            RecipeManager.getInstance(this).saveNewRecipe(newRecipe)
+            RecipeManager.getInstance(this).save(newRecipe)
                     .onSuccess(recipe -> usersText.setText(String.valueOf(recipe)))
                     .onFailed(reason -> this.runOnUiThread(() -> Toast.makeText(HomeActivity.this, reason, Toast.LENGTH_SHORT).show()))
                     .onError(error -> this.runOnUiThread(() -> Toast.makeText(HomeActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()));

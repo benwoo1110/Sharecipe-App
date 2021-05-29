@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.Models;
+package sg.edu.np.mad.Sharecipe.models;
 
 import java.util.List;
 

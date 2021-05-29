@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.Data;
+package sg.edu.np.mad.Sharecipe.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,8 +9,8 @@ import androidx.annotation.Nullable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import sg.edu.np.mad.Sharecipe.Models.Account;
-import sg.edu.np.mad.Sharecipe.Models.User;
+import sg.edu.np.mad.Sharecipe.models.Account;
+import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
