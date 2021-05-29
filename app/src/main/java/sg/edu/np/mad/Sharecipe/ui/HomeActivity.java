@@ -2,7 +2,6 @@ package sg.edu.np.mad.Sharecipe.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -11,11 +10,19 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.gson.JsonElement;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import sg.edu.np.mad.Sharecipe.Data.AccountManager;
+import sg.edu.np.mad.Sharecipe.Data.RecipeManager;
 import sg.edu.np.mad.Sharecipe.Data.UserManager;
-import sg.edu.np.mad.Sharecipe.Models.Account;
+import sg.edu.np.mad.Sharecipe.Models.Recipe;
+import sg.edu.np.mad.Sharecipe.Models.RecipeStep;
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.utils.DataResult;
+import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
+import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -34,7 +41,7 @@ public class HomeActivity extends AppCompatActivity {
         EditText searchText = findViewById(R.id.editTextSearch);
         ImageButton searchButton = findViewById(R.id.buttonSearch);
         TextView usersText = findViewById(R.id.textViewUsers);
-        Button refreshButton = findViewById(R.id.buttonRefresh);
+        Button recipeButton = findViewById(R.id.buttonRecipe);
 
         searchButton.setOnClickListener(v -> {
             usersText.setText("Loading...");
@@ -45,12 +52,28 @@ public class HomeActivity extends AppCompatActivity {
                     .onError(error -> HomeActivity.this.runOnUiThread(() -> Toast.makeText(HomeActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show()));
         });
 
-        refreshButton.setOnClickListener(v -> AccountManager.getInstance(this)
-                .refresh()
-                .onSuccess(account -> {
-                    HomeActivity.this.runOnUiThread(() -> {
-                        Toast.makeText(HomeActivity.this, account.getAccessToken(), Toast.LENGTH_SHORT).show();
-                    });
-                }));
+        recipeButton.setOnClickListener(v -> {
+            Recipe newRecipe = new Recipe();
+            newRecipe.setName("Testing");
+            newRecipe.setDifficulty(10);
+            List<RecipeStep> steps = new ArrayList<RecipeStep>() {{
+                add(new RecipeStep(1, "bah", "boop"));
+                add(new RecipeStep(2, "lah", "mee"));
+            }};
+            newRecipe.setSteps(steps);
+
+            RecipeManager.getInstance(this).saveNewRecipe(newRecipe)
+                    .onSuccess(recipe -> usersText.setText(String.valueOf(recipe)))
+                    .onFailed(reason -> this.runOnUiThread(() -> Toast.makeText(HomeActivity.this, reason, Toast.LENGTH_SHORT).show()))
+                    .onError(error -> this.runOnUiThread(() -> Toast.makeText(HomeActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()));
+        });
+
+//        refreshButton.setOnClickListener(v -> AccountManager.getInstance(this)
+//                .refresh()
+//                .onSuccess(account -> {
+//                    HomeActivity.this.runOnUiThread(() -> {
+//                        Toast.makeText(HomeActivity.this, account.getAccessToken(), Toast.LENGTH_SHORT).show();
+//                    });
+//                }));
     }
 }

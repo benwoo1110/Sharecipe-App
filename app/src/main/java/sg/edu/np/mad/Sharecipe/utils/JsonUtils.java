@@ -18,6 +18,14 @@ public class JsonUtils {
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .create();
 
+    public static JsonElement convertToJson(Object object) {
+        return convertToJson(GSON.toJson(object));
+    }
+
+    public static JsonElement convertToJson(String data) {
+        return JsonParser.parseString(data);
+    }
+
     public static JsonElement convertToJson(Response response) {
         String data;
         try {

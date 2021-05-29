@@ -2,10 +2,13 @@ package sg.edu.np.mad.Sharecipe.web;
 
 import androidx.annotation.NonNull;
 
+import com.google.gson.JsonElement;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Map;
 
 import java9.util.concurrent.CompletableFuture;
 import java9.util.function.Function;
@@ -157,6 +160,26 @@ public class SharecipeRequests {
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
                 .get()
+                .build());
+    }
+
+    /**
+     * `/users/user_id/recipes` endpoint.
+     *
+     * @param accessToken
+     * @param userId
+     * @param recipeData
+     * @return
+     */
+    public static CompletableFuture<Response> createRecipe(@NonNull String accessToken, int userId, JsonElement recipeData) {
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(userId))
+                        .addPathSegment(UrlPath.RECIPES)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .put(RequestBody.create(recipeData.toString(), JSON_TYPE))
                 .build());
     }
 }
