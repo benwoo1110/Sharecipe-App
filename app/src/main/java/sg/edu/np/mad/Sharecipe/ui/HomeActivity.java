@@ -2,6 +2,8 @@ package sg.edu.np.mad.Sharecipe.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -35,6 +37,15 @@ public class HomeActivity extends AppCompatActivity {
                 .replace(R.id.fragment, new UserSearchFragment())
                 .commit();
 
+        Button recipeCreate = findViewById(R.id.buttonCreate);
+
+        recipeCreate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent recipeCreate = new Intent(HomeActivity.this, RecipeInfo.class);
+                startActivity(recipeCreate);
+            }
+        });
 //        EditText searchText = findViewById(R.id.editTextSearch);
 //        ImageButton searchButton = findViewById(R.id.buttonSearch);
 //        TextView usersText = findViewById(R.id.textViewUsers);
