@@ -7,6 +7,8 @@ import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.R;
 
@@ -37,7 +39,7 @@ public class HomeActivity extends AppCompatActivity {
                 .replace(R.id.fragment, new UserSearchFragment())
                 .commit();
 
-        Button recipeCreate = findViewById(R.id.buttonCreate);
+        FloatingActionButton recipeCreate = findViewById(R.id.buttonCreate);
 
         recipeCreate.setOnClickListener(new View.OnClickListener() {
             @Override
