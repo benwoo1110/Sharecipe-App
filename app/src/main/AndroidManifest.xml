@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sharecipe"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.RecipeInfo"></activity>
+        <activity android:name=".ui.RecipeStepsList"></activity>
+        <activity android:name=".ui.RecipeInfo" />
         <activity android:name=".ui.HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
