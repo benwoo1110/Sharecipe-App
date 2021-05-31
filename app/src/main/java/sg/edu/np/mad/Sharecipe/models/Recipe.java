@@ -1,5 +1,6 @@
 package sg.edu.np.mad.Sharecipe.models;
 
+import java.util.Date;
 import java.util.List;
 
 public class Recipe {
@@ -9,6 +10,7 @@ public class Recipe {
     private String name;
     private int portion;
     private int difficulty;
+    private Date timeCreated;
     private List<RecipeStep> steps;
 
     public String getName() {
@@ -35,6 +37,10 @@ public class Recipe {
         this.difficulty = difficulty;
     }
 
+    public Date getTimeCreated() {
+        return timeCreated;
+    }
+
     public List<RecipeStep> getSteps() {
         return steps;
     }
@@ -51,6 +57,7 @@ public class Recipe {
                 ", name='" + name + '\'' +
                 ", portion=" + portion +
                 ", difficulty=" + difficulty +
+                ", timeCreated=" + timeCreated +
                 ", steps=" + steps +
                 '}';
     }

@@ -9,6 +9,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
+import java.text.DateFormat;
 
 import okhttp3.Response;
 
@@ -16,6 +17,7 @@ public class JsonUtils {
 
     private static final Gson GSON = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
             .create();
 
     public static JsonElement convertToJson(Object object) {
@@ -49,6 +51,7 @@ public class JsonUtils {
         try {
             return GSON.fromJson(json, tClass);
         } catch (JsonSyntaxException e) {
+            e.printStackTrace();
             return null;
         }
     }
