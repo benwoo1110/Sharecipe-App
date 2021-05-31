@@ -20,6 +20,23 @@ public class RecipeInfo extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.recipeTab);
         TabItem tabInfo = findViewById(R.id.tabInfo);
 
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
 //        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 //
   //          override fun onTabSelected(tab: TabLayout.Tab?) {
