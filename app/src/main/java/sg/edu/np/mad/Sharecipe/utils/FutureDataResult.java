@@ -10,6 +10,12 @@ import java9.util.function.Consumer;
  */
 public class FutureDataResult<T> extends CompletableFuture<DataResult<T>> {
 
+    /**
+     * When result is a {@link DataResult.Success}.
+     *
+     * @param consumer  Callback on success.
+     * @return The same {@link FutureDataResult} for chaining.
+     */
     public FutureDataResult<T> onSuccess(Consumer<T> consumer) {
         this.thenAccept(result -> {
             if (result instanceof DataResult.Success) {
@@ -19,6 +25,12 @@ public class FutureDataResult<T> extends CompletableFuture<DataResult<T>> {
         return this;
     }
 
+    /**
+     * When result is a {@link DataResult.Failed}.
+     *
+     * @param consumer  Callback on failure.
+     * @return The same {@link FutureDataResult} for chaining.
+     */
     public FutureDataResult<T> onFailed(Consumer<String> consumer) {
         this.thenAccept(result -> {
             if (result instanceof DataResult.Failed) {
@@ -28,6 +40,12 @@ public class FutureDataResult<T> extends CompletableFuture<DataResult<T>> {
         return this;
     }
 
+    /**
+     * When result is a {@link DataResult.Error}.
+     *
+     * @param consumer  Callback on error thrown.
+     * @return The same {@link FutureDataResult} for chaining.
+     */
     public FutureDataResult<T> onError(Consumer<Throwable> consumer) {
         this.thenAccept(result -> {
             if (result instanceof DataResult.Error) {
@@ -37,6 +55,14 @@ public class FutureDataResult<T> extends CompletableFuture<DataResult<T>> {
         return this;
     }
 
+    /**
+     * When result is instance of specified type.
+     *
+     * @param rClass    CLass of {@link DataResult} to trigger class type.
+     * @param consumer  Callback function.
+     * @param <R>       Type of {@link DataResult} to trigger class type.
+     * @return The same {@link FutureDataResult} for chaining.
+     */
     public <R extends DataResult> FutureDataResult<T> acceptResultType(Class<R> rClass, Consumer<R> consumer) {
         this.thenAccept(result -> {
             if (rClass.isInstance(result)) {

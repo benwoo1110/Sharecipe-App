@@ -13,6 +13,16 @@ public class Recipe {
     private Date timeCreated;
     private List<RecipeStep> steps;
 
+    private Recipe() { }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public int getRecipeId() {
+        return recipeId;
+    }
+
     public String getName() {
         return name;
     }

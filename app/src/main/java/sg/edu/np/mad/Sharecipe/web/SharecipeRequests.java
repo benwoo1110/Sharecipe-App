@@ -210,6 +210,14 @@ public class SharecipeRequests {
                 .build());
     }
 
+    /**
+     * PUT `/users/user_id/recipes/recipe_id` endpoint.
+     *
+     * @param accessToken
+     * @param userId
+     * @param recipeId
+     * @return
+     */
     public static CompletableFuture<Response> getRecipe(@NonNull String accessToken, int userId, int recipeId) {
         return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()

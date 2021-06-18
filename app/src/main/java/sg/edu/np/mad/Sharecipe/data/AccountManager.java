@@ -17,7 +17,7 @@ import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
 import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
 /**
- * Contains action for an account.
+ * Contains actions for an account.
  */
 public class AccountManager {
 

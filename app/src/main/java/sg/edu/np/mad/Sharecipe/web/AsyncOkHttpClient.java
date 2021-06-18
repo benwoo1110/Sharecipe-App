@@ -17,6 +17,12 @@ import okhttp3.Response;
 public class AsyncOkHttpClient {
     private final OkHttpClient client = new OkHttpClient();
 
+    /**
+     * Calls a web request asynchronously
+     *
+     * @param request   Target request to call.
+     * @return Future result of the response.
+     */
     public CompletableFuture<Response> runAsync(Request request) {
         CompletableFuture<Response> future = new CompletableFuture<>();
         this.client.newCall(request).enqueue(new Callback() {
@@ -33,6 +39,11 @@ public class AsyncOkHttpClient {
         return future;
     }
 
+    /**
+     * Underlying http client used.
+     *
+     * @return The http client.
+     */
     public OkHttpClient getClient() {
         return client;
     }

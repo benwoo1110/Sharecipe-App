@@ -22,6 +22,11 @@ public class UrlPath {
     public static final String USERS = "users";
     public static final String RECIPES = "recipes";
 
+    /**
+     * Creates new url builder instance with default host target.
+     *
+     * @return The url builder.
+     */
     public static HttpUrl.Builder newBuilder() {
         return new HttpUrl.Builder().scheme(SCHEME).host(HOST).port(PORT);
     }

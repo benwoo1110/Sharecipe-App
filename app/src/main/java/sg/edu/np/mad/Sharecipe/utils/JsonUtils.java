@@ -20,14 +20,32 @@ public class JsonUtils {
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
             .create();
 
+    /**
+     * Converts an object model into json element.
+     *
+     * @param object    Target object to convert.
+     * @return The json element, null if an error occurred.
+     */
     public static JsonElement convertToJson(Object object) {
         return convertToJson(GSON.toJson(object));
     }
 
+    /**
+     * Converts formatted string into json element.
+     *
+     * @param data  Target string data to convert.
+     * @return The json element, null if an error occurred.
+     */
     public static JsonElement convertToJson(String data) {
         return JsonParser.parseString(data);
     }
 
+    /**
+     * Converts web response data into json element.
+     *
+     * @param response  Target web response to convert
+     * @return The json element, null if an error occurred.
+     */
     public static JsonElement convertToJson(Response response) {
         String data;
         try {
@@ -47,6 +65,14 @@ public class JsonUtils {
         }
     }
 
+    /**
+     * Convert json element to object model.
+     *
+     * @param json      The json data with object information.
+     * @param tClass    The object class.
+     * @param <T>       The object class type.
+     * @return The object, null if an error occurred.
+     */
     public static <T> T convertToObject(JsonElement json, Class<T> tClass) {
         try {
             return GSON.fromJson(json, tClass);

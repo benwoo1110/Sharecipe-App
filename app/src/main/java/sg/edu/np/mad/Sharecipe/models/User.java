@@ -1,18 +1,12 @@
 package sg.edu.np.mad.Sharecipe.models;
 
-import org.jetbrains.annotations.NotNull;
-
 public class User {
 
-    private final int userId;
+    private int userId;
     private String username;
     private String bio;
 
-    public User(int userId, String username, String bio) {
-        this.userId = userId;
-        this.username = username;
-        this.bio = bio;
-    }
+    private User() { }
 
     public int getUserId() {
         return userId;
@@ -34,11 +28,11 @@ public class User {
         this.bio = bio;
     }
 
-    @NotNull
     @Override
     public String toString() {
         return "User{" +
-                "username='" + username + '\'' +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
                 ", bio='" + bio + '\'' +
                 '}';
     }

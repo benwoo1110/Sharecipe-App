@@ -19,6 +19,11 @@ public abstract class DataResult<T> {
             this.data = data;
         }
 
+        /**
+         * Gets resulting data.
+         *
+         * @return The data object.
+         */
         public T getData() {
             return data;
         }
@@ -36,13 +41,18 @@ public abstract class DataResult<T> {
             this.reason = reason;
         }
 
+        /**
+         * The reason for the issue to occur.
+         *
+         * @return The reason.
+         */
         public String getReason() {
             return reason;
         }
     }
 
     /**
-     * An exception occurred.
+     * An unexpected exception occurred.
      *
      * @param <T>   Data type to get if result successful.
      */
@@ -53,6 +63,11 @@ public abstract class DataResult<T> {
             this.error = error;
         }
 
+        /**
+         * The exception that was throw while trying to get the data.
+         *
+         * @return The error object.
+         */
         public Throwable getError() {
             return this.error;
         }
