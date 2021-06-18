@@ -125,6 +125,34 @@ public class SharecipeRequests {
     }
 
     /**
+     * POST `/account/logout` endpoint.
+     *
+     * @param refreshToken
+     * @param userId
+     * @return
+     */
+    @NonNull
+    public static CompletableFuture<Response> accountLogout(@NonNull String refreshToken, int userId) {
+        String payload;
+        try {
+            payload = new JSONObject()
+                    .put("user_id", userId)
+                    .toString();
+        } catch (JSONException e) {
+            return CompletableFuture.failedFuture(e);
+        }
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.ACCOUNT)
+                        .addPathSegment(UrlPath.LOGOUT)
+                        .build())
+                .header("Authorization", "Bearer " + refreshToken)
+                .post(RequestBody.create(payload, JSON_TYPE))
+                .build());
+    }
+
+    /**
      * GET `/users` endpoint.
      *
      * @param accessToken
