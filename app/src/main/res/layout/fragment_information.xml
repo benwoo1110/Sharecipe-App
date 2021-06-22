@@ -5,8 +5,16 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/infoView"
+        android:id="@+id/recipe_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="infoView" />
+        android:text="Name" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="199dp"
+        android:layout_height="127dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name" />
 </FrameLayout>

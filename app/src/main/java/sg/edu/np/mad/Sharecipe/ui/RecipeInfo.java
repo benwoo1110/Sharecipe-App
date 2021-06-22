@@ -1,7 +1,8 @@
 package sg.edu.np.mad.Sharecipe.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
+
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
@@ -20,21 +21,19 @@ public class RecipeInfo extends AppCompatActivity {
         setContentView(R.layout.create_recipe_info);
 
         TabLayout tabLayout = findViewById(R.id.recipeTab);
-        ViewPager viewPager = findViewById(R.id.recipe_info_viewpager);
+        ViewPager2 viewPager = findViewById(R.id.recipe_info_viewpager);
 
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
         tabLayout.addTab(tabLayout.newTab().setText("Steps"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final Adapter_RecipeInfo adapter = new Adapter_RecipeInfo(this, getSupportFragmentManager(), tabLayout.getTabCount());
+        final Adapter_RecipeInfo adapter = new Adapter_RecipeInfo(this, this, tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
-
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
+                viewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -48,4 +47,5 @@ public class RecipeInfo extends AppCompatActivity {
             }
         });
     }
+
 }
