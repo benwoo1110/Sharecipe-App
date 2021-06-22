@@ -47,20 +47,5 @@ public class RecipeInfo extends AppCompatActivity {
 
             }
         });
-
-//        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-//
-  //          override fun onTabSelected(tab: TabLayout.Tab?) {
-    //            // Handle tab select
-      //      }
-//
-  //          override fun onTabReselected(tab: TabLayout.Tab?) {
-    //            // Handle tab reselect
-      //      }
-//
-  //          override fun onTabUnselected(tab: TabLayout.Tab?) {
-    //            // Handle tab unselect
-      //      }
-        //});
     }
 }
