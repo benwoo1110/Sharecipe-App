@@ -6,17 +6,20 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-public class Adapter_RecipeInfo extends FragmentStateAdapter {
+import org.jetbrains.annotations.NotNull;
 
-    private Context myContext;
+public class RecipeCreateAdapter extends FragmentStateAdapter {
+
+    private Context context;
     int totalTabs;
 
-    public Adapter_RecipeInfo(Context context, FragmentActivity fa, int totalTabs) {
+    public RecipeCreateAdapter(Context context, FragmentActivity fa, int totalTabs) {
         super(fa);
-        myContext = context;
+        this.context = context;
         this.totalTabs = totalTabs;
     }
 
+    @NotNull
     @Override
     public Fragment createFragment(int position) {
         switch(position) {
@@ -29,6 +32,7 @@ public class Adapter_RecipeInfo extends FragmentStateAdapter {
                 return stepsFragment;
 
             default:
+                //TODO Return a error page instead of null
                 return null;
         }
     }

@@ -2,23 +2,21 @@ package sg.edu.np.mad.Sharecipe.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.view.View;
 
-import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 
 import sg.edu.np.mad.Sharecipe.R;
 
-public class RecipeInfo extends AppCompatActivity {
+public class RecipeCreateActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_recipe_info);
+        setContentView(R.layout.activity_recipe_create);
 
         TabLayout tabLayout = findViewById(R.id.recipeTab);
         ViewPager2 viewPager = findViewById(R.id.recipe_info_viewpager);
@@ -27,12 +25,20 @@ public class RecipeInfo extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Steps"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final Adapter_RecipeInfo adapter = new Adapter_RecipeInfo(this, this, tabLayout.getTabCount());
+        RecipeCreateAdapter adapter = new RecipeCreateAdapter(this, this, tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                tabLayout.selectTab(tabLayout.getTabAt(position));
+            }
+        });
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+                System.out.println("CHANGED");
                 viewPager.setCurrentItem(tab.getPosition());
             }
 
@@ -47,5 +53,4 @@ public class RecipeInfo extends AppCompatActivity {
             }
         });
     }
-
 }
