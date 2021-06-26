@@ -25,7 +25,7 @@ public class RecipeCreateActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Steps"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        RecipeCreateAdapter adapter = new RecipeCreateAdapter(this, this, tabLayout.getTabCount());
+        RecipeCreateAdapter adapter = new RecipeCreateAdapter(this, tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -38,7 +38,6 @@ public class RecipeCreateActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                System.out.println("CHANGED");
                 viewPager.setCurrentItem(tab.getPosition());
             }
 
