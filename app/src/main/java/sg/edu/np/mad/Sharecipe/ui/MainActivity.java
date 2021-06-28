@@ -2,26 +2,34 @@ package sg.edu.np.mad.Sharecipe.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.ui.common.FragmentCollection;
+
+import static sg.edu.np.mad.Sharecipe.R.*;
 
 public class MainActivity extends AppCompatActivity {
+
+    private FragmentCollection fragmentCollection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(layout.activity_main);
+
+        fragmentCollection = new FragmentCollection();
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .setReorderingAllowed(true)
-                    .replace(R.id.fragment, new LoadingFragment())
-                    .commit();
+            viewFragment(LoadingFragment.class);
         }
 
         //TODO Check if logged in.
@@ -32,17 +40,38 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .replace(R.id.fragment, new UserSearchFragment())
-                .commit();
+        FloatingActionButton recipeCreate = findViewById(id.button_create_recipe);
+        BottomNavigationView bottomNavigation = findViewById(id.bottom_navigation);
 
-        FloatingActionButton recipeCreate = findViewById(R.id.buttonCreate);
+        bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == id.discover_menu) {
+                return viewFragment(ErrorFragment.class);
+            } else if (itemId == id.my_recipes_menu) {
+                return viewFragment(ErrorFragment.class);
+            } else if (itemId == id.search_menu) {
+                return viewFragment(UserSearchFragment.class);
+            } else if (itemId == id.profile_menu) {
+                return viewFragment(ErrorFragment.class);
+            }
+            return false;
+        });
+
+        bottomNavigation.setSelectedItemId(id.discover_menu);
 
         recipeCreate.setOnClickListener(v -> {
             Intent recipeCreate1 = new Intent(MainActivity.this, RecipeCreateActivity.class);
             startActivity(recipeCreate1);
         });
+    }
+
+    private boolean viewFragment(Class<? extends Fragment> fragmentClass) {
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(id.fragment, fragmentCollection.getOrLoad(fragmentClass))
+                .commit();
+        return true;
+    }
 
 //        EditText searchText = findViewById(R.id.editTextSearch);
 //        ImageButton searchButton = findViewById(R.id.buttonSearch);
@@ -81,5 +110,4 @@ public class MainActivity extends AppCompatActivity {
 //                        Toast.makeText(MainActivity.this, account.getAccessToken(), Toast.LENGTH_SHORT).show();
 //                    });
 //                }));
-    }
 }
