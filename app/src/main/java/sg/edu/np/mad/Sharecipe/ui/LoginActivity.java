@@ -22,7 +22,6 @@ public class LoginActivity extends DynamicFocusAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
 
         TextInputLayout username = findViewById(R.id.loginUsername);

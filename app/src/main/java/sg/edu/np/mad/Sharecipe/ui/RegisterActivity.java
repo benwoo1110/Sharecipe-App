@@ -17,7 +17,6 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_register);
 
         TextInputLayout username = findViewById(R.id.registerUsername);
