@@ -10,6 +10,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
+import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 
 public class RegisterActivity extends DynamicFocusAppCompatActivity {
 

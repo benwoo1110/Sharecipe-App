@@ -13,15 +13,15 @@
         android:theme="@style/Theme.Sharecipe"
         android:usesCleartextTraffic="true">
 
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.RecipeStepsList" />
-        <activity android:name=".ui.RecipeCreateActivity" />
+        <activity android:name=".ui.create.RecipeStepsList" />
+        <activity android:name=".ui.create.RecipeCreateActivity" />
         <activity android:name=".ui.RegisterActivity" />
         <activity android:name=".ui.LoginActivity" />
 

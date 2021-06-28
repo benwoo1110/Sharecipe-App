@@ -13,6 +13,7 @@ import java.io.IOException;
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
+import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
 public class LoginActivity extends DynamicFocusAppCompatActivity {

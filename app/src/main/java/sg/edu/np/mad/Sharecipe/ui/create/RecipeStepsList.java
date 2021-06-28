@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui;
+package sg.edu.np.mad.Sharecipe.ui.create;
 
 import androidx.appcompat.app.AppCompatActivity;
 

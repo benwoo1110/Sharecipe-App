@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui;
+package sg.edu.np.mad.Sharecipe.ui.main;
 
 import android.view.LayoutInflater;
 import android.view.View;

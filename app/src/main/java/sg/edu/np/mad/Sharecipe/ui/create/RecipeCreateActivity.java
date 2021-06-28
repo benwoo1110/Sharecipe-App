@@ -1,11 +1,10 @@
-package sg.edu.np.mad.Sharecipe.ui;
+package sg.edu.np.mad.Sharecipe.ui.create;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
-import android.view.View;
 
 import com.google.android.material.tabs.TabLayout;
 

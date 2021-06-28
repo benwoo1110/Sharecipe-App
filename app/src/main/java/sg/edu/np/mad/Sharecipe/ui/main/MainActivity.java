@@ -1,10 +1,8 @@
-package sg.edu.np.mad.Sharecipe.ui;
+package sg.edu.np.mad.Sharecipe.ui.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
@@ -12,7 +10,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
-import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
+import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.FragmentCollection;
 
 import static sg.edu.np.mad.Sharecipe.R.*;

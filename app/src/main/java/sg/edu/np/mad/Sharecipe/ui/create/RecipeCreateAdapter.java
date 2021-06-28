@@ -1,10 +1,12 @@
-package sg.edu.np.mad.Sharecipe.ui;
+package sg.edu.np.mad.Sharecipe.ui.create;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import org.jetbrains.annotations.NotNull;
+
+import sg.edu.np.mad.Sharecipe.ui.ErrorFragment;
 
 public class RecipeCreateAdapter extends FragmentStateAdapter {
 
