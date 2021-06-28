@@ -28,10 +28,6 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentCollection = new FragmentCollection();
 
-        if (savedInstanceState == null) {
-            viewFragment(LoadingFragment.class);
-        }
-
         //TODO Check if logged in.
         if (AccountManager.getInstance(this).getAccount() == null) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
@@ -46,13 +42,13 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == id.discover_menu) {
-                return viewFragment(ErrorFragment.class);
+                return viewFragment(DiscoverFragment.class);
             } else if (itemId == id.my_recipes_menu) {
-                return viewFragment(ErrorFragment.class);
+                return viewFragment(MyRecipeFragment.class);
             } else if (itemId == id.search_menu) {
                 return viewFragment(UserSearchFragment.class);
             } else if (itemId == id.profile_menu) {
-                return viewFragment(ErrorFragment.class);
+                return viewFragment(ProfileFragment.class);
             }
             return false;
         });
