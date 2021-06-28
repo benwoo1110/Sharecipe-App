@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/discover_menu"
+        android:icon="@drawable/ic_round_home_24"
+        android:title="Discover" />
+    <item
+        android:id="@+id/my_recipes_menu"
+        android:icon="@drawable/ic_baseline_fastfood_24"
+        android:title="My Recipes" />
+    <item
+        android:id="@+id/search_menu"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:title="Search" />
+    <item
+        android:id="@+id/profile_menu"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="Profile" />
+</menu>

@@ -10,12 +10,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.R;
 
-public class HomeActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -26,7 +26,7 @@ public class HomeActivity extends AppCompatActivity {
 
         //TODO Check if logged in.
         if (AccountManager.getInstance(this).getAccount() == null) {
-            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             return;
@@ -40,7 +40,7 @@ public class HomeActivity extends AppCompatActivity {
         FloatingActionButton recipeCreate = findViewById(R.id.buttonCreate);
 
         recipeCreate.setOnClickListener(v -> {
-            Intent recipeCreate1 = new Intent(HomeActivity.this, RecipeCreateActivity.class);
+            Intent recipeCreate1 = new Intent(MainActivity.this, RecipeCreateActivity.class);
             startActivity(recipeCreate1);
         });
 
@@ -55,7 +55,7 @@ public class HomeActivity extends AppCompatActivity {
 //                    .search(searchText.getText().toString())
 //                    .onSuccess(userList -> usersText.setText(userList == null ? "No users found!" : String.valueOf(userList)))
 //                    .onFailed(usersText::setText)
-//                    .onError(error -> HomeActivity.this.runOnUiThread(() -> Toast.makeText(HomeActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show()));
+//                    .onError(error -> MainActivity.this.runOnUiThread(() -> Toast.makeText(MainActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show()));
 //        });
 //
 //        recipeButton.setOnClickListener(v -> {
@@ -70,15 +70,15 @@ public class HomeActivity extends AppCompatActivity {
 //
 //            RecipeManager.getInstance(this).save(newRecipe)
 //                    .onSuccess(recipe -> usersText.setText(String.valueOf(recipe)))
-//                    .onFailed(reason -> this.runOnUiThread(() -> Toast.makeText(HomeActivity.this, reason, Toast.LENGTH_SHORT).show()))
-//                    .onError(error -> this.runOnUiThread(() -> Toast.makeText(HomeActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()));
+//                    .onFailed(reason -> this.runOnUiThread(() -> Toast.makeText(MainActivity.this, reason, Toast.LENGTH_SHORT).show()))
+//                    .onError(error -> this.runOnUiThread(() -> Toast.makeText(MainActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show()));
 //        });
 //
 //        refreshButton.setOnClickListener(v -> AccountManager.getInstance(this)
 //                .refresh()
 //                .onSuccess(account -> {
-//                    HomeActivity.this.runOnUiThread(() -> {
-//                        Toast.makeText(HomeActivity.this, account.getAccessToken(), Toast.LENGTH_SHORT).show();
+//                    MainActivity.this.runOnUiThread(() -> {
+//                        Toast.makeText(MainActivity.this, account.getAccessToken(), Toast.LENGTH_SHORT).show();
 //                    });
 //                }));
     }

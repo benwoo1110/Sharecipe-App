@@ -14,7 +14,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".ui.RecipeStepsList"></activity>
         <activity android:name=".ui.RecipeCreateActivity" />
-        <activity android:name=".ui.HomeActivity">
+        <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

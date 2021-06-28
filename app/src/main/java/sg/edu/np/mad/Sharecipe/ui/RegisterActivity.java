@@ -28,7 +28,7 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
             AccountManager.getInstance(this)
                     .register(username.getEditText().getText().toString(), password.getEditText().getText().toString())
                     .onSuccess(account -> {
-                        Intent intent = new Intent(RegisterActivity.this, HomeActivity.class);
+                        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     })
