@@ -7,7 +7,7 @@
         android:title="Discover" />
     <item
         android:id="@+id/my_recipes_menu"
-        android:icon="@drawable/ic_baseline_fastfood_24"
+        android:icon="@drawable/ic_round_menu_book_24"
         android:title="My Recipes" />
     <item
         android:id="@+id/search_menu"
