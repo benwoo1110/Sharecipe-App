@@ -64,7 +64,7 @@ public class UserManager {
         }
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.searchUsers(accountManager.getAccount().getAccessToken(), username).thenAccept(response -> {
+            SharecipeRequests.searchUsers(account.getAccessToken(), username).thenAccept(response -> {
                 JsonElement json = JsonUtils.convertToJson(response);
                 if (!response.isSuccessful()) {
                     JsonElement message = json.getAsJsonObject().get("message");
@@ -101,27 +101,32 @@ public class UserManager {
             future.complete(new DataResult.Failed<>("No account logged in!"));
             return future;
         }
+
         User cacheUser = userCache.getIfPresent(userId);
         if (cacheUser != null) {
             future.complete(new DataResult.Success<>(cacheUser));
             return future;
         }
-        Account account = accountManager.getAccount();
-        SharecipeRequests.getUser(account.getAccessToken(), userId)
-                .thenAccept(response -> {
-                    JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
-                    User user = JsonUtils.convertToObject(json, User.class);
-                    if (user == null) {
-                        future.complete(new DataResult.Failed<>("Invalid user data."));
-                        return;
-                    }
-                    userCache.put(userId, user);
-                    future.complete(new DataResult.Success<>(user));
-                })
-                .exceptionally(throwable -> {
-                    future.complete(new DataResult.Error<>(throwable));
-                    return null;
-                });
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getUser(account.getAccessToken(), userId).thenAccept(response -> {
+                JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
+                User user = JsonUtils.convertToObject(json, User.class);
+                if (user == null) {
+                    future.complete(new DataResult.Failed<>("Invalid user data."));
+                    return;
+                }
+                userCache.put(userId, user);
+                future.complete(new DataResult.Success<>(user));
+            })
+            .exceptionally(throwable -> {
+                future.complete(new DataResult.Error<>(throwable));
+                return null;
+            });
+        })
+        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
+        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+
         return future;
     }
 
@@ -133,9 +138,7 @@ public class UserManager {
     @NonNull
     public FutureDataResult<User> getLoggedIn() {
         if (!accountManager.isLoggedIn()) {
-            FutureDataResult<User> future = new FutureDataResult<>();
-            future.complete(new DataResult.Failed<>("No account logged in!"));
-            return future;
+            return FutureDataResult.completed(new DataResult.Failed<>("No account logged in!"));
         }
         return get(accountManager.getAccount().getUserId());
     }

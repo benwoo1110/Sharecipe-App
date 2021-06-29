@@ -165,6 +165,7 @@ public class AccountManager {
 
     /**
      * Gets currently logged in account data.
+     * Note: Use {@link AccountManager#getOrRefreshAccount()} to ensure token is up-to-date.
      *
      * @return Account object if logged in, else null.
      */
