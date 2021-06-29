@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sharecipe"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".ui.ProfileActivity"></activity>
         <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,7 +24,6 @@
         <activity android:name=".ui.create.RecipeCreateActivity" />
         <activity android:name=".ui.RegisterActivity" />
         <activity android:name=".ui.LoginActivity" />
-
     </application>
 
 </manifest>
