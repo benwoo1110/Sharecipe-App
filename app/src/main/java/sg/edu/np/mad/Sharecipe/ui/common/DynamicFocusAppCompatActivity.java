@@ -47,8 +47,9 @@ public class DynamicFocusAppCompatActivity extends AppCompatActivity {
 
     protected void hideSoftKeyBoard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        if(imm.isAcceptingText()) {
-            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        View currentFocus = getCurrentFocus();
+        if(currentFocus != null && imm.isAcceptingText()) {
+            imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
         }
     }
 }
