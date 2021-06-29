@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 
 import java.util.concurrent.TimeUnit;
 
+import java9.util.function.Function;
 import sg.edu.np.mad.Sharecipe.models.Account;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
@@ -47,29 +48,29 @@ public class RecipeManager {
             future.complete(new DataResult.Failed<>("No account logged in!"));
             return future;
         }
-
-        Account account = accountManager.getAccount();
-        JsonElement recipeData = JsonUtils.convertToJson(newRecipe);
-
-        SharecipeRequests.createRecipe(account.getAccessToken(), account.getUserId(), recipeData)
-                .thenAccept(response -> {
-                    JsonElement json = JsonUtils.convertToJson(response);
-                    if (!response.isSuccessful()) {
-                        JsonElement message = json.getAsJsonObject().get("message");
-                        future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
-                        return;
-                    }
-                    Recipe recipe = JsonUtils.convertToObject(json, Recipe.class);
-                    if (recipe == null) {
-                        future.complete(new DataResult.Failed<>("Received invalid data."));
-                        return;
-                    }
-                    future.complete(new DataResult.Success<>(recipe));
-                })
-                .exceptionally(throwable -> {
-                    future.complete(new DataResult.Error<>(throwable));
-                    return null;
-                });
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            JsonElement recipeData = JsonUtils.convertToJson(newRecipe);
+            SharecipeRequests.createRecipe(account.getAccessToken(), account.getUserId(), recipeData).thenAccept(response -> {
+                JsonElement json = JsonUtils.convertToJson(response);
+                if (!response.isSuccessful()) {
+                    JsonElement message = json.getAsJsonObject().get("message");
+                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
+                    return;
+                }
+                Recipe recipe = JsonUtils.convertToObject(json, Recipe.class);
+                if (recipe == null) {
+                    future.complete(new DataResult.Failed<>("Received invalid data."));
+                    return;
+                }
+                future.complete(new DataResult.Success<>(recipe));
+            })
+            .exceptionally(throwable -> {
+                future.complete(new DataResult.Error<>(throwable));
+                return null;
+            });
+        })
+        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
+        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
 
         return future;
     }
@@ -80,7 +81,6 @@ public class RecipeManager {
             future.complete(new DataResult.Failed<>("No account logged in!"));
             return future;
         }
-
         SharecipeRequests.getRecipe(accountManager.getAccount().getAccessToken(), userId, recipeId)
                 .thenAccept(response -> {
                     JsonElement json = JsonUtils.convertToJson(response);

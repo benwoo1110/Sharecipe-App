@@ -10,6 +10,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
+import sg.edu.np.mad.Sharecipe.models.Account;
 import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.FragmentCollection;
@@ -27,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentCollection = new FragmentCollection();
 
-        //TODO Check if logged in.
-        if (AccountManager.getInstance(this).getAccount() == null) {
+        AccountManager accountManager = AccountManager.getInstance(this);
+        if (!accountManager.isLoggedIn()) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

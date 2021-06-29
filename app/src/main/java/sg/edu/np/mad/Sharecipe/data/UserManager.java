@@ -62,24 +62,29 @@ public class UserManager {
             future.complete(new DataResult.Failed<>("No account logged in!"));
             return future;
         }
-        SharecipeRequests.searchUsers(accountManager.getAccount().getAccessToken(), username)
-                .thenAccept(response -> {
-                    JsonElement json = JsonUtils.convertToJson(response);
-                    if (!response.isSuccessful()) {
-                        JsonElement message = json.getAsJsonObject().get("message");
-                        future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
-                        return;
-                    }
-                    List<User> userList = new ArrayList<>();
-                    for (JsonElement userData : json.getAsJsonArray()) {
-                        userList.add(JsonUtils.convertToObject(userData, User.class));
-                    }
-                    future.complete(new DataResult.Success<>(userList));
-                })
-                .exceptionally(throwable -> {
-                    future.complete(new DataResult.Error<>(throwable));
-                    return null;
-                });
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.searchUsers(accountManager.getAccount().getAccessToken(), username).thenAccept(response -> {
+                JsonElement json = JsonUtils.convertToJson(response);
+                if (!response.isSuccessful()) {
+                    JsonElement message = json.getAsJsonObject().get("message");
+                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
+                    return;
+                }
+                List<User> userList = new ArrayList<>();
+                for (JsonElement userData : json.getAsJsonArray()) {
+                    userList.add(JsonUtils.convertToObject(userData, User.class));
+                }
+                future.complete(new DataResult.Success<>(userList));
+            })
+            .exceptionally(throwable -> {
+                future.complete(new DataResult.Error<>(throwable));
+                return null;
+            });
+        })
+        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
+        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+
         return future;
     }
 

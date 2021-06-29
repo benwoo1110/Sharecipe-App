@@ -2,6 +2,7 @@ package sg.edu.np.mad.Sharecipe.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,9 +11,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import dev.haenara.bricksharepref.BrickSharedPreferences;
-import java9.util.Optional;
 import sg.edu.np.mad.Sharecipe.models.Account;
-import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
@@ -24,6 +23,7 @@ import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 public class AccountManager {
 
     private static final String ACCOUNT_PREFS_NAME = "account";
+    private static final long REFRESH_INTERVAL = 720000; // 12 minutes in milliseconds
     private static AccountManager instance;
 
     /**
@@ -40,11 +40,12 @@ public class AccountManager {
     }
 
     private final Context context;
-    private User loggedInUser;
     private Account account;
+    private long lastRefresh;
 
     private AccountManager(Context context) {
         this.context = context;
+        this.lastRefresh = 0;
         loadFromSharedPreference();
     }
 
@@ -70,6 +71,7 @@ public class AccountManager {
                     if (account == null) {
                         future.complete(new DataResult.Failed<>("Received invalid data. Failed to create account!"));
                     }
+                    updateLastRefresh();
                     future.complete(new DataResult.Success<>(account));
                 })
                 .exceptionally(throwable -> {
@@ -101,6 +103,7 @@ public class AccountManager {
                     if (account == null) {
                         future.complete(new DataResult.Failed<>("Received invalid data. Failed to login!"));
                     }
+                    updateLastRefresh();
                     future.complete(new DataResult.Success<>(account));
                 })
                 .exceptionally(throwable -> {
@@ -118,15 +121,20 @@ public class AccountManager {
     @NonNull
     public FutureDataResult<Account> refresh() {
         FutureDataResult<Account> future = new FutureDataResult<>();
-        if (account == null) {
+        if (!isLoggedIn()) {
             future.complete(new DataResult.Failed<>("No account logged in!"));
-            return future;
+            return FutureDataResult.completed(new DataResult.Failed<>("No account logged in!"));
         }
         SharecipeRequests.accountTokenRefresh(account.getRefreshToken(), account.getUserId())
                 .thenAccept(response -> {
                     JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
-                    String accessToken = json.get("access_token").getAsString();
-                    account.setAccessToken(accessToken);
+                    JsonElement tokenElement = json.get("access_token");
+                    if (tokenElement == null) {
+                        future.complete(new DataResult.Failed<>("Account session expired!"));
+                        return;
+                    }
+                    account.setAccessToken(tokenElement.getAsString());
+                    updateLastRefresh();
                     future.complete(new DataResult.Success<>(account));
                 })
                 .exceptionally(throwable -> {
@@ -155,8 +163,26 @@ public class AccountManager {
         return account != null;
     }
 
+    /**
+     * Gets currently logged in account data.
+     *
+     * @return Account object if logged in, else null.
+     */
     public Account getAccount() {
         return account;
+    }
+
+    /**
+     * Gets logged in account data and refresh access token if needed.
+     *
+     * @return Future result of account data.
+     */
+    @NonNull
+    public FutureDataResult<Account> getOrRefreshAccount() {
+        if (timeForRefresh()) {
+            return refresh();
+        }
+        return FutureDataResult.completed(account);
     }
 
     private void setAccount(@Nullable Account account) {
@@ -195,5 +221,13 @@ public class AccountManager {
 
     private SharedPreferences openAccountSharedPreferences() {
         return new BrickSharedPreferences(context, ACCOUNT_PREFS_NAME);
+    }
+
+    private boolean timeForRefresh() {
+        return (System.currentTimeMillis() - lastRefresh) > REFRESH_INTERVAL;
+    }
+
+    private void updateLastRefresh() {
+        lastRefresh = System.currentTimeMillis();
     }
 }

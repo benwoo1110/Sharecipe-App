@@ -14,9 +14,11 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
+import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 
 public class SearchFragment extends Fragment {
 
@@ -55,7 +57,9 @@ public class SearchFragment extends Fragment {
                     }
                     searchResultAdapter.setUserList(userList);
                     getActivity().runOnUiThread(searchResultAdapter::notifyDataSetChanged);
-                }));
+                })
+                .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason, Toast.LENGTH_SHORT).show()))
+                .onError(Throwable::printStackTrace));
 
         return view;
     }
