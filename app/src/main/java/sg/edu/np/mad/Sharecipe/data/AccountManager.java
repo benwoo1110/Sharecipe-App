@@ -9,6 +9,8 @@ import androidx.annotation.Nullable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import dev.haenara.bricksharepref.BrickSharedPreferences;
+import java9.util.Optional;
 import sg.edu.np.mad.Sharecipe.models.Account;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
@@ -21,6 +23,7 @@ import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
  */
 public class AccountManager {
 
+    private static final String ACCOUNT_PREFS_NAME = "account";
     private static AccountManager instance;
 
     /**
@@ -42,7 +45,7 @@ public class AccountManager {
 
     private AccountManager(Context context) {
         this.context = context;
-        // loadFromSharedPreference();
+        loadFromSharedPreference();
     }
 
     /**
@@ -159,6 +162,7 @@ public class AccountManager {
     private void setAccount(@Nullable Account account) {
         if (account == null || account.getUserId() == Integer.MIN_VALUE || account.getRefreshToken() == null) {
             this.account = null;
+            clearSharedPreference();
             return;
         }
         this.account = account;
@@ -169,22 +173,27 @@ public class AccountManager {
         if (account == null) {
             return;
         }
-        context.getSharedPreferences("account", Context.MODE_PRIVATE)
-                .edit()
+        openAccountSharedPreferences().edit()
                 .putInt("userId", account.getUserId())
                 .putString("refreshToken", account.getRefreshToken())
                 .apply();
     }
 
     private void loadFromSharedPreference() {
-        SharedPreferences data = context.getSharedPreferences("account", Context.MODE_PRIVATE);
-        setAccount(new Account(data.getInt("userId", Integer.MIN_VALUE), data.getString("refreshToken", null)));
+        SharedPreferences data = openAccountSharedPreferences();
+        setAccount(new Account(
+                data.getInt("userId", Integer.MIN_VALUE),
+                data.getString("refreshToken", null)
+        ));
     }
 
     private void clearSharedPreference() {
-        context.getSharedPreferences("auth", Context.MODE_PRIVATE)
-                .edit()
+        openAccountSharedPreferences().edit()
                 .clear()
                 .apply();
+    }
+
+    private SharedPreferences openAccountSharedPreferences() {
+        return new BrickSharedPreferences(context, ACCOUNT_PREFS_NAME);
     }
 }
