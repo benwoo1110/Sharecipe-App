@@ -20,10 +20,10 @@ import sg.edu.np.mad.Sharecipe.data.UserManager;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link UserSearchFragment#newInstance} factory method to
+ * Use the {@link SearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UserSearchFragment extends Fragment {
+public class SearchFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +34,7 @@ public class UserSearchFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public UserSearchFragment() {
+    public SearchFragment() {
         // Required empty public constructor
     }
 
@@ -47,8 +47,8 @@ public class UserSearchFragment extends Fragment {
      * @return A new instance of fragment UserSearchFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static UserSearchFragment newInstance(String param1, String param2) {
-        UserSearchFragment fragment = new UserSearchFragment();
+    public static SearchFragment newInstance(String param1, String param2) {
+        SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -67,13 +67,13 @@ public class UserSearchFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user_search, container, false);
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         RecyclerView searchResultView = view.findViewById(R.id.searchResultView);
         EditText searchText = view.findViewById(R.id.editTextSearch);
         ImageButton searchButton = view.findViewById(R.id.buttonSearch);
 
-        UserSearchResultAdapter searchResultAdapter = new UserSearchResultAdapter();
+        SearchResultAdapter searchResultAdapter = new SearchResultAdapter();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         DividerItemDecoration divider = new DividerItemDecoration(searchResultView.getContext(), layoutManager.getOrientation());
 

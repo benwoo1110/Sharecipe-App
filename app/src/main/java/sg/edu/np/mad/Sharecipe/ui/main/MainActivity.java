@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == id.my_recipes_menu) {
                 return viewFragment(MyRecipeFragment.class);
             } else if (itemId == id.search_menu) {
-                return viewFragment(UserSearchFragment.class);
+                return viewFragment(SearchFragment.class);
             } else if (itemId == id.profile_menu) {
                 return viewFragment(ProfileFragment.class);
             }

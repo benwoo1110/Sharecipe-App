@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.UserSearchFragment">
+    tools:context=".ui.main.SearchFragment">
 
     <EditText
         android:id="@+id/editTextSearch"
@@ -25,10 +25,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:src="@drawable/ic_baseline_search_24"
+        app:srcCompat="@drawable/ic_baseline_search_24"
         app:layout_constraintBottom_toBottomOf="@+id/editTextSearch"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editTextSearch" />
+        app:layout_constraintTop_toTopOf="@+id/editTextSearch"
+        android:contentDescription="TODO" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchResultView"

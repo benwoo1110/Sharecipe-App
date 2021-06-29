@@ -13,24 +13,24 @@ import java.util.List;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.User;
 
-public class UserSearchResultAdapter extends RecyclerView.Adapter<UserViewHolder> {
+public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultViewHolder> {
 
     private List<User> userList;
 
-    public UserSearchResultAdapter() {
+    public SearchResultAdapter() {
         this.userList = new ArrayList<>();
     }
 
     @NonNull
     @Override
-    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_holder_user, parent, false);
-        UserViewHolder viewHolder = new UserViewHolder(itemView);
+    public SearchResultViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_holder_search_result, parent, false);
+        SearchResultViewHolder viewHolder = new SearchResultViewHolder(itemView);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SearchResultViewHolder holder, int position) {
         User user = userList.get(position);
         holder.name.setText(user.getUsername());
         holder.bio.setText(user.getBio());

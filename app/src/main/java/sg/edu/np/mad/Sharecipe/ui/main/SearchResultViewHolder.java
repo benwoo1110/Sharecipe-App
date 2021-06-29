@@ -15,12 +15,12 @@ import sg.edu.np.mad.Sharecipe.data.RecipeManager;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 
-public class UserViewHolder extends RecyclerView.ViewHolder {
+public class SearchResultViewHolder extends RecyclerView.ViewHolder {
 
     final TextView name;
     final TextView bio;
 
-    public UserViewHolder(@NonNull View itemView) {
+    public SearchResultViewHolder(@NonNull View itemView) {
         super(itemView);
         name = itemView.findViewById(R.id.textViewName);
         bio = itemView.findViewById(R.id.textViewBio);
