@@ -9,9 +9,9 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
-import java.text.DateFormat;
 
 import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class JsonUtils {
 
@@ -49,7 +49,11 @@ public class JsonUtils {
     public static JsonElement convertToJson(Response response) {
         String data;
         try {
-            data = response.body().string();
+            ResponseBody body = response.body();
+            if (body == null) {
+                return null;
+            }
+            data = body.string();
         } catch (IOException e) {
             e.printStackTrace();
             JsonObject json = new JsonObject();

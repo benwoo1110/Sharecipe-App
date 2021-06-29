@@ -15,7 +15,7 @@ import sg.edu.np.mad.Sharecipe.models.User;
 
 public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultViewHolder> {
 
-    private List<User> userList;
+    private final List<User> userList;
 
     public SearchResultAdapter() {
         this.userList = new ArrayList<>();
@@ -25,8 +25,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultViewHo
     @Override
     public SearchResultViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_holder_search_result, parent, false);
-        SearchResultViewHolder viewHolder = new SearchResultViewHolder(itemView);
-        return viewHolder;
+        return new SearchResultViewHolder(itemView);
     }
 
     @Override
