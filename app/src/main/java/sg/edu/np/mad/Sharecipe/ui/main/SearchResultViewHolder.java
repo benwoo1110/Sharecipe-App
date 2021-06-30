@@ -36,7 +36,7 @@ public class SearchResultViewHolder extends RecyclerView.ViewHolder {
             newRecipe.setSteps(steps);
 
             RecipeManager.getInstance(itemView.getContext()).save(newRecipe)
-                    .onSuccess(recipe -> bio.setText(String.valueOf(recipe.getTimeCreated())))
+                    .onSuccess(System.out::println)
                     .onFailed(System.out::println)
                     .onError(Throwable::printStackTrace);
         });
