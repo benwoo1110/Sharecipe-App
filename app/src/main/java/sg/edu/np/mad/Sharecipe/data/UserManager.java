@@ -1,6 +1,8 @@
 package sg.edu.np.mad.Sharecipe.data;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
 
@@ -9,10 +11,12 @@ import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.ResponseBody;
 import sg.edu.np.mad.Sharecipe.models.Account;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
@@ -126,6 +130,47 @@ public class UserManager {
         })
         .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
         .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+
+        return future;
+    }
+
+    @NonNull
+    public FutureDataResult<Bitmap> getProfileImage(int userId) {
+        FutureDataResult<Bitmap> future = new FutureDataResult<>();
+        if (!accountManager.isLoggedIn()) {
+            future.complete(new DataResult.Failed<>("No account logged in!"));
+            return future;
+        }
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getUserProfileImage(account.getAccessToken(), userId).thenAccept(response -> {
+                System.out.println(response.headers());
+                System.out.println(response.toString());
+
+                ResponseBody body = response.body();
+                if (body == null) {
+                    future.complete(new DataResult.Failed<>("No profile image data"));
+                    return;
+                }
+
+                byte[] image_data;
+                try {
+                    image_data = body.bytes();
+                } catch (IOException e) {
+                    future.complete(new DataResult.Error<>(e));
+                    return;
+                }
+                Bitmap bitmap = BitmapFactory.decodeByteArray(image_data,0,image_data.length);
+                System.out.println("DONE!");
+                future.complete(new DataResult.Success<>(bitmap));
+            })
+            .exceptionally(throwable -> {
+                future.complete(new DataResult.Error<>(throwable));
+                return null;
+            });
+        })
+        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
+        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));;
 
         return future;
     }

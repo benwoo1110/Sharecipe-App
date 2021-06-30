@@ -191,6 +191,26 @@ public class SharecipeRequests {
     }
 
     /**
+     * GET `/users/user_id/profileimage` endpoint.
+     *
+     * @param accessToken
+     * @param userId
+     * @return Response from server.
+     */
+    @NonNull
+    public static CompletableFuture<Response> getUserProfileImage(@NonNull String accessToken, int userId) {
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(userId))
+                        .addPathSegment(UrlPath.PROFILE_IMAGE)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
+
+    /**
      * PUT `/users/user_id/recipes` endpoint.
      *
      * @param accessToken
