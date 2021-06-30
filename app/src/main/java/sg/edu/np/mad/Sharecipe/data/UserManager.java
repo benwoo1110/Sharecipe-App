@@ -144,8 +144,12 @@ public class UserManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getUserProfileImage(account.getAccessToken(), userId).thenAccept(response -> {
-                System.out.println(response.headers());
-                System.out.println(response.toString());
+                if (!response.isSuccessful()) {
+                    JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
+                    JsonElement message = json != null ? json.get("message") : null;
+                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
+                    return;
+                }
 
                 ResponseBody body = response.body();
                 if (body == null) {
@@ -161,7 +165,6 @@ public class UserManager {
                     return;
                 }
                 Bitmap bitmap = BitmapFactory.decodeByteArray(image_data,0,image_data.length);
-                System.out.println("DONE!");
                 future.complete(new DataResult.Success<>(bitmap));
             })
             .exceptionally(throwable -> {
