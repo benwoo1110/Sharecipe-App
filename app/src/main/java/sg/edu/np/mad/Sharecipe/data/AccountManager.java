@@ -127,7 +127,7 @@ public class AccountManager {
 
         SharecipeRequests.accountTokenRefresh(account.getRefreshToken(), account.getUserId()).thenAccept(response -> {
             JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
-            JsonElement tokenElement = json != null ? json.get("message") : null;
+            JsonElement tokenElement = json != null ? json.get("access_token") : null;
             if (tokenElement == null) {
                 future.complete(new DataResult.Failed<>("Account session expired!"));
                 return;
