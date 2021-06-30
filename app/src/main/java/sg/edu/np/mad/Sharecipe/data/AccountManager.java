@@ -124,32 +124,54 @@ public class AccountManager {
             future.complete(new DataResult.Failed<>("No account logged in!"));
             return FutureDataResult.completed(new DataResult.Failed<>("No account logged in!"));
         }
-        SharecipeRequests.accountTokenRefresh(account.getRefreshToken(), account.getUserId())
-                .thenAccept(response -> {
-                    JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
-                    JsonElement tokenElement = json.get("access_token");
-                    if (tokenElement == null) {
-                        future.complete(new DataResult.Failed<>("Account session expired!"));
-                        return;
-                    }
-                    account.setAccessToken(tokenElement.getAsString());
-                    updateLastRefresh();
-                    future.complete(new DataResult.Success<>(account));
-                })
-                .exceptionally(throwable -> {
-                    future.complete(new DataResult.Error<>(throwable));
-                    return null;
-                });
+
+        SharecipeRequests.accountTokenRefresh(account.getRefreshToken(), account.getUserId()).thenAccept(response -> {
+            JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
+            JsonElement tokenElement = json != null ? json.get("message") : null;
+            if (tokenElement == null) {
+                future.complete(new DataResult.Failed<>("Account session expired!"));
+                return;
+            }
+            account.setAccessToken(tokenElement.getAsString());
+            updateLastRefresh();
+            future.complete(new DataResult.Success<>(account));
+        })
+        .exceptionally(throwable -> {
+            future.complete(new DataResult.Error<>(throwable));
+            return null;
+        });
+
         return future;
     }
 
     @NonNull
-    public FutureDataResult<Account> logout() {
-        return new FutureDataResult<>();
+    public FutureDataResult<Void> logout() {
+        FutureDataResult<Void> future = new FutureDataResult<>();
+        if (!isLoggedIn()) {
+            future.complete(new DataResult.Failed<>("No account logged in!"));
+            return FutureDataResult.completed(new DataResult.Failed<>("No account logged in!"));
+        }
+
+        SharecipeRequests.accountLogout(account.getRefreshToken(), account.getUserId()).thenAccept(response -> {
+            if (!response.isSuccessful()) {
+                JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
+                JsonElement message = json != null ? json.get("message") : null;
+                future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
+                return;
+            }
+            setAccount(null);
+            future.complete(new DataResult.Success<>(null));
+        })
+        .exceptionally(throwable -> {
+            future.complete(new DataResult.Error<>(throwable));
+            return null;
+        });
+
+        return future;
     }
 
     @NonNull
-    public FutureDataResult<Account> delete() {
+    public FutureDataResult<Void> delete() {
         return new FutureDataResult<>();
     }
 
