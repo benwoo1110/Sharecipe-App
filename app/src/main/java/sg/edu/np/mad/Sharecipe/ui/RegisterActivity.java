@@ -3,10 +3,12 @@ package sg.edu.np.mad.Sharecipe.ui;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.common.base.Strings;
 
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.R;
@@ -25,6 +27,36 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
         TextInputLayout password = findViewById(R.id.registerPassword);
         TextInputLayout passwordConfirm = findViewById(R.id.registerConfirmPassword);
         Button signUp = findViewById(R.id.buttonSignup);
+
+        username.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                return;
+            }
+            if (isEmptyInput(username)) {
+                return;
+            }
+            username.setError(null);
+        });
+
+        password.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                return;
+            }
+            if (isEmptyInput(password)) {
+                return;
+            }
+            password.setError(null);
+        });
+
+        passwordConfirm.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                return;
+            }
+            if (isEmptyInput(passwordConfirm)) {
+                return;
+            }
+            passwordConfirm.setError(null);
+        });
 
         signUp.setOnClickListener(v -> {
             hideSoftKeyBoard();
@@ -53,5 +85,14 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
                         RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show());
                     });
         });
+    }
+
+    private boolean isEmptyInput(TextInputLayout input) {
+        String inputText = input.getEditText().getText().toString();
+        if (Strings.isNullOrEmpty(inputText)) {
+            input.setError("* This is a required field.");
+            return true;
+        }
+        return false;
     }
 }
