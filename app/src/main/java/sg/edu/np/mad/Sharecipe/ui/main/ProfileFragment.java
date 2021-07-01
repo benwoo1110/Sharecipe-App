@@ -42,8 +42,12 @@ public class ProfileFragment extends Fragment {
         TextView description = view.findViewById(R.id.description);
         TextView following = view.findViewById(R.id.following);
         TextView followers = view.findViewById(R.id.followers);
-        User user = AccountManager.getInstance(getContext()).getAccount().getUserId());
 
+        UserManager.getInstance(getContext()).getLoggedIn().onSuccess(user -> {
+            getActivity().runOnUiThread(() -> {
+                username.setText(user.getUsername());
+            });
+        });
 
         UserManager.getInstance(getContext()).getProfileImage(AccountManager.getInstance(getContext()).getAccount().getUserId())
                 .onSuccess(image -> getActivity().runOnUiThread(() -> profileImage.setImageBitmap(image)))
