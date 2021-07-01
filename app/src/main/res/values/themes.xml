@@ -15,4 +15,13 @@
         <!-- Customize your theme here. -->
         <item name="colorOnBackground">@color/white</item>
     </style>
+
+    <style name="Theme.Sharecipe.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Sharecipe.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Sharecipe.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
