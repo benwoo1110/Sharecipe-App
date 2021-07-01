@@ -7,14 +7,15 @@
     tools:context=".ui.RegisterActivity">
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/registerProfileImage"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginTop="70dp"
+        android:background="@drawable/ic_launcher_background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_baseline_fastfood_24" />
+        app:srcCompat="@drawable/ic_baseline_add_24" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/registerUsername"
@@ -28,7 +29,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintTop_toBottomOf="@+id/registerProfileImage"
         app:startIconDrawable="@drawable/ic_baseline_person_24">
 
         <com.google.android.material.textfield.TextInputEditText

@@ -8,12 +8,14 @@ import com.google.gson.JsonElement;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
 import java9.util.concurrent.CompletableFuture;
 import java9.util.function.Function;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
@@ -24,6 +26,7 @@ import okhttp3.Response;
 public class SharecipeRequests {
 
     private static final MediaType JSON_TYPE = MediaType.parse("application/json; charset=utf-8");
+    private static final MediaType FILE_TYPE = MediaType.parse("application/octet-stream");
     private static final AsyncOkHttpClient CLIENT = new AsyncOkHttpClient();
 
     /**
@@ -209,6 +212,33 @@ public class SharecipeRequests {
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
                 .get()
+                .build());
+    }
+
+    /**
+     * GET `/users/user_id/profileimage` endpoint.
+     *
+     * @param accessToken
+     * @param userId
+     * @return Response from server.
+     */
+    @NonNull
+    public static CompletableFuture<Response> setUserProfileImage(@NonNull String accessToken, int userId, File imageFile) {
+        RequestBody image = RequestBody.create(imageFile, FILE_TYPE);
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("text", "text")
+                .addFormDataPart("image", imageFile.getName(), image)
+                .build();
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(userId))
+                        .addPathSegment(UrlPath.PROFILE_IMAGE)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .put(requestBody)
                 .build());
     }
 

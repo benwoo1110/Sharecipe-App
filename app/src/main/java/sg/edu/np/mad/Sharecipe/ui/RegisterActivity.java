@@ -1,14 +1,22 @@
 package sg.edu.np.mad.Sharecipe.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.Strings;
+
+import java.io.File;
 
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.R;
@@ -16,6 +24,9 @@ import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 
 public class RegisterActivity extends DynamicFocusAppCompatActivity {
+
+    private ImageView profileImage;
+    private String profileImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +38,15 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
         TextInputLayout password = findViewById(R.id.registerPassword);
         TextInputLayout passwordConfirm = findViewById(R.id.registerConfirmPassword);
         Button signUp = findViewById(R.id.buttonSignup);
+
+        profileImage = findViewById(R.id.registerProfileImage);
+        profileImage.setOnClickListener(v -> {
+            ImagePicker.with(this)
+                    .crop()	// Crop image(Optional), Check Customization for more option
+                    .compress(1024)	// Final image size will be less than 1 MB(Optional)
+                    .maxResultSize(500, 500) // Final image resolution will be less than 1080 x 1080(Optional)
+                    .start();
+        });
 
         username.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
             if (hasFocus) {
@@ -71,8 +91,14 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
                 return;
             }
 
+            File imageFile = new File(profileImagePath);
+            if (!imageFile.isFile()) {
+                Toast.makeText(RegisterActivity.this, "Invalid profile image.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             AccountManager.getInstance(this)
-                    .register(usernameText, passwordText, bioText)
+                    .register(usernameText, passwordText, bioText, imageFile)
                     .onSuccess(account -> {
                         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -85,6 +111,20 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
                         RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show());
                     });
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            Uri uri = data.getData();
+            profileImage.setImageURI(uri);
+            profileImagePath = uri.getPath();
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private boolean isEmptyInput(TextInputLayout input) {
