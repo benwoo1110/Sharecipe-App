@@ -20,13 +20,15 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
         setContentView(R.layout.activity_register);
 
         TextInputLayout username = findViewById(R.id.registerUsername);
+        TextInputLayout bio = findViewById(R.id.registerBio);
         TextInputLayout password = findViewById(R.id.registerPassword);
+        TextInputLayout passwordConfirm = findViewById(R.id.registerConfirmPassword);
         Button signUp = findViewById(R.id.buttonSignup);
 
         signUp.setOnClickListener(v -> {
             hideSoftKeyBoard();
             AccountManager.getInstance(this)
-                    .register(username.getEditText().getText().toString(), password.getEditText().getText().toString())
+                    .register(username.getEditText().getText().toString(), password.getEditText().getText().toString(), bio.getEditText().getText().toString())
                     .onSuccess(account -> {
                         Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

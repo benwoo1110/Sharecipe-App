@@ -56,9 +56,9 @@ public class AccountManager {
      * @return Future result of account creation with account data if succeed.
      */
     @NonNull
-    public FutureDataResult<Account> register(String username, String password) {
+    public FutureDataResult<Account> register(String username, String password, String bio) {
         FutureDataResult<Account> future = new FutureDataResult<>();
-        SharecipeRequests.accountRegister(username, password)
+        SharecipeRequests.accountRegister(username, password, bio)
                 .thenAccept(response -> {
                     JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
                     if (!response.isSuccessful()) {

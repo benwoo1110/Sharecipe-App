@@ -1,6 +1,7 @@
 package sg.edu.np.mad.Sharecipe.web;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.gson.JsonElement;
 
@@ -48,12 +49,13 @@ public class SharecipeRequests {
      * @return Response from server.
      */
     @NonNull
-    public static CompletableFuture<Response> accountRegister(@NonNull String username, @NonNull String password) {
+    public static CompletableFuture<Response> accountRegister(@NonNull String username, @NonNull String password, @Nullable String bio) {
         String payload;
         try {
             payload = new JSONObject()
                     .put("username", username)
                     .put("password", password)
+                    .put("bio", bio)
                     .toString();
         } catch (JSONException e) {
             return CompletableFuture.failedFuture(e);
