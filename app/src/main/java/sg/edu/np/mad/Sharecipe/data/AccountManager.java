@@ -10,6 +10,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.File;
+import java.io.IOException;
 
 import dev.haenara.bricksharepref.BrickSharedPreferences;
 import sg.edu.np.mad.Sharecipe.models.Account;
@@ -68,12 +69,26 @@ public class AccountManager {
                         future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
                         return;
                     }
+
                     setAccount(JsonUtils.convertToObject(json, Account.class));
                     if (account == null) {
                         future.complete(new DataResult.Failed<>("Received invalid data. Failed to create account!"));
                     }
-                    updateLastRefresh();
-                    future.complete(new DataResult.Success<>(account));
+
+                    SharecipeRequests.setUserProfileImage(account.getAccessToken(), account.getUserId(), imageFile).thenAccept(response1 -> {
+                        if (response1.isSuccessful()) {
+                            System.out.println("YAY");
+                        } else {
+                            try {
+                                System.out.println(response1.body().string());
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        updateLastRefresh();
+                        future.complete(new DataResult.Success<>(account));
+                    });
                 })
                 .exceptionally(throwable -> {
                     future.complete(new DataResult.Error<>(throwable));
