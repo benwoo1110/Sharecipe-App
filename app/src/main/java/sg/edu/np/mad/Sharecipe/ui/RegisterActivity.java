@@ -18,8 +18,10 @@ import com.google.common.base.Strings;
 
 import java.io.File;
 
+import java9.util.function.Consumer;
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 
@@ -91,25 +93,21 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
                 return;
             }
 
-            File imageFile = new File(profileImagePath);
-            if (!imageFile.isFile()) {
-                Toast.makeText(RegisterActivity.this, "Invalid profile image.", Toast.LENGTH_SHORT).show();
-                return;
-            }
+            File imageFile = profileImagePath == null ? null : new File(profileImagePath);
 
-            AccountManager.getInstance(this)
-                    .register(usernameText, passwordText, bioText, imageFile)
-                    .onSuccess(account -> {
-                        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                    })
-                    .onFailed(reason -> {
-                        RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, reason, Toast.LENGTH_SHORT).show());
-                    })
-                    .onError(error -> {
-                        RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show());
-                    });
+            AccountManager.getInstance(this).register(usernameText, passwordText, bioText, imageFile).onSuccess(account -> {
+                UserManager.getInstance(this).setAccountProfileImage(imageFile).onFailed(reason -> {
+                    RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, reason, Toast.LENGTH_SHORT).show());
+                }).thenAccept(result -> {
+                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                });
+            }).onFailed(reason -> {
+                RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, reason, Toast.LENGTH_SHORT).show());
+            }).onError(error -> {
+                RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show());
+            });
         });
     }
 

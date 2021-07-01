@@ -75,20 +75,8 @@ public class AccountManager {
                         future.complete(new DataResult.Failed<>("Received invalid data. Failed to create account!"));
                     }
 
-                    SharecipeRequests.setUserProfileImage(account.getAccessToken(), account.getUserId(), imageFile).thenAccept(response1 -> {
-                        if (response1.isSuccessful()) {
-                            System.out.println("YAY");
-                        } else {
-                            try {
-                                System.out.println(response1.body().string());
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                        updateLastRefresh();
-                        future.complete(new DataResult.Success<>(account));
-                    });
+                    updateLastRefresh();
+                    future.complete(new DataResult.Success<>(account));
                 })
                 .exceptionally(throwable -> {
                     future.complete(new DataResult.Error<>(throwable));
