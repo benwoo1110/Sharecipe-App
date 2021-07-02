@@ -43,6 +43,7 @@ public class ProfileFragment extends Fragment {
         UserManager.getInstance(getContext()).getAccountUser().onSuccess(user -> {
             getActivity().runOnUiThread(() -> {
                 username.setText(user.getUsername());
+                description.setText(user.getBio());
             });
         });
 
