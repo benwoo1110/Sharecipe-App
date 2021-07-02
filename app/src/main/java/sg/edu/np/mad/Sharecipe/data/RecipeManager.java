@@ -8,8 +8,6 @@ import com.google.gson.JsonElement;
 
 import java.util.concurrent.TimeUnit;
 
-import java9.util.function.Function;
-import sg.edu.np.mad.Sharecipe.models.Account;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;

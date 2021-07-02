@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
-import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 
 public class SearchFragment extends Fragment {
 

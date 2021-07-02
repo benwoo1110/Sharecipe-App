@@ -9,9 +9,6 @@ import androidx.annotation.Nullable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java.io.File;
-import java.io.IOException;
-
 import dev.haenara.bricksharepref.BrickSharedPreferences;
 import sg.edu.np.mad.Sharecipe.models.Account;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
@@ -59,7 +56,7 @@ public class AccountManager {
      * @return Future result of account creation with account data if succeed.
      */
     @NonNull
-    public FutureDataResult<Account> register(String username, String password, String bio, File imageFile) {
+    public FutureDataResult<Account> register(String username, String password, String bio) {
         FutureDataResult<Account> future = new FutureDataResult<>();
         SharecipeRequests.accountRegister(username, password, bio)
                 .thenAccept(response -> {

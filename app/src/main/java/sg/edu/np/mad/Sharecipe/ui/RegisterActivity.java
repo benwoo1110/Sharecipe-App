@@ -2,10 +2,8 @@ package sg.edu.np.mad.Sharecipe.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -18,7 +16,6 @@ import com.google.common.base.Strings;
 
 import java.io.File;
 
-import java9.util.function.Consumer;
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
@@ -45,8 +42,8 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
         profileImage.setOnClickListener(v -> {
             ImagePicker.with(this)
                     .crop()	// Crop image(Optional), Check Customization for more option
-                    .compress(1024)	// Final image size will be less than 1 MB(Optional)
-                    .maxResultSize(500, 500) // Final image resolution will be less than 1080 x 1080(Optional)
+                    .compress(1024)	// Final image size will be less than 1 MB
+                    .maxResultSize(500, 500) // Final image resolution will be less than 500x500
                     .start();
         });
 
@@ -95,7 +92,7 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
 
             File imageFile = profileImagePath == null ? null : new File(profileImagePath);
 
-            AccountManager.getInstance(this).register(usernameText, passwordText, bioText, imageFile).onSuccess(account -> {
+            AccountManager.getInstance(this).register(usernameText, passwordText, bioText).onSuccess(account -> {
                 UserManager.getInstance(this).setAccountProfileImage(imageFile).onFailed(reason -> {
                     RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, reason, Toast.LENGTH_SHORT).show());
                 }).thenAccept(result -> {
