@@ -32,6 +32,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
     implementation 'dev.haenara:bricksharedpref:1.0.2'
     implementation "androidx.security:security-crypto:1.1.0-alpha03"
     implementation "com.google.guava:guava:30.1.1-android"

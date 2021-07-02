@@ -10,7 +10,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
-import sg.edu.np.mad.Sharecipe.models.Account;
 import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.FragmentCollection;

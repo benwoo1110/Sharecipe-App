@@ -11,13 +11,13 @@ import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.ResponseBody;
-import sg.edu.np.mad.Sharecipe.models.Account;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
@@ -178,13 +178,41 @@ public class UserManager {
         return future;
     }
 
+    @NonNull
+    public FutureDataResult<Void> setAccountProfileImage(File imageFile) {
+        FutureDataResult<Void> future = new FutureDataResult<>();
+        if (imageFile == null || !imageFile.isFile()) {
+            future.complete(new DataResult.Failed<>("Invalid image."));
+            return future;
+        }
+
+        if (!accountManager.isLoggedIn()) {
+            future.complete(new DataResult.Failed<>("No account logged in!"));
+            return future;
+        }
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.setUserProfileImage(account.getAccessToken(), account.getUserId(), imageFile).thenAccept(response -> {
+                if (!response.isSuccessful()) {
+                    JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
+                    JsonElement message = json != null ? json.get("message") : null;
+                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
+                    return;
+                }
+                future.complete(new DataResult.Success<>(null));
+            });
+        });
+
+        return future;
+    }
+
     /**
      * Gets user data of logged in account.
      *
      * @return Future result of user data.
      */
     @NonNull
-    public FutureDataResult<User> getLoggedIn() {
+    public FutureDataResult<User> getAccountUser() {
         if (!accountManager.isLoggedIn()) {
             return FutureDataResult.completed(new DataResult.Failed<>("No account logged in!"));
         }
