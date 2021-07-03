@@ -43,7 +43,7 @@ public class InformationFragment extends Fragment {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                newRecipe.setName(name.getText().toString()) ;
+                newRecipe.setName(name.getText().toString());
             }
         });
 

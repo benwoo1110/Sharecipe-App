@@ -28,6 +28,7 @@ public class RecipeCreateActivity extends AppCompatActivity {
         ViewPager2 viewPager = findViewById(R.id.recipe_info_viewpager);
 
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
+        tabLayout.addTab(tabLayout.newTab().setText("Ingredients"));
         tabLayout.addTab(tabLayout.newTab().setText("Steps"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
