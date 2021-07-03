@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -12,6 +13,7 @@ import android.widget.RatingBar;
 import androidx.fragment.app.Fragment;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.models.Recipe;
 
 
 public class InformationFragment extends Fragment {
@@ -34,6 +36,16 @@ public class InformationFragment extends Fragment {
         EditText portion = view.findViewById(R.id.servesInput);
         EditText prepTime = view.findViewById(R.id.prepInput);
         ImageButton image = view.findViewById(R.id.addImage);
+        Button save = view.findViewById(R.id.saveButton);
+
+        Recipe newRecipe = new Recipe();
+
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                newRecipe.setName(name.getText().toString()) ;
+            }
+        });
 
         return view;
     }
