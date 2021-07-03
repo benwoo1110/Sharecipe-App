@@ -141,7 +141,7 @@ public class UserManager {
      * @return Success status, no actual data returned.
      */
     @NonNull
-    public FutureDataResult<Void> edit(User user) {
+    public FutureDataResult<Void> update(User user) {
         FutureDataResult<Void> future = new FutureDataResult<>();
         if (!accountManager.isLoggedIn()) {
             future.complete(new DataResult.Failed<>("No account logged in!"));
