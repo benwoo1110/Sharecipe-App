@@ -46,7 +46,7 @@ public class AccountManager {
     private AccountManager(Context context) {
         this.context = context;
         this.refreshInterval = new Interval(REFRESH_INTERVAL);
-        loadFromSharedPreference();
+        loadFromSharedPreferences();
     }
 
     /**
@@ -223,17 +223,17 @@ public class AccountManager {
     private void setAccount(@Nullable Account account) {
         if (account == null || account.getUserId() == Integer.MIN_VALUE || account.getRefreshToken() == null) {
             this.account = null;
-            clearSharedPreference();
+            clearSharedPreferences();
             return;
         }
         this.account = account;
-        saveToSharedPreference();
+        saveToSharedPreferences();
     }
 
     /**
-     * Saves the refresh token to shared preference to allow user to remain logged in.
+     * Saves the refresh token to shared preferences to allow user to remain logged in.
      */
-    private void saveToSharedPreference() {
+    private void saveToSharedPreferences() {
         if (account == null) {
             return;
         }
@@ -246,7 +246,7 @@ public class AccountManager {
     /**
      * Loads saved refresh token to auto login user.
      */
-    private void loadFromSharedPreference() {
+    private void loadFromSharedPreferences() {
         SharedPreferences data = openAccountSharedPreferences();
         setAccount(new Account(
                 data.getInt("userId", Integer.MIN_VALUE),
@@ -257,7 +257,7 @@ public class AccountManager {
     /**
      * Removes refresh token.
      */
-    private void clearSharedPreference() {
+    private void clearSharedPreferences() {
         openAccountSharedPreferences().edit()
                 .clear()
                 .apply();
@@ -266,7 +266,7 @@ public class AccountManager {
     /**
      * Create a secure encrypted shared preferences instance for account data.
      *
-     * @return 
+     * @return New shared preferences instance for use.
      */
     private SharedPreferences openAccountSharedPreferences() {
         return new BrickSharedPreferences(context, ACCOUNT_PREFS_NAME);
