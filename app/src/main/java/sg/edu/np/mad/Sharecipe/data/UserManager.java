@@ -135,6 +135,31 @@ public class UserManager {
     }
 
     @NonNull
+    public FutureDataResult<Void> edit(User user) {
+        FutureDataResult<Void> future = new FutureDataResult<>();
+        if (!accountManager.isLoggedIn()) {
+            future.complete(new DataResult.Failed<>("No account logged in!"));
+            return future;
+        }
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.patchUser(account.getAccessToken(), user).thenAccept(response -> {
+                if (!response.isSuccessful()) {
+                    JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
+                    JsonElement message = json.getAsJsonObject().get("message");
+                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
+                    return;
+                }
+                future.complete(new DataResult.Success<>(null));
+            });
+        })
+        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
+        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+
+        return future;
+    }
+
+    @NonNull
     public FutureDataResult<Bitmap> getProfileImage(int userId) {
         FutureDataResult<Bitmap> future = new FutureDataResult<>();
         if (!accountManager.isLoggedIn()) {
