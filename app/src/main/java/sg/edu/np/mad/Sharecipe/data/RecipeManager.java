@@ -40,6 +40,12 @@ public class RecipeManager {
         this.accountManager = accountManager;
     }
 
+    /**
+     * Saves a new recipe. This will never replace an existing one.
+     *
+     * @param newRecipe New recipe data to be saved.
+     * @return Future result of newly saved recipe data.
+     */
     public FutureDataResult<Recipe> save(Recipe newRecipe) {
         FutureDataResult<Recipe> future = new FutureDataResult<>();
         if (!accountManager.isLoggedIn()) {
@@ -73,6 +79,15 @@ public class RecipeManager {
         return future;
     }
 
+    //TODO: update recipe
+
+    /**
+     * Gets a recipe data.
+     *
+     * @param userId    Author of the recipe
+     * @param recipeId  Target recipe to get info on.
+     * @return Future result of the recipe data.
+     */
     public FutureDataResult<Recipe> get(int userId, int recipeId) {
         FutureDataResult<Recipe> future = new FutureDataResult<>();
         if (!accountManager.isLoggedIn()) {
