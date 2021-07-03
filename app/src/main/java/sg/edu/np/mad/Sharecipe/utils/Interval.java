@@ -23,15 +23,16 @@ public class Interval {
     }
 
     /**
-     * Checks and updates last run record if interval passed.
-     *
-     * @return True if interval passed, else false.
+     * Updates last run record if interval passed.
      */
-    public boolean update() {
-        if (check()) {
-            this.lastRun = System.currentTimeMillis();
-            return true;
-        }
-        return false;
+    public void update() {
+        this.lastRun = System.currentTimeMillis();
+    }
+
+    /**
+     * Reset and forget last run time.
+     */
+    public void reset() {
+        this.lastRun = 0;
     }
 }

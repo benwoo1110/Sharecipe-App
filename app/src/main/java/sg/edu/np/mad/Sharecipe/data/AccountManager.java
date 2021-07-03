@@ -71,6 +71,7 @@ public class AccountManager {
                     if (account == null) {
                         future.complete(new DataResult.Failed<>("Received invalid data. Failed to create account!"));
                     }
+                    refreshInterval.update();
                     future.complete(new DataResult.Success<>(account));
                 })
                 .exceptionally(throwable -> {
@@ -102,6 +103,7 @@ public class AccountManager {
                     if (account == null) {
                         future.complete(new DataResult.Failed<>("Received invalid data. Failed to login!"));
                     }
+                    refreshInterval.update();
                     future.complete(new DataResult.Success<>(account));
                 })
                 .exceptionally(throwable -> {
@@ -132,6 +134,7 @@ public class AccountManager {
                 return;
             }
             account.setAccessToken(tokenElement.getAsString());
+            refreshInterval.update();
             future.complete(new DataResult.Success<>(account));
         })
         .exceptionally(throwable -> {
@@ -163,6 +166,7 @@ public class AccountManager {
                 return;
             }
             setAccount(null);
+            refreshInterval.reset();
             future.complete(new DataResult.Success<>(null));
         })
         .exceptionally(throwable -> {
@@ -213,7 +217,7 @@ public class AccountManager {
         if (!isLoggedIn()) {
             return FutureDataResult.completed(new DataResult.Failed<>("No account logged in!"));
         }
-        if (refreshInterval.update()) {
+        if (refreshInterval.check()) {
             return refresh();
         }
         return FutureDataResult.completed(account);
