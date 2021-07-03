@@ -11,15 +11,7 @@ import android.widget.RatingBar;
 
 import androidx.fragment.app.Fragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import java9.util.function.Consumer;
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.data.RecipeManager;
-import sg.edu.np.mad.Sharecipe.models.Account;
-import sg.edu.np.mad.Sharecipe.models.Recipe;
-import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 
 
 public class InformationFragment extends Fragment {
