@@ -79,7 +79,44 @@ public class RecipeManager {
         return future;
     }
 
-    //TODO: update recipe
+    /**
+     * Updates existing recipe with changed information.
+     *
+     * @param recipe    Recipe data to update.
+     * @return
+     */
+    public FutureDataResult<Recipe> update(Recipe recipe) {
+        FutureDataResult<Recipe> future = new FutureDataResult<>();
+        if (!accountManager.isLoggedIn()) {
+            future.complete(new DataResult.Failed<>("No account logged in!"));
+            return future;
+        }
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            JsonElement recipeData = JsonUtils.convertToJson(recipe);
+            SharecipeRequests.createRecipe(account.getAccessToken(), account.getUserId(), recipeData).thenAccept(response -> {
+                JsonElement json = JsonUtils.convertToJson(response);
+                if (!response.isSuccessful()) {
+                    JsonElement message = json.getAsJsonObject().get("message");
+                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
+                    return;
+                }
+                Recipe updatedRecipe = JsonUtils.convertToObject(json, Recipe.class);
+                if (updatedRecipe == null) {
+                    future.complete(new DataResult.Failed<>("Received invalid data."));
+                    return;
+                }
+                future.complete(new DataResult.Success<>(updatedRecipe));
+            })
+            .exceptionally(throwable -> {
+                future.complete(new DataResult.Error<>(throwable));
+                return null;
+            });
+        })
+        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
+        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+
+        return future;
+    }
 
     /**
      * Gets a recipe data.

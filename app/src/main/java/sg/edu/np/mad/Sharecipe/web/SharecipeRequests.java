@@ -282,6 +282,26 @@ public class SharecipeRequests {
     }
 
     /**
+     * PATCH `/users/user_id/recipes` endpoint.
+     *
+     * @param accessToken
+     * @param userId
+     * @param recipeData
+     * @return
+     */
+    public static CompletableFuture<Response> updateRecipe(@NonNull String accessToken, int userId, JsonElement recipeData) {
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(userId))
+                        .addPathSegment(UrlPath.RECIPES)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .patch(RequestBody.create(recipeData.toString(), JSON_TYPE))
+                .build());
+    }
+
+    /**
      * PUT `/users/user_id/recipes/recipe_id` endpoint.
      *
      * @param accessToken
