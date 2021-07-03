@@ -22,13 +22,23 @@ public class JsonUtils {
             .create();
 
     /**
+     * Converts an object model into json string.
+     *
+     * @param object    Target object to convert.
+     * @return The json string, null if an error occurred.
+     */
+    public static String convertToJsonString(Object object) {
+        return GSON.toJson(object);
+    }
+
+    /**
      * Converts an object model into json element.
      *
      * @param object    Target object to convert.
      * @return The json element, null if an error occurred.
      */
     public static JsonElement convertToJson(Object object) {
-        return convertToJson(GSON.toJson(object));
+        return convertToJson(convertToJsonString(object));
     }
 
     /**

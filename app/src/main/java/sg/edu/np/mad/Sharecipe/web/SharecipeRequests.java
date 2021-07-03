@@ -16,6 +16,8 @@ import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import sg.edu.np.mad.Sharecipe.models.User;
+import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
 
 /**
  * Handles web requests to the server.
@@ -189,6 +191,26 @@ public class SharecipeRequests {
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
                 .get()
+                .build());
+    }
+
+    /**
+     * GET `/users/user_id` endpoint.
+     *
+     * @param accessToken
+     * @param user
+     * @return Response from server.
+     */
+    @NonNull
+    public static CompletableFuture<Response> patchUser(@NonNull String accessToken, User user) {
+        String payload = JsonUtils.convertToJsonString(user);
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(user.getUserId()))
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .patch(RequestBody.create(payload, JSON_TYPE))
                 .build());
     }
 
