@@ -8,7 +8,14 @@ import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import java9.util.function.Consumer;
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.data.RecipeManager;
+import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 
 public class RecipeCreateActivity extends AppCompatActivity {
 
@@ -50,5 +57,25 @@ public class RecipeCreateActivity extends AppCompatActivity {
 
             }
         });
+
+        Recipe recipe = new Recipe();
+        recipe.setName("test");
+
+        List<RecipeStep> recipeSteps = new ArrayList<>();
+        recipeSteps.add(new RecipeStep(1, "test", "stuff"));
+        recipe.setSteps(recipeSteps);
+
+        RecipeManager.getInstance(RecipeCreateActivity.this).save(recipe).onSuccess(new Consumer<Recipe>() {
+            @Override
+            public void accept(Recipe recipe) {
+
+            }
+        }).onFailed(new Consumer<String>() {
+            @Override
+            public void accept(String reason) {
+
+            }
+        });
+
     }
 }
