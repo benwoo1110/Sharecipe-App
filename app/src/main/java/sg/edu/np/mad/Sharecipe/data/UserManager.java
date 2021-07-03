@@ -149,7 +149,7 @@ public class UserManager {
         }
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.patchUser(account.getAccessToken(), user).thenAccept(response -> {
+            SharecipeRequests.editUser(account.getAccessToken(), user).thenAccept(response -> {
                 if (!response.isSuccessful()) {
                     JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
                     JsonElement message = json.getAsJsonObject().get("message");

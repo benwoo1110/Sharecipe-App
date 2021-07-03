@@ -202,7 +202,7 @@ public class SharecipeRequests {
      * @return Response from server.
      */
     @NonNull
-    public static CompletableFuture<Response> patchUser(@NonNull String accessToken, User user) {
+    public static CompletableFuture<Response> editUser(@NonNull String accessToken, User user) {
         String payload = JsonUtils.convertToJsonString(user);
         return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
