@@ -1,11 +1,16 @@
 package sg.edu.np.mad.Sharecipe.models;
 
+import com.google.gson.annotations.Expose;
+
 import org.jetbrains.annotations.NotNull;
 
 public class Account {
 
+    @Expose
     private final int userId;
+    @Expose
     private final String refreshToken;
+    @Expose
     private String accessToken;
 
     public Account(int userId, String refreshToken) {

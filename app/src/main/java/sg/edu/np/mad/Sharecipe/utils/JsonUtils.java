@@ -16,6 +16,7 @@ import okhttp3.ResponseBody;
 public class JsonUtils {
 
     private static final Gson GSON = new GsonBuilder()
+            .excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
             .create();
