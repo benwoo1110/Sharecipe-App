@@ -195,7 +195,7 @@ public class SharecipeRequests {
     }
 
     /**
-     * GET `/users/user_id` endpoint.
+     * PATCH `/users/user_id` endpoint.
      *
      * @param accessToken
      * @param user

@@ -13,6 +13,7 @@ import dev.haenara.bricksharepref.BrickSharedPreferences;
 import sg.edu.np.mad.Sharecipe.models.Account;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
+import sg.edu.np.mad.Sharecipe.utils.Interval;
 import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
 import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
@@ -22,7 +23,7 @@ import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 public class AccountManager {
 
     private static final String ACCOUNT_PREFS_NAME = "account";
-    private static final long REFRESH_INTERVAL = 720000; // 12 minutes in milliseconds
+    private static final int REFRESH_INTERVAL = 720000; // 12 minutes in milliseconds
     private static AccountManager instance;
 
     /**
@@ -39,13 +40,13 @@ public class AccountManager {
     }
 
     private final Context context;
+    private final Interval refreshInterval;
     private Account account;
-    private long lastRefresh;
 
     private AccountManager(Context context) {
         this.context = context;
-        this.lastRefresh = 0;
-        loadFromSharedPreference();
+        this.refreshInterval = new Interval(REFRESH_INTERVAL);
+        loadFromSharedPreferences();
     }
 
     /**
@@ -66,13 +67,10 @@ public class AccountManager {
                         future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
                         return;
                     }
-
                     setAccount(JsonUtils.convertToObject(json, Account.class));
                     if (account == null) {
                         future.complete(new DataResult.Failed<>("Received invalid data. Failed to create account!"));
                     }
-
-                    updateLastRefresh();
                     future.complete(new DataResult.Success<>(account));
                 })
                 .exceptionally(throwable -> {
@@ -104,7 +102,6 @@ public class AccountManager {
                     if (account == null) {
                         future.complete(new DataResult.Failed<>("Received invalid data. Failed to login!"));
                     }
-                    updateLastRefresh();
                     future.complete(new DataResult.Success<>(account));
                 })
                 .exceptionally(throwable -> {
@@ -135,7 +132,6 @@ public class AccountManager {
                 return;
             }
             account.setAccessToken(tokenElement.getAsString());
-            updateLastRefresh();
             future.complete(new DataResult.Success<>(account));
         })
         .exceptionally(throwable -> {
@@ -146,6 +142,11 @@ public class AccountManager {
         return future;
     }
 
+    /**
+     * Logout from the current account. Tokens should be removed and invalidated.
+     *
+     * @return Success status, no actual data returned.
+     */
     @NonNull
     public FutureDataResult<Void> logout() {
         FutureDataResult<Void> future = new FutureDataResult<>();
@@ -172,6 +173,11 @@ public class AccountManager {
         return future;
     }
 
+    /**
+     * Completely deletes the account. All data is removed and this is irreversible.
+     *
+     * @return Success status, no actual data returned.
+     */
     @NonNull
     public FutureDataResult<Void> delete() {
         return new FutureDataResult<>();
@@ -203,23 +209,31 @@ public class AccountManager {
      */
     @NonNull
     public FutureDataResult<Account> getOrRefreshAccount() {
-        if (timeForRefresh()) {
+        if (refreshInterval.update()) {
             return refresh();
         }
         return FutureDataResult.completed(account);
     }
 
+    /**
+     * Sets the logged in account.
+     *
+     * @param account   Target account object to set. Pass null to remove account.
+     */
     private void setAccount(@Nullable Account account) {
         if (account == null || account.getUserId() == Integer.MIN_VALUE || account.getRefreshToken() == null) {
             this.account = null;
-            clearSharedPreference();
+            clearSharedPreferences();
             return;
         }
         this.account = account;
-        saveToSharedPreference();
+        saveToSharedPreferences();
     }
 
-    private void saveToSharedPreference() {
+    /**
+     * Saves the refresh token to shared preferences to allow user to remain logged in.
+     */
+    private void saveToSharedPreferences() {
         if (account == null) {
             return;
         }
@@ -229,7 +243,10 @@ public class AccountManager {
                 .apply();
     }
 
-    private void loadFromSharedPreference() {
+    /**
+     * Loads saved refresh token to auto login user.
+     */
+    private void loadFromSharedPreferences() {
         SharedPreferences data = openAccountSharedPreferences();
         setAccount(new Account(
                 data.getInt("userId", Integer.MIN_VALUE),
@@ -237,21 +254,21 @@ public class AccountManager {
         ));
     }
 
-    private void clearSharedPreference() {
+    /**
+     * Removes refresh token.
+     */
+    private void clearSharedPreferences() {
         openAccountSharedPreferences().edit()
                 .clear()
                 .apply();
     }
 
+    /**
+     * Create a secure encrypted shared preferences instance for account data.
+     *
+     * @return New shared preferences instance for use.
+     */
     private SharedPreferences openAccountSharedPreferences() {
         return new BrickSharedPreferences(context, ACCOUNT_PREFS_NAME);
-    }
-
-    private boolean timeForRefresh() {
-        return (System.currentTimeMillis() - lastRefresh) > REFRESH_INTERVAL;
-    }
-
-    private void updateLastRefresh() {
-        lastRefresh = System.currentTimeMillis();
     }
 }

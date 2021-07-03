@@ -13,6 +13,9 @@ import java.io.IOException;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+/**
+ * Helper methods to facilitate conversion to and from json formats.
+ */
 public class JsonUtils {
 
     private static final Gson GSON = new GsonBuilder()

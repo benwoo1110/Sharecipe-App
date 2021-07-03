@@ -134,6 +134,12 @@ public class UserManager {
         return future;
     }
 
+    /**
+     * Edit existing account user. Note you cannot edit other users.
+     *
+     * @param user  Updated user object.
+     * @return Success status, no actual data returned.
+     */
     @NonNull
     public FutureDataResult<Void> edit(User user) {
         FutureDataResult<Void> future = new FutureDataResult<>();
@@ -159,6 +165,12 @@ public class UserManager {
         return future;
     }
 
+    /**
+     * Gets profile picture of a user.
+     *
+     * @param userId    Target user to get profile of.
+     * @return Future result of image in bitmap format.
+     */
     @NonNull
     public FutureDataResult<Bitmap> getProfileImage(int userId) {
         FutureDataResult<Bitmap> future = new FutureDataResult<>();
@@ -203,6 +215,12 @@ public class UserManager {
         return future;
     }
 
+    /**
+     * Sets profile picture for the user. Replace if user already have existing profile picture.
+     *
+     * @param imageFile Image to be set as profile picture.
+     * @return Success status, no actual data returned.
+     */
     @NonNull
     public FutureDataResult<Void> setAccountProfileImage(File imageFile) {
         FutureDataResult<Void> future = new FutureDataResult<>();
