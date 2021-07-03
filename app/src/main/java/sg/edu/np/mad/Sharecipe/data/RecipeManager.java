@@ -48,10 +48,7 @@ public class RecipeManager {
      */
     public FutureDataResult<Recipe> save(Recipe newRecipe) {
         FutureDataResult<Recipe> future = new FutureDataResult<>();
-        if (!accountManager.isLoggedIn()) {
-            future.complete(new DataResult.Failed<>("No account logged in!"));
-            return future;
-        }
+
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             JsonElement recipeData = JsonUtils.convertToJson(newRecipe);
             SharecipeRequests.createRecipe(account.getAccessToken(), account.getUserId(), recipeData).thenAccept(response -> {
@@ -87,10 +84,7 @@ public class RecipeManager {
      */
     public FutureDataResult<Recipe> update(Recipe recipe) {
         FutureDataResult<Recipe> future = new FutureDataResult<>();
-        if (!accountManager.isLoggedIn()) {
-            future.complete(new DataResult.Failed<>("No account logged in!"));
-            return future;
-        }
+
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             JsonElement recipeData = JsonUtils.convertToJson(recipe);
             SharecipeRequests.createRecipe(account.getAccessToken(), account.getUserId(), recipeData).thenAccept(response -> {
@@ -127,10 +121,6 @@ public class RecipeManager {
      */
     public FutureDataResult<Recipe> get(int userId, int recipeId) {
         FutureDataResult<Recipe> future = new FutureDataResult<>();
-        if (!accountManager.isLoggedIn()) {
-            future.complete(new DataResult.Failed<>("No account logged in!"));
-            return future;
-        }
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getRecipe(account.getAccessToken(), userId, recipeId).thenAccept(response -> {

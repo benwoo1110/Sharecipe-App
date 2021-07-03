@@ -118,11 +118,11 @@ public class AccountManager {
      */
     @NonNull
     public FutureDataResult<Account> refresh() {
-        FutureDataResult<Account> future = new FutureDataResult<>();
         if (!isLoggedIn()) {
-            future.complete(new DataResult.Failed<>("No account logged in!"));
             return FutureDataResult.completed(new DataResult.Failed<>("No account logged in!"));
         }
+
+        FutureDataResult<Account> future = new FutureDataResult<>();
 
         SharecipeRequests.accountTokenRefresh(account.getRefreshToken(), account.getUserId()).thenAccept(response -> {
             JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
@@ -198,6 +198,7 @@ public class AccountManager {
      *
      * @return Account object if logged in, else null.
      */
+    @Nullable
     public Account getAccount() {
         return account;
     }
@@ -209,6 +210,9 @@ public class AccountManager {
      */
     @NonNull
     public FutureDataResult<Account> getOrRefreshAccount() {
+        if (!isLoggedIn()) {
+            return FutureDataResult.completed(new DataResult.Failed<>("No account logged in!"));
+        }
         if (refreshInterval.update()) {
             return refresh();
         }
