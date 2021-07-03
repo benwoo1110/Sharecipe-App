@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.common;
+package sg.edu.np.mad.Sharecipe.utils;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -10,7 +10,7 @@ import sg.edu.np.mad.Sharecipe.ui.ErrorFragment;
 
 public class FragmentCollection {
 
-    private final Map<Class, Fragment> fragmentMap;
+    private final Map<Class<? extends Fragment>, Fragment> fragmentMap;
 
     public FragmentCollection() {
         fragmentMap = new HashMap<>();
@@ -20,7 +20,7 @@ public class FragmentCollection {
     public Fragment getOrLoad(Class<? extends Fragment> fragmentClass) {
         Fragment fragment = fragmentMap.get(fragmentClass);
         if (fragment != null) {
-            return fragmentMap.get(fragmentClass);
+            return fragment;
         }
 
         try {
