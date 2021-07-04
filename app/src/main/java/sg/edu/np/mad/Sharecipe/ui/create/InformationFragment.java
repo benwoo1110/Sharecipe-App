@@ -30,23 +30,6 @@ public class InformationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_information, container, false);
 
-        EditText name = view.findViewById(R.id.nameInput);
-        CheckBox status = view.findViewById(R.id.publicCheck);
-        RatingBar difficulty = view.findViewById(R.id.difficultyInput);
-        EditText portion = view.findViewById(R.id.servesInput);
-        EditText prepTime = view.findViewById(R.id.prepInput);
-        ImageButton image = view.findViewById(R.id.addImage);
-        Button save = view.findViewById(R.id.saveButton);
-
-        Recipe newRecipe = new Recipe();
-
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                newRecipe.setName(name.getText().toString());
-            }
-        });
-
         return view;
     }
 
