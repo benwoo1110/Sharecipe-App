@@ -19,25 +19,31 @@ public class SearchResultViewHolder extends RecyclerView.ViewHolder {
     final TextView name;
     final TextView bio;
 
+    int userId;
+
     public SearchResultViewHolder(@NonNull View itemView) {
         super(itemView);
         name = itemView.findViewById(R.id.textViewName);
         bio = itemView.findViewById(R.id.textViewBio);
 
         itemView.setOnClickListener(v -> {
-            Recipe newRecipe = new Recipe();
-            newRecipe.setName(name.getText().toString());
-            newRecipe.setDifficulty(10);
-            List<RecipeStep> steps = new ArrayList<RecipeStep>() {{
-                add(new RecipeStep(1, "bah", "boop"));
-                add(new RecipeStep(2, "lah", "mee"));
-            }};
-            newRecipe.setSteps(steps);
-
-            RecipeManager.getInstance(itemView.getContext()).save(newRecipe)
-                    .onSuccess(System.out::println)
-                    .onFailed(System.out::println)
-                    .onError(Throwable::printStackTrace);
+            // intent to profile
         });
+
+//        itemView.setOnClickListener(v -> {
+//            Recipe newRecipe = new Recipe();
+//            newRecipe.setName(name.getText().toString());
+//            newRecipe.setDifficulty(10);
+//            List<RecipeStep> steps = new ArrayList<RecipeStep>() {{
+//                add(new RecipeStep(1, "bah", "boop"));
+//                add(new RecipeStep(2, "lah", "mee"));
+//            }};
+//            newRecipe.setSteps(steps);
+//
+//            RecipeManager.getInstance(itemView.getContext()).save(newRecipe)
+//                    .onSuccess(System.out::println)
+//                    .onFailed(System.out::println)
+//                    .onError(Throwable::printStackTrace);
+//        });
     }
 }
