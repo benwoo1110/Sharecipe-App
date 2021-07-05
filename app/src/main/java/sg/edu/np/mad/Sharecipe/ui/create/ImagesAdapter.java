@@ -45,7 +45,6 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
             holder.image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(item.getContext(), "Nice", Toast.LENGTH_SHORT).show(); //TODO: Add image from user gallery on click
                     ImagePicker.with(activity)
                             .crop()	// Crop image(Optional), Check Customization for more option
                             .compress(1024)	// Final image size will be less than 1 MB
@@ -59,7 +58,6 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
 
     public void onBindViewHolder(ImagesViewholder holder, int position) {
         if (position == 0) {
-            // TODO: Set image as default add button
             return;
         }
 
@@ -69,12 +67,12 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
 
     @Override
     public int getItemCount() {
-        return images.size() + 1;
+        return images.size() + 1; // +1 because of the add button that remains
     }
 
     @Override
     public int getItemViewType(int position) {
-        return position == 0 ? 0 : 1;
+        return position == 0 ? 0 : 1; // if position == 0, set position = 0 else position = 1
     }
 
 }
