@@ -12,12 +12,9 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-import java9.util.function.Consumer;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
-import sg.edu.np.mad.Sharecipe.models.Account;
-import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 
 public class ProfileFragment extends Fragment {
@@ -42,6 +39,7 @@ public class ProfileFragment extends Fragment {
         TextView description = view.findViewById(R.id.description);
         TextView following = view.findViewById(R.id.following);
         TextView followers = view.findViewById(R.id.followers);
+        Button editButton = view.findViewById(R.id.editUserinfo);
 
         UserManager.getInstance(getContext()).getLoggedIn().onSuccess(user -> {
             getActivity().runOnUiThread(() -> {
@@ -65,6 +63,10 @@ public class ProfileFragment extends Fragment {
                     .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason, Toast.LENGTH_SHORT).show()))
                     .onError(Throwable::printStackTrace);
         });
+
+
+
+
 
         return view;
     }
