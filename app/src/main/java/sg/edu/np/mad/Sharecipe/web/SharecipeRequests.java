@@ -246,7 +246,6 @@ public class SharecipeRequests {
         RequestBody image = RequestBody.create(imageFile, FILE_TYPE);
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("text", "text")
                 .addFormDataPart("image", imageFile.getName(), image)
                 .build();
 
