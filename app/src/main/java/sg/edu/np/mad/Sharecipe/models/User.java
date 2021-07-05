@@ -1,10 +1,19 @@
 package sg.edu.np.mad.Sharecipe.models;
 
+import com.google.gson.annotations.Expose;
+
+import java.util.Date;
+
 public class User {
 
+    @Expose
     private int userId;
+    @Expose
     private String username;
+    @Expose
     private String bio;
+    @Expose(serialize = false)
+    private Date timeCreated;
 
     private User() { }
 
@@ -28,12 +37,17 @@ public class User {
         this.bio = bio;
     }
 
+    public Date getTimeCreated() {
+        return timeCreated;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "userId=" + userId +
                 ", username='" + username + '\'' +
                 ", bio='" + bio + '\'' +
+                ", timeCreated=" + timeCreated +
                 '}';
     }
 }

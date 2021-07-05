@@ -2,7 +2,6 @@ package sg.edu.np.mad.Sharecipe.utils;
 
 import java9.util.concurrent.CompletableFuture;
 import java9.util.function.Consumer;
-import java9.util.function.Function;
 
 /**
  * Wrapper for {@link CompletableFuture} to provide custom result handling of {@link DataResult}.

@@ -31,8 +31,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-
-
+        
         ImageView profileImage = view.findViewById(R.id.profileImage);
         Button logoutButton = view.findViewById(R.id.buttonLogout);
         TextView username = view.findViewById(R.id.username);
@@ -41,7 +40,7 @@ public class ProfileFragment extends Fragment {
         TextView followers = view.findViewById(R.id.followers);
         Button editButton = view.findViewById(R.id.editUserinfo);
 
-        UserManager.getInstance(getContext()).getLoggedIn().onSuccess(user -> {
+        UserManager.getInstance(getContext()).getAccountUser().onSuccess(user -> {
             getActivity().runOnUiThread(() -> {
                 username.setText(user.getUsername());
                 description.setText(user.getBio());

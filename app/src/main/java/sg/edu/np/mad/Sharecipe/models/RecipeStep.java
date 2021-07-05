@@ -1,15 +1,27 @@
 package sg.edu.np.mad.Sharecipe.models;
 
+import com.google.gson.annotations.Expose;
+
 public class RecipeStep {
 
+    @Expose
+    private int recipeId;
+    @Expose
     private int stepNumber;
+    @Expose
     private String name;
+    @Expose
     private String description;
+    //TODO timeNeeded
 
     public RecipeStep(int stepNumber, String name, String description) {
         this.stepNumber = stepNumber;
         this.name = name;
         this.description = description;
+    }
+
+    public int getRecipeId() {
+        return recipeId;
     }
 
     public int getStepNumber() {
@@ -39,7 +51,8 @@ public class RecipeStep {
     @Override
     public String toString() {
         return "RecipeStep{" +
-                "stepNumber=" + stepNumber +
+                "recipeId=" + recipeId +
+                ", stepNumber=" + stepNumber +
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';

@@ -1,16 +1,25 @@
 package sg.edu.np.mad.Sharecipe.models;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.Date;
 import java.util.List;
 
 public class Recipe {
 
+    @Expose
     private int userId;
+    @Expose
     private int recipeId;
+    @Expose
     private String name;
+    @Expose
     private int portion;
+    @Expose
     private int difficulty;
+    @Expose(serialize = false)
     private Date timeCreated;
+    @Expose
     private List<RecipeStep> steps;
 
     public Recipe() { }

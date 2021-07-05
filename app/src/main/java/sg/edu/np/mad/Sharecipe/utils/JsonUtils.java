@@ -13,12 +13,26 @@ import java.io.IOException;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+/**
+ * Helper methods to facilitate conversion to and from json formats.
+ */
 public class JsonUtils {
 
     private static final Gson GSON = new GsonBuilder()
+            .excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
             .create();
+
+    /**
+     * Converts an object model into json string.
+     *
+     * @param object    Target object to convert.
+     * @return The json string, null if an error occurred.
+     */
+    public static String convertToJsonString(Object object) {
+        return GSON.toJson(object);
+    }
 
     /**
      * Converts an object model into json element.
@@ -27,7 +41,7 @@ public class JsonUtils {
      * @return The json element, null if an error occurred.
      */
     public static JsonElement convertToJson(Object object) {
-        return convertToJson(GSON.toJson(object));
+        return convertToJson(convertToJsonString(object));
     }
 
     /**

@@ -11,13 +11,13 @@ import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.ResponseBody;
-import sg.edu.np.mad.Sharecipe.models.Account;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
@@ -62,16 +62,12 @@ public class UserManager {
     @NonNull
     public FutureDataResult<List<User>> search(String username) {
         FutureDataResult<List<User>> future = new FutureDataResult<>();
-        if (!accountManager.isLoggedIn()) {
-            future.complete(new DataResult.Failed<>("No account logged in!"));
-            return future;
-        }
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.searchUsers(account.getAccessToken(), username).thenAccept(response -> {
                 JsonElement json = JsonUtils.convertToJson(response);
                 if (!response.isSuccessful()) {
-                    JsonElement message = json.getAsJsonObject().get("message");
+                    JsonElement message = json == null ? null : json.getAsJsonObject().get("message");
                     future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
                     return;
                 }
@@ -101,10 +97,6 @@ public class UserManager {
     @NonNull
     public FutureDataResult<User> get(int userId) {
         FutureDataResult<User> future = new FutureDataResult<>();
-        if (!accountManager.isLoggedIn()) {
-            future.complete(new DataResult.Failed<>("No account logged in!"));
-            return future;
-        }
 
         User cacheUser = userCache.getIfPresent(userId);
         if (cacheUser != null) {
@@ -134,13 +126,42 @@ public class UserManager {
         return future;
     }
 
+    /**
+     * Edit existing account user. Note you cannot edit other users.
+     *
+     * @param user  Updated user object.
+     * @return Success status, no actual data returned.
+     */
+    @NonNull
+    public FutureDataResult<Void> update(User user) {
+        FutureDataResult<Void> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.editUser(account.getAccessToken(), user).thenAccept(response -> {
+                if (!response.isSuccessful()) {
+                    JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
+                    JsonElement message = json.getAsJsonObject().get("message");
+                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
+                    return;
+                }
+                future.complete(new DataResult.Success<>(null));
+            });
+        })
+        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
+        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+
+        return future;
+    }
+
+    /**
+     * Gets profile picture of a user.
+     *
+     * @param userId    Target user to get profile of.
+     * @return Future result of image in bitmap format.
+     */
     @NonNull
     public FutureDataResult<Bitmap> getProfileImage(int userId) {
         FutureDataResult<Bitmap> future = new FutureDataResult<>();
-        if (!accountManager.isLoggedIn()) {
-            future.complete(new DataResult.Failed<>("No account logged in!"));
-            return future;
-        }
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getUserProfileImage(account.getAccessToken(), userId).thenAccept(response -> {
@@ -164,6 +185,7 @@ public class UserManager {
                     future.complete(new DataResult.Error<>(e));
                     return;
                 }
+
                 Bitmap bitmap = BitmapFactory.decodeByteArray(image_data,0,image_data.length);
                 future.complete(new DataResult.Success<>(bitmap));
             })
@@ -173,7 +195,38 @@ public class UserManager {
             });
         })
         .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
-        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));;
+        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+
+        return future;
+    }
+
+    /**
+     * Sets profile picture for the user. Replace if user already have existing profile picture.
+     *
+     * @param imageFile Image to be set as profile picture.
+     * @return Success status, no actual data returned.
+     */
+    @NonNull
+    public FutureDataResult<Void> setAccountProfileImage(File imageFile) {
+        if (imageFile == null || !imageFile.isFile()) {
+            return FutureDataResult.completed(new DataResult.Failed<>("Image file not found."));
+        }
+
+        FutureDataResult<Void> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.setUserProfileImage(account.getAccessToken(), account.getUserId(), imageFile).thenAccept(response -> {
+                if (!response.isSuccessful()) {
+                    JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
+                    JsonElement message = json != null ? json.get("message") : null;
+                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
+                    return;
+                }
+                future.complete(new DataResult.Success<>(null));
+            });
+        })
+        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
+        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
 
         return future;
     }
@@ -184,7 +237,7 @@ public class UserManager {
      * @return Future result of user data.
      */
     @NonNull
-    public FutureDataResult<User> getLoggedIn() {
+    public FutureDataResult<User> getAccountUser() {
         if (!accountManager.isLoggedIn()) {
             return FutureDataResult.completed(new DataResult.Failed<>("No account logged in!"));
         }
