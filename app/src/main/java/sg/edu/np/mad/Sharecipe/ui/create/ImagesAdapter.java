@@ -17,17 +17,25 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.material.transition.Hold;
 
 import java.util.ArrayList;
 
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 import sg.edu.np.mad.Sharecipe.R;
 
 import static androidx.core.app.ActivityCompat.startActivityForResult;
 
 public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
-    ArrayList<Bitmap> images;
 
-    public ImagesAdapter(ArrayList<Bitmap> input) {this.images = input;}
+    Activity activity;
+    ArrayList<Uri> images;
+
+    public ImagesAdapter(Activity activity, ArrayList<Uri> input) {
+        this.activity = activity;
+        this.images = input;
+    }
 
     public ImagesViewholder onCreateViewHolder(ViewGroup parent, int viewtype){
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_images, parent, false);
@@ -37,7 +45,12 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
             holder.image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(item.getContext(), "Nice", Toast.LENGTH_SHORT).show(); //TO DO: Add image from user gallery on click
+                    Toast.makeText(item.getContext(), "Nice", Toast.LENGTH_SHORT).show(); //TODO: Add image from user gallery on click
+                    ImagePicker.with(activity)
+                            .crop()	// Crop image(Optional), Check Customization for more option
+                            .compress(1024)	// Final image size will be less than 1 MB
+                            .maxResultSize(500, 500) // Final image resolution will be less than 500x500
+                            .start();
                 }
             });
         }
@@ -46,12 +59,12 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
 
     public void onBindViewHolder(ImagesViewholder holder, int position) {
         if (position == 0) {
-            // TO DO: Set image as default add button
+            // TODO: Set image as default add button
             return;
         }
 
-        Bitmap image = images.get(position - 1);
-        // TO DO: Set images to view holder
+        Uri image = images.get(position - 1);
+        holder.image.setImageURI(image);
     }
 
     @Override

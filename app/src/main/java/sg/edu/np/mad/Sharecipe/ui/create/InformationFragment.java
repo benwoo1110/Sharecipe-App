@@ -30,7 +30,8 @@ import sg.edu.np.mad.Sharecipe.models.Recipe;
 
 public class InformationFragment extends Fragment {
 
-    ArrayList<Bitmap> imageList = new ArrayList<>();
+    private ImagesAdapter adapter;
+    private final ArrayList<Uri> imageList = new ArrayList<>();
 
     public InformationFragment() {
     }
@@ -46,7 +47,7 @@ public class InformationFragment extends Fragment {
 
         RecyclerView images = view.findViewById(R.id.recyclerview_images);
 
-        ImagesAdapter adapter = new ImagesAdapter(imageList);
+        adapter = new ImagesAdapter(getActivity(), imageList);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
         cLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
@@ -56,5 +57,17 @@ public class InformationFragment extends Fragment {
         return view;
     }
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            Uri uri = data.getData();
+            imageList.add(uri);
+            adapter.notifyDataSetChanged();
+        } else if (resultCode == ImagePicker.RESULT_ERROR) {
+            Toast.makeText(getActivity(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getActivity(), "Task Cancelled", Toast.LENGTH_SHORT).show();
+        }
+    }
 }
