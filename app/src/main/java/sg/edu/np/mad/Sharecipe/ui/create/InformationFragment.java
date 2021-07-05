@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.RatingBar;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
@@ -29,6 +30,9 @@ public class InformationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_information, container, false);
+
+        RecyclerView images = view.findViewById(R.id.recyclerview_images);
+
 
         return view;
     }
