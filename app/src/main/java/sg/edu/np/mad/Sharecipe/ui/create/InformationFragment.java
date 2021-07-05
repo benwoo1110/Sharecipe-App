@@ -12,11 +12,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainer;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,8 +49,9 @@ public class InformationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_information, container, false);
 
         RecyclerView images = view.findViewById(R.id.recyclerview_images);
+        ImageView enlargedImage = view.findViewById(R.id.expanded_image);
 
-        adapter = new ImagesAdapter(getActivity(), imageList);
+        adapter = new ImagesAdapter(getActivity(), imageList, enlargedImage, view);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
         cLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 

@@ -46,10 +46,14 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
     private int shortAnimationDuration;
     Activity activity;
     ArrayList<Uri> images;
+    ImageView enlarge;
+    View view;
 
-    public ImagesAdapter(Activity activity, ArrayList<Uri> input) {
+    public ImagesAdapter(Activity activity, ArrayList<Uri> input, ImageView enlargedImage, View view) {
         this.activity = activity;
         this.images = input;
+        this.enlarge = enlargedImage;
+        this.view = view;
     }
 
     public ImagesViewholder onCreateViewHolder(ViewGroup parent, int viewtype) {
@@ -116,7 +120,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
         if (currentAnimator != null) {
             currentAnimator.cancel();
         }
-        final ImageView expandedImageView = thumbView.findViewById(R.id.expanded_image);
+        final ImageView expandedImageView = enlarge;
         expandedImageView.setImageURI(imguri);
 
         final Rect startBounds = new Rect();
@@ -124,8 +128,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
         final Point globalOffset = new Point();
 
         thumbView.getGlobalVisibleRect(startBounds);
-        thumbView.findViewById(R.id.container)
-                .getGlobalVisibleRect(finalBounds, globalOffset);
+        view.getGlobalVisibleRect(finalBounds, globalOffset);
         startBounds.offset(-globalOffset.x, -globalOffset.y);
         finalBounds.offset(-globalOffset.x, -globalOffset.y);
 
