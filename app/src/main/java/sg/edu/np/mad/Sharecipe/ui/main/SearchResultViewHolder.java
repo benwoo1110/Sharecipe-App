@@ -1,5 +1,7 @@
 package sg.edu.np.mad.Sharecipe.ui.main;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -26,7 +28,10 @@ public class SearchResultViewHolder extends RecyclerView.ViewHolder {
         name = itemView.findViewById(R.id.textViewName);
         bio = itemView.findViewById(R.id.textViewBio);
 
+        Context context;
         itemView.setOnClickListener(v -> {
+            //Intent intent = new Intent(,UserProfileFragment.class);
+            //intent.putExtra("userId", userId);
             // intent to profile
         });
 

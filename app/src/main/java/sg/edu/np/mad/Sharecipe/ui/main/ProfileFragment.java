@@ -63,9 +63,13 @@ public class ProfileFragment extends Fragment {
                     .onError(Throwable::printStackTrace);
         });
 
-
-
-
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                ((MainActivity) getActivity()).startActivity(intent);
+            }
+        });
 
         return view;
     }

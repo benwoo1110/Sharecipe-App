@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
 
 public class EditProfileActivity extends AppCompatActivity {
@@ -25,7 +26,18 @@ public class EditProfileActivity extends AppCompatActivity {
         TextView editBio = findViewById(R.id.editDescription);
         TextView editPassword = findViewById(R.id.editPassword);
 
-        UserManager.getInstance(EditProfileActivity.this).getLoggedIn().onSuccess(user -> {});
+        UserManager.getInstance(EditProfileActivity.this).getAccountUser().onSuccess(user -> {
+            editUsername.setText(user.getUsername());
+            editBio.setText(user.getBio());
+        });
+
+        /*editPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AccountManager.getInstance(getApplicationContext()).getAccount().getUserId();
+
+            }
+        });*/
 
 
     }
