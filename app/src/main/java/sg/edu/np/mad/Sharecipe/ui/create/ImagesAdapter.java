@@ -32,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.transition.Hold;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 import kotlin.Unit;
@@ -73,7 +74,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
                 @Override
                 public void onClick(View v) {
                     //TODO: Display added image on click
-                    zoomImageFromThumb(holder.image, R.drawable.ic_launcher_foreground); //TODO: change placeholder image to enlarged image
+                    zoomImageFromThumb(holder.image, holder.imgUri); //TODO: change placeholder image to enlarged image
                 }
             });
             shortAnimationDuration = activity.getResources().getInteger(
@@ -96,6 +97,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
 
         Uri image = images.get(position - 1);
         holder.image.setImageURI(image);
+        holder.imgUri = images.get(position - 1);
     }
 
     @Override
@@ -108,14 +110,14 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
         return position == 0 ? 0 : 1; // if position == 0, set position = 0 else position = 1
     }
 
-    private void zoomImageFromThumb(final ImageView thumbView, int imageResId) {
+    private void zoomImageFromThumb(final ImageView thumbView, Uri imguri) {
         // If there's an animation in progress, cancel it
         // immediately and proceed with this one.
         if (currentAnimator != null) {
             currentAnimator.cancel();
         }
         final ImageView expandedImageView = thumbView.findViewById(R.id.expanded_image);
-        expandedImageView.setImageResource(imageResId);
+        expandedImageView.setImageURI(imguri);
 
         final Rect startBounds = new Rect();
         final Rect finalBounds = new Rect();
