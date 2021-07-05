@@ -28,7 +28,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewholder> {
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // TO DO: Add action for editing step
             }
         });
     }
