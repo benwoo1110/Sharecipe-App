@@ -5,7 +5,9 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -77,8 +79,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
             holder.image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //TODO: Display added image on click
-                    zoomImageFromThumb(holder.image, holder.imgUri); //TODO: change placeholder image to enlarged image
+                    displayLargeImage(holder.image, holder.imgUri);
                 }
             });
             shortAnimationDuration = activity.getResources().getInteger(
@@ -87,6 +88,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
             holder.image.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
+                    AlertDialog(holder.imgUri);
                     return false;
                 }
             });
@@ -114,7 +116,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
         return position == 0 ? 0 : 1; // if position == 0, set position = 0 else position = 1
     }
 
-    private void zoomImageFromThumb(final ImageView thumbView, Uri imguri) {
+    private void displayLargeImage(final ImageView thumbView, Uri imguri) {
         // If there's an animation in progress, cancel it
         // immediately and proceed with this one.
         if (currentAnimator != null) {
@@ -238,6 +240,24 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
         });
     }
 
+    private void AlertDialog(Uri image) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        LayoutInflater factory = LayoutInflater.from(activity);
+        final View view = factory.inflate(R.layout.alert_image, null);
+        ImageView targetImage = view.findViewById(R.id.alertImage);
+        targetImage.setImageURI(image);
+        builder.setView(view);
+        builder.setTitle("Remove image");
+        builder.setMessage("Would you like to remove this image?");
+        builder.setPositiveButton("Remove", (dialog, which) -> {
+            //TODO: Remove image on click
+            images.remove(image);
+            notifyDataSetChanged();
 
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> { });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
+}
 
