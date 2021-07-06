@@ -12,13 +12,10 @@ public class RecipeStep {
     private String name;
     @Expose
     private String description;
-    //TODO timeNeeded
+    @Expose
+    private int timeNeeded;
 
-    public RecipeStep(int stepNumber, String name, String description) {
-        this.stepNumber = stepNumber;
-        this.name = name;
-        this.description = description;
-    }
+    public RecipeStep() { }
 
     public int getRecipeId() {
         return recipeId;
@@ -46,6 +43,14 @@ public class RecipeStep {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getTimeNeeded() {
+        return timeNeeded;
+    }
+
+    public void setTimeNeeded(int timeNeeded) {
+        this.timeNeeded = timeNeeded;
     }
 
     @Override
