@@ -127,33 +127,6 @@ public class UserManager {
     }
 
     /**
-     * Edit existing account user. Note you cannot edit other users.
-     *
-     * @param user  Updated user object.
-     * @return Success status, no actual data returned.
-     */
-    @NonNull
-    public FutureDataResult<Void> update(User user) {
-        FutureDataResult<Void> future = new FutureDataResult<>();
-
-        accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.editUser(account.getAccessToken(), user).thenAccept(response -> {
-                if (!response.isSuccessful()) {
-                    JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
-                    JsonElement message = json.getAsJsonObject().get("message");
-                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
-                    return;
-                }
-                future.complete(new DataResult.Success<>(null));
-            });
-        })
-        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
-        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
-
-        return future;
-    }
-
-    /**
      * Gets profile picture of a user.
      *
      * @param userId    Target user to get profile of.
@@ -171,27 +144,65 @@ public class UserManager {
                     future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
                     return;
                 }
-
                 ResponseBody body = response.body();
                 if (body == null) {
                     future.complete(new DataResult.Failed<>("No profile image data"));
                     return;
                 }
-
-                byte[] image_data;
+                byte[] rawImageData;
                 try {
-                    image_data = body.bytes();
+                    rawImageData = body.bytes();
                 } catch (IOException e) {
                     future.complete(new DataResult.Error<>(e));
                     return;
                 }
-
-                Bitmap bitmap = BitmapFactory.decodeByteArray(image_data,0,image_data.length);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(rawImageData,0, rawImageData.length);
                 future.complete(new DataResult.Success<>(bitmap));
             })
             .exceptionally(throwable -> {
                 future.complete(new DataResult.Error<>(throwable));
                 return null;
+            });
+        })
+        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
+        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+
+        return future;
+    }
+
+    /**
+     * Gets user data of logged in account.
+     *
+     * @return Future result of user data.
+     */
+    @NonNull
+    public FutureDataResult<User> getAccountUser() {
+        if (!accountManager.isLoggedIn()) {
+            return FutureDataResult.completed(new DataResult.Failed<>("No account logged in!"));
+        }
+        return get(accountManager.getAccount().getUserId());
+    }
+
+    /**
+     * Edit existing account user. Note you cannot edit other users.
+     *
+     * @param user  Updated user object.
+     * @return Success status, no actual data returned.
+     */
+    @NonNull
+    public FutureDataResult<Void> updateAccountUser(User user) {
+        FutureDataResult<Void> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            JsonElement userData = JsonUtils.convertToJson(user);
+            SharecipeRequests.editUser(account.getAccessToken(), account.getUserId(), userData).thenAccept(response -> {
+                if (!response.isSuccessful()) {
+                    JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
+                    JsonElement message = json.getAsJsonObject().get("message");
+                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
+                    return;
+                }
+                future.complete(new DataResult.Success<>(null));
             });
         })
         .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
@@ -229,18 +240,5 @@ public class UserManager {
         .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
 
         return future;
-    }
-
-    /**
-     * Gets user data of logged in account.
-     *
-     * @return Future result of user data.
-     */
-    @NonNull
-    public FutureDataResult<User> getAccountUser() {
-        if (!accountManager.isLoggedIn()) {
-            return FutureDataResult.completed(new DataResult.Failed<>("No account logged in!"));
-        }
-        return get(accountManager.getAccount().getUserId());
     }
 }

@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.List;
 
 import java9.util.concurrent.CompletableFuture;
 import okhttp3.MediaType;
@@ -198,19 +199,18 @@ public class SharecipeRequests {
      * PATCH `/users/user_id` endpoint.
      *
      * @param accessToken
-     * @param user
+     * @param userData
      * @return Response from server.
      */
     @NonNull
-    public static CompletableFuture<Response> editUser(@NonNull String accessToken, User user) {
-        String payload = JsonUtils.convertToJsonString(user);
+    public static CompletableFuture<Response> editUser(@NonNull String accessToken, int userId , JsonElement userData) {
         return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
                         .addPathSegment(UrlPath.USERS)
-                        .addPathSegment(String.valueOf(user.getUserId()))
+                        .addPathSegment(String.valueOf(userId))
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
-                .patch(RequestBody.create(payload, JSON_TYPE))
+                .patch(RequestBody.create(userData.toString(), JSON_TYPE))
                 .build());
     }
 
@@ -315,6 +315,46 @@ public class SharecipeRequests {
                         .addPathSegment(String.valueOf(userId))
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
+
+    public static CompletableFuture<Response> addRecipeImages(@NonNull String accessToken,
+                                                              int userId,
+                                                              int recipeId,
+                                                              List<File> imageFiles) {
+
+        MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        for (File imageFile : imageFiles) {
+            requestBodyBuilder.addFormDataPart("images", imageFile.getName(), RequestBody.create(imageFile, FILE_TYPE));
+        }
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(userId))
+                        .addPathSegment(UrlPath.RECIPES)
+                        .addPathSegment(String.valueOf(recipeId))
+                        .addPathSegment(UrlPath.IMAGES)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .put(requestBodyBuilder.build())
+                .build());
+    }
+
+    public static CompletableFuture<Response> getRecipeImages(@NonNull String accessToken,
+                                                              int userId,
+                                                              int recipeId) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(userId))
+                        .addPathSegment(UrlPath.RECIPES)
+                        .addPathSegment(String.valueOf(recipeId))
+                        .addPathSegment(UrlPath.IMAGES)
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
                 .get()
