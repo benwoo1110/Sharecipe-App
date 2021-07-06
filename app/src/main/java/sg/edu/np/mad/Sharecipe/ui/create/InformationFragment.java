@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
@@ -49,6 +50,11 @@ public class InformationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_information, container, false);
 
         RecyclerView images = view.findViewById(R.id.recyclerview_images);
+        TextInputEditText name = view.findViewById(R.id.infoName);
+        TextInputEditText prep = view.findViewById(R.id.infoPrep);
+        TextInputEditText portions = view.findViewById(R.id.infoPortions);
+        CheckBox infoPublic = view.findViewById(R.id.infoPublic);
+        RatingBar difficulty = view.findViewById(R.id.infoDifficulty);
         ImageView enlargedImage = view.findViewById(R.id.expanded_image);
 
         adapter = new ImagesAdapter(getActivity(), imageList, enlargedImage, view);

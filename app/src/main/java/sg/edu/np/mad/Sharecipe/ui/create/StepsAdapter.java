@@ -18,7 +18,9 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewholder> {
 
     public StepsViewholder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_steps, parent, false);
-        return new StepsViewholder(item);
+        StepsViewholder holder = new StepsViewholder(item);
+
+        return holder;
     }
 
     public void onBindViewHolder(StepsViewholder holder, int position) {
@@ -28,7 +30,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewholder> {
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TO DO: Add action for editing step
+                // TODO: Add action for editing step
             }
         });
     }
