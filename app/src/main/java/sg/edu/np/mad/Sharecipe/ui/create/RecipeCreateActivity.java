@@ -6,13 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.util.Log;
 
-import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -33,6 +31,28 @@ public class RecipeCreateActivity extends AppCompatActivity {
 
         TabLayout tabLayout = findViewById(R.id.recipeTab);
         ViewPager2 viewPager = findViewById(R.id.recipe_info_viewpager);
+        BottomNavigationView bottomNavigation = findViewById(R.id.recipe_navigation);
+
+        bottomNavigation.getMenu().getItem(0).setCheckable(false);
+
+        bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.recipe_back_menu) {
+                item.setCheckable(true);
+                Log.v("LOL", "Back");
+                finish();
+                return true;
+            } else if (itemId == R.id.recipe_save_menu) {
+                Log.v("LOL", "Save");
+                return true;
+            } else if (itemId == R.id.recipe_clear_menu) {
+                Log.v("LOL", "Clear");
+                return true;
+            }
+            return false;
+        });
+
+
 
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
         tabLayout.addTab(tabLayout.newTab().setText("Ingredients"));

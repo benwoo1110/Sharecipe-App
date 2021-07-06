@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
@@ -35,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        FloatingActionButton recipeCreate = findViewById(id.button_create_recipe);
         BottomNavigationView bottomNavigation = findViewById(id.bottom_navigation);
 
         bottomNavigation.setOnNavigationItemSelectedListener(item -> {
@@ -44,6 +42,9 @@ public class MainActivity extends AppCompatActivity {
                 return viewFragment(DiscoverFragment.class);
             } else if (itemId == id.my_recipes_menu) {
                 return viewFragment(MyRecipeFragment.class);
+            } else if (itemId == id.create_menu) {
+                Intent recipeCreate1 = new Intent(MainActivity.this, RecipeCreateActivity.class);
+                startActivity(recipeCreate1);
             } else if (itemId == id.search_menu) {
                 return viewFragment(SearchFragment.class);
             } else if (itemId == id.profile_menu) {
@@ -53,11 +54,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         bottomNavigation.setSelectedItemId(id.discover_menu);
-
-        recipeCreate.setOnClickListener(v -> {
-            Intent recipeCreate1 = new Intent(MainActivity.this, RecipeCreateActivity.class);
-            startActivity(recipeCreate1);
-        });
     }
 
     private boolean viewFragment(Class<? extends Fragment> fragmentClass) {
