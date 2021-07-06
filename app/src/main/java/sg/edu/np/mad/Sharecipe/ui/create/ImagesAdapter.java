@@ -46,6 +46,7 @@ import static androidx.core.app.ActivityCompat.startActivityForResult;
 public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
     private Animator currentAnimator;
     private int shortAnimationDuration;
+    private final int limit = 5;
     Activity activity;
     ArrayList<Uri> images;
     ImageView enlarge;
@@ -108,7 +109,12 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
 
     @Override
     public int getItemCount() {
-        return images.size() + 1; // +1 because of the add button that remains
+        if (images.size() > limit) {
+            return limit;
+        }
+        else {
+            return images.size() + 1; // +1 because of the add button that remains
+        }
     }
 
     @Override

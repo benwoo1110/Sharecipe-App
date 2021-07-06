@@ -48,6 +48,9 @@ public class RecipeCreateActivity extends AppCompatActivity {
             } else if (itemId == R.id.recipe_clear_menu) {
                 Log.v("LOL", "Clear");
                 return true;
+            } else if (itemId == R.id.recipe_done_menu) {
+                Log.v("LOL", "Clear");
+                return true;
             }
             return false;
         });
