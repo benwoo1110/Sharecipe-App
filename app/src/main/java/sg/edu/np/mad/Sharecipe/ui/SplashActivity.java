@@ -31,7 +31,7 @@ public class SplashActivity extends AppCompatActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }).onFailed(reason -> {
-            SplashActivity.this.runOnUiThread(() -> Toast.makeText(SplashActivity.this, reason, Toast.LENGTH_SHORT).show());
+            SplashActivity.this.runOnUiThread(() -> Toast.makeText(SplashActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show());
             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
