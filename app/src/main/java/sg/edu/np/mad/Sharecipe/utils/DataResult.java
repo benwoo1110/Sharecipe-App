@@ -1,5 +1,9 @@
 package sg.edu.np.mad.Sharecipe.utils;
 
+import java.util.HashMap;
+import java.util.Map;
+import java9.util.Optional;
+
 /**
  * Result of an action that produces a data.
  *
@@ -35,10 +39,32 @@ public abstract class DataResult<T> {
      * @param <T>   Data type to get if result successful.
      */
     public static class Failed<T> extends DataResult<T> {
-        private final String reason;
+        private final Map<String, Object> messages;
+
+        public Failed(Failed<?> otherFailed) {
+            this.messages = otherFailed.messages;
+        }
+
+        public Failed(Map<String, Object> messages) {
+            this.messages = messages;
+        }
 
         public Failed(String reason) {
-            this.reason = reason;
+            messages = new HashMap<String, Object>() {{
+                put("message", reason);
+            }};
+        }
+
+        public String getMessage() {
+            return messages.containsKey("message") ? String.valueOf(messages.get("message")) : "Unknown issue occurred.";
+        }
+
+        public <C> Optional<C> get(String key, Class<C> cClass) {
+            try {
+                return Optional.ofNullable(cClass.cast(messages.get("message")));
+            } catch (ClassCastException e) {
+                return Optional.empty();
+            }
         }
 
         /**
@@ -46,8 +72,9 @@ public abstract class DataResult<T> {
          *
          * @return The reason.
          */
+        @Deprecated
         public String getReason() {
-            return reason;
+            return getMessage();
         }
     }
 

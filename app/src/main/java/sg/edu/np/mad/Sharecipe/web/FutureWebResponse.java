@@ -2,6 +2,9 @@ package sg.edu.np.mad.Sharecipe.web;
 
 import com.google.gson.JsonElement;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import java9.util.concurrent.CompletableFuture;
 import java9.util.function.BiConsumer;
 import java9.util.function.Consumer;
@@ -62,10 +65,18 @@ public class FutureWebResponse extends CompletableFuture<Response> {
 
     public FutureWebResponse onFailed(FutureDataResult<?> future) {
         onFailed(response -> {
-            //TODO improve this to support nested data.
+
             JsonElement json = JsonUtils.convertToJson(response);
-            JsonElement message = json.getAsJsonObject().get("message");
-            future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
+            Map<String, Object> objectMap;
+            if (json == null) {
+                objectMap = new HashMap<String, Object>() {{
+                    put("message", "Unknown issue occurred.");
+                }};
+            } else {
+                objectMap = JsonUtils.convertToMap(json);
+            }
+            objectMap.put("response_code", response.code());
+            future.complete(new DataResult.Failed<>(objectMap));
         });
         return this;
     }

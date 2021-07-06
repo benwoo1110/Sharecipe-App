@@ -1,5 +1,6 @@
 package sg.edu.np.mad.Sharecipe.utils;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -9,6 +10,8 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.Map;
 
 import okhttp3.Response;
 import okhttp3.ResponseBody;
@@ -18,6 +21,8 @@ import okhttp3.ResponseBody;
  */
 public class JsonUtils {
 
+    @SuppressWarnings("UnstableApiUsage")
+    private static final Type MAP_TYPE = new TypeToken<Map<String, Object>>() {}.getType();
     private static final Gson GSON = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -98,5 +103,9 @@ public class JsonUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static Map<String, Object> convertToMap(JsonElement json) {
+        return GSON.fromJson(json, MAP_TYPE);
     }
 }

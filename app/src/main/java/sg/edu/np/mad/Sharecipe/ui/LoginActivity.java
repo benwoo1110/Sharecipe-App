@@ -38,9 +38,7 @@ public class LoginActivity extends DynamicFocusAppCompatActivity {
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     })
-                    .onFailed(reason -> {
-                        LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, reason, Toast.LENGTH_SHORT).show());
-                    })
+                    .onFailed(reason -> LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show()))
                     .onError(error -> {
                         LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show());
                     });

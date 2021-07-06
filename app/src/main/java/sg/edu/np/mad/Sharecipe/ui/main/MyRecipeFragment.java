@@ -39,7 +39,7 @@ public class MyRecipeFragment extends Fragment {
 
         RecipeManager.getInstance(getContext()).getAccountRecipe()
                 .onSuccess(recipes -> getActivity().runOnUiThread(() -> adapter.setRecipeList(recipes)))
-                .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason, Toast.LENGTH_SHORT).show()))
+                .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
                 .onError(Throwable::printStackTrace);
 
         return view;

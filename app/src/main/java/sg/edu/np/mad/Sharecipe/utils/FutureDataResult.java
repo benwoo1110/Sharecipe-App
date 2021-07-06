@@ -41,17 +41,17 @@ public class FutureDataResult<T> extends CompletableFuture<DataResult<T>> {
      * @param consumer  Callback on failure.
      * @return The same {@link FutureDataResult} for chaining.
      */
-    public FutureDataResult<T> onFailed(Consumer<String> consumer) {
+    public FutureDataResult<T> onFailed(Consumer<DataResult.Failed<T>> consumer) {
         this.thenAccept(result -> {
             if (result instanceof DataResult.Failed) {
-                consumer.accept(((DataResult.Failed<T>)result).getReason());
+                consumer.accept((DataResult.Failed<T>) result);
             }
         });
         return this;
     }
 
     public FutureDataResult<T> onFailed(FutureDataResult<?> otherFuture) {
-        onFailed(reason -> otherFuture.complete(new DataResult.Failed<>(reason)));
+        onFailed(failedReason -> otherFuture.complete(new DataResult.Failed<>(failedReason)));
         return this;
     }
 
