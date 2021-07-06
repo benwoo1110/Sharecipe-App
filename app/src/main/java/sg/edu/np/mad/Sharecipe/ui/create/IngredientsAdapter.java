@@ -12,7 +12,7 @@ import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Ingredient;
 
 public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsViewholder> {
-    ArrayList<Ingredient> ingredientsList;
+    ArrayList<Ingredient> ingredients;
 
     public IngredientsAdapter() {}
 
@@ -28,7 +28,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsViewhold
     }
 
     public int getItemCount() {
-        return ingredientsList.size();
+        return ingredients.size();
     }
 
 }

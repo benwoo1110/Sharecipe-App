@@ -14,6 +14,7 @@ public class IngredientsViewholder extends RecyclerView.ViewHolder {
 
     public IngredientsViewholder(View itemView) {
         super(itemView);
+        // TODO: Stuff
 
     }
 
