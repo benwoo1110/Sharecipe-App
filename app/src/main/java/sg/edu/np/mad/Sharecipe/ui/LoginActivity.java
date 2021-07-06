@@ -50,21 +50,5 @@ public class LoginActivity extends DynamicFocusAppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
         });
-
-        //TODO remove this. Just here to test web api is connected.
-        SharecipeRequests.helloWorld().thenAccept(response -> {
-            String data;
-            try {
-                data = response.body().string();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
-            }
-            LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, data, Toast.LENGTH_SHORT).show());
-        }).exceptionally(throwable -> {
-            throwable.printStackTrace();
-            LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_SHORT).show());
-            return null;
-        });
     }
 }
