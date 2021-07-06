@@ -11,10 +11,6 @@
         android:icon="@drawable/ic_round_menu_book_24"
         android:title="My Recipes" />
     <item
-        android:id="@+id/create_menu"
-        android:icon="@drawable/ic_baseline_add_24"
-        android:title="Create" />
-    <item
         android:id="@+id/search_menu"
         android:icon="@drawable/ic_baseline_search_24"
         android:title="Search" />
