@@ -11,19 +11,14 @@ import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonElement;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 import okhttp3.ResponseBody;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
-import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
@@ -66,27 +61,11 @@ public class RecipeManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             JsonElement recipeData = JsonUtils.convertToJson(newRecipe);
-            SharecipeRequests.createRecipe(account.getAccessToken(), account.getUserId(), recipeData).thenAccept(response -> {
-                JsonElement json = JsonUtils.convertToJson(response);
-                if (!response.isSuccessful()) {
-                    JsonElement message = json.getAsJsonObject().get("message");
-                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
-                    return;
-                }
-                Recipe recipe = JsonUtils.convertToObject(json, Recipe.class);
-                if (recipe == null) {
-                    future.complete(new DataResult.Failed<>("Received invalid data."));
-                    return;
-                }
+            SharecipeRequests.createRecipe(account.getAccessToken(), account.getUserId(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
+                //TODO: Add to cache
                 future.complete(new DataResult.Success<>(recipe));
-            })
-            .exceptionally(throwable -> {
-                future.complete(new DataResult.Error<>(throwable));
-                return null;
-            });
-        })
-        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
-        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
 
         return future;
     }
@@ -94,35 +73,18 @@ public class RecipeManager {
     /**
      * Updates existing recipe with changed information.
      *
-     * @param recipe    Recipe data to update.
+     * @param modifiedRecipe    Recipe data to update.
      * @return Future result of updated recipe data.
      */
-    public FutureDataResult<Recipe> update(Recipe recipe) {
+    public FutureDataResult<Recipe> update(Recipe modifiedRecipe) {
         FutureDataResult<Recipe> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            JsonElement recipeData = JsonUtils.convertToJson(recipe);
-            SharecipeRequests.createRecipe(account.getAccessToken(), account.getUserId(), recipeData).thenAccept(response -> {
-                JsonElement json = JsonUtils.convertToJson(response);
-                if (!response.isSuccessful()) {
-                    JsonElement message = json.getAsJsonObject().get("message");
-                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
-                    return;
-                }
-                Recipe updatedRecipe = JsonUtils.convertToObject(json, Recipe.class);
-                if (updatedRecipe == null) {
-                    future.complete(new DataResult.Failed<>("Received invalid data."));
-                    return;
-                }
-                future.complete(new DataResult.Success<>(updatedRecipe));
-            })
-            .exceptionally(throwable -> {
-                future.complete(new DataResult.Error<>(throwable));
-                return null;
-            });
-        })
-        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
-        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+            JsonElement recipeData = JsonUtils.convertToJson(modifiedRecipe);
+            SharecipeRequests.createRecipe(account.getAccessToken(), account.getUserId(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
+                future.complete(new DataResult.Success<>(recipe));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
 
         return future;
     }
@@ -134,31 +96,16 @@ public class RecipeManager {
      * @param recipeId  Target recipe to get info on.
      * @return Future result of the recipe data.
      */
-    public FutureDataResult<Recipe> get(int userId, int recipeId) {
+    public FutureDataResult<Recipe> get(int userId,
+                                        int recipeId) {
+
         FutureDataResult<Recipe> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.getRecipe(account.getAccessToken(), userId, recipeId).thenAccept(response -> {
-                JsonElement json = JsonUtils.convertToJson(response);
-                if (!response.isSuccessful()) {
-                    JsonElement message = json.getAsJsonObject().get("message");
-                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
-                    return;
-                }
-                Recipe recipe = JsonUtils.convertToObject(json, Recipe.class);
-                if (recipe == null) {
-                    future.complete(new DataResult.Failed<>("Received invalid data."));
-                    return;
-                }
+            SharecipeRequests.getRecipe(account.getAccessToken(), userId, recipeId).onSuccessModel(future, Recipe.class, (response, recipe) -> {
                 future.complete(new DataResult.Success<>(recipe));
-            })
-            .exceptionally(throwable -> {
-                future.complete(new DataResult.Error<>(throwable));
-                return null;
-            });
-        })
-        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
-        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
 
         return future;
     }
@@ -167,18 +114,10 @@ public class RecipeManager {
         FutureDataResult<Void> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.addRecipeImages(account.getAccessToken(), recipe.getUserId(), recipe.getRecipeId(), imageFiles).thenAccept(response -> {
-                if (!response.isSuccessful()) {
-                    JsonElement json = JsonUtils.convertToJson(response);
-                    JsonElement message = json.getAsJsonObject().get("message");
-                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
-                    return;
-                }
+            SharecipeRequests.addRecipeImages(account.getAccessToken(), recipe.getUserId(), recipe.getRecipeId(), imageFiles).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
-            });
-        })
-        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
-        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
 
         return future;
     }
@@ -187,16 +126,10 @@ public class RecipeManager {
         FutureDataResult<List<Bitmap>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.getRecipeImages(account.getAccessToken(), recipe.getUserId(), recipe.getRecipeId()).thenAccept(response -> {
-                if (!response.isSuccessful()) {
-                    JsonElement json = JsonUtils.convertToJson(response);
-                    JsonElement message = json.getAsJsonObject().get("message");
-                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
-                    return;
-                }
+            SharecipeRequests.getRecipeImages(account.getAccessToken(), recipe.getUserId(), recipe.getRecipeId()).onSuccess(response -> {
                 ResponseBody body = response.body();
                 if (body == null) {
-                    future.complete(new DataResult.Failed<>("No profile image data"));
+                    future.complete(new DataResult.Failed<>("No images data."));
                     return;
                 }
                 List<Bitmap> images = new ArrayList<>();
@@ -208,10 +141,8 @@ public class RecipeManager {
                     future.complete(new DataResult.Error<>(e));
                 }
                 future.complete(new DataResult.Success<>(images));
-            });
-        })
-        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
-        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
 
         return future;
     }
@@ -220,22 +151,14 @@ public class RecipeManager {
         FutureDataResult<List<Recipe>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.getUserRecipes(account.getAccessToken(), userId).thenAccept(response -> {
-                JsonElement json = JsonUtils.convertToJson(response);
-                if (!response.isSuccessful()) {
-                    JsonElement message = json.getAsJsonObject().get("message");
-                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
-                    return;
-                }
+            SharecipeRequests.searchUserRecipes(account.getAccessToken(), userId).onSuccessJson(future, (response, json) -> {
                 List<Recipe> recipes = new ArrayList<>();
                 for (JsonElement recipeData : json.getAsJsonArray()) {
                     recipes.add(JsonUtils.convertToObject(recipeData, Recipe.class));
                 }
                 future.complete(new DataResult.Success<>(recipes));
-            });
-        })
-                .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
-                .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
 
         return future;
     }

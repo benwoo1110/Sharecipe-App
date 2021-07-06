@@ -64,13 +64,7 @@ public class UserManager {
         FutureDataResult<List<User>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.searchUsers(account.getAccessToken(), username).thenAccept(response -> {
-                JsonElement json = JsonUtils.convertToJson(response);
-                if (!response.isSuccessful()) {
-                    JsonElement message = json == null ? null : json.getAsJsonObject().get("message");
-                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
-                    return;
-                }
+            SharecipeRequests.searchUsers(account.getAccessToken(), username).onSuccessJson(future, (response, json) -> {
                 List<User> userList = new ArrayList<>();
                 for (JsonElement userData : json.getAsJsonArray()) {
                     userList.add(JsonUtils.convertToObject(userData, User.class));
@@ -81,9 +75,7 @@ public class UserManager {
                 future.complete(new DataResult.Error<>(throwable));
                 return null;
             });
-        })
-        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
-        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+        }).onFailed(future).onError(future);
 
         return future;
     }
@@ -96,32 +88,19 @@ public class UserManager {
      */
     @NonNull
     public FutureDataResult<User> get(int userId) {
-        FutureDataResult<User> future = new FutureDataResult<>();
-
         User cacheUser = userCache.getIfPresent(userId);
         if (cacheUser != null) {
-            future.complete(new DataResult.Success<>(cacheUser));
-            return future;
+            return FutureDataResult.completed(cacheUser);
         }
 
+        FutureDataResult<User> future = new FutureDataResult<>();
+
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.getUser(account.getAccessToken(), userId).thenAccept(response -> {
-                JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
-                User user = JsonUtils.convertToObject(json, User.class);
-                if (user == null) {
-                    future.complete(new DataResult.Failed<>("Invalid user data."));
-                    return;
-                }
+            SharecipeRequests.getUser(account.getAccessToken(), userId).onSuccessModel(future, User.class, (response, user) -> {
                 userCache.put(userId, user);
                 future.complete(new DataResult.Success<>(user));
-            })
-            .exceptionally(throwable -> {
-                future.complete(new DataResult.Error<>(throwable));
-                return null;
-            });
-        })
-        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
-        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
 
         return future;
     }
@@ -137,13 +116,7 @@ public class UserManager {
         FutureDataResult<Bitmap> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.getUserProfileImage(account.getAccessToken(), userId).thenAccept(response -> {
-                if (!response.isSuccessful()) {
-                    JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
-                    JsonElement message = json != null ? json.get("message") : null;
-                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
-                    return;
-                }
+            SharecipeRequests.getUserProfileImage(account.getAccessToken(), userId).onSuccess(response -> {
                 ResponseBody body = response.body();
                 if (body == null) {
                     future.complete(new DataResult.Failed<>("No profile image data"));
@@ -158,14 +131,8 @@ public class UserManager {
                 }
                 Bitmap bitmap = BitmapFactory.decodeByteArray(rawImageData,0, rawImageData.length);
                 future.complete(new DataResult.Success<>(bitmap));
-            })
-            .exceptionally(throwable -> {
-                future.complete(new DataResult.Error<>(throwable));
-                return null;
-            });
-        })
-        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
-        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
 
         return future;
     }
@@ -195,18 +162,10 @@ public class UserManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             JsonElement userData = JsonUtils.convertToJson(user);
-            SharecipeRequests.editUser(account.getAccessToken(), account.getUserId(), userData).thenAccept(response -> {
-                if (!response.isSuccessful()) {
-                    JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
-                    JsonElement message = json.getAsJsonObject().get("message");
-                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
-                    return;
-                }
+            SharecipeRequests.editUser(account.getAccessToken(), account.getUserId(), userData).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
-            });
-        })
-        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
-        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
 
         return future;
     }
@@ -226,18 +185,10 @@ public class UserManager {
         FutureDataResult<Void> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.setUserProfileImage(account.getAccessToken(), account.getUserId(), imageFile).thenAccept(response -> {
-                if (!response.isSuccessful()) {
-                    JsonObject json = (JsonObject) JsonUtils.convertToJson(response);
-                    JsonElement message = json != null ? json.get("message") : null;
-                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
-                    return;
-                }
+            SharecipeRequests.setUserProfileImage(account.getAccessToken(), account.getUserId(), imageFile).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
             });
-        })
-        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
-        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+        }).onFailed(future).onError(future);
 
         return future;
     }
