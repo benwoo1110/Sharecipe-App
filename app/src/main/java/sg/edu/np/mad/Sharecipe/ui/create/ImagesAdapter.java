@@ -109,12 +109,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
 
     @Override
     public int getItemCount() {
-        if (images.size() > limit) {
-            return limit;
-        }
-        else {
-            return images.size() + 1; // +1 because of the add button that remains
-        }
+        return images.size() + 1; // +1 because of the add button that remains
     }
 
     @Override
