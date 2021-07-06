@@ -50,6 +50,11 @@ public class FutureDataResult<T> extends CompletableFuture<DataResult<T>> {
         return this;
     }
 
+    public FutureDataResult<T> onFailed(FutureDataResult<?> otherFuture) {
+        onFailed(reason -> otherFuture.complete(new DataResult.Failed<>(reason)));
+        return this;
+    }
+
     /**
      * When result is a {@link DataResult.Error}.
      *
@@ -62,6 +67,11 @@ public class FutureDataResult<T> extends CompletableFuture<DataResult<T>> {
                 consumer.accept(((DataResult.Error<T>)result).getError());
             }
         });
+        return this;
+    }
+
+    public FutureDataResult<T> onError(FutureDataResult<?> otherFuture) {
+        onError(throwable -> otherFuture.complete(new DataResult.Error<>(throwable)));
         return this;
     }
 

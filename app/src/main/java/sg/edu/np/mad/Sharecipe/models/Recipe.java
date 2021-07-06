@@ -17,10 +17,16 @@ public class Recipe {
     private int portion;
     @Expose
     private int difficulty;
+    @Expose
+    private int totalTimeNeeded;
     @Expose(serialize = false)
     private Date timeCreated;
     @Expose
     private List<RecipeStep> steps;
+    @Expose
+    private List<RecipeIngredient> ingredients;
+    @Expose
+    private List<RecipeImage> images;
 
     public Recipe() { }
 
@@ -56,6 +62,14 @@ public class Recipe {
         this.difficulty = difficulty;
     }
 
+    public int getTotalTimeNeeded() {
+        return totalTimeNeeded;
+    }
+
+    public void setTotalTimeNeeded(int totalTimeNeeded) {
+        this.totalTimeNeeded = totalTimeNeeded;
+    }
+
     public Date getTimeCreated() {
         return timeCreated;
     }
@@ -66,6 +80,22 @@ public class Recipe {
 
     public void setSteps(List<RecipeStep> steps) {
         this.steps = steps;
+    }
+
+    public List<RecipeIngredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(List<RecipeIngredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public List<RecipeImage> getImages() {
+        return images;
+    }
+
+    public void setImages(List<RecipeImage> images) {
+        this.images = images;
     }
 
     @Override

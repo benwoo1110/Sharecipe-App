@@ -27,14 +27,6 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentCollection = new FragmentCollection();
 
-        AccountManager accountManager = AccountManager.getInstance(this);
-        if (!accountManager.isLoggedIn()) {
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-            return;
-        }
-
         FloatingActionButton recipeCreate = findViewById(id.button_create_recipe);
         BottomNavigationView bottomNavigation = findViewById(id.bottom_navigation);
 
