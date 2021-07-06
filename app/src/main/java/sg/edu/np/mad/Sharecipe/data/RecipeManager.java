@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import androidx.annotation.NonNull;
+
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonElement;
@@ -21,6 +23,7 @@ import java.util.zip.ZipOutputStream;
 
 import okhttp3.ResponseBody;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
@@ -211,5 +214,42 @@ public class RecipeManager {
         .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
 
         return future;
+    }
+
+    public FutureDataResult<List<Recipe>> getAllForUser(int userId) {
+        FutureDataResult<List<Recipe>> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getUserRecipes(account.getAccessToken(), userId).thenAccept(response -> {
+                JsonElement json = JsonUtils.convertToJson(response);
+                if (!response.isSuccessful()) {
+                    JsonElement message = json.getAsJsonObject().get("message");
+                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
+                    return;
+                }
+                List<Recipe> recipes = new ArrayList<>();
+                for (JsonElement recipeData : json.getAsJsonArray()) {
+                    recipes.add(JsonUtils.convertToObject(recipeData, Recipe.class));
+                }
+                future.complete(new DataResult.Success<>(recipes));
+            });
+        })
+                .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
+                .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+
+        return future;
+    }
+
+    /**
+     * Gets user data of logged in account.
+     *
+     * @return Future result of user data.
+     */
+    @NonNull
+    public FutureDataResult<List<Recipe>> getAccountRecipe() {
+        if (!accountManager.isLoggedIn()) {
+            return FutureDataResult.completed(new DataResult.Failed<>("No account logged in!"));
+        }
+        return getAllForUser(accountManager.getAccount().getUserId());
     }
 }

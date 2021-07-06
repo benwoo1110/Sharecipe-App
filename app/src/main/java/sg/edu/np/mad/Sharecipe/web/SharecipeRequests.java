@@ -261,6 +261,25 @@ public class SharecipeRequests {
     }
 
     /**
+     * GET `/users/user_id/recipes/recipe_id` endpoint.
+     *
+     * @param accessToken
+     * @param userId
+     * @return
+     */
+    public static CompletableFuture<Response> getUserRecipes(@NonNull String accessToken, int userId) {
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(userId))
+                        .addPathSegment(UrlPath.RECIPES)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
+
+    /**
      * PUT `/users/user_id/recipes` endpoint.
      *
      * @param accessToken
@@ -301,7 +320,7 @@ public class SharecipeRequests {
     }
 
     /**
-     * PUT `/users/user_id/recipes/recipe_id` endpoint.
+     * GET `/users/user_id/recipes/recipe_id` endpoint.
      *
      * @param accessToken
      * @param userId

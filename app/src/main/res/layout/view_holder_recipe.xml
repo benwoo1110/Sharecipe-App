@@ -44,12 +44,14 @@
                 <!-- Title, secondary and supporting text -->
 
                 <TextView
+                    android:id="@+id/recipeTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="title"
                     android:textAppearance="?attr/textAppearanceHeadline6" />
 
                 <TextView
+                    android:id="@+id/recipeSecondaryInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
