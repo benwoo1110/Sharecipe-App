@@ -6,42 +6,22 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.media.Image;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.google.android.material.transition.Hold;
 
-import java.net.URI;
 import java.util.ArrayList;
 
-import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 import sg.edu.np.mad.Sharecipe.R;
-
-import static androidx.core.app.ActivityCompat.startActivityForResult;
 
 public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
     private Animator currentAnimator;

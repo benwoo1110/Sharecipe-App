@@ -67,7 +67,7 @@
             android:hint="Portions" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Switch
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@+id/infoPublic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -2,7 +2,6 @@ package sg.edu.np.mad.Sharecipe.ui.create;
 
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Spinner;
 
 import androidx.recyclerview.widget.RecyclerView;
 
