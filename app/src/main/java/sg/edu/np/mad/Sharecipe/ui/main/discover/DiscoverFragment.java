@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.main;
+package sg.edu.np.mad.Sharecipe.ui.main.discover;
 
 import android.os.Bundle;
 

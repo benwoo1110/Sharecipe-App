@@ -12,6 +12,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
+import sg.edu.np.mad.Sharecipe.ui.main.discover.DiscoverFragment;
 import sg.edu.np.mad.Sharecipe.utils.FragmentCollection;
 
 import static sg.edu.np.mad.Sharecipe.R.*;
