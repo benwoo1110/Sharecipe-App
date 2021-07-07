@@ -7,7 +7,7 @@ import okhttp3.HttpUrl;
  */
 public class UrlPath {
     //TODO remove on production.
-    private static final boolean USER_LOCAL = true;
+    private static final boolean USER_LOCAL = false;
 
     public static final String SCHEME = USER_LOCAL ? "http" : "https";
     public static final String HOST = USER_LOCAL ? "10.0.2.2" : "sharecipe-backend.herokuapp.com";
