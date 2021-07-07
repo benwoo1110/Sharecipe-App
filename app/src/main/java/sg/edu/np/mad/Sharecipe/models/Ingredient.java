@@ -11,7 +11,7 @@ public class Ingredient {
     @Expose
     private String unit;
 
-    private Ingredient() { }
+    public Ingredient() { }
 
     public String getName() {
         return name;
