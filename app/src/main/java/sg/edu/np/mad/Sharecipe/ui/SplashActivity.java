@@ -1,20 +1,15 @@
 package sg.edu.np.mad.Sharecipe.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import java.io.IOException;
-
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
-import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
 public class SplashActivity extends AppCompatActivity {
 

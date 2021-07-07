@@ -24,6 +24,8 @@ public class RecipeCreateAdapter extends FragmentStateAdapter {
             case 0:
                 return new InformationFragment();
             case 1:
+                return new IngredientFragment();
+            case 2:
                 return new StepsFragment();
             default:
                 return new ErrorFragment();

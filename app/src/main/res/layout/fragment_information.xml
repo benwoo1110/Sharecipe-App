@@ -2,119 +2,126 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:longClickable="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/addImage"
-        android:layout_width="89dp"
-        android:layout_height="88dp"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="156dp"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="274dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="66dp"
+        android:layout_marginEnd="89dp"
+        app:endIconMode="clear_text"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prepLabel"
-        app:srcCompat="@drawable/ic_baseline_add_24" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/infoName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Name"
+            app:startIconDrawable="@drawable/ic_baseline_fastfood_24" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout3"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="274dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="89dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/infoPrep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Preparation time"
+            android:inputType="time" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout4"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="274dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="89dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/infoPortions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Portions" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/infoPublic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="293dp"
+        android:text="Public"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout4" />
 
     <TextView
-        android:id="@+id/nameLabel"
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="49dp"
-        android:text="Name"
-        app:layout_constraintEnd_toStartOf="@+id/nameInput"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/nameInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="100dp"
-        android:ems="10"
-        android:inputType="textPersonName"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="21dp"
+        android:layout_marginEnd="302dp"
+        android:text="Difficulty"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <CheckBox
-        android:id="@+id/publicCheck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="32dp"
-        android:text="Public"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/infoPublic" />
 
     <RatingBar
-        android:id="@+id/difficultyInput"
+        android:id="@+id/infoDifficulty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="123dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameInput" />
-
-    <TextView
-        android:id="@+id/difficultyLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="44dp"
-        android:text="Difficulty"
-        app:layout_constraintEnd_toStartOf="@+id/difficultyInput"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/publicCheck" />
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-    <TextView
-        android:id="@+id/servesLabel"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview_images"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="39dp"
-        android:text="Serves"
-        app:layout_constraintEnd_toStartOf="@+id/servesInput"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/difficultyLabel" />
-
-    <EditText
-        android:id="@+id/servesInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="84dp"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/difficultyInput" />
-
-    <TextView
-        android:id="@+id/prepLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="46dp"
-        android:layout_marginTop="62dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="44dp"
         android:layout_marginEnd="24dp"
-        android:text="Preparation"
-        app:layout_constraintEnd_toStartOf="@+id/prepInput"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/servesLabel" />
-
-    <EditText
-        android:id="@+id/prepInput"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="84dp"
-        android:ems="10"
-        android:inputType="time"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/servesInput" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infoDifficulty" />
+
+    <ImageView
+        android:id="@+id/expanded_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

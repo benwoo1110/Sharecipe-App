@@ -11,7 +11,6 @@ import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
-import sg.edu.np.mad.Sharecipe.models.User;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
 
