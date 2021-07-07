@@ -57,7 +57,7 @@ public class SearchFragment extends Fragment {
                     searchResultAdapter.setUserList(userList);
                     getActivity().runOnUiThread(searchResultAdapter::notifyDataSetChanged);
                 })
-                .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason, Toast.LENGTH_SHORT).show()))
+                .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
                 .onError(Throwable::printStackTrace));
 
         return view;

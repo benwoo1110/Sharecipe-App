@@ -2,8 +2,10 @@ package sg.edu.np.mad.Sharecipe.models;
 
 import com.google.gson.annotations.Expose;
 
-public class Ingredient {
+public class RecipeIngredient {
 
+    @Expose
+    private int recipeId;
     @Expose
     private String name;
     @Expose
@@ -11,7 +13,11 @@ public class Ingredient {
     @Expose
     private String unit;
 
-    private Ingredient() { }
+    public RecipeIngredient() { }
+
+    public int getRecipeId() {
+        return recipeId;
+    }
 
     public String getName() {
         return name;
@@ -39,7 +45,7 @@ public class Ingredient {
 
     @Override
     public String toString() {
-        return "Ingredient{" +
+        return "RecipeIngredient{" +
                 "name='" + name + '\'' +
                 ", quantity=" + quantity +
                 ", unit='" + unit + '\'' +

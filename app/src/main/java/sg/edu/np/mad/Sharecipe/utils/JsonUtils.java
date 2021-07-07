@@ -1,5 +1,6 @@
 package sg.edu.np.mad.Sharecipe.utils;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -9,17 +10,34 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.Map;
 
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
+/**
+ * Helper methods to facilitate conversion to and from json formats.
+ */
 public class JsonUtils {
 
+    @SuppressWarnings("UnstableApiUsage")
+    private static final Type MAP_TYPE = new TypeToken<Map<String, Object>>() {}.getType();
     private static final Gson GSON = new GsonBuilder()
             .excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
             .create();
+
+    /**
+     * Converts an object model into json string.
+     *
+     * @param object    Target object to convert.
+     * @return The json string, null if an error occurred.
+     */
+    public static String convertToJsonString(Object object) {
+        return GSON.toJson(object);
+    }
 
     /**
      * Converts an object model into json element.
@@ -28,7 +46,7 @@ public class JsonUtils {
      * @return The json element, null if an error occurred.
      */
     public static JsonElement convertToJson(Object object) {
-        return convertToJson(GSON.toJson(object));
+        return convertToJson(convertToJsonString(object));
     }
 
     /**
@@ -85,5 +103,9 @@ public class JsonUtils {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static Map<String, Object> convertToMap(JsonElement json) {
+        return GSON.fromJson(json, MAP_TYPE);
     }
 }

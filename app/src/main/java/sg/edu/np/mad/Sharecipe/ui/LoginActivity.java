@@ -38,9 +38,7 @@ public class LoginActivity extends DynamicFocusAppCompatActivity {
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                     })
-                    .onFailed(reason -> {
-                        LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, reason, Toast.LENGTH_SHORT).show());
-                    })
+                    .onFailed(reason -> LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show()))
                     .onError(error -> {
                         LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show());
                     });
@@ -49,22 +47,6 @@ public class LoginActivity extends DynamicFocusAppCompatActivity {
         signUpNow.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
             startActivity(intent);
-        });
-
-        //TODO remove this. Just here to test web api is connected.
-        SharecipeRequests.helloWorld().thenAccept(response -> {
-            String data;
-            try {
-                data = response.body().string();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return;
-            }
-            LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, data, Toast.LENGTH_SHORT).show());
-        }).exceptionally(throwable -> {
-            throwable.printStackTrace();
-            LoginActivity.this.runOnUiThread(() -> Toast.makeText(LoginActivity.this, "Failed", Toast.LENGTH_SHORT).show());
-            return null;
         });
     }
 }

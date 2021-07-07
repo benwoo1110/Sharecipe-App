@@ -94,14 +94,14 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
 
             AccountManager.getInstance(this).register(usernameText, passwordText, bioText).onSuccess(account -> {
                 UserManager.getInstance(this).setAccountProfileImage(imageFile).onFailed(reason -> {
-                    RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, reason, Toast.LENGTH_SHORT).show());
+                    RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show());
                 }).thenAccept(result -> {
                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 });
             }).onFailed(reason -> {
-                RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, reason, Toast.LENGTH_SHORT).show());
+                RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show());
             }).onError(error -> {
                 RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show());
             });

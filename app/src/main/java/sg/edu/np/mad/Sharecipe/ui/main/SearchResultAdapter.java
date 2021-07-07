@@ -31,6 +31,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultViewHo
     @Override
     public void onBindViewHolder(@NonNull SearchResultViewHolder holder, int position) {
         User user = userList.get(position);
+        holder.userId = user.getUserId();
         holder.name.setText(user.getUsername());
         holder.bio.setText(user.getBio());
     }

@@ -24,8 +24,8 @@ public class AsyncOkHttpClient {
      * @param request   Target request to call.
      * @return Future result of the response.
      */
-    public CompletableFuture<Response> runAsync(Request request) {
-        CompletableFuture<Response> future = new CompletableFuture<>();
+    public FutureWebResponse runAsync(Request request) {
+        FutureWebResponse future = new FutureWebResponse();
         this.client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {

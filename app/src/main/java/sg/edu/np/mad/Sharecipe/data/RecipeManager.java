@@ -1,13 +1,23 @@
 package sg.edu.np.mad.Sharecipe.data;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
+import androidx.annotation.NonNull;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonElement;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.ZipInputStream;
 
+import okhttp3.ResponseBody;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
@@ -40,69 +50,129 @@ public class RecipeManager {
         this.accountManager = accountManager;
     }
 
-    public FutureDataResult<Recipe> save(Recipe newRecipe) {
+    /**
+     * Saves a new recipe. This will never replace an existing one.
+     *
+     * @param newRecipe New recipe data to be saved.
+     * @return Future result of newly saved recipe data.
+     */
+    public FutureDataResult<Recipe> create(Recipe newRecipe) {
         FutureDataResult<Recipe> future = new FutureDataResult<>();
-        if (!accountManager.isLoggedIn()) {
-            future.complete(new DataResult.Failed<>("No account logged in!"));
-            return future;
-        }
+
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             JsonElement recipeData = JsonUtils.convertToJson(newRecipe);
-            SharecipeRequests.createRecipe(account.getAccessToken(), account.getUserId(), recipeData).thenAccept(response -> {
-                JsonElement json = JsonUtils.convertToJson(response);
-                if (!response.isSuccessful()) {
-                    JsonElement message = json.getAsJsonObject().get("message");
-                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
-                    return;
-                }
-                Recipe recipe = JsonUtils.convertToObject(json, Recipe.class);
-                if (recipe == null) {
-                    future.complete(new DataResult.Failed<>("Received invalid data."));
-                    return;
-                }
+            SharecipeRequests.createRecipe(account.getAccessToken(), account.getUserId(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
+                //TODO: Add to cache
                 future.complete(new DataResult.Success<>(recipe));
-            })
-            .exceptionally(throwable -> {
-                future.complete(new DataResult.Error<>(throwable));
-                return null;
-            });
-        })
-        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
-        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
 
         return future;
     }
 
-    public FutureDataResult<Recipe> get(int userId, int recipeId) {
+    /**
+     * Updates existing recipe with changed information.
+     *
+     * @param modifiedRecipe    Recipe data to update.
+     * @return Future result of updated recipe data.
+     */
+    public FutureDataResult<Recipe> update(Recipe modifiedRecipe) {
         FutureDataResult<Recipe> future = new FutureDataResult<>();
-        if (!accountManager.isLoggedIn()) {
-            future.complete(new DataResult.Failed<>("No account logged in!"));
-            return future;
-        }
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.getRecipe(account.getAccessToken(), userId, recipeId).thenAccept(response -> {
-                JsonElement json = JsonUtils.convertToJson(response);
-                if (!response.isSuccessful()) {
-                    JsonElement message = json.getAsJsonObject().get("message");
-                    future.complete(new DataResult.Failed<>(message != null ? message.getAsString() : "An unknown error occurred!"));
-                    return;
-                }
-                Recipe recipe = JsonUtils.convertToObject(json, Recipe.class);
-                if (recipe == null) {
-                    future.complete(new DataResult.Failed<>("Received invalid data."));
-                    return;
-                }
+            JsonElement recipeData = JsonUtils.convertToJson(modifiedRecipe);
+            SharecipeRequests.createRecipe(account.getAccessToken(), account.getUserId(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
                 future.complete(new DataResult.Success<>(recipe));
-            })
-            .exceptionally(throwable -> {
-                future.complete(new DataResult.Error<>(throwable));
-                return null;
-            });
-        })
-        .onFailed(reason -> future.complete(new DataResult.Failed<>(reason)))
-        .onError(throwable -> future.complete(new DataResult.Error<>(throwable)));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
 
         return future;
+    }
+
+    /**
+     * Gets a recipe data.
+     *
+     * @param userId    Author of the recipe
+     * @param recipeId  Target recipe to get info on.
+     * @return Future result of the recipe data.
+     */
+    public FutureDataResult<Recipe> get(int userId,
+                                        int recipeId) {
+
+        FutureDataResult<Recipe> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getRecipe(account.getAccessToken(), userId, recipeId).onSuccessModel(future, Recipe.class, (response, recipe) -> {
+                future.complete(new DataResult.Success<>(recipe));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    public FutureDataResult<Void> addImages(Recipe recipe, List<File> imageFiles) {
+        FutureDataResult<Void> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.addRecipeImages(account.getAccessToken(), recipe.getUserId(), recipe.getRecipeId(), imageFiles).onSuccess(response -> {
+                future.complete(new DataResult.Success<>(null));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    public FutureDataResult<List<Bitmap>> getImages(Recipe recipe) {
+        FutureDataResult<List<Bitmap>> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getRecipeImages(account.getAccessToken(), recipe.getUserId(), recipe.getRecipeId()).onSuccess(response -> {
+                ResponseBody body = response.body();
+                if (body == null) {
+                    future.complete(new DataResult.Failed<>("No images data."));
+                    return;
+                }
+                List<Bitmap> images = new ArrayList<>();
+                try (ZipInputStream imageZipStream = new ZipInputStream(body.byteStream())) {
+                    while (imageZipStream.getNextEntry() != null) {
+                        images.add(BitmapFactory.decodeStream(imageZipStream));
+                    }
+                } catch (IOException e) {
+                    future.complete(new DataResult.Error<>(e));
+                }
+                future.complete(new DataResult.Success<>(images));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    public FutureDataResult<List<Recipe>> getAllForUser(int userId) {
+        FutureDataResult<List<Recipe>> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.searchUserRecipes(account.getAccessToken(), userId).onSuccessJson(future, (response, json) -> {
+                List<Recipe> recipes = new ArrayList<>();
+                for (JsonElement recipeData : json.getAsJsonArray()) {
+                    recipes.add(JsonUtils.convertToObject(recipeData, Recipe.class));
+                }
+                future.complete(new DataResult.Success<>(recipes));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    /**
+     * Gets user data of logged in account.
+     *
+     * @return Future result of user data.
+     */
+    @NonNull
+    public FutureDataResult<List<Recipe>> getAccountRecipe() {
+        if (!accountManager.isLoggedIn()) {
+            return FutureDataResult.completed(new DataResult.Failed<>("No account logged in!"));
+        }
+        return getAllForUser(accountManager.getAccount().getUserId());
     }
 }
