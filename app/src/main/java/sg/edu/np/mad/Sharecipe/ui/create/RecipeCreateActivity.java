@@ -21,6 +21,7 @@ import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.RecipeManager;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
+import sg.edu.np.mad.Sharecipe.utils.DataResult;
 
 public class RecipeCreateActivity extends AppCompatActivity {
 
@@ -93,17 +94,20 @@ public class RecipeCreateActivity extends AppCompatActivity {
         recipe.setName("test");
 
         List<RecipeStep> recipeSteps = new ArrayList<>();
-        recipeSteps.add(new RecipeStep(1, "test", "stuff"));
+        RecipeStep step = new RecipeStep();
+        step.setStepNumber(1);
+        step.setName("test");
+        recipeSteps.add(step);
         recipe.setSteps(recipeSteps);
 
-        RecipeManager.getInstance(RecipeCreateActivity.this).save(recipe).onSuccess(new Consumer<Recipe>() {
+        RecipeManager.getInstance(RecipeCreateActivity.this).create(recipe).onSuccess(new Consumer<Recipe>() {
             @Override
             public void accept(Recipe recipe) {
 
             }
-        }).onFailed(new Consumer<String>() {
+        }).onFailed(new Consumer<DataResult.Failed<Recipe>>() {
             @Override
-            public void accept(String reason) {
+            public void accept(DataResult.Failed<Recipe> recipeFailed) {
 
             }
         });

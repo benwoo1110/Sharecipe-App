@@ -13,11 +13,11 @@ import android.widget.Button;
 import java.util.ArrayList;
 
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.models.Ingredient;
+import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
 
 public class IngredientFragment extends Fragment {
 
-    private final ArrayList<Ingredient> ingredientsList = new ArrayList<>();
+    private final ArrayList<RecipeIngredient> ingredientsList = new ArrayList<>();
 
     public IngredientFragment(){}
 

@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.models.Ingredient;
+import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
 
 public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsViewholder> {
-    ArrayList<Ingredient> ingredients;
+    ArrayList<RecipeIngredient> ingredients;
     Activity activity;
 
-    public IngredientsAdapter(ArrayList<Ingredient> ingredients, Activity activity) {
+    public IngredientsAdapter(ArrayList<RecipeIngredient> ingredients, Activity activity) {
         this.ingredients = ingredients;
         this.activity = activity;
     }
