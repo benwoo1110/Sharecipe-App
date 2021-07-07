@@ -49,7 +49,7 @@ public class RecipeCreateActivity extends AppCompatActivity {
                 Log.v("LOL", "Clear");
                 return true;
             } else if (itemId == R.id.recipe_done_menu) {
-                Log.v("LOL", "Clear");
+                Log.v("LOL", "Done");
                 return true;
             }
             return false;
