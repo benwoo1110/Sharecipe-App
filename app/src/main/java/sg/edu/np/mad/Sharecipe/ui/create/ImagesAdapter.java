@@ -70,7 +70,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
                     ImagePicker.with(activity)
                             .crop()    // Crop image(Optional), Check Customization for more option
                             .compress(1024)    // Final image size will be less than 1 MB
-                            .maxResultSize(500, 500) // Final image resolution will be less than 500x500
+                            .maxResultSize(1080, 1080) // Final image resolution will be less than 1080x1080
                             .start();
                 }
             });
