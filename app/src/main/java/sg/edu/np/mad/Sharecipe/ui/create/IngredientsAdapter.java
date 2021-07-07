@@ -17,7 +17,8 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsViewhold
     ArrayList<Ingredient> ingredients;
     Activity activity;
 
-    public IngredientsAdapter(Activity activity) {
+    public IngredientsAdapter(ArrayList<Ingredient> ingredients, Activity activity) {
+        this.ingredients = ingredients;
         this.activity = activity;
     }
 
@@ -29,10 +30,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsViewhold
     }
 
     public void onBindViewHolder(IngredientsViewholder holder, int position) {
-        Ingredient ingredient = ingredients.get(position);
-        ingredient.setName(holder.name.getText().toString());
-        ingredient.setQuantity(Integer.parseInt(holder.quantity.getText().toString()));
-        ingredient.setUnit(holder.unit.getText().toString());
+        // TODO: Bind input to recyclerview
     }
 
     public int getItemCount() {

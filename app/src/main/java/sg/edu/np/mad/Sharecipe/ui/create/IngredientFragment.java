@@ -10,9 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.ArrayList;
+
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.models.Ingredient;
 
 public class IngredientFragment extends Fragment {
+
+    private final ArrayList<Ingredient> ingredientsList = new ArrayList<>();
 
     public IngredientFragment(){}
 
@@ -25,18 +30,19 @@ public class IngredientFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ingredient, container, false);
-        Button createSection = view.findViewById(R.id.buttonIngredient);
+        Button addIngredient = view.findViewById(R.id.buttonIngredient);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerviewIngredient);
 
-        IngredientsAdapter adapter = new IngredientsAdapter(getActivity());
+        IngredientsAdapter adapter = new IngredientsAdapter(ingredientsList, getActivity());
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(cLayoutManager);
 
-        createSection.setOnClickListener(new View.OnClickListener() {
+        addIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Stuff
+                // TODO: Create new ingredient, add to list
+
             }
         });
 
