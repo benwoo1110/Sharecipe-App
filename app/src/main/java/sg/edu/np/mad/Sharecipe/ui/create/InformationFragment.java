@@ -25,6 +25,9 @@ import java.util.ArrayList;
 
 import sg.edu.np.mad.Sharecipe.R;
 
+// TODO: Set limit for images, remove plus button when limit is reached
+// TODO: Saving and storing of values for all input fields along with input validation (required fields)
+// TODO: Touch up on the UI
 
 public class InformationFragment extends Fragment {
 

@@ -25,7 +25,6 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsViewhold
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_ingredients, parent, false);
         IngredientsViewholder holder = new IngredientsViewholder(item, ingredients);
 
-
         return holder;
     }
 
@@ -35,6 +34,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsViewhold
         holder.name.setText(ingredient.getName());
         holder.quantity.setText(String.valueOf(ingredient.getQuantity()));
         holder.unit.setText(ingredient.getUnit());
+        holder.number.setText(String.valueOf(ingredients.indexOf(ingredient) + 1));
     }
 
     public int getItemCount() {

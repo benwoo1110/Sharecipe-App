@@ -17,6 +17,7 @@ public class IngredientsViewholder extends RecyclerView.ViewHolder {
     EditText name;
     EditText quantity;
     EditText unit;
+    TextView number;
 
     public IngredientsViewholder(View itemView, ArrayList<RecipeIngredient> ingredientList) {
         super(itemView);
@@ -24,6 +25,7 @@ public class IngredientsViewholder extends RecyclerView.ViewHolder {
         name = itemView.findViewById(R.id.inputIngredientName);
         quantity = itemView.findViewById(R.id.inputIngredientQuantity);
         unit = itemView.findViewById(R.id.inputIngredientUnit);
+        number = itemView.findViewById(R.id.displayNumberIngredient);
 
         name.addTextChangedListener(new TextWatcher() {
             @Override
@@ -54,8 +56,9 @@ public class IngredientsViewholder extends RecyclerView.ViewHolder {
                 try {
                     num = Integer.parseInt(String.valueOf(quantity.getText()));}
                 catch (NumberFormatException e) {
-                        ingredientList.get(getAdapterPosition()).setQuantity(num);
+
                     }
+                ingredientList.get(getAdapterPosition()).setQuantity(num);
 
             }
 
