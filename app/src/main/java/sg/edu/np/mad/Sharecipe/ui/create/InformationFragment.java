@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class InformationFragment extends Fragment {
         TextInputEditText name = view.findViewById(R.id.infoName);
         TextInputEditText prep = view.findViewById(R.id.infoPrep);
         TextInputEditText portions = view.findViewById(R.id.infoPortions);
-        Switch infoPublic = view.findViewById(R.id.infoPublic);
+        SwitchMaterial infoPublic = view.findViewById(R.id.infoPublic);
         RatingBar difficulty = view.findViewById(R.id.infoDifficulty);
         ImageView enlargedImage = view.findViewById(R.id.expanded_image);
 
