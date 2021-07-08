@@ -28,11 +28,11 @@ public class SearchResultViewHolder extends RecyclerView.ViewHolder {
         name = itemView.findViewById(R.id.textViewName);
         bio = itemView.findViewById(R.id.textViewBio);
 
-        Context context;
+        Context context = itemView.getContext();
         itemView.setOnClickListener(v -> {
-            //Intent intent = new Intent(,UserProfileFragment.class);
-            //intent.putExtra("userId", userId);
-            // intent to profile
+            Intent intent = new Intent(context,UserProfileFragment.class);
+            intent.putExtra("userId", userId);
+            context.startActivity(intent);
         });
 
         //TODO remove this
