@@ -21,7 +21,6 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionViewHolder> {
     @NonNull
     @Override
     public SectionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        System.out.println("New section");
         SectionCreator section = sectionList.get(viewType);
         View view = LayoutInflater.from(parent.getContext()).inflate(section.getLayoutId(), parent, false);
         return section.createViewHolder(view);
@@ -29,7 +28,6 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull SectionViewHolder holder, int position) {
-        System.out.println("On bind");
         holder.onBind(position);
     }
 

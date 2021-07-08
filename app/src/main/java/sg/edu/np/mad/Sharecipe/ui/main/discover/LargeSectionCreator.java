@@ -54,7 +54,6 @@ public class LargeSectionCreator implements SectionCreator {
 
         @Override
         public void onBind(int position) {
-            System.out.println("Binding");
             header.setText(headerText);
         }
     }
