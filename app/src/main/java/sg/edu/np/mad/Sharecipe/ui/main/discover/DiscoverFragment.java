@@ -3,6 +3,8 @@ package sg.edu.np.mad.Sharecipe.ui.main.discover;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.ui.common.SectionAdapter;
 
 public class DiscoverFragment extends Fragment {
 
@@ -29,7 +32,13 @@ public class DiscoverFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_discover, container, false);
 
         RecyclerView discoverRecyclerView = view.findViewById(R.id.discoverRecyclerView);
-
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        SectionAdapter adapter = new SectionAdapter();
+        adapter.addSection(new LargeSectionCreator("Test 1"));
+        adapter.addSection(new LargeSectionCreator("Test 2"));
+        adapter.addSection(new LargeSectionCreator("Test 3"));
+        discoverRecyclerView.setLayoutManager(layoutManager);
+        discoverRecyclerView.setAdapter(adapter);
 
         return view;
     }

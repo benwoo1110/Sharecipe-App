@@ -6,7 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SectionViewHolder extends RecyclerView.ViewHolder {
+    
     public SectionViewHolder(@NonNull View itemView) {
         super(itemView);
+    }
+    
+    public void onBind(int position) {
     }
 }
