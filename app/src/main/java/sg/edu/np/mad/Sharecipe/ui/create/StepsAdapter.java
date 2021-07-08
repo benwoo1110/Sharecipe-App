@@ -25,8 +25,9 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewholder> {
 
     public void onBindViewHolder(StepsViewholder holder, int position) {
         RecipeStep step = data.get(position);
-        holder.stepNumber.setText(step.getStepNumber());
+        holder.stepNumber.setText(String.valueOf(step.getStepNumber()));
         holder.stepDescription.setText(step.getDescription());
+        holder.timeNeeded.setText(String.valueOf(step.getTimeNeeded()));
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

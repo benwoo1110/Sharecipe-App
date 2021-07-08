@@ -23,13 +23,18 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsViewhold
 
     public IngredientsViewholder onCreateViewHolder(ViewGroup parent, int viewtype) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_ingredients, parent, false);
-        IngredientsViewholder holder = new IngredientsViewholder(item);
+        IngredientsViewholder holder = new IngredientsViewholder(item, ingredients);
+
 
         return holder;
     }
 
     public void onBindViewHolder(IngredientsViewholder holder, int position) {
         // TODO: Bind input to recyclerview
+        RecipeIngredient ingredient = ingredients.get(position);
+        holder.name.setText(ingredient.getName());
+        holder.quantity.setText(String.valueOf(ingredient.getQuantity()));
+        holder.unit.setText(ingredient.getUnit());
     }
 
     public int getItemCount() {

@@ -42,6 +42,12 @@ public class IngredientFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO: Create new ingredient, add to list
+                RecipeIngredient newIngredient = new RecipeIngredient();
+                newIngredient.setName("");
+                newIngredient.setQuantity(1);
+                newIngredient.setUnit("");
+                ingredientsList.add(newIngredient);
+                adapter.notifyDataSetChanged();
 
             }
         });

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -19,6 +20,7 @@ public class StepsFragment extends Fragment {
 
     ArrayList<RecipeStep> stepsList = new ArrayList<>();
 
+
     public StepsFragment() {
 
     }
@@ -26,14 +28,21 @@ public class StepsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_steps, container, false);
-        //RecyclerView stepsView = view.findViewById(R.id.recyclerview_steps);
+        RecyclerView stepsView = view.findViewById(R.id.recyclerview_steps);
         FloatingActionButton button = view.findViewById(R.id.buttonAdd);
+
+        RecipeStep test = new RecipeStep();
+        test.setName("Test");
+        test.setStepNumber(1);
+        test.setDescription("Test");
+        test.setTimeNeeded(10);
+        stepsList.add(test);
 
         StepsAdapter adapter = new StepsAdapter(stepsList);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
 
-        //stepsView.setAdapter(adapter);
-        //stepsView.setLayoutManager(cLayoutManager);
+        stepsView.setAdapter(adapter);
+        stepsView.setLayoutManager(cLayoutManager);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override

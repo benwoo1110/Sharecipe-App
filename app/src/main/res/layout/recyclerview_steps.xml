@@ -48,4 +48,13 @@
         app:layout_constraintStart_toEndOf="@+id/stepNumber"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/outline_edit_24" />
+
+    <TextView
+        android:id="@+id/stepTimeneeded"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="264dp"
+        android:layout_marginBottom="51dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
