@@ -44,7 +44,7 @@ public class MyRecipeFragment extends Fragment {
 
         RecipeAdapter adapter = new RecipeAdapter(new ArrayList<>());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_fall_down);
+        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_from_bottom);
         recipeRecyclerView.setLayoutAnimation(controller);
         recipeRecyclerView.setAdapter(adapter);
         recipeRecyclerView.setLayoutManager(layoutManager);

@@ -34,6 +34,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
         holder.info.setText(String.valueOf(recipe.getRecipeId()));
         if (recipe.getIcon() != null) {
             holder.icon.setImageBitmap(recipe.getIcon());
+        } else {
+            holder.icon.setImageResource(R.drawable.ic_launcher_background);
         }
     }
 
