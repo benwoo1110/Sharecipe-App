@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
@@ -40,12 +42,15 @@ public class MyRecipeFragment extends Fragment {
 
         RecipeAdapter adapter = new RecipeAdapter(new ArrayList<>());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_fall_down);
+        recipeRecyclerView.setLayoutAnimation(controller);
         recipeRecyclerView.setAdapter(adapter);
         recipeRecyclerView.setLayoutManager(layoutManager);
         
         RecipeManager.getInstance(getContext()).getAccountRecipe()
                 .onSuccess(recipes -> getActivity().runOnUiThread(() -> {
                     adapter.setRecipeList(recipes);
+                    recipeRecyclerView.scheduleLayoutAnimation();
                     shimmerFrameLayout.stopShimmer();
                     shimmerFrameLayout.setVisibility(View.GONE);
                 }))
