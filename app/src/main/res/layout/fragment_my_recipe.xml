@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutAnimation="@anim/layout_animation_fall_down"
-    tools:context=".ui.main.MyRecipeFragment">
+    tools:context=".ui.main.recipe.MyRecipeFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/myRecipeToolbar"

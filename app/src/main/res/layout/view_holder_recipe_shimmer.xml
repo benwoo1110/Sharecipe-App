@@ -26,7 +26,7 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/shapeableImageView"
+                android:id="@+id/recipeIconImage"
                 android:layout_width="128dp"
                 android:layout_height="128dp"
                 android:background="?attr/colorPrimaryVariant"
@@ -48,7 +48,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/shapeableImageView"
+                app:layout_constraintStart_toEndOf="@+id/recipeIconImage"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -61,7 +61,7 @@
                 android:background="?attr/colorPrimaryVariant"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/shapeableImageView" />
+                app:layout_constraintStart_toEndOf="@+id/recipeIconImage" />
 
             <TextView
                 android:id="@+id/recipeSecondaryInfo2"
@@ -74,7 +74,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/shapeableImageView" />
+                app:layout_constraintStart_toEndOf="@+id/recipeIconImage" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

@@ -3,11 +3,13 @@ package sg.edu.np.mad.Sharecipe.web;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.List;
 
 import java9.util.concurrent.CompletableFuture;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
+import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -16,7 +18,9 @@ import okhttp3.Response;
  */
 public class AsyncOkHttpClient {
 
-    private final OkHttpClient client = new OkHttpClient();
+    private final OkHttpClient client = new OkHttpClient.Builder()
+            .retryOnConnectionFailure(true)
+            .build();
 
     /**
      * Calls a web request asynchronously

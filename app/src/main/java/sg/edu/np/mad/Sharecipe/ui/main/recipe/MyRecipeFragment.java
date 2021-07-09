@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.main;
+package sg.edu.np.mad.Sharecipe.ui.main.recipe;
 
 import android.os.Bundle;
 
@@ -17,8 +17,10 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.util.ArrayList;
 
+import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.RecipeManager;
+import sg.edu.np.mad.Sharecipe.models.Recipe;
 
 public class MyRecipeFragment extends Fragment {
 
@@ -46,14 +48,24 @@ public class MyRecipeFragment extends Fragment {
         recipeRecyclerView.setLayoutAnimation(controller);
         recipeRecyclerView.setAdapter(adapter);
         recipeRecyclerView.setLayoutManager(layoutManager);
-        
-        RecipeManager.getInstance(getContext()).getAccountRecipe()
-                .onSuccess(recipes -> getActivity().runOnUiThread(() -> {
-                    adapter.setRecipeList(recipes);
-                    recipeRecyclerView.scheduleLayoutAnimation();
-                    shimmerFrameLayout.stopShimmer();
-                    shimmerFrameLayout.setVisibility(View.GONE);
-                }))
+
+        RecipeManager recipeManager = RecipeManager.getInstance(getContext());
+        recipeManager.getAccountRecipe()
+                .onSuccess(recipes -> {
+                    CompletableFuture<?>[] completableFutures = new CompletableFuture[recipes.size()];
+                    for (int i = 0, recipesSize = recipes.size(); i < recipesSize; i++) {
+                        Recipe recipe = recipes.get(i);
+                        completableFutures[i] = recipeManager.getIcon(recipe).onSuccess(recipe::setIcon).onFailed(System.out::println).onError(Throwable::printStackTrace);
+                    }
+                    CompletableFuture.allOf(completableFutures).thenAccept(aVoid -> {
+                        getActivity().runOnUiThread(() -> {
+                            adapter.setRecipeList(recipes);
+                            recipeRecyclerView.scheduleLayoutAnimation();
+                            shimmerFrameLayout.stopShimmer();
+                            shimmerFrameLayout.setVisibility(View.GONE);
+                        });
+                    });
+                })
                 .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
                 .onError(Throwable::printStackTrace);
 

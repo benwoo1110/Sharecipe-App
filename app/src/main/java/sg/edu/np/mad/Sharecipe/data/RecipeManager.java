@@ -110,6 +110,27 @@ public class RecipeManager {
         return future;
     }
 
+    public FutureDataResult<Bitmap> getIcon(Recipe recipe) {
+        FutureDataResult<Bitmap> future = new FutureDataResult<>();
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getRecipeIcon(account.getAccessToken(), recipe.getUserId(), recipe.getRecipeId()).onSuccess(response -> {
+                ResponseBody body = response.body();
+                if (body == null) {
+                    future.complete(new DataResult.Failed<>("No icon image data."));
+                    return;
+                }
+                Bitmap bitmap = BitmapFactory.decodeStream(body.byteStream());
+                if (bitmap == null) {
+                    future.complete(new DataResult.Failed<>("Failed to load data into image."));
+                    return;
+                }
+                future.complete(new DataResult.Success<>(bitmap));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
     public FutureDataResult<Void> addImages(Recipe recipe, List<File> imageFiles) {
         FutureDataResult<Void> future = new FutureDataResult<>();
 
