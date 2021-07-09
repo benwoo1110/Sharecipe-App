@@ -11,14 +11,10 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.List;
 
-import java9.util.concurrent.CompletableFuture;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
-import sg.edu.np.mad.Sharecipe.models.User;
-import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
 
 /**
  * Handles web requests to the server.

@@ -33,6 +33,7 @@ android {
 
 dependencies {
     implementation 'com.github.takusemba:multisnaprecyclerview:2.0.4'
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'com.github.dhaval2404:imagepicker:2.1'
     implementation 'dev.haenara:bricksharedpref:1.0.2'
     implementation "androidx.security:security-crypto:1.1.0-alpha03"

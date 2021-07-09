@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import sg.edu.np.mad.Sharecipe.data.AccountManager;
-import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 import sg.edu.np.mad.Sharecipe.ui.main.discover.DiscoverFragment;
 import sg.edu.np.mad.Sharecipe.utils.FragmentCollection;
@@ -28,8 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentCollection = new FragmentCollection();
 
-        FloatingActionButton recipeCreate = findViewById(id.button_create_recipe);
         BottomNavigationView bottomNavigation = findViewById(id.bottom_navigation);
+        FloatingActionButton addRecipe = findViewById(id.button_create_recipe);
 
         bottomNavigation.setOnNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
@@ -47,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigation.setSelectedItemId(id.discover_menu);
 
-        recipeCreate.setOnClickListener(v -> {
+        addRecipe.setOnClickListener(v -> {
             Intent recipeCreate1 = new Intent(MainActivity.this, RecipeCreateActivity.class);
             startActivity(recipeCreate1);
         });

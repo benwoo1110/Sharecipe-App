@@ -38,6 +38,7 @@ public class ProfileFragment extends Fragment {
         TextView description = view.findViewById(R.id.description);
         TextView following = view.findViewById(R.id.following);
         TextView followers = view.findViewById(R.id.followers);
+        Button editButton = view.findViewById(R.id.editUserinfo);
 
         UserManager.getInstance(getContext()).getAccountUser().onSuccess(user -> {
             getActivity().runOnUiThread(() -> {
@@ -60,6 +61,14 @@ public class ProfileFragment extends Fragment {
                     })
                     .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
                     .onError(Throwable::printStackTrace);
+        });
+
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                ((MainActivity) getActivity()).startActivity(intent);
+            }
         });
 
         return view;

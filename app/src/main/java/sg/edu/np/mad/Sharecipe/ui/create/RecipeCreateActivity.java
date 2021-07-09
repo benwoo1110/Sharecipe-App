@@ -1,14 +1,27 @@
 package sg.edu.np.mad.Sharecipe.ui.create;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import java9.util.function.Consumer;
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.data.RecipeManager;
+import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.models.RecipeStep;
+import sg.edu.np.mad.Sharecipe.utils.DataResult;
 
 public class RecipeCreateActivity extends AppCompatActivity {
 
@@ -19,8 +32,34 @@ public class RecipeCreateActivity extends AppCompatActivity {
 
         TabLayout tabLayout = findViewById(R.id.recipeTab);
         ViewPager2 viewPager = findViewById(R.id.recipe_info_viewpager);
+        BottomNavigationView bottomNavigation = findViewById(R.id.recipe_navigation);
+
+        bottomNavigation.getMenu().getItem(0).setCheckable(false);
+
+        bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.recipe_back_menu) {
+                item.setCheckable(true);
+                Log.v("LOL", "Back");
+                finish();
+                return true;
+            } else if (itemId == R.id.recipe_save_menu) {
+                Log.v("LOL", "Save");
+                return true;
+            } else if (itemId == R.id.recipe_clear_menu) {
+                Log.v("LOL", "Clear");
+                return true;
+            } else if (itemId == R.id.recipe_done_menu) {
+                Log.v("LOL", "Done");
+                return true;
+            }
+            return false;
+        });
+
+
 
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
+        tabLayout.addTab(tabLayout.newTab().setText("Ingredients"));
         tabLayout.addTab(tabLayout.newTab().setText("Steps"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
@@ -50,5 +89,35 @@ public class RecipeCreateActivity extends AppCompatActivity {
 
             }
         });
+
+        Recipe recipe = new Recipe();
+        recipe.setName("test");
+
+        List<RecipeStep> recipeSteps = new ArrayList<>();
+        RecipeStep step = new RecipeStep();
+        step.setStepNumber(1);
+        step.setName("test");
+        recipeSteps.add(step);
+        recipe.setSteps(recipeSteps);
+
+        RecipeManager.getInstance(RecipeCreateActivity.this).create(recipe).onSuccess(new Consumer<Recipe>() {
+            @Override
+            public void accept(Recipe recipe) {
+
+            }
+        }).onFailed(new Consumer<DataResult.Failed<Recipe>>() {
+            @Override
+            public void accept(DataResult.Failed<Recipe> recipeFailed) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

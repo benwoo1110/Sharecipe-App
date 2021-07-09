@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/recipe_back_menu"
+        android:icon="@drawable/outline_arrow_back_24"
+        android:title="Back"
+        app:labelVisibilityMode="labeled" />
+    <item
+        android:id="@+id/recipe_clear_menu"
+        android:icon="@drawable/outline_delete_24"
+        android:title="Clear"
+        app:labelVisibilityMode="labeled" />
+    <item
+        android:id="@+id/recipe_save_menu"
+        android:icon="@drawable/outline_save_24"
+        android:title="Save"
+        app:labelVisibilityMode="labeled" />
+    <item
+        android:id="@+id/recipe_done_menu"
+        android:icon="@drawable/done"
+        android:title="Done"
+        app:labelVisibilityMode="labeled" />
+</menu>

@@ -9,7 +9,6 @@ import java9.util.concurrent.CompletableFuture;
 import java9.util.function.BiConsumer;
 import java9.util.function.Consumer;
 import okhttp3.Response;
-import sg.edu.np.mad.Sharecipe.models.Account;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.utils.JsonUtils;

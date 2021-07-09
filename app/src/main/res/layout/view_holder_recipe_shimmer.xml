@@ -20,6 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -28,13 +29,12 @@
                 android:id="@+id/shapeableImageView"
                 android:layout_width="128dp"
                 android:layout_height="128dp"
+                android:background="?attr/colorPrimaryVariant"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearanceOverlay="@style/roundedCornersImageView"
-                app:srcCompat="@drawable/ic_launcher_background"
-                tools:srcCompat="@drawable/ic_launcher_background" />
+                app:shapeAppearanceOverlay="@style/roundedCornersImageView" />
 
             <TextView
                 android:id="@+id/recipeTitle"
@@ -43,8 +43,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="24dp"
+                android:background="?attr/colorPrimaryVariant"
                 android:gravity="center_vertical"
-                android:text="Recipe Name"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -56,15 +56,27 @@
                 android:layout_width="0dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginEnd="42dp"
                 android:layout_marginBottom="16dp"
-                android:text="TextView"
+                android:background="?attr/colorPrimaryVariant"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/shapeableImageView" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/recipeSecondaryInfo2"
+                android:layout_width="0dp"
+                android:layout_height="22dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="68dp"
+                android:layout_marginBottom="52dp"
+                android:background="?attr/colorPrimaryVariant"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/shapeableImageView" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

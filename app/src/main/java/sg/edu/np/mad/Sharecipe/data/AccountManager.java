@@ -1,6 +1,5 @@
 package sg.edu.np.mad.Sharecipe.data;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -10,14 +9,11 @@ import androidx.annotation.Nullable;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import java.util.function.BiConsumer;
-
 import dev.haenara.bricksharepref.BrickSharedPreferences;
 import sg.edu.np.mad.Sharecipe.models.Account;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.utils.Interval;
-import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
 import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
 /**
