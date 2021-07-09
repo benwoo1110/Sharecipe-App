@@ -231,7 +231,6 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
         builder.setTitle("Remove image");
         builder.setMessage("Would you like to remove this image?");
         builder.setPositiveButton("Remove", (dialog, which) -> {
-            //TODO: Remove image on click
             images.remove(image);
             notifyDataSetChanged();
 

@@ -1,5 +1,6 @@
 package sg.edu.np.mad.Sharecipe.ui.create;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import sg.edu.np.mad.Sharecipe.R;
@@ -19,8 +21,9 @@ import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 
 public class StepsFragment extends Fragment {
 
+    private StepsAdapter adapter;
     ArrayList<RecipeStep> stepsList = new ArrayList<>();
-
+    public static int LAUNCH_STEP_CREATION = 1;
 
     public StepsFragment() {
 
@@ -32,7 +35,7 @@ public class StepsFragment extends Fragment {
         RecyclerView stepsView = view.findViewById(R.id.recyclerview_steps);
         FloatingActionButton button = view.findViewById(R.id.buttonAdd);
 
-        StepsAdapter adapter = new StepsAdapter(stepsList);
+        adapter = new StepsAdapter(stepsList);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
 
         stepsView.setAdapter(adapter);
@@ -41,11 +44,28 @@ public class StepsFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), StepsCreation.class);
-                startActivity(intent);
+                RecipeStep newStep =  new RecipeStep();
+                int position = stepsList.size() + 1;
+                Intent intent = new Intent(getContext(), StepsCreation.class);
+                intent.putExtra("New step", newStep);
+                intent.putExtra("Step number", position);
+                startActivityForResult(intent, LAUNCH_STEP_CREATION);
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == LAUNCH_STEP_CREATION) {
+            if (resultCode == Activity.RESULT_OK) {
+                RecipeStep inputStep = (RecipeStep) data.getSerializableExtra("Input step");
+                stepsList.add(inputStep);
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
 }

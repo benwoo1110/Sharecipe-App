@@ -28,12 +28,6 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewholder> {
         holder.stepNumber.setText(String.valueOf(step.getStepNumber()));
         holder.stepDescription.setText(step.getDescription());
         holder.timeNeeded.setText(String.valueOf(step.getTimeNeeded()));
-        holder.edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: Add action for editing step
-            }
-        });
     }
 
     public int getItemCount() {

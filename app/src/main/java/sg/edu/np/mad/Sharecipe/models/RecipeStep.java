@@ -2,7 +2,9 @@ package sg.edu.np.mad.Sharecipe.models;
 
 import com.google.gson.annotations.Expose;
 
-public class RecipeStep {
+import java.io.Serializable;
+
+public class RecipeStep implements Serializable {
 
     @Expose
     private int recipeId;
