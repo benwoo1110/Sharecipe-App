@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  Credits to
- https://proandroiddev.com/enter-animation-using-recyclerview-and-layoutanimation-part-1-list-75a874a5d213z
+ https://proandroiddev.com/enter-animation-using-recyclerview-and-layoutanimation-part-1-list-75a874a5d213
  -->
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:duration="@integer/material_motion_duration_medium_2">
