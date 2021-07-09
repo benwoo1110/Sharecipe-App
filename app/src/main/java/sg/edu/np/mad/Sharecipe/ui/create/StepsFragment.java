@@ -1,5 +1,6 @@
 package sg.edu.np.mad.Sharecipe.ui.create;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,13 +32,6 @@ public class StepsFragment extends Fragment {
         RecyclerView stepsView = view.findViewById(R.id.recyclerview_steps);
         FloatingActionButton button = view.findViewById(R.id.buttonAdd);
 
-        RecipeStep test = new RecipeStep();
-        test.setName("Test");
-        test.setStepNumber(1);
-        test.setDescription("Test");
-        test.setTimeNeeded(10);
-        stepsList.add(test);
-
         StepsAdapter adapter = new StepsAdapter(stepsList);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
 
@@ -47,7 +41,8 @@ public class StepsFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getActivity(), StepsCreation.class);
+                startActivity(intent);
             }
         });
 
