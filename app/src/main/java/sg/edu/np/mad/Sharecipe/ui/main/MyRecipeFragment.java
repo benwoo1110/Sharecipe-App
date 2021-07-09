@@ -42,12 +42,7 @@ public class MyRecipeFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         recipeRecyclerView.setAdapter(adapter);
         recipeRecyclerView.setLayoutManager(layoutManager);
-
-        //TODO
-        // Shimmer effect
-        // https://howtodoandroid.medium.com/shimmer-effect-for-android-recyclerview-example-a9315b46cdc0
-        // https://github.com/facebook/shimmer-android
-
+        
         RecipeManager.getInstance(getContext()).getAccountRecipe()
                 .onSuccess(recipes -> getActivity().runOnUiThread(() -> {
                     adapter.setRecipeList(recipes);
