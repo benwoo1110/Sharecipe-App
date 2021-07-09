@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
+
 import java.util.ArrayList;
 
 import sg.edu.np.mad.Sharecipe.R;
@@ -30,15 +32,23 @@ public class MyRecipeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_recipe, container, false);
+
+        ShimmerFrameLayout shimmerFrameLayout = view.findViewById(R.id.recipeShimmerLayout);
         RecyclerView recipeRecyclerView = view.findViewById(R.id.myRecipeRecyclerView);
+
+        shimmerFrameLayout.startShimmer();
+
         RecipeAdapter adapter = new RecipeAdapter(new ArrayList<>());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-
         recipeRecyclerView.setAdapter(adapter);
         recipeRecyclerView.setLayoutManager(layoutManager);
-
+        
         RecipeManager.getInstance(getContext()).getAccountRecipe()
-                .onSuccess(recipes -> getActivity().runOnUiThread(() -> adapter.setRecipeList(recipes)))
+                .onSuccess(recipes -> getActivity().runOnUiThread(() -> {
+                    adapter.setRecipeList(recipes);
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
+                }))
                 .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
                 .onError(Throwable::printStackTrace);
 
