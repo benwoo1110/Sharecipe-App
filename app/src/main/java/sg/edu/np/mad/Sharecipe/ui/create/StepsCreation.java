@@ -36,8 +36,6 @@ public class StepsCreation extends AppCompatActivity {
         RecipeStep newStep = (RecipeStep)intent.getSerializableExtra("New step");
         int stepNumber = intent.getIntExtra("Step number", 0);
 
-
-
         input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
