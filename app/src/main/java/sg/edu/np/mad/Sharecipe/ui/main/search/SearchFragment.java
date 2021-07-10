@@ -72,7 +72,7 @@ public class SearchFragment extends Fragment {
                     .onSuccess(searchResult -> {
                         recipeSection.setRecipeList(searchResult.getRecipes());
                         userSection.setUserList(searchResult.getUsers());
-                        searchSectionAdapter.notifyDataSetChanged();
+                        getActivity().runOnUiThread(searchSectionAdapter::notifyDataSetChanged);
                     })
                     .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
                     .onError(Throwable::printStackTrace);

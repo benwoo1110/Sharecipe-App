@@ -7,9 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.takusemba.multisnaprecyclerview.MultiSnapHelper;
-import com.takusemba.multisnaprecyclerview.SnapGravity;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +28,7 @@ public class RecipeResultSectionCreator implements SectionCreator {
 
     @Override
     public int getLayoutId() {
-        return R.layout.view_holder_discover_section;
+        return R.layout.view_holder_section;
     }
 
     @Override
