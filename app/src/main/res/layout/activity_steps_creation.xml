@@ -7,7 +7,6 @@
     tools:context=".ui.create.StepsCreation">
 
     <EditText
-        android:id="@+id/input_StepDesc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -65,5 +64,39 @@
         app:layout_constraintStart_toEndOf="@+id/display_StepNum"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/done" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="188dp"
+        tools:layout_editor_absoluteY="176dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_StepDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <NumberPicker
+        android:id="@+id/inputHours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="103dp"
+        tools:layout_editor_absoluteY="438dp"></NumberPicker>
+
+    <NumberPicker
+        android:id="@+id/inputSeconds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="231dp"
+        tools:layout_editor_absoluteY="438dp"></NumberPicker>
+
+    <NumberPicker
+        android:id="@+id/inputMinutes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="167dp"
+        tools:layout_editor_absoluteY="438dp"></NumberPicker>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
