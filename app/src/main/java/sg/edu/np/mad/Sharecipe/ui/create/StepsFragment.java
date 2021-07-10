@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,7 +34,7 @@ public class StepsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_steps, container, false);
         RecyclerView stepsView = view.findViewById(R.id.recyclerview_steps);
-        FloatingActionButton button = view.findViewById(R.id.buttonAdd);
+        Button button = view.findViewById(R.id.buttonAdd);
 
         adapter = new StepsAdapter(stepsList);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());

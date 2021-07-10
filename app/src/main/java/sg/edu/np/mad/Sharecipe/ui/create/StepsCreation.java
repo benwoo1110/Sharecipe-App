@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
@@ -35,10 +36,11 @@ public class StepsCreation extends AppCompatActivity {
         RecipeStep newStep = (RecipeStep)intent.getSerializableExtra("New step");
         int stepNumber = intent.getIntExtra("Step number", 0);
 
+
+
         input.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -51,7 +53,6 @@ public class StepsCreation extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
             }
         });
 
@@ -62,8 +63,8 @@ public class StepsCreation extends AppCompatActivity {
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (input.getText() == null) {
-                    // TODO: Exit without doing anything, close activity?
+                if (newStep.getDescription() == null) {
+                    finish();
                 }
 
                 else {
@@ -71,21 +72,30 @@ public class StepsCreation extends AppCompatActivity {
                 }
             }
         });
-
-
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (newStep.getDescription() != null) {
+                    saveInput(newStep);
+                }
+                else {
+                    Toast.makeText(StepsCreation.this, "You have not typed in anything", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
     }
+
 
     private void checkSaveDialog(RecipeStep step) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Unsaved changes");
         builder.setMessage("Would you like to save your changes?");
         builder.setPositiveButton("Yes", (dialog, which) -> {
-            // TODO: Call method to save changes
             saveInput(step);
         });
         builder.setNegativeButton("No", (dialog, which) -> {
-            // TODO: Remove changes and pass back nothing
+            finish();
         });
         AlertDialog alert = builder.create();
         alert.show();
