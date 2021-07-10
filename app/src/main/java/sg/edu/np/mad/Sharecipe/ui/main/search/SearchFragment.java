@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.main;
+package sg.edu.np.mad.Sharecipe.ui.main.search;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,22 +8,20 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.data.UserManager;
+import sg.edu.np.mad.Sharecipe.data.SearchManager;
+import sg.edu.np.mad.Sharecipe.models.User;
+import sg.edu.np.mad.Sharecipe.ui.common.SectionAdapter;
 
 public class SearchFragment extends Fragment {
 
@@ -44,11 +42,16 @@ public class SearchFragment extends Fragment {
         TextInputLayout searchInput = view.findViewById(R.id.textInputSearch);
         TextInputEditText searchText = (TextInputEditText) searchInput.getEditText();
 
-        SearchResultAdapter searchResultAdapter = new SearchResultAdapter();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         DividerItemDecoration divider = new DividerItemDecoration(searchResultView.getContext(), layoutManager.getOrientation());
 
-        searchResultView.setAdapter(searchResultAdapter);
+        RecipeResultSectionCreator recipeSection = new RecipeResultSectionCreator("Recipes");
+        UserResultSectionCreator userSection = new UserResultSectionCreator("Users");
+        SectionAdapter searchSectionAdapter = new SectionAdapter()
+                .addSection(recipeSection)
+                .addSection(userSection);
+
+        searchResultView.setAdapter(searchSectionAdapter);
         searchResultView.setLayoutManager(layoutManager);
         searchResultView.addItemDecoration(divider);
 
@@ -64,11 +67,12 @@ public class SearchFragment extends Fragment {
                 focus.clearFocus();
             }
 
-            UserManager.getInstance(view.getContext())
+            SearchManager.getInstance(view.getContext())
                     .search(searchText.getText().toString())
-                    .onSuccess(userList -> {
-                        searchResultAdapter.setUserList(userList);
-                        getActivity().runOnUiThread(searchResultAdapter::notifyDataSetChanged);
+                    .onSuccess(searchResult -> {
+                        recipeSection.setRecipeList(searchResult.getRecipes());
+                        userSection.setUserList(searchResult.getUsers());
+                        searchSectionAdapter.notifyDataSetChanged();
                     })
                     .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
                     .onError(Throwable::printStackTrace);
