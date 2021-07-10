@@ -38,12 +38,12 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        RecyclerView searchResultView = view.findViewById(R.id.searchResultView);
+        RecyclerView searchResultRecyclerView = view.findViewById(R.id.searchResultView);
         TextInputLayout searchInput = view.findViewById(R.id.textInputSearch);
         TextInputEditText searchText = (TextInputEditText) searchInput.getEditText();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        DividerItemDecoration divider = new DividerItemDecoration(searchResultView.getContext(), layoutManager.getOrientation());
+        DividerItemDecoration divider = new DividerItemDecoration(searchResultRecyclerView.getContext(), layoutManager.getOrientation());
 
         RecipeResultSectionCreator recipeSection = new RecipeResultSectionCreator("Recipes");
         UserResultSectionCreator userSection = new UserResultSectionCreator("Users");
@@ -51,9 +51,9 @@ public class SearchFragment extends Fragment {
                 .addSection(recipeSection)
                 .addSection(userSection);
 
-        searchResultView.setAdapter(searchSectionAdapter);
-        searchResultView.setLayoutManager(layoutManager);
-        searchResultView.addItemDecoration(divider);
+        searchResultRecyclerView.setAdapter(searchSectionAdapter);
+        searchResultRecyclerView.setLayoutManager(layoutManager);
+        searchResultRecyclerView.addItemDecoration(divider);
 
         searchText.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId != EditorInfo.IME_ACTION_SEARCH) {
