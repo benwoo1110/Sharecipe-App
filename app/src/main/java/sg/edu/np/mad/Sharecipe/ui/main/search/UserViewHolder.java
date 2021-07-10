@@ -3,6 +3,7 @@ package sg.edu.np.mad.Sharecipe.ui.main.search;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ public class UserViewHolder extends RecyclerView.ViewHolder {
 
     final TextView name;
     final TextView bio;
+    final ImageView profileImage;
 
     int userId;
 
@@ -24,6 +26,7 @@ public class UserViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         name = itemView.findViewById(R.id.textViewName);
         bio = itemView.findViewById(R.id.textViewBio);
+        profileImage = itemView.findViewById(R.id.userProfileImage);
 
         Context context = itemView.getContext();
         itemView.setOnClickListener(v -> {

@@ -18,8 +18,14 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.util.List;
+
+import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.data.RecipeManager;
 import sg.edu.np.mad.Sharecipe.data.SearchManager;
+import sg.edu.np.mad.Sharecipe.data.UserManager;
+import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.common.SectionAdapter;
 
@@ -70,9 +76,26 @@ public class SearchFragment extends Fragment {
             SearchManager.getInstance(view.getContext())
                     .search(searchText.getText().toString())
                     .onSuccess(searchResult -> {
-                        recipeSection.setRecipeList(searchResult.getRecipes());
-                        userSection.setUserList(searchResult.getUsers());
-                        getActivity().runOnUiThread(searchSectionAdapter::notifyDataSetChanged);
+                        List<Recipe> recipes = searchResult.getRecipes();
+                        List<User> users = searchResult.getUsers();
+                        CompletableFuture<?>[] completableFutures = new CompletableFuture[recipes.size() + users.size()];
+                        int i = 0;
+                        for (Recipe recipe : recipes) {
+                            completableFutures[i++] = RecipeManager.getInstance(getContext())
+                                    .getIcon(recipe)
+                                    .onSuccess(recipe::setIcon);
+                        }
+                        for (User user : users) {
+                            completableFutures[i++] = UserManager.getInstance(getContext())
+                                    .getProfileImage(user.getUserId())
+                                    .onSuccess(user::setProfileImage);
+                        }
+
+                        CompletableFuture.allOf(completableFutures).thenAccept(aVoid -> {
+                            recipeSection.setRecipeList(searchResult.getRecipes());
+                            userSection.setUserList(searchResult.getUsers());
+                            getActivity().runOnUiThread(searchSectionAdapter::notifyDataSetChanged);
+                        });
                     })
                     .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
                     .onError(Throwable::printStackTrace);
