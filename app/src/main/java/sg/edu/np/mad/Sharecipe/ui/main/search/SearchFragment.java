@@ -1,13 +1,8 @@
 package sg.edu.np.mad.Sharecipe.ui.main.search;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +11,11 @@ import android.view.animation.LayoutAnimationController;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.textfield.TextInputEditText;
@@ -34,6 +34,8 @@ import sg.edu.np.mad.Sharecipe.ui.common.SectionAdapter;
 
 public class SearchFragment extends Fragment {
 
+    private TextInputEditText searchText;
+
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -50,7 +52,7 @@ public class SearchFragment extends Fragment {
         ShimmerFrameLayout shimmerFrameLayout = view.findViewById(R.id.userShimmerLayout);
         RecyclerView searchResultRecyclerView = view.findViewById(R.id.searchResultView);
         TextInputLayout searchInput = view.findViewById(R.id.textInputSearch);
-        TextInputEditText searchText = (TextInputEditText) searchInput.getEditText();
+        searchText = (TextInputEditText) searchInput.getEditText();
 
         searchResultRecyclerView.setVisibility(View.GONE);
         shimmerFrameLayout.setVisibility(View.GONE);
@@ -108,6 +110,7 @@ public class SearchFragment extends Fragment {
                             recipeSection.setRecipeList(searchResult.getRecipes());
                             userSection.setUserList(searchResult.getUsers());
                             getActivity().runOnUiThread(() -> {
+                                layoutManager.scrollToPosition(0);
                                 searchResultRecyclerView.setVisibility(View.VISIBLE);
                                 searchSectionAdapter.notifyDataSetChanged();
                                 searchResultRecyclerView.scheduleLayoutAnimation();
@@ -123,5 +126,16 @@ public class SearchFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        searchText.requestFocus();
+
+        Activity activity = getActivity();
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
     }
 }
