@@ -2,7 +2,6 @@ package sg.edu.np.mad.Sharecipe.ui.main.profile;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,15 +9,16 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
+import sg.edu.np.mad.Sharecipe.models.User;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
@@ -26,13 +26,13 @@ import java.io.File;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    int userid;
+    User user;
     ImageView profilePic;
-    Button save;
+    Button saveButton;
     TextView editUsername;
     TextView editBio;
     TextView editPassword;
-    String profileImagePath;
+    String newProfileImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,22 +40,23 @@ public class EditProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
 
         profilePic = findViewById(R.id.editPic);
-        save = findViewById(R.id.saveInfo);
+        saveButton = findViewById(R.id.saveInfo);
         editUsername = findViewById(R.id.editUsername);
         editBio = findViewById(R.id.editDescription);
         editPassword = findViewById(R.id.editPassword);
 
-        userid = AccountManager.getInstance(EditProfileActivity.this).getAccount().getUserId();
+        UserManager userManager = UserManager.getInstance(EditProfileActivity.this);
 
-        UserManager.getInstance(EditProfileActivity.this).getProfileImage(userid)
-                .onSuccess(image ->  profilePic.setImageBitmap(image))
-                .onFailed(reason -> Toast.makeText(this, reason.getMessage(), Toast.LENGTH_SHORT).show())
-                .onError(Throwable::printStackTrace);
-
-        UserManager.getInstance(EditProfileActivity.this).getAccountUser().onSuccess(user -> {
+        userManager.getAccountUser().onSuccess(user -> {
+            this.user = user;
             editUsername.setText(user.getUsername());
             editBio.setText(user.getBio());
         });
+
+        userManager.getProfileImage(AccountManager.getInstance(EditProfileActivity.this).getAccount().getUserId())
+                .onSuccess(image -> runOnUiThread(() -> profilePic.setImageBitmap(image)))
+                .onFailed(reason -> Toast.makeText(this, reason.getMessage(), Toast.LENGTH_SHORT).show())
+                .onError(Throwable::printStackTrace);
 
         profilePic.setOnClickListener(v -> ImagePicker.with(EditProfileActivity.this)
                 .crop()
@@ -63,43 +64,34 @@ public class EditProfileActivity extends AppCompatActivity {
                 .maxResultSize(500, 500)
                 .start());
 
-        File imageFile = profileImagePath == null ? null : new File(profileImagePath);
+        saveButton.setOnClickListener(v -> {
+            new AlertDialog.Builder(EditProfileActivity.this)
+                    .setTitle("Save Changes")
+                    .setMessage("Are you sure you want to save changes?").setCancelable(false)
+                    .setCancelable(false)
+                    .setPositiveButton("Save", (dialog, which) -> {
+                        File imageFile = newProfileImagePath == null ? null : new File(newProfileImagePath);
+                        Toast.makeText(EditProfileActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
+                        CompletableFuture.allOf(
+                                userManager.updateAccountUser(user),
+                                userManager.setAccountProfileImage(imageFile)
+                        ).thenAccept(aVoid -> {
+                            runOnUiThread(() -> {
+                                Toast.makeText(EditProfileActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                                finish();
+                            });
+                        });
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        });
+
         /*editPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 UserManager.getInstance(EditProfileActivity.this).getAccountUser()
             }
         });*/
-
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(EditProfileActivity.this);
-                builder.setTitle("Save changes?");
-                builder.setMessage("Are you sure you want to save changes?").setCancelable(false);
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        UserManager.getInstance(EditProfileActivity.this).getAccountUser().onSuccess(user -> {
-                            user.setUsername(editUsername.getText().toString());
-                            user.setBio(editBio.getText().toString());
-                            UserManager.getInstance(EditProfileActivity.this).updateAccountUser(user);
-                        });
-                        UserManager.getInstance(EditProfileActivity.this).setAccountProfileImage(imageFile);
-                        Toast.makeText(EditProfileActivity.this, "Saved", Toast.LENGTH_SHORT).show();
-                        finish();
-                    }
-                });
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
-            }
-        });
     }
 
     @Override
@@ -108,7 +100,7 @@ public class EditProfileActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK && data != null) {
             Uri uri = data.getData();
             profilePic.setImageURI(uri);
-            profileImagePath = uri.getPath();
+            newProfileImagePath = uri.getPath();
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show();
         } else {
