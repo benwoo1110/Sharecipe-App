@@ -11,10 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
@@ -44,10 +47,15 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
+        ShimmerFrameLayout shimmerFrameLayout = view.findViewById(R.id.userShimmerLayout);
         RecyclerView searchResultRecyclerView = view.findViewById(R.id.searchResultView);
         TextInputLayout searchInput = view.findViewById(R.id.textInputSearch);
         TextInputEditText searchText = (TextInputEditText) searchInput.getEditText();
 
+        searchResultRecyclerView.setVisibility(View.GONE);
+        shimmerFrameLayout.setVisibility(View.GONE);
+
+        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_from_bottom);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         DividerItemDecoration divider = new DividerItemDecoration(searchResultRecyclerView.getContext(), layoutManager.getOrientation());
 
@@ -57,6 +65,7 @@ public class SearchFragment extends Fragment {
                 .addSection(recipeSection)
                 .addSection(userSection);
 
+        searchResultRecyclerView.setLayoutAnimation(controller);
         searchResultRecyclerView.setAdapter(searchSectionAdapter);
         searchResultRecyclerView.setLayoutManager(layoutManager);
         searchResultRecyclerView.addItemDecoration(divider);
@@ -72,6 +81,10 @@ public class SearchFragment extends Fragment {
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 focus.clearFocus();
             }
+
+            searchResultRecyclerView.setVisibility(View.GONE);
+            shimmerFrameLayout.setVisibility(View.VISIBLE);
+            shimmerFrameLayout.startShimmer();
 
             SearchManager.getInstance(view.getContext())
                     .search(searchText.getText().toString())
@@ -94,7 +107,13 @@ public class SearchFragment extends Fragment {
                         CompletableFuture.allOf(completableFutures).thenAccept(aVoid -> {
                             recipeSection.setRecipeList(searchResult.getRecipes());
                             userSection.setUserList(searchResult.getUsers());
-                            getActivity().runOnUiThread(searchSectionAdapter::notifyDataSetChanged);
+                            getActivity().runOnUiThread(() -> {
+                                searchResultRecyclerView.setVisibility(View.VISIBLE);
+                                searchSectionAdapter.notifyDataSetChanged();
+                                searchResultRecyclerView.scheduleLayoutAnimation();
+                                shimmerFrameLayout.stopShimmer();
+                                shimmerFrameLayout.setVisibility(View.GONE);
+                            });
                         });
                     })
                     .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
