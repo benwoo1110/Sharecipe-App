@@ -40,7 +40,6 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsViewhold
     }
 
     public void onBindViewHolder(IngredientsViewholder holder, int position) {
-        // TODO: Bind input to recyclerview
         RecipeIngredient ingredient = ingredients.get(position);
         holder.name.setText(ingredient.getName());
         holder.quantity.setText(String.valueOf(ingredient.getQuantity()));
