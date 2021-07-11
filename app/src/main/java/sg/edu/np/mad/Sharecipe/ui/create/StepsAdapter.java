@@ -31,7 +31,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewholder> {
         holder.stepDescription.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                removeDialog(holder.step, holder);
+                removeDialog(holder.step);
                 return false;
             }
         });
@@ -97,7 +97,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewholder> {
         return data.size();
     }
 
-    public void removeDialog(RecipeStep step, StepsViewholder holder) {
+    public void removeDialog(RecipeStep step) {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("Remove step");
         builder.setMessage("Would you like to remove this step?");

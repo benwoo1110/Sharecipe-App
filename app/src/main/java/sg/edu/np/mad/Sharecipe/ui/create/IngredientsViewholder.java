@@ -18,6 +18,7 @@ public class IngredientsViewholder extends RecyclerView.ViewHolder {
     EditText quantity;
     EditText unit;
     TextView number;
+    RecipeIngredient ingredient;
 
     public IngredientsViewholder(View itemView, ArrayList<RecipeIngredient> ingredientList) {
         super(itemView);
