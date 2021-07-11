@@ -125,17 +125,12 @@ public class SearchFragment extends Fragment {
             return true;
         });
 
-        return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
         searchText.requestFocus();
 
         Activity activity = getActivity();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+        return view;
     }
 }
