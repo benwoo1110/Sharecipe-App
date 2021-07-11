@@ -5,7 +5,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.LinearSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.takusemba.multisnaprecyclerview.MultiSnapHelper;
@@ -25,7 +24,7 @@ public class LargeSectionCreator implements SectionCreator {
 
     @Override
     public int getLayoutId() {
-        return R.layout.view_holder_discover_section;
+        return R.layout.view_holder_section;
     }
 
     @Override

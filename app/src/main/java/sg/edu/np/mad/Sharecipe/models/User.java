@@ -1,5 +1,7 @@
 package sg.edu.np.mad.Sharecipe.models;
 
+import android.graphics.Bitmap;
+
 import com.google.gson.annotations.Expose;
 
 import java.util.Date;
@@ -14,6 +16,8 @@ public class User {
     private String bio;
     @Expose(serialize = false)
     private Date timeCreated;
+
+    private transient Bitmap profileImage;
 
     private User() { }
 
@@ -39,6 +43,14 @@ public class User {
 
     public Date getTimeCreated() {
         return timeCreated;
+    }
+
+    public Bitmap getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(Bitmap profileImage) {
+        this.profileImage = profileImage;
     }
 
     @Override

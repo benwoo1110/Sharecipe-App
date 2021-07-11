@@ -29,7 +29,7 @@ public class RecipeManager {
     private static RecipeManager instance;
 
     /**
-     * Gets common {@link UserManager} instance throughout the app.
+     * Gets common {@link RecipeManager} instance throughout the app.
      *
      * @param context   Application context for share preference loading.
      * @return The instance.
