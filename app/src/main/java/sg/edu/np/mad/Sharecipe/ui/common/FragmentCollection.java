@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.utils;
+package sg.edu.np.mad.Sharecipe.ui.common;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

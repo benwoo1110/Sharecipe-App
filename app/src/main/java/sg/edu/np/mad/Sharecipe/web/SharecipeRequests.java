@@ -369,6 +369,31 @@ public class SharecipeRequests {
     }
 
     /**
+     * GET `/users/user_id/recipes/recipe_id/icon` endpoint.
+     *
+     * @param accessToken
+     * @param userId
+     * @param recipeId
+     * @return
+     */
+    public static FutureWebResponse getRecipeIcon(@NonNull String accessToken,
+                                                  int userId,
+                                                  int recipeId) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(userId))
+                        .addPathSegment(UrlPath.RECIPES)
+                        .addPathSegment(String.valueOf(recipeId))
+                        .addPathSegment(UrlPath.ICON)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
+
+    /**
      * PUT `/users/user_id/recipes/recipe_id/images` endpoint.
      *
      * @param accessToken
@@ -423,6 +448,26 @@ public class SharecipeRequests {
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .addPathSegment(UrlPath.IMAGES)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
+
+    /**
+     * GET `/users/user_id/recipes/recipe_id/images` endpoint.
+     *
+     * @param accessToken
+     * @param queryString
+     * @return
+     */
+    public static FutureWebResponse search(@NonNull String accessToken,
+                                           @Nullable String queryString) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.SEARCH)
+                        .addQueryParameter("search_string", queryString)
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
                 .get()

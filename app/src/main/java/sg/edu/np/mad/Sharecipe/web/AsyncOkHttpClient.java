@@ -16,7 +16,9 @@ import okhttp3.Response;
  */
 public class AsyncOkHttpClient {
 
-    private final OkHttpClient client = new OkHttpClient();
+    private final OkHttpClient client = new OkHttpClient.Builder()
+            .retryOnConnectionFailure(true)
+            .build();
 
     /**
      * Calls a web request asynchronously

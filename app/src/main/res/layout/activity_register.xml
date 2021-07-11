@@ -6,15 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.RegisterActivity">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/registerProfileImage"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="70dp"
-        android:background="@drawable/ic_launcher_background"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:layout_marginTop="52dp"
+        android:background="?attr/colorPrimaryVariant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
         app:srcCompat="@drawable/ic_baseline_add_24" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -23,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="52dp"
         android:layout_marginEnd="24dp"
         android:hint="Username"
         app:layout_constraintEnd_toEndOf="parent"

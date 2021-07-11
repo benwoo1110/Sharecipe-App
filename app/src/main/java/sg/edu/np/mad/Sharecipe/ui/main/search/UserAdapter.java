@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.main;
+package sg.edu.np.mad.Sharecipe.ui.main.search;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,27 +13,36 @@ import java.util.List;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.User;
 
-public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultViewHolder> {
+public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
 
     private final List<User> userList;
 
-    public SearchResultAdapter() {
+    public UserAdapter() {
         this.userList = new ArrayList<>();
+    }
+
+    public UserAdapter(List<User> userList) {
+        this.userList = userList;
     }
 
     @NonNull
     @Override
-    public SearchResultViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_holder_search_result, parent, false);
-        return new SearchResultViewHolder(itemView);
+    public UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_holder_user, parent, false);
+        return new UserViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SearchResultViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User user = userList.get(position);
         holder.userId = user.getUserId();
         holder.name.setText(user.getUsername());
         holder.bio.setText(user.getBio());
+        if (user.getProfileImage() != null) {
+            holder.profileImage.setImageBitmap(user.getProfileImage());
+        } else {
+            holder.profileImage.setImageResource(R.drawable.ic_baseline_person_24);
+        }
     }
 
     @Override

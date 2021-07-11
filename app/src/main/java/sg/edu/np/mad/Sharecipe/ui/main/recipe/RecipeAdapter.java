@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.main;
+package sg.edu.np.mad.Sharecipe.ui.main.recipe;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +32,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
         Recipe recipe = recipeList.get(position);
         holder.title.setText(recipe.getName());
         holder.info.setText(String.valueOf(recipe.getRecipeId()));
+        if (recipe.getIcon() != null) {
+            holder.icon.setImageBitmap(recipe.getIcon());
+        } else {
+            holder.icon.setImageResource(R.drawable.ic_baseline_fastfood_24);
+        }
     }
 
     @Override

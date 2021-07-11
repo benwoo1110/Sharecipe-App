@@ -1,5 +1,7 @@
 package sg.edu.np.mad.Sharecipe.models;
 
+import android.graphics.Bitmap;
+
 import com.google.gson.annotations.Expose;
 
 import java.util.Date;
@@ -27,6 +29,8 @@ public class Recipe {
     private List<RecipeIngredient> ingredients;
     @Expose
     private List<RecipeImage> images;
+
+    private transient Bitmap icon;
 
     public Recipe() { }
 
@@ -96,6 +100,14 @@ public class Recipe {
 
     public void setImages(List<RecipeImage> images) {
         this.images = images;
+    }
+
+    public Bitmap getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Bitmap icon) {
+        this.icon = icon;
     }
 
     @Override

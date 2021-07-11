@@ -92,8 +92,8 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
 
             File imageFile = profileImagePath == null ? null : new File(profileImagePath);
 
-            AccountManager.getInstance(this).register(usernameText, passwordText, bioText).onSuccess(account -> {
-                UserManager.getInstance(this).setAccountProfileImage(imageFile).onFailed(reason -> {
+            App.getAccountManager().register(usernameText, passwordText, bioText).onSuccess(account -> {
+                App.getUserManager().setAccountProfileImage(imageFile).onFailed(reason -> {
                     RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show());
                 }).thenAccept(result -> {
                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);

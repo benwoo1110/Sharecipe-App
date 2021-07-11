@@ -28,8 +28,7 @@ public class LoginActivity extends DynamicFocusAppCompatActivity {
 
         login.setOnClickListener(v -> {
             hideSoftKeyBoard();
-            AccountManager.getInstance(this)
-                    .login(username.getEditText().getText().toString(), password.getEditText().getText().toString())
+            App.getAccountManager().login(username.getEditText().getText().toString(), password.getEditText().getText().toString())
                     .onSuccess(result -> {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
