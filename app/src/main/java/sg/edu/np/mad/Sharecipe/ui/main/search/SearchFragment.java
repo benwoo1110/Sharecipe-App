@@ -36,6 +36,7 @@ import sg.edu.np.mad.Sharecipe.ui.common.SectionAdapter;
 public class SearchFragment extends Fragment {
 
     private TextInputEditText searchText;
+    private boolean hasDoneSearch = false;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -117,6 +118,7 @@ public class SearchFragment extends Fragment {
                                 shimmerFrameLayout.stopShimmer();
                                 shimmerFrameLayout.setVisibility(View.GONE);
                             });
+                            hasDoneSearch = true;
                         });
                     })
                     .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
@@ -125,12 +127,30 @@ public class SearchFragment extends Fragment {
             return true;
         });
 
-        searchText.requestFocus();
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (!hasDoneSearch) {
+            searchText.requestFocus();
+            Activity activity = getActivity();
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
 
         Activity activity = getActivity();
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-
-        return view;
+        View currentFocus = activity.getCurrentFocus();
+        if(currentFocus != null && imm.isAcceptingText()) {
+            imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+        }
     }
 }
