@@ -55,7 +55,6 @@ public class StepsCreation extends AppCompatActivity {
         displayStepNo.setText("Step " + stepNumber);
 
 
-
         input_hours.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -89,7 +88,6 @@ public class StepsCreation extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 newStep.setDescription(input.getText().toString());
                 newStep.setStepNumber(stepNumber);
-                // TODO: Set time needed;
 
             }
 

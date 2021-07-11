@@ -1,8 +1,12 @@
 package sg.edu.np.mad.Sharecipe.ui.create;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,12 +17,24 @@ import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 
 public class StepsAdapter extends RecyclerView.Adapter<StepsViewholder> {
     ArrayList<RecipeStep> data;
+    Activity activity;
 
-    public StepsAdapter(ArrayList<RecipeStep> input) {this.data = input;}
+    public StepsAdapter(ArrayList<RecipeStep> input, Activity activity) {
+        this.data = input;
+        this.activity = activity;
+    }
 
     public StepsViewholder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_steps, parent, false);
         StepsViewholder holder = new StepsViewholder(item);
+
+        holder.stepDescription.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                removeDialog(holder.step, holder);
+                return false;
+            }
+        });
 
         return holder;
     }
@@ -27,8 +43,13 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewholder> {
         RecipeStep step = data.get(position);
         holder.stepNumber.setText(String.valueOf(step.getStepNumber()));
         holder.stepDescription.setText(step.getDescription());
+        holder.step = data.get(position);
 
-        if (step.getTimeNeeded() <= 59) {
+        if (step.getTimeNeeded() == 0) {
+            holder.timeNeeded.setText("");
+        }
+
+        else if (step.getTimeNeeded() <= 59) {
             holder.timeNeeded.setText(step.getTimeNeeded() + " seconds");
         }
 
@@ -74,6 +95,31 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewholder> {
 
     public int getItemCount() {
         return data.size();
+    }
+
+    public void removeDialog(RecipeStep step, StepsViewholder holder) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("Remove step");
+        builder.setMessage("Would you like to remove this step?");
+        builder.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                data.remove(step);
+                notifyDataSetChanged();
+                for (RecipeStep step : data
+                     ) {
+                    step.setStepNumber(data.indexOf(step) + 1);
+                }
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
 }

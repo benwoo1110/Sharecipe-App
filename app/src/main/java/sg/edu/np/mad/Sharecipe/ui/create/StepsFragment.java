@@ -36,7 +36,7 @@ public class StepsFragment extends Fragment {
         RecyclerView stepsView = view.findViewById(R.id.recyclerview_steps);
         Button button = view.findViewById(R.id.buttonAdd);
 
-        adapter = new StepsAdapter(stepsList);
+        adapter = new StepsAdapter(stepsList, getActivity());
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
 
         stepsView.setAdapter(adapter);
