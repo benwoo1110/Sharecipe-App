@@ -33,7 +33,6 @@
             android:name=".ui.main.EditProfileActivity"
             android:label="@string/title_activity_edit_profile"
             android:theme="@style/Theme.Sharecipe.NoActionBar" />
-        <activity android:name=".ui.create.RecipeStepsList" />
         <activity android:name=".ui.create.RecipeCreateActivity" />
         <activity android:name=".ui.RegisterActivity" />
         <activity android:name=".ui.LoginActivity" />
