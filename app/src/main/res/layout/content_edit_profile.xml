@@ -6,17 +6,17 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/editPic"
-        android:layout_width="127dp"
-        android:layout_height="129dp"
+        android:layout_width="129dp"
+        android:layout_height="128dp"
         android:layout_marginTop="52dp"
-        android:background="#7177E4"
+        android:background="?attr/colorPrimaryVariant"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_baseline_person_24" />
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+        tools:srcCompat="@drawable/ic_baseline_add_24" />
 
     <TextView
         android:id="@+id/editPassword"
