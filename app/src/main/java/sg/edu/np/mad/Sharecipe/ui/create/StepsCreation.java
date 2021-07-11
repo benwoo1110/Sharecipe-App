@@ -7,18 +7,26 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 
 public class StepsCreation extends AppCompatActivity {
+
+    int hours;
+    int minutes;
+    int seconds;
 
 
     @Override
@@ -27,14 +35,50 @@ public class StepsCreation extends AppCompatActivity {
         setContentView(R.layout.activity_steps_creation);
 
         TextView displayStepNo = findViewById(R.id.display_StepNum);
-        // TODO: Add option to input amount of time needed for this step
         ImageButton close = findViewById(R.id.buttonCloseStep);
         ImageButton save = findViewById(R.id.buttonSaveStep);
-        EditText input = findViewById(R.id.input_StepDesc);
+        TextInputEditText input = findViewById(R.id.input_StepDesc);
+        NumberPicker input_hours = findViewById(R.id.inputHours);
+        NumberPicker input_minutes = findViewById(R.id.inputMinutes);
+        NumberPicker input_seconds = findViewById(R.id.inputSeconds);
+
+        input_hours.setMaxValue(99);
+        input_hours.setMinValue(0);
+        input_minutes.setMaxValue(59);
+        input_minutes.setMinValue(0);
+        input_seconds.setMaxValue(59);
+        input_seconds.setMinValue(0);
 
         Intent intent = getIntent();
         RecipeStep newStep = (RecipeStep)intent.getSerializableExtra("New step");
         int stepNumber = intent.getIntExtra("Step number", 0);
+        displayStepNo.setText("Step " + stepNumber);
+
+
+
+        input_hours.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                hours = input_hours.getValue();
+                newStep.setTimeNeeded(convertHours(hours) + convertMinutes(minutes) + seconds);
+            }
+        });
+
+        input_minutes.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                minutes = input_minutes.getValue();
+                newStep.setTimeNeeded(convertHours(hours) + convertMinutes(minutes) + seconds);
+            }
+        });
+
+        input_seconds.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                seconds = input_seconds.getValue();
+                newStep.setTimeNeeded(convertHours(hours) + convertMinutes(minutes) + seconds);
+            }
+        });
 
         input.addTextChangedListener(new TextWatcher() {
             @Override
@@ -55,8 +99,6 @@ public class StepsCreation extends AppCompatActivity {
         });
 
 
-
-        displayStepNo.setText("Step " + stepNumber);
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,4 +147,15 @@ public class StepsCreation extends AppCompatActivity {
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }
+
+    private int convertHours(int hours) {
+        int seconds = hours * 60 * 60;
+        return seconds;
+    }
+
+    private int convertMinutes(int minutes) {
+        int seconds = minutes * 60;
+        return seconds;
+    }
+
 }
