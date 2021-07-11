@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
+import sg.edu.np.mad.Sharecipe.models.Account;
+import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 
 public class ProfileFragment extends Fragment {
@@ -24,6 +26,8 @@ public class ProfileFragment extends Fragment {
     private TextView username;
     private TextView description;
     private ImageView profileImage;
+
+    private UserManager userManager;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -46,20 +50,22 @@ public class ProfileFragment extends Fragment {
         TextView followers = view.findViewById(R.id.followers);
         profileImage = view.findViewById(R.id.profileImage);
 
-        UserManager.getInstance(getContext()).getAccountUser().onSuccess(user -> {
+        userManager = App.getUserManager();
+
+        userManager.getAccountUser().onSuccess(user -> {
             getActivity().runOnUiThread(() -> {
                 username.setText(user.getUsername());
                 description.setText(user.getBio());
             });
         });
 
-        UserManager.getInstance(getContext()).getProfileImage(AccountManager.getInstance(getContext()).getAccount().getUserId())
+        userManager.getProfileImage(App.getAccountManager().getAccount().getUserId())
                 .onSuccess(image -> getActivity().runOnUiThread(() -> profileImage.setImageBitmap(image)))
                 .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
                 .onError(Throwable::printStackTrace);
 
         logoutButton.setOnClickListener(v -> {
-            AccountManager.getInstance(getContext()).logout()
+            App.getAccountManager().logout()
                     .onSuccess(ignore -> {
                         Intent intent = new Intent(getActivity(), LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -69,7 +75,7 @@ public class ProfileFragment extends Fragment {
                     .onError(Throwable::printStackTrace);
         });
 
-        editButton.setOnClickListener((View.OnClickListener) v -> {
+        editButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EditProfileActivity.class);
             getActivity().startActivity(intent);
         });
@@ -81,14 +87,14 @@ public class ProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        UserManager.getInstance(getContext()).getAccountUser().onSuccess(user -> {
+        userManager.getAccountUser().onSuccess(user -> {
             getActivity().runOnUiThread(() -> {
                 username.setText(user.getUsername());
                 description.setText(user.getBio());
             });
         });
 
-        UserManager.getInstance(getContext()).getProfileImage(AccountManager.getInstance(getContext()).getAccount().getUserId())
+        userManager.getProfileImage(App.getAccountManager().getAccount().getUserId())
                 .onSuccess(image -> getActivity().runOnUiThread(() -> profileImage.setImageBitmap(image)))
                 .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
                 .onError(Throwable::printStackTrace);

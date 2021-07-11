@@ -11,6 +11,8 @@ import androidx.annotation.Nullable;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
+import sg.edu.np.mad.Sharecipe.models.User;
+import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 
 public class UserProfileActivity extends DynamicFocusAppCompatActivity {
@@ -30,14 +32,16 @@ public class UserProfileActivity extends DynamicFocusAppCompatActivity {
         Intent receivedData = getIntent();
         int userid = receivedData.getIntExtra("userId",0);
 
-        UserManager.getInstance(UserProfileActivity.this).get(userid).onSuccess(user -> {
+        UserManager userManager = App.getUserManager();
+
+        userManager.get(userid).onSuccess(user -> {
             runOnUiThread(() -> {
                 username.setText(user.getUsername());
                 description.setText(user.getBio());
             });
         });
 
-        UserManager.getInstance(UserProfileActivity.this).getProfileImage(userid)
+        userManager.getProfileImage(userid)
                 .onSuccess(image -> runOnUiThread(() -> profileImage.setImageBitmap(image)))
                 .onFailed(reason -> runOnUiThread(() -> Toast.makeText(UserProfileActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show()))
                 .onError(Throwable::printStackTrace);

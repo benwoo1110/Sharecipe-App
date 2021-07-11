@@ -21,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void init() {
-        AccountManager.getInstance(this).getOrRefreshAccount().onSuccess(account -> {
+        App.getAccountManager().getOrRefreshAccount().onSuccess(account -> {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

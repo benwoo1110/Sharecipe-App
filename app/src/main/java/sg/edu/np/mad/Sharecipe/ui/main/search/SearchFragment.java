@@ -30,6 +30,7 @@ import sg.edu.np.mad.Sharecipe.data.SearchManager;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.User;
+import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.SectionAdapter;
 
 public class SearchFragment extends Fragment {
@@ -88,20 +89,19 @@ public class SearchFragment extends Fragment {
             shimmerFrameLayout.setVisibility(View.VISIBLE);
             shimmerFrameLayout.startShimmer();
 
-            SearchManager.getInstance(view.getContext())
-                    .search(searchText.getText().toString())
+            App.getSearchManager().search(searchText.getText().toString())
                     .onSuccess(searchResult -> {
                         List<Recipe> recipes = searchResult.getRecipes();
                         List<User> users = searchResult.getUsers();
                         CompletableFuture<?>[] completableFutures = new CompletableFuture[recipes.size() + users.size()];
                         int i = 0;
                         for (Recipe recipe : recipes) {
-                            completableFutures[i++] = RecipeManager.getInstance(getContext())
+                            completableFutures[i++] = App.getRecipeManager()
                                     .getIcon(recipe)
                                     .onSuccess(recipe::setIcon);
                         }
                         for (User user : users) {
-                            completableFutures[i++] = UserManager.getInstance(getContext())
+                            completableFutures[i++] = App.getUserManager()
                                     .getProfileImage(user.getUserId())
                                     .onSuccess(user::setProfileImage);
                         }

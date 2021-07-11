@@ -19,6 +19,7 @@ import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.models.User;
+import sg.edu.np.mad.Sharecipe.ui.App;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
@@ -46,7 +47,7 @@ public class EditProfileActivity extends AppCompatActivity {
         editBio = findViewById(R.id.editDescription);
         editPassword = findViewById(R.id.editPassword);
 
-        UserManager userManager = UserManager.getInstance(EditProfileActivity.this);
+        UserManager userManager = App.getUserManager();
 
         userManager.getAccountUser().onSuccess(user -> {
             this.user = user;
@@ -54,7 +55,7 @@ public class EditProfileActivity extends AppCompatActivity {
             editBio.setText(user.getBio());
         });
 
-        userManager.getProfileImage(AccountManager.getInstance(EditProfileActivity.this).getAccount().getUserId())
+        userManager.getProfileImage(App.getAccountManager().getAccount().getUserId())
                 .onSuccess(image -> runOnUiThread(() -> profilePic.setImageBitmap(image)))
                 .onFailed(reason -> Toast.makeText(this, reason.getMessage(), Toast.LENGTH_SHORT).show())
                 .onError(Throwable::printStackTrace);

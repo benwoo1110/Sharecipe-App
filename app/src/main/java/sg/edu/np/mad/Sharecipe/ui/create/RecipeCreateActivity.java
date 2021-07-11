@@ -21,6 +21,7 @@ import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.RecipeManager;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
+import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 
 public class RecipeCreateActivity extends AppCompatActivity {
@@ -100,7 +101,7 @@ public class RecipeCreateActivity extends AppCompatActivity {
         recipeSteps.add(step);
         recipe.setSteps(recipeSteps);
 
-        RecipeManager.getInstance(RecipeCreateActivity.this).create(recipe).onSuccess(new Consumer<Recipe>() {
+        App.getRecipeManager().create(recipe).onSuccess(new Consumer<Recipe>() {
             @Override
             public void accept(Recipe recipe) {
 

@@ -21,6 +21,7 @@ import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.RecipeManager;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.ui.App;
 
 public class MyRecipeFragment extends Fragment {
 
@@ -49,13 +50,15 @@ public class MyRecipeFragment extends Fragment {
         recipeRecyclerView.setAdapter(adapter);
         recipeRecyclerView.setLayoutManager(layoutManager);
 
-        RecipeManager recipeManager = RecipeManager.getInstance(getContext());
-        recipeManager.getAccountRecipe()
+        App.getRecipeManager().getAccountRecipe()
                 .onSuccess(recipes -> {
                     CompletableFuture<?>[] completableFutures = new CompletableFuture[recipes.size()];
                     for (int i = 0, recipesSize = recipes.size(); i < recipesSize; i++) {
                         Recipe recipe = recipes.get(i);
-                        completableFutures[i] = recipeManager.getIcon(recipe).onSuccess(recipe::setIcon).onFailed(System.out::println).onError(Throwable::printStackTrace);
+                        completableFutures[i] = App.getRecipeManager().getIcon(recipe)
+                                .onSuccess(recipe::setIcon)
+                                .onFailed(System.out::println)
+                                .onError(Throwable::printStackTrace);
                     }
                     CompletableFuture.allOf(completableFutures).thenAccept(aVoid -> {
                         getActivity().runOnUiThread(() -> {
