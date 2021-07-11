@@ -26,13 +26,14 @@ import java.io.File;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    User user;
-    ImageView profilePic;
-    Button saveButton;
-    TextView editUsername;
-    TextView editBio;
-    TextView editPassword;
-    String newProfileImagePath;
+    private User user;
+    private ImageView profilePic;
+    private TextView editUsername;
+    private TextView editBio;
+    private TextView editPassword;
+    private Button saveButton;
+
+    private String newProfileImagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,5 +108,4 @@ public class EditProfileActivity extends AppCompatActivity {
             Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show();
         }
     }
-
 }
