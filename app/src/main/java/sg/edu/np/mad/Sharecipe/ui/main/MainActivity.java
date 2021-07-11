@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
         ViewPager2 mainViewPager = findViewById(R.id.mainViewPager);
         BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
-        FloatingActionButton addRecipe = findViewById(R.id.button_create_recipe);
 
         MenuStateAdapter fragmentStateAdapter = new MenuStateAdapter(MainActivity.this)
                 .addFragmentClass(DiscoverFragment.class, R.id.discover_menu)
@@ -50,9 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigation.setSelectedItemId(R.id.discover_menu);
 
-        addRecipe.setOnClickListener(v -> {
-            Intent recipeCreate1 = new Intent(MainActivity.this, RecipeCreateActivity.class);
-            startActivity(recipeCreate1);
-        });
+
     }
 }

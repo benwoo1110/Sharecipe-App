@@ -20,6 +20,18 @@
         app:title="Ben's Recipe"
         app:titleTextColor="?attr/colorOnBackground" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_create_recipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:baselineAlignBottom="false"
+        android:contentDescription="TODO"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
+
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/recipeShimmerLayout"
         android:layout_width="0dp"
