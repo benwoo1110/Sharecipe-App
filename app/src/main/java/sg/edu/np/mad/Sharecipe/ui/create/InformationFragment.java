@@ -67,6 +67,11 @@ public class InformationFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode != ImagePicker.REQUEST_CODE) {
+            return;
+        }
+
         if (resultCode == Activity.RESULT_OK && data != null) {
             Uri uri = data.getData();
             imageList.add(uri);
