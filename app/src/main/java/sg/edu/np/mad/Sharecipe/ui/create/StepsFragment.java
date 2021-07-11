@@ -61,12 +61,14 @@ public class StepsFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == LAUNCH_STEP_CREATION) {
-            if (resultCode == Activity.RESULT_OK) {
-                RecipeStep inputStep = (RecipeStep) data.getSerializableExtra("Input step");
-                stepsList.add(inputStep);
-                adapter.notifyDataSetChanged();
-            }
+        if (requestCode != LAUNCH_STEP_CREATION) {
+            return;
+        }
+
+        if (resultCode == Activity.RESULT_OK) {
+            RecipeStep inputStep = (RecipeStep) data.getSerializableExtra("Input step");
+            stepsList.add(inputStep);
+            adapter.notifyDataSetChanged();
         }
     }
 }
