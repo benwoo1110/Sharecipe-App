@@ -16,7 +16,7 @@ import sg.edu.np.mad.Sharecipe.ui.common.SectionViewHolder;
 
 public class SmallSectionCreator implements SectionCreator {
 
-    private String headerText;
+    private final String headerText;
 
     public SmallSectionCreator(String headerText) {
         this.headerText = headerText;

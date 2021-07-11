@@ -34,9 +34,9 @@ public class DiscoverFragment extends Fragment {
         RecyclerView discoverRecyclerView = view.findViewById(R.id.discoverRecyclerView);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         SectionAdapter adapter = new SectionAdapter();
-        adapter.addSection(new LargeSectionCreator("Test 1"));
-        adapter.addSection(new LargeSectionCreator("Test 2"));
-        adapter.addSection(new SmallSectionCreator("Test 3"));
+        adapter.addSection(new LargeSectionCreator("Latest"));
+        adapter.addSection(new SmallSectionCreator("Greens"));
+        adapter.addSection(new SmallSectionCreator("Meat"));
         discoverRecyclerView.setLayoutManager(layoutManager);
         discoverRecyclerView.setAdapter(adapter);
 
