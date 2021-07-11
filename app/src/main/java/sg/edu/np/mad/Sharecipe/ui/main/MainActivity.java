@@ -11,6 +11,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 import sg.edu.np.mad.Sharecipe.ui.main.discover.DiscoverFragment;
+import sg.edu.np.mad.Sharecipe.ui.main.profile.ProfileFragment;
 import sg.edu.np.mad.Sharecipe.ui.main.recipe.MyRecipeFragment;
 import sg.edu.np.mad.Sharecipe.ui.main.search.SearchFragment;
 import sg.edu.np.mad.Sharecipe.utils.FragmentCollection;

@@ -1,19 +1,14 @@
-package sg.edu.np.mad.Sharecipe.ui.main;
+package sg.edu.np.mad.Sharecipe.ui.main.profile;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
 import android.widget.Button;
@@ -24,13 +19,13 @@ import android.widget.Toast;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
-import sg.edu.np.mad.Sharecipe.models.User;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
 import java.io.File;
 
 public class EditProfileActivity extends AppCompatActivity {
+
     int userid;
     ImageView profilePic;
     Button save;
@@ -62,16 +57,11 @@ public class EditProfileActivity extends AppCompatActivity {
             editBio.setText(user.getBio());
         });
 
-        profilePic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ImagePicker.with(EditProfileActivity.this)
-                        .crop()    // Crop image(Optional), Check Customization for more option
-                        .compress(1024)    // Final image size will be less than 1 MB
-                        .maxResultSize(1080, 1080) // Final image resolution will be less than 1080x1080
-                        .start();
-            }
-        });
+        profilePic.setOnClickListener(v -> ImagePicker.with(EditProfileActivity.this)
+                .crop()
+                .compress(1024)
+                .maxResultSize(500, 500)
+                .start());
 
         File imageFile = profileImagePath == null ? null : new File(profileImagePath);
         /*editPassword.setOnClickListener(new View.OnClickListener() {

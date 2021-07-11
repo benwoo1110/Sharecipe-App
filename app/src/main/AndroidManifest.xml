@@ -31,7 +31,7 @@
 
         <activity android:name=".ui.main.MainActivity" />
         <activity
-            android:name=".ui.main.EditProfileActivity"
+            android:name=".ui.main.profile.EditProfileActivity"
             android:label="@string/title_activity_edit_profile"
             android:theme="@style/Theme.Sharecipe.NoActionBar" />
         <activity android:name=".ui.create.RecipeStepsList" />

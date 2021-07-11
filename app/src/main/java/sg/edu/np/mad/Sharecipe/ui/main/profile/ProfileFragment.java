@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.main;
+package sg.edu.np.mad.Sharecipe.ui.main.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +16,7 @@ import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
+import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 
 public class ProfileFragment extends Fragment {
 
@@ -69,12 +70,9 @@ public class ProfileFragment extends Fragment {
                     .onError(Throwable::printStackTrace);
         });
 
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-                ((MainActivity) getActivity()).startActivity(intent);
-            }
+        editButton.setOnClickListener((View.OnClickListener) v -> {
+            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+            getActivity().startActivity(intent);
         });
 
         return view;
@@ -97,7 +95,4 @@ public class ProfileFragment extends Fragment {
                 .onError(Throwable::printStackTrace);
 
     }
-
-
-
 }

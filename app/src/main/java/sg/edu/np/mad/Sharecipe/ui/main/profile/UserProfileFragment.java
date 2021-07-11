@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.main;
+package sg.edu.np.mad.Sharecipe.ui.main.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import android.widget.TextView;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
-import sg.edu.np.mad.Sharecipe.models.User;
 
 /**
  * A simple {@link Fragment} subclass.
