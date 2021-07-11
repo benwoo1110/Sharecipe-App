@@ -17,7 +17,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Ben's Recipe"
+        app:title="My Recipe"
         app:titleTextColor="?attr/colorOnBackground" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

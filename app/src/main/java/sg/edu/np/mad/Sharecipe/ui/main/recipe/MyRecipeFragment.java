@@ -1,18 +1,19 @@
 package sg.edu.np.mad.Sharecipe.ui.main.recipe;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -21,11 +22,9 @@ import java.util.ArrayList;
 
 import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.data.RecipeManager;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
-import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 
 public class MyRecipeFragment extends Fragment {
 
@@ -42,6 +41,7 @@ public class MyRecipeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_recipe, container, false);
 
+        Toolbar myRecipeToolbar = view.findViewById(R.id.myRecipeToolbar);
         FloatingActionButton addRecipe = view.findViewById(R.id.button_create_recipe);
         ShimmerFrameLayout shimmerFrameLayout = view.findViewById(R.id.recipeShimmerLayout);
         RecyclerView recipeRecyclerView = view.findViewById(R.id.myRecipeRecyclerView);
@@ -80,6 +80,12 @@ public class MyRecipeFragment extends Fragment {
         addRecipe.setOnClickListener(v -> {
             Intent recipeCreate1 = new Intent(getContext(), RecipeCreateActivity.class);
             startActivity(recipeCreate1);
+        });
+
+        App.getUserManager().getAccountUser().onSuccess(user -> {
+            getActivity().runOnUiThread(() -> {
+                myRecipeToolbar.setTitle(user.getUsername() + "'s Recipe");
+            });
         });
 
         return view;
