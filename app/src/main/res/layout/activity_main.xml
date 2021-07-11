@@ -18,8 +18,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_baseline_add_24" />
 
-    <FrameLayout
-        android:id="@+id/fragment"
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/mainViewPager"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-    </FrameLayout>
+    </androidx.viewpager2.widget.ViewPager2>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -38,7 +38,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
-        ...
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"

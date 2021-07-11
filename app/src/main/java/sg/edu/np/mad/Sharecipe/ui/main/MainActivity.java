@@ -5,18 +5,19 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.ui.common.MenuStateAdapter;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 import sg.edu.np.mad.Sharecipe.ui.main.discover.DiscoverFragment;
 import sg.edu.np.mad.Sharecipe.ui.main.profile.ProfileFragment;
 import sg.edu.np.mad.Sharecipe.ui.main.recipe.MyRecipeFragment;
 import sg.edu.np.mad.Sharecipe.ui.main.search.SearchFragment;
 import sg.edu.np.mad.Sharecipe.ui.common.FragmentCollection;
-
-import static sg.edu.np.mad.Sharecipe.R.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,40 +26,33 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(layout.activity_main);
+        setContentView(R.layout.activity_main);
 
         fragmentCollection = new FragmentCollection();
 
-        BottomNavigationView bottomNavigation = findViewById(id.bottom_navigation);
-        FloatingActionButton addRecipe = findViewById(id.button_create_recipe);
+        ViewPager2 mainViewPager = findViewById(R.id.mainViewPager);
+        BottomNavigationView bottomNavigation = findViewById(R.id.bottom_navigation);
+        FloatingActionButton addRecipe = findViewById(R.id.button_create_recipe);
+
+        MenuStateAdapter fragmentStateAdapter = new MenuStateAdapter(MainActivity.this)
+                .addFragmentClass(DiscoverFragment.class, R.id.discover_menu)
+                .addFragmentClass(MyRecipeFragment.class, R.id.my_recipes_menu)
+                .addFragmentClass(SearchFragment.class, R.id.search_menu)
+                .addFragmentClass(ProfileFragment.class, R.id.profile_menu);
+
+        mainViewPager.setAdapter(fragmentStateAdapter);
+        mainViewPager.setUserInputEnabled(false);
 
         bottomNavigation.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == id.discover_menu) {
-                return viewFragment(DiscoverFragment.class);
-            } else if (itemId == id.my_recipes_menu) {
-                return viewFragment(MyRecipeFragment.class);
-            } else if (itemId == id.search_menu) {
-                return viewFragment(SearchFragment.class);
-            } else if (itemId == id.profile_menu) {
-                return viewFragment(ProfileFragment.class);
-            }
-            return false;
+            mainViewPager.setCurrentItem(fragmentStateAdapter.getMenuPosition(item.getItemId()), false);
+            return true;
         });
 
-        bottomNavigation.setSelectedItemId(id.discover_menu);
+        bottomNavigation.setSelectedItemId(R.id.discover_menu);
 
         addRecipe.setOnClickListener(v -> {
             Intent recipeCreate1 = new Intent(MainActivity.this, RecipeCreateActivity.class);
             startActivity(recipeCreate1);
         });
-    }
-
-    private boolean viewFragment(Class<? extends Fragment> fragmentClass) {
-        getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .replace(id.fragment, fragmentCollection.getOrLoad(fragmentClass))
-                .commit();
-        return true;
     }
 }
