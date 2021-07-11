@@ -16,7 +16,6 @@ import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
-import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 
 public class ProfileFragment extends Fragment {
 
