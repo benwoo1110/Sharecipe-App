@@ -453,4 +453,24 @@ public class SharecipeRequests {
                 .get()
                 .build());
     }
+
+    /**
+     * GET `/users/user_id/recipes/recipe_id/images` endpoint.
+     *
+     * @param accessToken
+     * @param queryString
+     * @return
+     */
+    public static FutureWebResponse search(@NonNull String accessToken,
+                                           @Nullable String queryString) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.SEARCH)
+                        .addQueryParameter("search_string", queryString)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
 }

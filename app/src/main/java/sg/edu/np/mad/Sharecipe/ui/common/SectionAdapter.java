@@ -41,7 +41,8 @@ public class SectionAdapter extends RecyclerView.Adapter<SectionViewHolder> {
         return position;
     }
 
-    public void addSection(SectionCreator sectionCreator) {
+    public SectionAdapter addSection(SectionCreator sectionCreator) {
         this.sectionList.add(sectionCreator);
+        return this;
     }
 }

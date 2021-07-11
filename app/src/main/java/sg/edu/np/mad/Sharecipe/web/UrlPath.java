@@ -24,6 +24,7 @@ public class UrlPath {
     public static final String RECIPES = "recipes";
     public static final String IMAGES = "images";
     public static final String ICON = "icon";
+    public static final String SEARCH = "search";
 
     /**
      * Creates new url builder instance with default host target.
