@@ -52,8 +52,36 @@ public class StepsCreation extends AppCompatActivity {
         Intent intent = getIntent();
         RecipeStep newStep = (RecipeStep)intent.getSerializableExtra("New step");
         int stepNumber = intent.getIntExtra("Step number", 0);
+        String stepDesc = intent.getStringExtra("Edit description");
+        int timeNeeded = intent.getIntExtra("Edit time", 0);
+
+        if (timeNeeded <= 59) {
+            input_seconds.setValue(timeNeeded);
+        }
+
+        else if (timeNeeded <= 3599) {
+            int minutes = (timeNeeded - timeNeeded % 60) / 60;
+            int seconds = timeNeeded - (minutes * 60);
+
+            input_minutes.setValue(minutes);
+            input_seconds.setValue(seconds);
+        }
+
+        else {
+            int hours = (timeNeeded - timeNeeded % 3600) / 3600;
+            int x = (timeNeeded / 60) - (hours * 60);
+            int minutes = x - (((x * 60) % 60) / 60);
+            int seconds = (timeNeeded - (hours * 3600) - (minutes * 60));
+
+            input_hours.setValue(hours);
+            input_minutes.setValue(minutes);
+            input_seconds.setValue(seconds);
+        }
+
+        input.setText(stepDesc);
         displayStepNo.setText("Step " + stepNumber);
 
+        newStep.setStepNumber(stepNumber);
 
         input_hours.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
@@ -87,8 +115,6 @@ public class StepsCreation extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 newStep.setDescription(input.getText().toString());
-                newStep.setStepNumber(stepNumber);
-
             }
 
             @Override

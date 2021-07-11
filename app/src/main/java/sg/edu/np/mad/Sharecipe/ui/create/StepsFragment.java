@@ -18,6 +18,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 
 public class StepsFragment extends Fragment {

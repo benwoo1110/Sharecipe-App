@@ -3,7 +3,9 @@ package sg.edu.np.mad.Sharecipe.ui.create;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
@@ -18,6 +20,7 @@ import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 public class StepsAdapter extends RecyclerView.Adapter<StepsViewholder> {
     ArrayList<RecipeStep> data;
     Activity activity;
+    public static int EDIT_STEP = 2;
 
     public StepsAdapter(ArrayList<RecipeStep> input, Activity activity) {
         this.data = input;
@@ -27,6 +30,18 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewholder> {
     public StepsViewholder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_steps, parent, false);
         StepsViewholder holder = new StepsViewholder(item);
+
+        holder.stepDescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, StepsCreation.class);
+                intent.putExtra("New step", holder.step);
+                intent.putExtra("Edit description", holder.step.getDescription());
+                intent.putExtra("Step number", holder.step.getStepNumber());
+                intent.putExtra("Edit time", holder.step.getTimeNeeded());
+                activity.startActivity(intent);
+            }
+        });
 
         holder.stepDescription.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
