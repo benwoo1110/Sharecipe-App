@@ -8,14 +8,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
-import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
-import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 
-public class UserProfileActivity extends DynamicFocusAppCompatActivity {
+public class UserProfileActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
