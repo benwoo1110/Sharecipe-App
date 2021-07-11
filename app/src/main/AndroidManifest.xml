@@ -19,9 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sharecipe"
         android:usesCleartextTraffic="true">
-
-         <activity
-             android:name=".ui.SplashActivity"
+        <activity
+            android:name=".ui.SplashActivity"
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,11 +28,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ui.main.MainActivity" />
         <activity android:name=".ui.main.profile.EditProfileActivity" />
         <activity android:name=".ui.main.profile.UserProfileActivity" />
         <activity android:name=".ui.create.RecipeStepsList" />
+        <activity android:name=".ui.create.StepsCreation" />
         <activity android:name=".ui.create.RecipeCreateActivity" />
         <activity android:name=".ui.RegisterActivity" />
         <activity android:name=".ui.LoginActivity" />

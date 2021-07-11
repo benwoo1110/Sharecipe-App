@@ -24,6 +24,10 @@ import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 
+// TODO: Finish up bottom menu bar including their actions, add a cross out bar on top to close recipe creation (ask if want to save as draft)
+// TODO: Implement option to take in all inputs and save recipe as draft or publish, with input validation (notify users of missing fields)
+// TODO: Upon publishing recipe, show user preview of recipe first before finalizing
+
 public class RecipeCreateActivity extends AppCompatActivity {
 
     @Override
