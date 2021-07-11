@@ -41,7 +41,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
         if (user.getProfileImage() != null) {
             holder.profileImage.setImageBitmap(user.getProfileImage());
         } else {
-            holder.profileImage.setImageResource(R.drawable.ic_launcher_background);
+            holder.profileImage.setImageResource(R.drawable.ic_baseline_person_24);
         }
     }
 
