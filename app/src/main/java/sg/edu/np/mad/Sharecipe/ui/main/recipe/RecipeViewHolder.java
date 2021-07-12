@@ -29,10 +29,8 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder {
         icon = itemView.findViewById(R.id.recipeIconImage);
         itemView.setOnClickListener(v -> {
             Intent viewRecipe = new Intent(itemView.getContext(), RecipeViewActivity.class);
-            for (int i = 0, recipesSize = recipe.size(); i < recipesSize; i++) {
-                Recipe selectedRecipe = recipe.get(i);
-                viewRecipe.putExtra("Recipe", selectedRecipe);
-            }
+            Recipe selectedRecipe = recipe.get(getAdapterPosition());
+            viewRecipe.putExtra("Recipe", selectedRecipe);
 
             itemView.getContext().startActivity(viewRecipe);
         });
