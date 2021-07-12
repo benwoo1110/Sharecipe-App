@@ -12,12 +12,12 @@ import sg.edu.np.mad.Sharecipe.ui.ErrorFragment;
 public class RecipeViewAdapter extends FragmentStateAdapter {
 
     private final int totalTabs;
-    //private final Recipe recipe;
+    private final Recipe recipe;
 
-    public RecipeViewAdapter(FragmentActivity fa, int totalTabs) {
+    public RecipeViewAdapter(FragmentActivity fa, int totalTabs, Recipe recipe) {
         super(fa);
         this.totalTabs = totalTabs;
-        //this.recipe = recipe;
+        this.recipe = recipe;
     }
 
     @NotNull
@@ -25,7 +25,7 @@ public class RecipeViewAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new ViewInformationFragment();
+                return new ViewInformationFragment(recipe);
             case 1:
                 return new ViewIngredientFragment();
             case 2:

@@ -3,11 +3,13 @@ package sg.edu.np.mad.Sharecipe.ui.view;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateAdapter;
 
 public class RecipeViewActivity extends AppCompatActivity {
@@ -17,6 +19,9 @@ public class RecipeViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_view);
 
+        Intent getRecipe = getIntent();
+        Recipe selectedRecipe = (Recipe) getRecipe.getSerializableExtra("Recipe");
+
         TabLayout tabLayout = findViewById(R.id.viewRecipeTab);
         ViewPager2 viewpager = findViewById(R.id.view_recipe_viewpager);
 
@@ -25,7 +30,7 @@ public class RecipeViewActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Steps"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        RecipeViewAdapter adapter = new RecipeViewAdapter(this, tabLayout.getTabCount());
+        RecipeViewAdapter adapter = new RecipeViewAdapter(this, tabLayout.getTabCount(), selectedRecipe);
         viewpager.setAdapter(adapter);
 
         viewpager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
