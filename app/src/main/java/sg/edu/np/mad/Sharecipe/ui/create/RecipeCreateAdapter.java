@@ -8,6 +8,9 @@ import org.jetbrains.annotations.NotNull;
 
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.ErrorFragment;
+import sg.edu.np.mad.Sharecipe.ui.create.infomation.InformationFragment;
+import sg.edu.np.mad.Sharecipe.ui.create.ingredients.IngredientFragment;
+import sg.edu.np.mad.Sharecipe.ui.create.steps.StepsFragment;
 
 public class RecipeCreateAdapter extends FragmentStateAdapter {
 

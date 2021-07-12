@@ -1,11 +1,9 @@
-package sg.edu.np.mad.Sharecipe.ui.create;
+package sg.edu.np.mad.Sharecipe.ui.create.ingredients;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.app.ActivityOptions;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;

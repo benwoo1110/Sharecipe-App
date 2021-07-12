@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.create;
+package sg.edu.np.mad.Sharecipe.ui.create.infomation;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,17 +22,10 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 
-import org.w3c.dom.Text;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
-import sg.edu.np.mad.Sharecipe.models.RecipeImage;
 
 // TODO: Set limit for images, remove plus button when limit is reached
 // TODO: Saving and storing of values for all input fields along with input validation (required fields)

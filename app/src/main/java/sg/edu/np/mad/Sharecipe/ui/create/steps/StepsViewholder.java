@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.create;
+package sg.edu.np.mad.Sharecipe.ui.create.steps;
 
 import android.view.View;
 import android.widget.ImageButton;

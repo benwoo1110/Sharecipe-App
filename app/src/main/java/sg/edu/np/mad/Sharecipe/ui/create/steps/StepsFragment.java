@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.create;
+package sg.edu.np.mad.Sharecipe.ui.create.steps;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,9 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import sg.edu.np.mad.Sharecipe.R;

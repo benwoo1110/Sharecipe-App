@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.create;
+package sg.edu.np.mad.Sharecipe.ui.create.ingredients;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
-import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 
 public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsViewholder> {
     ArrayList<RecipeIngredient> ingredients;

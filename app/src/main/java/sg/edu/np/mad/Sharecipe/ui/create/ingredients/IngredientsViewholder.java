@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.create;
+package sg.edu.np.mad.Sharecipe.ui.create.ingredients;
 
 import android.text.Editable;
 import android.text.TextWatcher;

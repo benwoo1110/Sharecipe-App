@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.create;
+package sg.edu.np.mad.Sharecipe.ui.create.infomation;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
