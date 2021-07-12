@@ -2,7 +2,6 @@ package sg.edu.np.mad.Sharecipe.data;
 
 import android.content.Context;
 
-import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.SearchResult;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
