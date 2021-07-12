@@ -19,6 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sharecipe"
         android:usesCleartextTraffic="true">
+        <activity android:name=".ui.view.RecipeViewActivity"></activity>
         <activity
             android:name=".ui.SplashActivity"
             android:theme="@style/AppTheme.Launcher">
