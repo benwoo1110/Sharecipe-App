@@ -23,12 +23,11 @@ import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
 public class IngredientFragment extends Fragment {
 
     private final ArrayList<RecipeIngredient> ingredientsList = new ArrayList<>();
-    Recipe recipe;
+    private final Recipe recipe;
 
     public IngredientFragment(Recipe recipe){
         this.recipe = recipe;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +37,7 @@ public class IngredientFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ingredient, container, false);
+
         Button addIngredient = view.findViewById(R.id.buttonIngredient);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerviewIngredient);
 
@@ -46,18 +46,14 @@ public class IngredientFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(cLayoutManager);
 
-        addIngredient.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO: Create new ingredient, add to list
-                RecipeIngredient newIngredient = new RecipeIngredient();
-                newIngredient.setName("");
-                newIngredient.setQuantity(1);
-                newIngredient.setUnit("");
-                ingredientsList.add(newIngredient);
-                adapter.notifyDataSetChanged();
-
-            }
+        addIngredient.setOnClickListener(v -> {
+            // TODO: Create new ingredient, add to list
+            RecipeIngredient newIngredient = new RecipeIngredient();
+            newIngredient.setName("");
+            newIngredient.setQuantity(1);
+            newIngredient.setUnit("");
+            ingredientsList.add(newIngredient);
+            adapter.notifyDataSetChanged();
         });
 
         recipe.setIngredients(ingredientsList);

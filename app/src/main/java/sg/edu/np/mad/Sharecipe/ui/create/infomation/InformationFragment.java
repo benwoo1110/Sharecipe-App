@@ -34,6 +34,7 @@ import sg.edu.np.mad.Sharecipe.models.Recipe;
 public class InformationFragment extends Fragment {
 
     private ImagesAdapter adapter;
+
     private final ArrayList<Uri> imageList = new ArrayList<>();
     private final Recipe recipe;
 
@@ -72,39 +73,30 @@ public class InformationFragment extends Fragment {
         name.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String recipeName = name.getText().toString();
-                recipe.setName(recipeName);
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                recipe.setName(s.toString());
             }
         });
 
-        difficulty.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
-            @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                int recipeDifficulty = difficulty.getNumStars();
-                recipe.setDifficulty(recipeDifficulty);
-            }
+        difficulty.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+            int recipeDifficulty = difficulty.getNumStars();
+            recipe.setDifficulty(recipeDifficulty);
         });
 
         int recipePortions = 0;
         try {
             recipePortions = Integer.parseInt(portions.getText().toString());
         }
-        catch (NumberFormatException e) {
-
+        catch (NumberFormatException ignored) {
         }
         recipe.setPortion(recipePortions);
-
-
 
         // TODO: Check what to do with this (no such constructor in Recipe item)
         // TODO: Convert imagelist to RecipeImage items, then add to RecipeImage list?
@@ -131,5 +123,4 @@ public class InformationFragment extends Fragment {
             Toast.makeText(getActivity(), "Task Cancelled", Toast.LENGTH_SHORT).show();
         }
     }
-
 }

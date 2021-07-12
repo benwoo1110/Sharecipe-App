@@ -20,10 +20,11 @@ import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 
 public class StepsFragment extends Fragment {
 
-    private StepsAdapter adapter;
-    ArrayList<RecipeStep> stepsList = new ArrayList<>();
     public static int LAUNCH_STEP_CREATION = 1;
-    Recipe recipe;
+
+    private StepsAdapter adapter;
+    private final ArrayList<RecipeStep> stepsList = new ArrayList<>();
+    private final Recipe recipe;
 
     public StepsFragment(Recipe recipe) {
         this.recipe = recipe;
@@ -32,6 +33,7 @@ public class StepsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_steps, container, false);
+
         RecyclerView stepsView = view.findViewById(R.id.recyclerview_steps);
         Button button = view.findViewById(R.id.buttonAdd);
 
@@ -41,17 +43,15 @@ public class StepsFragment extends Fragment {
         stepsView.setAdapter(adapter);
         stepsView.setLayoutManager(cLayoutManager);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RecipeStep newStep =  new RecipeStep();
-                int position = stepsList.size() + 1;
-                Intent intent = new Intent(getContext(), StepsCreation.class);
-                intent.putExtra("New step", newStep);
-                intent.putExtra("Step number", position);
-                startActivityForResult(intent, LAUNCH_STEP_CREATION);
-            }
+        button.setOnClickListener(v -> {
+            RecipeStep newStep =  new RecipeStep();
+            int position = stepsList.size() + 1;
+            Intent intent = new Intent(getContext(), StepsCreationActivity.class);
+            intent.putExtra("New step", newStep);
+            intent.putExtra("Step number", position);
+            startActivityForResult(intent, LAUNCH_STEP_CREATION);
         });
+
         recipe.setSteps(stepsList);
 
         return view;

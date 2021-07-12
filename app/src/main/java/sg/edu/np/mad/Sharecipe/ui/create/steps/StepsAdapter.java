@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 
-public class StepsAdapter extends RecyclerView.Adapter<StepsViewholder> {
+public class StepsAdapter extends RecyclerView.Adapter<StepsViewHolder> {
     ArrayList<RecipeStep> data;
     Activity activity;
     public static int EDIT_STEP = 2;
@@ -25,14 +25,14 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewholder> {
         this.activity = activity;
     }
 
-    public StepsViewholder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public StepsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_steps, parent, false);
-        StepsViewholder holder = new StepsViewholder(item);
+        StepsViewHolder holder = new StepsViewHolder(item);
 
         holder.stepDescription.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(activity, StepsCreation.class);
+                Intent intent = new Intent(activity, StepsCreationActivity.class);
                 intent.putExtra("New step", holder.step);
                 intent.putExtra("Edit description", holder.step.getDescription());
                 intent.putExtra("Step number", holder.step.getStepNumber());
@@ -52,7 +52,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewholder> {
         return holder;
     }
 
-    public void onBindViewHolder(StepsViewholder holder, int position) {
+    public void onBindViewHolder(StepsViewHolder holder, int position) {
         RecipeStep step = data.get(position);
         holder.stepNumber.setText(String.valueOf(step.getStepNumber()));
         holder.stepDescription.setText(step.getDescription());
