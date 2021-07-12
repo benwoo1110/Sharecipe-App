@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.create;
+package sg.edu.np.mad.Sharecipe.ui.create.infomation;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -19,65 +19,61 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 import sg.edu.np.mad.Sharecipe.R;
 
-public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
+public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
+
+    private static final int LIMIT = 5;
+
     private Animator currentAnimator;
     private int shortAnimationDuration;
-    private final int limit = 5;
-    Activity activity;
-    ArrayList<Uri> images;
-    ImageView enlarge;
-    View view;
+
+    private final Activity activity;
+    private final ArrayList<Uri> images;
+    private final ImageView enlarge;
+    private final View view;
 
     public ImagesAdapter(Activity activity, ArrayList<Uri> input, ImageView enlargedImage, View view) {
         this.activity = activity;
         this.images = input;
         this.enlarge = enlargedImage;
         this.view = view;
+        this.shortAnimationDuration = activity.getResources().getInteger(android.R.integer.config_shortAnimTime);
     }
 
-    public ImagesViewholder onCreateViewHolder(ViewGroup parent, int viewtype) {
+    @Override
+    @NotNull
+    public ImagesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_images, parent, false);
-        ImagesViewholder holder = new ImagesViewholder(item);
+        ImagesViewHolder holder = new ImagesViewHolder(item);
 
-        if (viewtype == 0) {
-            holder.image.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ImagePicker.with(activity)
-                            .crop()    // Crop image(Optional), Check Customization for more option
-                            .compress(1024)    // Final image size will be less than 1 MB
-                            .maxResultSize(1080, 1080) // Final image resolution will be less than 1080x1080
-                            .start();
-                }
-            });
+        if (viewType == 0) {
+            holder.image.setOnClickListener(v -> ImagePicker.with(activity)
+                    .crop()
+                    .compress(1024)
+                    .maxResultSize(1080, 1080)
+                    .start());
+            return holder;
         }
 
-        else {
-            holder.image.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    displayLargeImage(holder.image, holder.imgUri);
-                }
-            });
-            shortAnimationDuration = activity.getResources().getInteger(
-                    android.R.integer.config_shortAnimTime);
+        holder.image.setOnClickListener(v -> {
+            displayLargeImage(holder.image, holder.imgUri);
+        });
 
-            holder.image.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    AlertDialog(holder.imgUri);
-                    return false;
-                }
-            });
-        }
+        holder.image.setOnLongClickListener(v -> {
+            AlertDialog(holder.imgUri);
+            return false;
+        });
+
         return holder;
     }
 
-    public void onBindViewHolder(ImagesViewholder holder, int position) {
+    @Override
+    public void onBindViewHolder(@NotNull ImagesViewHolder holder, int position) {
         if (position == 0) {
             return;
         }
@@ -116,16 +112,13 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
         finalBounds.offset(-globalOffset.x, -globalOffset.y);
 
         float startScale;
-        if ((float) finalBounds.width() / finalBounds.height()
-                > (float) startBounds.width() / startBounds.height()) {
-
+        if ((float) finalBounds.width() / finalBounds.height() > (float) startBounds.width() / startBounds.height()) {
             startScale = (float) startBounds.height() / finalBounds.height();
             float startWidth = startScale * finalBounds.width();
             float deltaWidth = (startWidth - startBounds.width()) / 2;
             startBounds.left -= deltaWidth;
             startBounds.right += deltaWidth;
         } else {
-
             startScale = (float) startBounds.width() / finalBounds.width();
             float startHeight = startScale * finalBounds.height();
             float deltaHeight = (startHeight - startBounds.height()) / 2;
@@ -148,15 +141,10 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
         // Construct and run the parallel animation of the four translation and
         // scale properties (X, Y, SCALE_X, and SCALE_Y).
         AnimatorSet set = new AnimatorSet();
-        set
-                .play(ObjectAnimator.ofFloat(expandedImageView, View.X,
-                        startBounds.left, finalBounds.left))
-                .with(ObjectAnimator.ofFloat(expandedImageView, View.Y,
-                        startBounds.top, finalBounds.top))
-                .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X,
-                        startScale, 1f))
-                .with(ObjectAnimator.ofFloat(expandedImageView,
-                        View.SCALE_Y, startScale, 1f));
+        set.play(ObjectAnimator.ofFloat(expandedImageView, View.X, startBounds.left, finalBounds.left))
+                .with(ObjectAnimator.ofFloat(expandedImageView, View.Y, startBounds.top, finalBounds.top))
+                .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X, startScale, 1f))
+                .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_Y, startScale, 1f));
         set.setDuration(shortAnimationDuration);
         set.setInterpolator(new DecelerateInterpolator());
         set.addListener(new AnimatorListenerAdapter() {
@@ -189,15 +177,9 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
                 AnimatorSet set = new AnimatorSet();
                 set.play(ObjectAnimator
                         .ofFloat(expandedImageView, View.X, startBounds.left))
-                        .with(ObjectAnimator
-                                .ofFloat(expandedImageView,
-                                        View.Y,startBounds.top))
-                        .with(ObjectAnimator
-                                .ofFloat(expandedImageView,
-                                        View.SCALE_X, startScaleFinal))
-                        .with(ObjectAnimator
-                                .ofFloat(expandedImageView,
-                                        View.SCALE_Y, startScaleFinal));
+                        .with(ObjectAnimator.ofFloat(expandedImageView, View.Y,startBounds.top))
+                        .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_X, startScaleFinal))
+                        .with(ObjectAnimator.ofFloat(expandedImageView, View.SCALE_Y, startScaleFinal));
                 set.setDuration(shortAnimationDuration);
                 set.setInterpolator(new DecelerateInterpolator());
                 set.addListener(new AnimatorListenerAdapter() {
@@ -222,22 +204,20 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewholder> {
     }
 
     private void AlertDialog(Uri image) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        LayoutInflater factory = LayoutInflater.from(activity);
-        final View view = factory.inflate(R.layout.alert_image, null);
+        View view = LayoutInflater.from(activity).inflate(R.layout.alert_image, null);
         ImageView targetImage = view.findViewById(R.id.alertImage);
         targetImage.setImageURI(image);
-        builder.setView(view);
-        builder.setTitle("Remove image");
-        builder.setMessage("Would you like to remove this image?");
-        builder.setPositiveButton("Remove", (dialog, which) -> {
-            images.remove(image);
-            notifyDataSetChanged();
 
-        });
-        builder.setNegativeButton("Cancel", (dialog, which) -> { });
-        AlertDialog alert = builder.create();
-        alert.show();
+        new AlertDialog.Builder(activity)
+                .setView(view)
+                .setTitle("Remove image")
+                .setMessage("Would you like to remove this image?")
+                .setPositiveButton("Remove", (dialog, which) -> {
+                    images.remove(image);
+                    notifyDataSetChanged();
+
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 }
-

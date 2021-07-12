@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.create;
+package sg.edu.np.mad.Sharecipe.ui.create.ingredients;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -13,14 +13,14 @@ import java.util.ArrayList;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
 
-public class IngredientsViewholder extends RecyclerView.ViewHolder {
+public class IngredientsViewHolder extends RecyclerView.ViewHolder {
     EditText name;
     EditText quantity;
     EditText unit;
     TextView number;
     RecipeIngredient ingredient;
 
-    public IngredientsViewholder(View itemView, ArrayList<RecipeIngredient> ingredientList) {
+    public IngredientsViewHolder(View itemView, ArrayList<RecipeIngredient> ingredientList) {
         super(itemView);
 
         name = itemView.findViewById(R.id.inputIngredientName);
@@ -31,60 +31,52 @@ public class IngredientsViewholder extends RecyclerView.ViewHolder {
         name.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                ingredientList.get(getAdapterPosition()).setName(name.getText().toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                ingredientList.get(getAdapterPosition()).setName(s.toString());
             }
         });
 
         quantity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                int num = 1;
-                try {
-                    num = Integer.parseInt(String.valueOf(quantity.getText()));}
-                catch (NumberFormatException e) {
-
-                    }
-                ingredientList.get(getAdapterPosition()).setQuantity(num);
-
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                int num = 1;
+                try {
+                    num = Integer.parseInt(s.toString());
+                }
+                catch (NumberFormatException ignored) {
+                }
+                ingredientList.get(getAdapterPosition()).setQuantity(num);
             }
         });
 
         unit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                ingredientList.get(getAdapterPosition()).setUnit(unit.getText().toString());
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                ingredientList.get(getAdapterPosition()).setUnit(s.toString());
             }
         });
     }
-
 }

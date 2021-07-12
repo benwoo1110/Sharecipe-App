@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.create;
+package sg.edu.np.mad.Sharecipe.ui.create.infomation;
 
 import android.net.Uri;
 import android.view.View;
@@ -8,12 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import sg.edu.np.mad.Sharecipe.R;
 
-public class ImagesViewholder extends RecyclerView.ViewHolder {
+public class ImagesViewHolder extends RecyclerView.ViewHolder {
 
-    ImageView image;
+    final ImageView image;
+
     Uri imgUri;
 
-    public ImagesViewholder(View itemView){
+    public ImagesViewHolder(View itemView){
         super(itemView);
         image = itemView.findViewById(R.id.addImage);
     }

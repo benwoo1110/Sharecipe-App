@@ -32,7 +32,7 @@
         <activity android:name=".ui.main.profile.EditProfileActivity" />
         <activity android:name=".ui.main.profile.UserProfileActivity" />
         <activity android:name=".ui.create.RecipeStepsList" />
-        <activity android:name=".ui.create.StepsCreation" />
+        <activity android:name=".ui.create.steps.StepsCreationActivity" />
         <activity android:name=".ui.create.RecipeCreateActivity" />
         <activity android:name=".ui.RegisterActivity" />
         <activity android:name=".ui.LoginActivity" />

@@ -1,9 +1,11 @@
-package sg.edu.np.mad.Sharecipe.ui.create;
+package sg.edu.np.mad.Sharecipe.ui.create.infomation;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.ArrayList;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.models.Recipe;
 
 // TODO: Set limit for images, remove plus button when limit is reached
 // TODO: Saving and storing of values for all input fields along with input validation (required fields)
@@ -31,9 +34,12 @@ import sg.edu.np.mad.Sharecipe.R;
 public class InformationFragment extends Fragment {
 
     private ImagesAdapter adapter;
-    private final ArrayList<Uri> imageList = new ArrayList<>();
 
-    public InformationFragment() {
+    private final ArrayList<Uri> imageList = new ArrayList<>();
+    private final Recipe recipe;
+
+    public InformationFragment(Recipe recipe) {
+        this.recipe = recipe;
     }
 
     @Override
@@ -59,6 +65,42 @@ public class InformationFragment extends Fragment {
 
         images.setAdapter(adapter);
         images.setLayoutManager(cLayoutManager);
+
+        recipe.setName("test");
+        recipe.setPortion(0);
+        recipe.setDifficulty(0);
+
+        name.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                recipe.setName(s.toString());
+            }
+        });
+
+        difficulty.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
+            int recipeDifficulty = difficulty.getNumStars();
+            recipe.setDifficulty(recipeDifficulty);
+        });
+
+        int recipePortions = 0;
+        try {
+            recipePortions = Integer.parseInt(portions.getText().toString());
+        }
+        catch (NumberFormatException ignored) {
+        }
+        recipe.setPortion(recipePortions);
+
+        // TODO: Check what to do with this (no such constructor in Recipe item)
+        // TODO: Convert imagelist to RecipeImage items, then add to RecipeImage list?
+        // TODO: Convert preparation time to seconds from the input
 
         return view;
     }
