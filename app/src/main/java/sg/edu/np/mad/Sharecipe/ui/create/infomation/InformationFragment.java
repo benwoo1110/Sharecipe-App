@@ -22,7 +22,9 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
@@ -37,14 +39,11 @@ public class InformationFragment extends Fragment {
 
     private final ArrayList<Uri> imageList = new ArrayList<>();
     private final Recipe recipe;
+    private final List<File> imageFileList;
 
-    public InformationFragment(Recipe recipe) {
+    public InformationFragment(Recipe recipe, List<File> imageFileList) {
         this.recipe = recipe;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        this.imageFileList = imageFileList;
     }
 
     @Override
@@ -59,7 +58,7 @@ public class InformationFragment extends Fragment {
         RatingBar difficulty = view.findViewById(R.id.infoDifficulty);
         ImageView enlargedImage = view.findViewById(R.id.expanded_image);
 
-        adapter = new ImagesAdapter(getActivity(), imageList, enlargedImage, view);
+        adapter = new ImagesAdapter(getActivity(), imageList, imageFileList, enlargedImage, view);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
         cLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
@@ -116,6 +115,7 @@ public class InformationFragment extends Fragment {
         if (resultCode == Activity.RESULT_OK && data != null) {
             Uri uri = data.getData();
             imageList.add(uri);
+            imageFileList.add(new File(uri.getPath()));
             adapter.notifyDataSetChanged();
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(getActivity(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show();

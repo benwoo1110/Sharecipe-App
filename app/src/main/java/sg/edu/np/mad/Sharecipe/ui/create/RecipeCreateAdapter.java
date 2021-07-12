@@ -6,6 +6,10 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.ErrorFragment;
 import sg.edu.np.mad.Sharecipe.ui.create.infomation.InformationFragment;
@@ -16,11 +20,13 @@ public class RecipeCreateAdapter extends FragmentStateAdapter {
 
     private final int totalTabs;
     private final Recipe recipe;
+    private final List<File> imageFileList;
 
     public RecipeCreateAdapter(FragmentActivity fa, int totalTabs, Recipe recipe) {
         super(fa);
         this.totalTabs = totalTabs;
         this.recipe = recipe;
+        this.imageFileList = new ArrayList<>();
     }
 
     @NotNull
@@ -28,7 +34,7 @@ public class RecipeCreateAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch(position) {
             case 0:
-                return new InformationFragment(recipe);
+                return new InformationFragment(recipe, imageFileList);
             case 1:
                 return new IngredientFragment(recipe);
             case 2:
@@ -41,5 +47,9 @@ public class RecipeCreateAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         return totalTabs;
+    }
+
+    public List<File> getImageFileList() {
+        return imageFileList;
     }
 }

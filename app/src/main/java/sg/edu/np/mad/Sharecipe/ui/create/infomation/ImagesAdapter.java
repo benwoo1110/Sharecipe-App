@@ -21,7 +21,9 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
 
@@ -34,12 +36,14 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
 
     private final Activity activity;
     private final ArrayList<Uri> images;
+    private final List<File> imageFileList;
     private final ImageView enlarge;
     private final View view;
 
-    public ImagesAdapter(Activity activity, ArrayList<Uri> input, ImageView enlargedImage, View view) {
+    public ImagesAdapter(Activity activity, ArrayList<Uri> input, List<File> imageFileList, ImageView enlargedImage, View view) {
         this.activity = activity;
         this.images = input;
+        this.imageFileList = imageFileList;
         this.enlarge = enlargedImage;
         this.view = view;
         this.shortAnimationDuration = activity.getResources().getInteger(android.R.integer.config_shortAnimTime);
@@ -213,7 +217,9 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
                 .setTitle("Remove image")
                 .setMessage("Would you like to remove this image?")
                 .setPositiveButton("Remove", (dialog, which) -> {
-                    images.remove(image);
+                    int i = images.indexOf(image);
+                    images.remove(i);
+                    imageFileList.remove(i);
                     notifyDataSetChanged();
 
                 })

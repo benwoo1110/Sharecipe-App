@@ -9,6 +9,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -33,30 +34,6 @@ public class RecipeCreateActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.recipeTab);
         ViewPager2 viewPager = findViewById(R.id.recipe_info_viewpager);
         BottomNavigationView bottomNavigation = findViewById(R.id.recipe_navigation);
-
-        bottomNavigation.setOnItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.recipe_back_menu) {
-                Log.v("LOL", "Back");
-                finish();
-                return false;
-            } else if (itemId == R.id.recipe_save_menu) {
-                Log.v("LOL", "Save");
-                return false;
-            } else if (itemId == R.id.recipe_clear_menu) {
-                Log.v("LOL", "Clear");
-                return false;
-            } else if (itemId == R.id.recipe_done_menu) {
-                App.getRecipeManager().create(recipe).onSuccess(createdRecipe -> {
-
-                }).onFailed(recipeFailed -> {
-
-                });
-                Log.v("LOL", "Done");
-                return true;
-            }
-            return false;
-        });
 
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
         tabLayout.addTab(tabLayout.newTab().setText("Ingredients"));
@@ -86,6 +63,36 @@ public class RecipeCreateActivity extends AppCompatActivity {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
             }
+        });
+
+        bottomNavigation.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.recipe_back_menu) {
+                Log.v("LOL", "Back");
+                finish();
+                return false;
+            } else if (itemId == R.id.recipe_save_menu) {
+                Log.v("LOL", "Save");
+                return false;
+            } else if (itemId == R.id.recipe_clear_menu) {
+                Log.v("LOL", "Clear");
+                return false;
+            } else if (itemId == R.id.recipe_done_menu) {
+                Toast.makeText(RecipeCreateActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
+                App.getRecipeManager().create(recipe).onSuccess(createdRecipe -> {
+                    App.getRecipeManager().addImages(createdRecipe, adapter.getImageFileList()).onSuccess(aVoid -> {
+                        RecipeCreateActivity.this.runOnUiThread(() -> {
+                            Toast.makeText(RecipeCreateActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
+                            finish();
+                        });
+                    });
+                }).onFailed(recipeFailed -> {
+                    RecipeCreateActivity.this.runOnUiThread(() -> Toast.makeText(RecipeCreateActivity.this, recipeFailed.getMessage(), Toast.LENGTH_SHORT).show());
+                });
+                Log.v("LOL", "Done");
+                return true;
+            }
+            return false;
         });
     }
 
