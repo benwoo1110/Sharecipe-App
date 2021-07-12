@@ -76,6 +76,13 @@ public abstract class DataResult<T> {
         public String getReason() {
             return getMessage();
         }
+
+        @Override
+        public String toString() {
+            return "Failed{" +
+                    "messages=" + messages +
+                    '}';
+        }
     }
 
     /**

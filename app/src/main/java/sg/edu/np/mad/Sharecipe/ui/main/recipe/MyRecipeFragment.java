@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,6 +27,10 @@ import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 
 public class MyRecipeFragment extends Fragment {
+
+    public static int LAUNCH_RECIPE_CREATION = 50;
+
+    private RecipeAdapter recipeAdapter;
 
     public MyRecipeFragment() {
         // Required empty public constructor
@@ -47,11 +52,11 @@ public class MyRecipeFragment extends Fragment {
 
         shimmerFrameLayout.startShimmer();
 
-        RecipeAdapter adapter = new RecipeAdapter(new ArrayList<>());
+        recipeAdapter = new RecipeAdapter(new ArrayList<>());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_from_bottom);
         recipeRecyclerView.setLayoutAnimation(controller);
-        recipeRecyclerView.setAdapter(adapter);
+        recipeRecyclerView.setAdapter(recipeAdapter);
         recipeRecyclerView.setLayoutManager(layoutManager);
 
         App.getRecipeManager().getAccountRecipe()
@@ -66,7 +71,7 @@ public class MyRecipeFragment extends Fragment {
                     }
                     CompletableFuture.allOf(completableFutures).thenAccept(aVoid -> {
                         getActivity().runOnUiThread(() -> {
-                            adapter.setRecipeList(recipes);
+                            recipeAdapter.setRecipeList(recipes);
                             recipeRecyclerView.scheduleLayoutAnimation();
                             shimmerFrameLayout.stopShimmer();
                             shimmerFrameLayout.setVisibility(View.GONE);
@@ -77,8 +82,8 @@ public class MyRecipeFragment extends Fragment {
                 .onError(Throwable::printStackTrace);
 
         addRecipe.setOnClickListener(v -> {
-            Intent recipeCreate1 = new Intent(getContext(), RecipeCreateActivity.class);
-            startActivity(recipeCreate1);
+            Intent intent = new Intent(getContext(), RecipeCreateActivity.class);
+            startActivityForResult(intent, LAUNCH_RECIPE_CREATION);
         });
 
         App.getUserManager().getAccountUser().onSuccess(user -> {
@@ -88,5 +93,24 @@ public class MyRecipeFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode != LAUNCH_RECIPE_CREATION) {
+            return;
+        }
+
+        Recipe recipe = (Recipe) data.getSerializableExtra("recipe");
+        recipeAdapter.addRecipe(recipe);
+        App.getRecipeManager().getIcon(recipe)
+                .onSuccess(bitmap -> {
+                    recipe.setIcon(bitmap);
+                    getActivity().runOnUiThread(() ->  recipeAdapter.notifyItemChanged(recipeAdapter.getRecipeList().size()));
+                })
+                .onFailed(System.out::println)
+                .onError(Throwable::printStackTrace);
     }
 }

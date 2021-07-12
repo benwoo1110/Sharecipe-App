@@ -53,4 +53,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
         this.recipeList.addAll(recipeList);
         notifyDataSetChanged();
     }
+
+    public void addRecipe(Recipe recipe) {
+        this.recipeList.add(recipe);
+        notifyItemInserted(this.recipeList.size());
+    }
 }
