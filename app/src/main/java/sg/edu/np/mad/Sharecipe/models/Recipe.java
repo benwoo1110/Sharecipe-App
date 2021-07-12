@@ -4,10 +4,11 @@ import android.graphics.Bitmap;
 
 import com.google.gson.annotations.Expose;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Recipe {
+public class Recipe implements Serializable {
 
     @Expose
     private int userId;

@@ -13,6 +13,7 @@ import android.util.Log;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import java9.util.function.Consumer;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.RecipeManager;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
@@ -30,9 +32,15 @@ import sg.edu.np.mad.Sharecipe.utils.DataResult;
 
 public class RecipeCreateActivity extends AppCompatActivity {
 
+    int currentPage = 0;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Recipe recipe = new Recipe();
+
         setContentView(R.layout.activity_recipe_create);
 
         TabLayout tabLayout = findViewById(R.id.recipeTab);
@@ -55,6 +63,17 @@ public class RecipeCreateActivity extends AppCompatActivity {
                 Log.v("LOL", "Clear");
                 return true;
             } else if (itemId == R.id.recipe_done_menu) {
+                App.getRecipeManager().create(recipe).onSuccess(new Consumer<Recipe>() {
+                    @Override
+                    public void accept(Recipe recipe) {
+
+                    }
+                }).onFailed(new Consumer<DataResult.Failed<Recipe>>() {
+                    @Override
+                    public void accept(DataResult.Failed<Recipe> recipeFailed) {
+
+                    }
+                });
                 Log.v("LOL", "Done");
                 return true;
             }
@@ -68,7 +87,7 @@ public class RecipeCreateActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Steps"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        RecipeCreateAdapter adapter = new RecipeCreateAdapter(this, tabLayout.getTabCount());
+        RecipeCreateAdapter adapter = new RecipeCreateAdapter(this, tabLayout.getTabCount(), recipe);
         viewPager.setAdapter(adapter);
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
@@ -82,6 +101,7 @@ public class RecipeCreateActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                currentPage = tab.getPosition();
             }
 
             @Override
@@ -94,28 +114,6 @@ public class RecipeCreateActivity extends AppCompatActivity {
 
             }
         });
-
-        Recipe recipe = new Recipe();
-        recipe.setName("test");
-
-        List<RecipeStep> recipeSteps = new ArrayList<>();
-        RecipeStep step = new RecipeStep();
-        step.setStepNumber(1);
-        step.setName("test");
-        recipeSteps.add(step);
-        recipe.setSteps(recipeSteps);
-
-        App.getRecipeManager().create(recipe).onSuccess(new Consumer<Recipe>() {
-            @Override
-            public void accept(Recipe recipe) {
-
-            }
-        }).onFailed(new Consumer<DataResult.Failed<Recipe>>() {
-            @Override
-            public void accept(DataResult.Failed<Recipe> recipeFailed) {
-
-            }
-        });
     }
 
     @Override
@@ -125,4 +123,5 @@ public class RecipeCreateActivity extends AppCompatActivity {
             fragment.onActivityResult(requestCode, resultCode, data);
         }
     }
+
 }

@@ -26,9 +26,10 @@ public class StepsFragment extends Fragment {
     private StepsAdapter adapter;
     ArrayList<RecipeStep> stepsList = new ArrayList<>();
     public static int LAUNCH_STEP_CREATION = 1;
+    Recipe recipe;
 
-    public StepsFragment() {
-
+    public StepsFragment(Recipe recipe) {
+        this.recipe = recipe;
     }
 
     @Override
@@ -54,6 +55,7 @@ public class StepsFragment extends Fragment {
                 startActivityForResult(intent, LAUNCH_STEP_CREATION);
             }
         });
+        recipe.setSteps(stepsList);
 
         return view;
     }

@@ -4,6 +4,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import java.util.ArrayList;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
 
 // TODO: Saving and storing of values for all input fields along with input validation (unit of measurement must be string?)
@@ -22,8 +25,11 @@ import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
 public class IngredientFragment extends Fragment {
 
     private final ArrayList<RecipeIngredient> ingredientsList = new ArrayList<>();
+    Recipe recipe;
 
-    public IngredientFragment(){}
+    public IngredientFragment(Recipe recipe){
+        this.recipe = recipe;
+    }
 
 
     @Override
@@ -55,6 +61,8 @@ public class IngredientFragment extends Fragment {
 
             }
         });
+
+        recipe.setIngredients(ingredientsList);
 
         return view;
     }
