@@ -71,6 +71,9 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
                     .setCancelable(false)
                     .setPositiveButton("Save", (dialog, which) -> {
                         File imageFile = newProfileImagePath == null ? null : new File(newProfileImagePath);
+                        user.setUsername(editUsername.getText().toString());
+                        user.setBio(editBio.getText().toString());
+                        
                         Toast.makeText(EditProfileActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
                         CompletableFuture.allOf(
                                 userManager.updateAccountUser(user),
