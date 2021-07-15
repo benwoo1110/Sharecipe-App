@@ -6,7 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -68,6 +70,14 @@ public class InformationFragment extends Fragment {
         recipe.setName("test");
         recipe.setPortion(0);
         recipe.setDifficulty(0);
+
+        prep.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.v("NIce", "It works i guess");
+                return false;
+            }
+        });
 
         name.addTextChangedListener(new TextWatcher() {
             @Override
