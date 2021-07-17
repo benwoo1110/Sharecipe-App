@@ -71,31 +71,6 @@
                 android:hint="Procedure" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <NumberPicker
-            android:id="@+id/inputHours"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="108dp"
-            android:layout_marginTop="40dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"></NumberPicker>
-
-        <NumberPicker
-            android:id="@+id/inputSeconds"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            app:layout_constraintStart_toEndOf="@+id/inputMinutes"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"></NumberPicker>
-
-        <NumberPicker
-            android:id="@+id/inputMinutes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            app:layout_constraintStart_toEndOf="@+id/inputHours"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"></NumberPicker>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

@@ -1,6 +1,7 @@
 package sg.edu.np.mad.Sharecipe.ui.create.infomation;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -108,10 +110,18 @@ public class InformationFragment extends Fragment {
         recipe.setPortion(recipePortions);
 
         // TODO: Check what to do with this (no such constructor in Recipe item)
-        // TODO: Convert imagelist to RecipeImage items, then add to RecipeImage list?
         // TODO: Convert preparation time to seconds from the input
 
         return view;
+    }
+
+    public void addDurationDialog(String currentDuration) {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.duration_picker, null);
+        NumberPicker inputHours = view.findViewById(R.id.inputHours);
+        NumberPicker inputMinutes = view.findViewById(R.id.inputMinutes);
+        NumberPicker inputSeconds = view.findViewById(R.id.inputSeconds);
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Preparation time");
     }
 
     @Override
