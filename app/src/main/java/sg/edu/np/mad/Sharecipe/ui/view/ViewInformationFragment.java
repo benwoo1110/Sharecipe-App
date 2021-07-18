@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.textfield.TextInputEditText;
+
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 
@@ -27,7 +29,7 @@ public class ViewInformationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_information, container, false);
-        TextView displayName = view.findViewById(R.id.viewRecipeName);
+        TextInputEditText displayName = view.findViewById(R.id.viewRecipeName);
 
         String name = recipe.getName();
         displayName.setText(name);
