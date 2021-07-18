@@ -2,6 +2,7 @@ package sg.edu.np.mad.Sharecipe.ui.create.infomation;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -45,6 +46,13 @@ public class InformationFragment extends Fragment {
     private final Recipe recipe;
     private final List<File> imageFileList;
 
+    private int hours;
+    private int minutes;
+    private int seconds;
+    private int hoursInSeconds;
+    private int minutesInSeconds;
+    private TextInputEditText prep;
+
     public InformationFragment(Recipe recipe, List<File> imageFileList) {
         this.recipe = recipe;
         this.imageFileList = imageFileList;
@@ -56,7 +64,7 @@ public class InformationFragment extends Fragment {
 
         RecyclerView images = view.findViewById(R.id.recyclerview_images);
         TextInputEditText name = view.findViewById(R.id.infoName);
-        TextInputEditText prep = view.findViewById(R.id.infoPrep);
+        prep = view.findViewById(R.id.infoPrep);
         TextInputEditText portions = view.findViewById(R.id.infoPortions);
         SwitchMaterial infoPublic = view.findViewById(R.id.infoPublic);
         RatingBar difficulty = view.findViewById(R.id.infoDifficulty);
@@ -72,11 +80,16 @@ public class InformationFragment extends Fragment {
         recipe.setName("test");
         recipe.setPortion(0);
         recipe.setDifficulty(0);
+        recipe.setTotalTimeNeeded(0);
+
+        prep.setText("00:00");
 
         prep.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                addDurationDialog(prep.getText().toString());
                 Log.v("NIce", "It works i guess");
+                Log.v("Tight", String.valueOf(recipe.getTotalTimeNeeded()));
                 return false;
             }
         });
@@ -119,9 +132,57 @@ public class InformationFragment extends Fragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.duration_picker, null);
         NumberPicker inputHours = view.findViewById(R.id.inputHours);
         NumberPicker inputMinutes = view.findViewById(R.id.inputMinutes);
-        NumberPicker inputSeconds = view.findViewById(R.id.inputSeconds);
+
+        String[] durationSplit = currentDuration.split(":");
+        hours = Integer.parseInt(durationSplit[0]);
+        minutes = Integer.parseInt(durationSplit[1]);
+
+        inputHours.setMaxValue(99);
+        inputMinutes.setMaxValue(59);
+        inputHours.setMinValue(0);
+        inputMinutes.setMinValue(0);
+
+        inputHours.setValue(hours);
+        inputMinutes.setValue(minutes);
+
+        inputHours.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            hours = inputHours.getValue();
+            hoursInSeconds = hours * 3600;
+        });
+
+        inputMinutes.setOnValueChangedListener((picker, oldVal, newVal) -> {
+            minutes = inputMinutes.getValue();
+            minutesInSeconds = minutes * 60;
+        });
+
         new AlertDialog.Builder(getActivity())
-                .setTitle("Preparation time");
+                .setView(view)
+                .setTitle("Preparation time")
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        seconds = hoursInSeconds + minutesInSeconds;
+                        recipe.setTotalTimeNeeded(seconds);
+                        if (hours < 10) {
+                            if (minutes < 10) {
+                                prep.setText("0" + String.valueOf(hours) + ":" + "0" + String.valueOf(minutes));
+                            }
+                            else {
+                                prep.setText("0" + String.valueOf(hours) + ":" + String.valueOf(minutes));
+                            }
+                        }
+                        else if (minutes < 10) {
+                            prep.setText(String.valueOf(hours) + ":" + "0" + String.valueOf(minutes));
+                        }
+                        else {
+                            prep.setText(String.valueOf(hours) + ":" + String.valueOf(minutes));
+                        }
+
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+
     }
 
     @Override
