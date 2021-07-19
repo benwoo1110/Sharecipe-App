@@ -43,6 +43,7 @@
         app:startIconDrawable="@drawable/outline_schedule_24">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/viewPrep"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none" />
@@ -60,9 +61,9 @@
         app:startIconDrawable="@drawable/outline_tag_24">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/viewPortion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Serves"
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
