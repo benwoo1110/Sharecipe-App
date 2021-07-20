@@ -4,9 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -32,6 +35,18 @@ public class ViewInformationFragment extends Fragment {
         TextInputEditText displayName = view.findViewById(R.id.viewRecipeName);
         TextInputEditText displayPortion = view.findViewById(R.id.viewPortion);
         TextInputEditText displayPrep = view.findViewById(R.id.viewPrep);
+        TextInputEditText displayDifficulty = view.findViewById(R.id.viewDifficulty);
+        TextView displayTotalDiff = view.findViewById(R.id.totalDiff);
+        TextView displayAuthor = view.findViewById(R.id.viewAuthor);
+        RatingBar inputRating = view.findViewById(R.id.rateRecipe);
+        RecyclerView recyclerView = view.findViewById(R.id.viewImages_recyclerView);
+
+        ViewImagesAdapter adapter = new ViewImagesAdapter();
+        LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
+        cLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(cLayoutManager);
 
         // Get recipe information and store to variables
         String name = recipe.getName();
@@ -42,13 +57,15 @@ public class ViewInformationFragment extends Fragment {
         // Set name of recipe
         displayName.setText(name);
 
-        // Set number of portions, display not specified if it is 0
+        // Set number of portions, display not specified if it is not set
         if (portions > 0) {
             displayPortion.setText("Serves " + String.valueOf(portions));
         }
         else {
             displayPortion.setText("not specified");
         }
+
+        // Set preparation time needed, display not specified if it is not set
 
         if (prepSeconds < 0) {
             displayPrep.setText("not specified");
