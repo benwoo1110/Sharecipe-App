@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 
 import com.google.gson.JsonElement;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -274,6 +275,92 @@ public class SharecipeRequests {
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
                 .put(requestBody)
+                .build());
+    }
+
+    /**
+     * GET `/users/user_id/follows` endpoint.
+     *
+     * @param accessToken
+     * @param userId
+     * @return Response from server.
+     */
+    @NotNull
+    public static FutureWebResponse getUserFollows(@NonNull String accessToken,
+                                                   int userId) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(userId))
+                        .addPathSegment(UrlPath.FOLLOWS)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
+
+    /**
+     * PUT `/users/user_id/follows` endpoint.
+     *
+     * @param accessToken
+     * @param userId
+     * @return Response from server.
+     */
+    @NotNull
+    public static FutureWebResponse putUserFollows(@NonNull String accessToken,
+                                                   int userId,
+                                                   int followId) {
+
+        String payload;
+        try {
+            payload = new JSONObject()
+                    .put("follow_id", followId)
+                    .toString();
+        } catch (JSONException e) {
+            return FutureWebResponse.failedFuture(e);
+        }
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(userId))
+                        .addPathSegment(UrlPath.FOLLOWS)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .put(RequestBody.create(payload, JSON_TYPE))
+                .build());
+    }
+
+    /**
+     * DELETE `/users/user_id/follows` endpoint.
+     *
+     * @param accessToken
+     * @param userId
+     * @return Response from server.
+     */
+    @NotNull
+    public static FutureWebResponse deleteUserFollows(@NonNull String accessToken,
+                                                   int userId,
+                                                   int followId) {
+
+        String payload;
+        try {
+            payload = new JSONObject()
+                    .put("follow_id", followId)
+                    .toString();
+        } catch (JSONException e) {
+            return FutureWebResponse.failedFuture(e);
+        }
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(userId))
+                        .addPathSegment(UrlPath.FOLLOWS)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .delete(RequestBody.create(payload, JSON_TYPE))
                 .build());
     }
 
