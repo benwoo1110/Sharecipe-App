@@ -30,11 +30,17 @@ public class SearchManager {
         this.accountManager = accountManager;
     }
 
+    /**
+     * Search for recipes and users based on server defined parameters.
+     *
+     * @param searchQuery   String filter.
+     * @return Future result of search.
+     */
     public FutureDataResult<SearchResult> search(String searchQuery) {
         FutureDataResult<SearchResult> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.search(account.getAccessToken(), searchQuery).onSuccessModel(future, SearchResult.class, (response, searchResult) -> {
+            SharecipeRequests.getSearch(account.getAccessToken(), searchQuery).onSuccessModel(future, SearchResult.class, (response, searchResult) -> {
                 future.complete(new DataResult.Success<>(searchResult));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);

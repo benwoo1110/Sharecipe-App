@@ -54,17 +54,16 @@ public class UserManager {
     }
 
     /**
-     * Search for users that starts with given username string.
+     * Get all users.
      *
-     * @param username  Target username to search on.
-     * @return Future result of search, with list of users from search result.
+     * @return Future result of with list of users.
      */
     @NonNull
-    public FutureDataResult<List<User>> search(String username) {
+    public FutureDataResult<List<User>> getAll() {
         FutureDataResult<List<User>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.searchUsers(account.getAccessToken(), username).onSuccessJson(future, (response, json) -> {
+            SharecipeRequests.getUsers(account.getAccessToken(), null).onSuccessJson(future, (response, json) -> {
                 List<User> userList = new ArrayList<>();
                 for (JsonElement userData : json.getAsJsonArray()) {
                     userList.add(JsonUtils.convertToObject(userData, User.class));
@@ -184,7 +183,7 @@ public class UserManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             JsonElement userData = JsonUtils.convertToJson(user);
-            SharecipeRequests.editUser(account.getAccessToken(), account.getUserId(), userData).onSuccess(response -> {
+            SharecipeRequests.patchUser(account.getAccessToken(), account.getUserId(), userData).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
@@ -207,7 +206,7 @@ public class UserManager {
         FutureDataResult<Void> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.setUserProfileImage(account.getAccessToken(), account.getUserId(), imageFile).onSuccess(response -> {
+            SharecipeRequests.putUserProfileImage(account.getAccessToken(), account.getUserId(), imageFile).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);

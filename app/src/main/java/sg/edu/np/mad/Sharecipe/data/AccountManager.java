@@ -62,7 +62,7 @@ public class AccountManager {
 
         FutureDataResult<Account> future = new FutureDataResult<>();
 
-        SharecipeRequests.accountRegister(username, password, bio).onSuccessModel(future, Account.class, (response, account) -> {
+        SharecipeRequests.postAccountRegister(username, password, bio).onSuccessModel(future, Account.class, (response, account) -> {
             setAccount(account);
             if (account == null) {
                 future.complete(new DataResult.Failed<>("Failed to create account!"));
@@ -87,7 +87,7 @@ public class AccountManager {
 
         FutureDataResult<Account> future = new FutureDataResult<>();
 
-        SharecipeRequests.accountLogin(username, password).onSuccessModel(future, Account.class, (response, account) -> {
+        SharecipeRequests.postAccountLogin(username, password).onSuccessModel(future, Account.class, (response, account) -> {
             setAccount(account);
             if (account == null) {
                 future.complete(new DataResult.Failed<>("Failed to login!"));
@@ -112,7 +112,7 @@ public class AccountManager {
 
         FutureDataResult<Account> future = new FutureDataResult<>();
 
-        SharecipeRequests.accountTokenRefresh(account.getRefreshToken(), account.getUserId()).onSuccessJson(future, (response, json) -> {
+        SharecipeRequests.postAccountRefresh(account.getRefreshToken(), account.getUserId()).onSuccessJson(future, (response, json) -> {
             //TODO: Create entirely new account object.
             JsonElement tokenElement = ((JsonObject) json).get("access_token");
             account.setAccessToken(tokenElement.getAsString());
@@ -136,7 +136,7 @@ public class AccountManager {
 
         FutureDataResult<Void> future = new FutureDataResult<>();
 
-        SharecipeRequests.accountLogout(account.getRefreshToken(), account.getUserId()).onSuccess(response -> {
+        SharecipeRequests.postAccountLogout(account.getRefreshToken(), account.getUserId()).onSuccess(response -> {
             setAccount(null);
             refreshInterval.reset();
             future.complete(new DataResult.Success<>(null));
