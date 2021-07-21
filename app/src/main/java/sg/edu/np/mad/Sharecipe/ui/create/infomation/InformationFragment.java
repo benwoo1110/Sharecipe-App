@@ -88,8 +88,6 @@ public class InformationFragment extends Fragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 addDurationDialog(prep.getText().toString());
-                Log.v("NIce", "It works i guess");
-                Log.v("Tight", String.valueOf(recipe.getTotalTimeNeeded()));
                 return false;
             }
         });
@@ -122,9 +120,6 @@ public class InformationFragment extends Fragment {
         }
         recipe.setPortion(recipePortions);
 
-        // TODO: Check what to do with this (no such constructor in Recipe item)
-        // TODO: Convert preparation time to seconds from the input
-
         return view;
     }
 
@@ -133,6 +128,7 @@ public class InformationFragment extends Fragment {
         NumberPicker inputHours = view.findViewById(R.id.inputHours);
         NumberPicker inputMinutes = view.findViewById(R.id.inputMinutes);
 
+        // Current time input is passed in and set as hours and minutes respectively
         String[] durationSplit = currentDuration.split(":");
         hours = Integer.parseInt(durationSplit[0]);
         minutes = Integer.parseInt(durationSplit[1]);
@@ -142,9 +138,12 @@ public class InformationFragment extends Fragment {
         inputHours.setMinValue(0);
         inputMinutes.setMinValue(0);
 
+        // Here the hours and minutes are set to the number picker
         inputHours.setValue(hours);
         inputMinutes.setValue(minutes);
 
+
+        // Pickers have a listener, when the value is changed the hour/minute is set to the new value and its time in seconds is saved
         inputHours.setOnValueChangedListener((picker, oldVal, newVal) -> {
             hours = inputHours.getValue();
             hoursInSeconds = hours * 3600;
@@ -161,6 +160,7 @@ public class InformationFragment extends Fragment {
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // On confirm the total time in seconds is added and this is set to recipe total time needed, then the hour and
                         seconds = hoursInSeconds + minutesInSeconds;
                         recipe.setTotalTimeNeeded(seconds);
                         if (hours < 10) {

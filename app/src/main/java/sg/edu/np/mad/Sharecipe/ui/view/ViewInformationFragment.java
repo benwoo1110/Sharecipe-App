@@ -62,13 +62,13 @@ public class ViewInformationFragment extends Fragment {
             displayPortion.setText("Serves " + String.valueOf(portions));
         }
         else {
-            displayPortion.setText("not specified");
+            displayPortion.setText("nil");
         }
 
         // Set preparation time needed, display not specified if it is not set
 
         if (prepSeconds < 0) {
-            displayPrep.setText("not specified");
+            displayPrep.setText("nil");
         }
 
         else if (prepSeconds < 3600) {

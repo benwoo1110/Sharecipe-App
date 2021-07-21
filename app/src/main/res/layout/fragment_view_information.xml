@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="66dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toStartOf="@+id/textInputLayout5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout7"
@@ -46,7 +46,10 @@
             android:id="@+id/viewPrep"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none" />
+            android:inputType="none"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:longClickable="false"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -55,7 +58,7 @@
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="80dp"
+        android:layout_marginEnd="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout7"
         app:startIconDrawable="@drawable/outline_tag_24">
@@ -64,7 +67,10 @@
             android:id="@+id/viewPortion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none" />
+            android:inputType="none"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:longClickable="false"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -102,7 +108,11 @@
             android:id="@+id/viewDifficulty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Difficulty" />
+            android:hint="Difficulty"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:inputType="none"
+            android:longClickable="false"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
