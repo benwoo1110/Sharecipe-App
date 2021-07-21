@@ -26,7 +26,8 @@
             android:clickable="false"
             android:cursorVisible="false"
             android:inputType="none"
-            android:longClickable="false" />
+            android:longClickable="false"
+            android:editable='false'/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -49,7 +50,8 @@
             android:inputType="none"
             android:clickable="false"
             android:cursorVisible="false"
-            android:longClickable="false"/>
+            android:longClickable="false"
+            android:editable="false"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -70,7 +72,8 @@
             android:inputType="none"
             android:clickable="false"
             android:cursorVisible="false"
-            android:longClickable="false"/>
+            android:longClickable="false"
+            android:editable="false"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
@@ -112,7 +115,8 @@
             android:clickable="false"
             android:cursorVisible="false"
             android:inputType="none"
-            android:longClickable="false"/>
+            android:longClickable="false"
+            android:editable="false"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <TextView

@@ -80,7 +80,7 @@ public class InformationFragment extends Fragment {
         recipe.setName("test");
         recipe.setPortion(0);
         recipe.setDifficulty(0);
-        recipe.setTotalTimeNeeded(0);
+        recipe.setTotalTimeNeeded(120);
 
         prep.setText("00:00");
 

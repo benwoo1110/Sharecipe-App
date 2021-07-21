@@ -67,7 +67,7 @@ public class ViewInformationFragment extends Fragment {
 
         // Set preparation time needed, display not specified if it is not set
 
-        if (prepSeconds < 0) {
+        if (prepSeconds == 0) {
             displayPrep.setText("nil");
         }
 
