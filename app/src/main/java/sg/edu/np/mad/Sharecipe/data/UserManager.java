@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.ResponseBody;
 import sg.edu.np.mad.Sharecipe.models.User;
+import sg.edu.np.mad.Sharecipe.models.UserFollow;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
@@ -53,17 +54,16 @@ public class UserManager {
     }
 
     /**
-     * Search for users that starts with given username string.
+     * Get all users.
      *
-     * @param username  Target username to search on.
-     * @return Future result of search, with list of users from search result.
+     * @return Future result of with list of users.
      */
     @NonNull
-    public FutureDataResult<List<User>> search(String username) {
+    public FutureDataResult<List<User>> getAll() {
         FutureDataResult<List<User>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.searchUsers(account.getAccessToken(), username).onSuccessJson(future, (response, json) -> {
+            SharecipeRequests.getUsers(account.getAccessToken(), null).onSuccessJson(future, (response, json) -> {
                 List<User> userList = new ArrayList<>();
                 for (JsonElement userData : json.getAsJsonArray()) {
                     userList.add(JsonUtils.convertToObject(userData, User.class));
@@ -137,6 +137,28 @@ public class UserManager {
     }
 
     /**
+     * Gets all user ids that a given user is following.
+     *
+     * @param user  The target user.
+     * @return Future result of follow data.
+     */
+    public FutureDataResult<List<UserFollow>> getFollows(User user) {
+        FutureDataResult<List<UserFollow>> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getUserFollows(account.getAccessToken(), account.getUserId()).onSuccessJson(future, (response, json) -> {
+                List<UserFollow> followList = new ArrayList<>();
+                for (JsonElement followData : json.getAsJsonArray()) {
+                    followList.add(JsonUtils.convertToObject(followData, UserFollow.class));
+                }
+                future.complete(new DataResult.Success<>(followList));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    /**
      * Gets user data of logged in account.
      *
      * @return Future result of user data.
@@ -161,7 +183,7 @@ public class UserManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             JsonElement userData = JsonUtils.convertToJson(user);
-            SharecipeRequests.editUser(account.getAccessToken(), account.getUserId(), userData).onSuccess(response -> {
+            SharecipeRequests.patchUser(account.getAccessToken(), account.getUserId(), userData).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
@@ -184,9 +206,45 @@ public class UserManager {
         FutureDataResult<Void> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.setUserProfileImage(account.getAccessToken(), account.getUserId(), imageFile).onSuccess(response -> {
+            SharecipeRequests.putUserProfileImage(account.getAccessToken(), account.getUserId(), imageFile).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
-            });
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    /**
+     * Follows a user.
+     *
+     * @param user  Target user to follow.
+     * @return Success status, no actual data returned.
+     */
+    public FutureDataResult<Void> accountFollowUser(User user) {
+        FutureDataResult<Void> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.putUserFollows(account.getAccessToken(), account.getUserId(), user.getUserId()).onSuccess(response -> {
+                future.complete(new DataResult.Success<>(null));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    /**
+     * Unfollows a user. Fails if account has not followed the user.
+     *
+     * @param user  Target user to unfollow.
+     * @return Success status, no actual data returned.
+     */
+    public FutureDataResult<Void> accountUnfollowUser(User user) {
+        FutureDataResult<Void> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.deleteUserFollows(account.getAccessToken(), account.getUserId(), user.getUserId()).onSuccess(response -> {
+                future.complete(new DataResult.Success<>(null));
+            }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
 
         return future;

@@ -21,6 +21,7 @@ public class UrlPath {
     public static final String DELETE = "delete";
     public static final String USERS = "users";
     public static final String PROFILE_IMAGE = "profileimage";
+    public static final String FOLLOWS = "follows";
     public static final String RECIPES = "recipes";
     public static final String IMAGES = "images";
     public static final String ICON = "icon";
