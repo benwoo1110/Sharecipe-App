@@ -16,13 +16,11 @@ public class DurationParser implements JsonDeserializer<Duration>, JsonSerialize
 
     @Override
     public Duration deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        System.out.println(json);
         return Duration.ofSeconds(json.getAsLong());
     }
 
     @Override
     public JsonElement serialize(Duration src, Type typeOfSrc, JsonSerializationContext context) {
-        System.out.println(src.toString());
         return new JsonPrimitive(src.getSeconds());
     }
 }

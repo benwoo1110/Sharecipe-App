@@ -49,27 +49,19 @@ public class ViewInformationFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(cLayoutManager);
 
-        // Set stored variables to android widgets
         // Set name of recipe
         displayName.setText(recipe.getName());
 
         // Set number of portions, display not specified if it is not set
-        if (recipe.getPortion() > 0) {
-            displayPortion.setText("Serves " + recipe.getPortion());
-        } else {
-            displayPortion.setText("nil");
-        }
+        displayPortion.setText(recipe.getPortion() > 0 ? "Serves " + recipe.getPortion() : "nil");
 
         // Set preparation time needed, display not specified if it is not set
-        if (recipe.getTotalTimeNeeded().isZero()) {
-            displayPrep.setText("nil");
-        } else {
-            displayPrep.setText(String.format(Locale.ENGLISH, "%02d hours %02d minutes",
-                    recipe.getTotalTimeNeeded().toHours(),
-                    recipe.getTotalTimeNeeded().toMinutesPart()));
-        }
+        displayPrep.setText(recipe.getTotalTimeNeeded().isZero()
+                ? "nil"
+                : String.format(Locale.ENGLISH, "%02d hours %02d minutes",
+                recipe.getTotalTimeNeeded().toHours(),
+                recipe.getTotalTimeNeeded().toMinutesPart()));
 
         return view;
     }
-
 }

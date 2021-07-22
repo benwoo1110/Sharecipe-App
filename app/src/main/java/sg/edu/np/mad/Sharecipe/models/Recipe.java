@@ -23,7 +23,7 @@ public class Recipe implements Serializable {
     @Expose
     private int difficulty;
     @Expose
-    private Duration totalTimeNeeded = Duration.ZERO;
+    private Duration totalTimeNeeded;
     @Expose(serialize = false)
     private Date timeCreated;
     @Expose
@@ -70,7 +70,7 @@ public class Recipe implements Serializable {
     }
 
     public Duration getTotalTimeNeeded() {
-        return totalTimeNeeded;
+        return totalTimeNeeded == null ? Duration.ZERO : totalTimeNeeded;
     }
 
     public void setTotalTimeNeeded(Duration totalTimeNeeded) {
