@@ -1,5 +1,6 @@
 package sg.edu.np.mad.Sharecipe.ui.main.recipe;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -99,7 +100,7 @@ public class MyRecipeFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode != LAUNCH_RECIPE_CREATION) {
+        if (requestCode != LAUNCH_RECIPE_CREATION || resultCode != Activity.RESULT_OK || data == null) {
             return;
         }
 
