@@ -58,7 +58,7 @@ public class ViewInformationFragment extends Fragment {
         displayName.setText(name);
 
         // Set number of portions, display not specified if it is not set
-        if (portions > 0) {
+        if (portions != 0) {
             displayPortion.setText("Serves " + String.valueOf(portions));
         }
         else {

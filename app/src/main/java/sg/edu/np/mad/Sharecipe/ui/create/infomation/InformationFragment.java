@@ -77,11 +77,6 @@ public class InformationFragment extends Fragment {
         images.setAdapter(adapter);
         images.setLayoutManager(cLayoutManager);
 
-        recipe.setName("test");
-        recipe.setPortion(0);
-        recipe.setDifficulty(0);
-        recipe.setTotalTimeNeeded(120);
-
         prep.setText("00:00");
 
         prep.setOnTouchListener(new View.OnTouchListener() {
@@ -112,13 +107,22 @@ public class InformationFragment extends Fragment {
             recipe.setDifficulty(recipeDifficulty);
         });
 
-        int recipePortions = 0;
-        try {
-            recipePortions = Integer.parseInt(portions.getText().toString());
-        }
-        catch (NumberFormatException ignored) {
-        }
-        recipe.setPortion(recipePortions);
+        portions.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { recipe.setPortion(Integer.parseInt(s.toString()));
+
+            }
+        });
 
         return view;
     }
