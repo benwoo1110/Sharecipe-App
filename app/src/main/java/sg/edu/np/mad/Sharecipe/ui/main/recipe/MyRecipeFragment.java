@@ -107,11 +107,7 @@ public class MyRecipeFragment extends Fragment {
         Recipe recipe = (Recipe) data.getSerializableExtra("recipe");
         recipeAdapter.addRecipe(recipe);
         App.getRecipeManager().getIcon(recipe)
-                .onSuccess(bitmap -> {
-                    recipe.setIcon(bitmap);
-                    getActivity().runOnUiThread(() ->  recipeAdapter.notifyItemChanged(recipeAdapter.getRecipeList().size()));
-                })
-                .onFailed(System.out::println)
-                .onError(Throwable::printStackTrace);
+                .onSuccess(recipe::setIcon)
+                .thenAccept(result -> getActivity().runOnUiThread(() ->  recipeAdapter.notifyItemChanged(recipeAdapter.getRecipeList().size())));
     }
 }

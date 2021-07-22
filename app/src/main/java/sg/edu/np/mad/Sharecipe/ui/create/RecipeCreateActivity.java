@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -74,7 +75,7 @@ public class RecipeCreateActivity extends AppCompatActivity {
                             Toast.makeText(RecipeCreateActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
                             Intent resultData = new Intent();
                             resultData.putExtra("recipe", createdRecipe);
-                            setResult(MyRecipeFragment.LAUNCH_RECIPE_CREATION, resultData);
+                            setResult(Activity.RESULT_OK, resultData);
                             finish();
                         });
                     });
