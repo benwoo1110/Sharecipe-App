@@ -118,7 +118,9 @@ public class InformationFragment extends Fragment {
                     // On confirm the total time in seconds is added and this is set to recipe total time needed, then the hour and
                     Duration totalTimeNeeded = Duration.ofHours(inputHours.getValue()).plusMinutes(inputMinutes.getValue());
                     recipe.setTotalTimeNeeded(totalTimeNeeded);
-                    prep.setText(String.format(Locale.ENGLISH, "%02d:%02d", totalTimeNeeded.toHours(), totalTimeNeeded.toMinutesPart()));
+                    prep.setText(String.format(Locale.ENGLISH, "%02d:%02d",
+                            totalTimeNeeded.toHours(),
+                            totalTimeNeeded.toMinutesPart()));
                 })
                 .setNegativeButton("Cancel", null)
                 .show();

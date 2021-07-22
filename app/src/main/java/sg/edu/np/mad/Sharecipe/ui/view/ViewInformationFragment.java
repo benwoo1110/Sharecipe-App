@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.Locale;
+
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 
@@ -42,46 +44,30 @@ public class ViewInformationFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.viewImages_recyclerView);
 
         ViewImagesAdapter adapter = new ViewImagesAdapter();
-        LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
-        cLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(cLayoutManager);
 
-        // Get recipe information and store to variables
-        String name = recipe.getName();
-        int portions = recipe.getPortion();
-        long prepSeconds = recipe.getTotalTimeNeeded().getSeconds();
-
         // Set stored variables to android widgets
         // Set name of recipe
-        displayName.setText(name);
+        displayName.setText(recipe.getName());
 
         // Set number of portions, display not specified if it is not set
-        if (portions != 0) {
-            displayPortion.setText("Serves " + String.valueOf(portions));
-        }
-        else {
+        if (recipe.getPortion() > 0) {
+            displayPortion.setText("Serves " + recipe.getPortion());
+        } else {
             displayPortion.setText("nil");
         }
 
         // Set preparation time needed, display not specified if it is not set
-        if (prepSeconds == 0) {
+        if (recipe.getTotalTimeNeeded().isZero()) {
             displayPrep.setText("nil");
+        } else {
+            displayPrep.setText(String.format(Locale.ENGLISH, "%02d hours %02d minutes",
+                    recipe.getTotalTimeNeeded().toHours(),
+                    recipe.getTotalTimeNeeded().toMinutesPart()));
         }
-
-        else if (prepSeconds < 3600) {
-            long minutes = prepSeconds / 60;
-            displayPrep.setText(String.valueOf(minutes) + " minutes");
-        }
-
-        else {
-            long prepMinutes = prepSeconds / 60;
-            long hours = (prepMinutes - prepMinutes % 60) / 60;
-            long minutes = prepMinutes - (hours * 60);
-            displayPrep.setText(String.valueOf(hours) + " hours " + String.valueOf(minutes) + " minutes");
-        }
-
 
         return view;
     }
