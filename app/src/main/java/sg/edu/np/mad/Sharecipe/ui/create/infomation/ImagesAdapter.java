@@ -31,8 +31,8 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
 
     private static final int LIMIT = 5;
 
+    private final int shortAnimationDuration;
     private Animator currentAnimator;
-    private int shortAnimationDuration;
 
     private final Activity activity;
     private final ArrayList<Uri> images;

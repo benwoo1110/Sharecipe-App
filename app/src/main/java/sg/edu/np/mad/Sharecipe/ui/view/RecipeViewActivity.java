@@ -10,6 +10,8 @@ import com.google.android.material.tabs.TabLayout;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.ui.App;
+import sg.edu.np.mad.Sharecipe.ui.common.OnTabSelectedListener;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateAdapter;
 
 public class RecipeViewActivity extends AppCompatActivity {
@@ -30,9 +32,6 @@ public class RecipeViewActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Steps"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        RecipeViewAdapter adapter = new RecipeViewAdapter(this, tabLayout.getTabCount(), selectedRecipe);
-        viewpager.setAdapter(adapter);
-
         viewpager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -40,22 +39,13 @@ public class RecipeViewActivity extends AppCompatActivity {
             }
         });
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewpager.setCurrentItem(tab.getPosition());
-            }
+        tabLayout.addOnTabSelectedListener((OnTabSelectedListener) tab -> viewpager.setCurrentItem(tab.getPosition()));
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
+        App.getRecipeManager().get(selectedRecipe.getUserId(), selectedRecipe.getRecipeId()).onSuccess(recipe -> {
+            RecipeViewActivity.this.runOnUiThread(() -> {
+                RecipeViewAdapter adapter = new RecipeViewAdapter(this, tabLayout.getTabCount(), recipe);
+                viewpager.setAdapter(adapter);
+            });
+        }).onFailed(failed -> finish());
     }
 }

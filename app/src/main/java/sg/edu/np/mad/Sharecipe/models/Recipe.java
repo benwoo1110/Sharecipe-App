@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 
 import com.google.gson.annotations.Expose;
 
+import org.threeten.bp.Duration;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +23,7 @@ public class Recipe implements Serializable {
     @Expose
     private int difficulty;
     @Expose
-    private int totalTimeNeeded;
+    private Duration totalTimeNeeded;
     @Expose(serialize = false)
     private Date timeCreated;
     @Expose
@@ -67,11 +69,11 @@ public class Recipe implements Serializable {
         this.difficulty = difficulty;
     }
 
-    public int getTotalTimeNeeded() {
-        return totalTimeNeeded;
+    public Duration getTotalTimeNeeded() {
+        return totalTimeNeeded == null ? Duration.ZERO : totalTimeNeeded;
     }
 
-    public void setTotalTimeNeeded(int totalTimeNeeded) {
+    public void setTotalTimeNeeded(Duration totalTimeNeeded) {
         this.totalTimeNeeded = totalTimeNeeded;
     }
 

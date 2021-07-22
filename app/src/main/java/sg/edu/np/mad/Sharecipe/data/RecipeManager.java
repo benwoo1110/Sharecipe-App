@@ -132,6 +132,10 @@ public class RecipeManager {
     }
 
     public FutureDataResult<Void> addImages(Recipe recipe, List<File> imageFiles) {
+        if (imageFiles == null || imageFiles.isEmpty()) {
+            return FutureDataResult.completed(new DataResult.Failed<>("No recipe images to upload"));
+        }
+
         FutureDataResult<Void> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
