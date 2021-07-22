@@ -51,7 +51,7 @@ public class ViewInformationFragment extends Fragment {
         // Get recipe information and store to variables
         String name = recipe.getName();
         int portions = recipe.getPortion();
-        int prepSeconds = recipe.getTotalTimeNeeded();
+        long prepSeconds = recipe.getTotalTimeNeeded().getSeconds();
 
         // Set stored variables to android widgets
         // Set name of recipe
@@ -66,20 +66,19 @@ public class ViewInformationFragment extends Fragment {
         }
 
         // Set preparation time needed, display not specified if it is not set
-
         if (prepSeconds == 0) {
             displayPrep.setText("nil");
         }
 
         else if (prepSeconds < 3600) {
-            int minutes = prepSeconds / 60;
+            long minutes = prepSeconds / 60;
             displayPrep.setText(String.valueOf(minutes) + " minutes");
         }
 
         else {
-            int prepMinutes = prepSeconds / 60;
-            int hours = (prepMinutes - prepMinutes % 60) / 60;
-            int minutes = prepMinutes - (hours * 60);
+            long prepMinutes = prepSeconds / 60;
+            long hours = (prepMinutes - prepMinutes % 60) / 60;
+            long minutes = prepMinutes - (hours * 60);
             displayPrep.setText(String.valueOf(hours) + " hours " + String.valueOf(minutes) + " minutes");
         }
 

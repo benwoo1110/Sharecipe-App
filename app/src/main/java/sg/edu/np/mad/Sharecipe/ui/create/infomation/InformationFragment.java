@@ -27,12 +27,17 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 
+import org.threeten.bp.Duration;
+import org.threeten.bp.temporal.TemporalAmount;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
 
 // TODO: Set limit for images, remove plus button when limit is reached
 // TODO: Saving and storing of values for all input fields along with input validation (required fields)
@@ -46,11 +51,6 @@ public class InformationFragment extends Fragment {
     private final Recipe recipe;
     private final List<File> imageFileList;
 
-    private int hours;
-    private int minutes;
-    private int seconds;
-    private int hoursInSeconds;
-    private int minutesInSeconds;
     private TextInputEditText prep;
 
     public InformationFragment(Recipe recipe, List<File> imageFileList) {
@@ -79,49 +79,18 @@ public class InformationFragment extends Fragment {
 
         prep.setText("00:00");
 
-        prep.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                addDurationDialog(prep.getText().toString());
-                return false;
-            }
+        prep.setOnTouchListener((v, event) -> {
+            addDurationDialog(prep.getText().toString());
+            return false;
         });
 
-        name.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+        name.addTextChangedListener((AfterTextChangedWatcher) s -> recipe.setName(s.toString()));
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                recipe.setName(s.toString());
-            }
-        });
+        portions.addTextChangedListener((AfterTextChangedWatcher) s -> recipe.setPortion(Integer.parseInt(s.toString())));
 
         difficulty.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
             int recipeDifficulty = difficulty.getNumStars();
             recipe.setDifficulty(recipeDifficulty);
-        });
-
-        portions.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) { recipe.setPortion(Integer.parseInt(s.toString()));
-
-            }
         });
 
         return view;
@@ -132,61 +101,27 @@ public class InformationFragment extends Fragment {
         NumberPicker inputHours = view.findViewById(R.id.inputHours);
         NumberPicker inputMinutes = view.findViewById(R.id.inputMinutes);
 
-        // Current time input is passed in and set as hours and minutes respectively
-        String[] durationSplit = currentDuration.split(":");
-        hours = Integer.parseInt(durationSplit[0]);
-        minutes = Integer.parseInt(durationSplit[1]);
-
+        // Set valid range of duration
         inputHours.setMaxValue(99);
         inputMinutes.setMaxValue(59);
         inputHours.setMinValue(0);
         inputMinutes.setMinValue(0);
 
         // Here the hours and minutes are set to the number picker
-        inputHours.setValue(hours);
-        inputMinutes.setValue(minutes);
-
-
-        // Pickers have a listener, when the value is changed the hour/minute is set to the new value and its time in seconds is saved
-        inputHours.setOnValueChangedListener((picker, oldVal, newVal) -> {
-            hours = inputHours.getValue();
-            hoursInSeconds = hours * 3600;
-        });
-
-        inputMinutes.setOnValueChangedListener((picker, oldVal, newVal) -> {
-            minutes = inputMinutes.getValue();
-            minutesInSeconds = minutes * 60;
-        });
+        inputHours.setValue((int) recipe.getTotalTimeNeeded().toHours());
+        inputMinutes.setValue(recipe.getTotalTimeNeeded().toMinutesPart());
 
         new AlertDialog.Builder(getActivity())
                 .setView(view)
                 .setTitle("Preparation time")
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // On confirm the total time in seconds is added and this is set to recipe total time needed, then the hour and
-                        seconds = hoursInSeconds + minutesInSeconds;
-                        recipe.setTotalTimeNeeded(seconds);
-                        if (hours < 10) {
-                            if (minutes < 10) {
-                                prep.setText("0" + String.valueOf(hours) + ":" + "0" + String.valueOf(minutes));
-                            }
-                            else {
-                                prep.setText("0" + String.valueOf(hours) + ":" + String.valueOf(minutes));
-                            }
-                        }
-                        else if (minutes < 10) {
-                            prep.setText(String.valueOf(hours) + ":" + "0" + String.valueOf(minutes));
-                        }
-                        else {
-                            prep.setText(String.valueOf(hours) + ":" + String.valueOf(minutes));
-                        }
-
-                    }
+                .setPositiveButton("Confirm", (dialog, which) -> {
+                    // On confirm the total time in seconds is added and this is set to recipe total time needed, then the hour and
+                    Duration totalTimeNeeded = Duration.ofHours(inputHours.getValue()).plusMinutes(inputMinutes.getValue());
+                    recipe.setTotalTimeNeeded(totalTimeNeeded);
+                    prep.setText(String.format(Locale.ENGLISH, "%02d:%02d", totalTimeNeeded.toHours(), totalTimeNeeded.toMinutesPart()));
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
-
     }
 
     @Override
