@@ -81,7 +81,7 @@ public class RecipeCreateActivity extends AppCompatActivity {
             } else if (itemId == R.id.recipe_done_menu) {
                 Toast.makeText(RecipeCreateActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
                 App.getRecipeManager().create(recipe).onSuccess(createdRecipe -> {
-                    App.getRecipeManager().addImages(createdRecipe, adapter.getImageFileList()).onSuccess(aVoid -> {
+                    App.getRecipeManager().addImages(createdRecipe, adapter.getImageFileList()).thenAccept(result -> {
                         RecipeCreateActivity.this.runOnUiThread(() -> {
                             Toast.makeText(RecipeCreateActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
                             Intent resultData = new Intent();
