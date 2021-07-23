@@ -1,0 +1,44 @@
+package sg.edu.np.mad.Sharecipe.ui.view;
+
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.recyclerview.widget.RecyclerView;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+
+import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
+import sg.edu.np.mad.Sharecipe.models.RecipeStep;
+
+public class ViewStepsAdapter extends RecyclerView.Adapter<ViewStepsViewholder> {
+
+    List<RecipeStep> steps;
+
+    public ViewStepsAdapter(List<RecipeStep> steps) {
+        this.steps = steps;
+    }
+
+    @Override
+    @NotNull
+    public ViewStepsViewholder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_viewingredients, parent, false);
+        ViewStepsViewholder holder = new ViewStepsViewholder(item);
+
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NotNull ViewStepsViewholder holder, int position) {
+        RecipeStep step = steps.get(position);
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return steps.size();
+    }
+}

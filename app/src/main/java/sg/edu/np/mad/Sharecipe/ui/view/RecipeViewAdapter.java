@@ -29,7 +29,7 @@ public class RecipeViewAdapter extends FragmentStateAdapter {
             case 1:
                 return new ViewIngredientFragment(recipe);
             case 2:
-                return new ViewStepsFragment();
+                return new ViewStepsFragment(recipe);
             default:
                 return new ErrorFragment();
         }
