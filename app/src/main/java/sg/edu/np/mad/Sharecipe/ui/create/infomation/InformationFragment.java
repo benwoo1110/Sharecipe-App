@@ -80,7 +80,9 @@ public class InformationFragment extends Fragment {
         prep.setText("00:00");
 
         prep.setOnTouchListener((v, event) -> {
-            addDurationDialog(prep.getText().toString());
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                addDurationDialog(prep.getText().toString());
+            }
             return false;
         });
 
