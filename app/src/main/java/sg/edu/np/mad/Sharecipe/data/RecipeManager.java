@@ -61,7 +61,7 @@ public class RecipeManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             JsonElement recipeData = JsonUtils.convertToJson(newRecipe);
-            SharecipeRequests.putRecipe(account.getAccessToken(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
+            SharecipeRequests.putRecipes(account.getAccessToken(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
                 //TODO: Add to cache
                 future.complete(new DataResult.Success<>(recipe));
             }).onFailed(future).onError(future);
@@ -81,7 +81,7 @@ public class RecipeManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             JsonElement recipeData = JsonUtils.convertToJson(modifiedRecipe);
-            SharecipeRequests.putRecipe(account.getAccessToken(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
+            SharecipeRequests.putRecipes(account.getAccessToken(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
                 future.complete(new DataResult.Success<>(recipe));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
