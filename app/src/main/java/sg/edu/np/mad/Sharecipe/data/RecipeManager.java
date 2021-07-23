@@ -61,7 +61,7 @@ public class RecipeManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             JsonElement recipeData = JsonUtils.convertToJson(newRecipe);
-            SharecipeRequests.putUserRecipe(account.getAccessToken(), account.getUserId(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
+            SharecipeRequests.putRecipe(account.getAccessToken(), account.getUserId(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
                 //TODO: Add to cache
                 future.complete(new DataResult.Success<>(recipe));
             }).onFailed(future).onError(future);
@@ -81,7 +81,7 @@ public class RecipeManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             JsonElement recipeData = JsonUtils.convertToJson(modifiedRecipe);
-            SharecipeRequests.putUserRecipe(account.getAccessToken(), account.getUserId(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
+            SharecipeRequests.putRecipe(account.getAccessToken(), account.getUserId(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
                 future.complete(new DataResult.Success<>(recipe));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
@@ -102,7 +102,7 @@ public class RecipeManager {
         FutureDataResult<Recipe> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.getUserRecipe(account.getAccessToken(), userId, recipeId).onSuccessModel(future, Recipe.class, (response, recipe) -> {
+            SharecipeRequests.getRecipe(account.getAccessToken(), userId, recipeId).onSuccessModel(future, Recipe.class, (response, recipe) -> {
                 future.complete(new DataResult.Success<>(recipe));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
@@ -113,7 +113,7 @@ public class RecipeManager {
     public FutureDataResult<Bitmap> getIcon(Recipe recipe) {
         FutureDataResult<Bitmap> future = new FutureDataResult<>();
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.getUserRecipeIcon(account.getAccessToken(), recipe.getUserId(), recipe.getRecipeId()).onSuccess(response -> {
+            SharecipeRequests.getRecipeIcon(account.getAccessToken(), recipe.getUserId(), recipe.getRecipeId()).onSuccess(response -> {
                 ResponseBody body = response.body();
                 if (body == null) {
                     future.complete(new DataResult.Failed<>("No icon image data."));
@@ -139,7 +139,7 @@ public class RecipeManager {
         FutureDataResult<Void> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.putUserRecipeImages(account.getAccessToken(), recipe.getUserId(), recipe.getRecipeId(), imageFiles).onSuccess(response -> {
+            SharecipeRequests.putRecipeImages(account.getAccessToken(), recipe.getUserId(), recipe.getRecipeId(), imageFiles).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
@@ -151,7 +151,7 @@ public class RecipeManager {
         FutureDataResult<List<Bitmap>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.getUserRecipeImages(account.getAccessToken(), recipe.getUserId(), recipe.getRecipeId()).onSuccess(response -> {
+            SharecipeRequests.getRecipeImages(account.getAccessToken(), recipe.getUserId(), recipe.getRecipeId()).onSuccess(response -> {
                 ResponseBody body = response.body();
                 if (body == null) {
                     future.complete(new DataResult.Failed<>("No images data."));
