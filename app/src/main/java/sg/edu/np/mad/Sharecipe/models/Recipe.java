@@ -1,16 +1,13 @@
 package sg.edu.np.mad.Sharecipe.models;
 
-import android.graphics.Bitmap;
-
 import com.google.gson.annotations.Expose;
 
 import org.threeten.bp.Duration;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Recipe extends PartialRecipe implements Serializable {
+public class Recipe extends PartialRecipe {
 
     @Expose
     private int portion;
