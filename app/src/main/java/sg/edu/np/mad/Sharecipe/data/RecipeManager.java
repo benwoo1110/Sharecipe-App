@@ -19,6 +19,7 @@ import java.util.zip.ZipInputStream;
 
 import okhttp3.ResponseBody;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.models.RecipeLike;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
@@ -81,8 +82,31 @@ public class RecipeManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             JsonElement recipeData = JsonUtils.convertToJson(modifiedRecipe);
-            SharecipeRequests.putRecipes(account.getAccessToken(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
+            SharecipeRequests.patchRecipe(account.getAccessToken(), modifiedRecipe.getRecipeId(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
                 future.complete(new DataResult.Success<>(recipe));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    /**
+     *
+     *
+     * @param recipe
+     * @param imageFiles
+     * @return
+     */
+    public FutureDataResult<Void> addImages(Recipe recipe, List<File> imageFiles) {
+        if (imageFiles == null || imageFiles.isEmpty()) {
+            return FutureDataResult.completed(new DataResult.Failed<>("No recipe images to upload"));
+        }
+
+        FutureDataResult<Void> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.putRecipeImages(account.getAccessToken(), recipe.getRecipeId(), imageFiles).onSuccess(response -> {
+                future.complete(new DataResult.Success<>(null));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
 
@@ -108,6 +132,12 @@ public class RecipeManager {
         return future;
     }
 
+    /**
+     *
+     *
+     * @param recipe
+     * @return
+     */
     public FutureDataResult<Bitmap> getIcon(Recipe recipe) {
         FutureDataResult<Bitmap> future = new FutureDataResult<>();
         accountManager.getOrRefreshAccount().onSuccess(account -> {
@@ -129,22 +159,12 @@ public class RecipeManager {
         return future;
     }
 
-    public FutureDataResult<Void> addImages(Recipe recipe, List<File> imageFiles) {
-        if (imageFiles == null || imageFiles.isEmpty()) {
-            return FutureDataResult.completed(new DataResult.Failed<>("No recipe images to upload"));
-        }
-
-        FutureDataResult<Void> future = new FutureDataResult<>();
-
-        accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.putRecipeImages(account.getAccessToken(), recipe.getRecipeId(), imageFiles).onSuccess(response -> {
-                future.complete(new DataResult.Success<>(null));
-            }).onFailed(future).onError(future);
-        }).onFailed(future).onError(future);
-
-        return future;
-    }
-
+    /**
+     *
+     *
+     * @param recipe
+     * @return
+     */
     public FutureDataResult<List<Bitmap>> getImages(Recipe recipe) {
         FutureDataResult<List<Bitmap>> future = new FutureDataResult<>();
 
@@ -170,6 +190,34 @@ public class RecipeManager {
         return future;
     }
 
+    /**
+     *
+     *
+     * @param recipe
+     * @return
+     */
+    public FutureDataResult<List<RecipeLike>> getLikes(Recipe recipe) {
+        FutureDataResult<List<RecipeLike>> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getRecipeLikes(account.getAccessToken(), recipe.getRecipeId()).onSuccessJson(future, (response, json) -> {
+                List<RecipeLike> recipes = new ArrayList<>();
+                for (JsonElement likeData : json.getAsJsonArray()) {
+                    recipes.add(JsonUtils.convertToObject(likeData, RecipeLike.class));
+                }
+                future.complete(new DataResult.Success<>(recipes));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    /**
+     *
+     *
+     * @param userId
+     * @return
+     */
     public FutureDataResult<List<Recipe>> getAllForUser(int userId) {
         FutureDataResult<List<Recipe>> future = new FutureDataResult<>();
 
@@ -192,10 +240,46 @@ public class RecipeManager {
      * @return Future result of user data.
      */
     @NonNull
-    public FutureDataResult<List<Recipe>> getAccountRecipe() {
+    public FutureDataResult<List<Recipe>> getAccountRecipes() {
         if (!accountManager.isLoggedIn()) {
             return FutureDataResult.completed(new DataResult.Failed<>("No account logged in!"));
         }
         return getAllForUser(accountManager.getAccount().getUserId());
+    }
+
+    /**
+     *
+     *
+     * @param recipe
+     * @return
+     */
+    public FutureDataResult<Void> accountLikeRecipe(Recipe recipe) {
+        FutureDataResult<Void> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.putRecipeLikes(account.getAccessToken(), recipe.getRecipeId()).onSuccess(response -> {
+                future.complete(new DataResult.Success<>(null));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    /**
+     *
+     *
+     * @param recipe
+     * @return
+     */
+    public FutureDataResult<Void> accountUnlikeRecipe(Recipe recipe) {
+        FutureDataResult<Void> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.deleteRecipeLikes(account.getAccessToken(), recipe.getRecipeId()).onSuccess(response -> {
+                future.complete(new DataResult.Success<>(null));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
     }
 }

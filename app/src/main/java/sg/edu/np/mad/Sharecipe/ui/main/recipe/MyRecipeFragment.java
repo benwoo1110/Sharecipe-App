@@ -60,7 +60,7 @@ public class MyRecipeFragment extends Fragment {
         recipeRecyclerView.setAdapter(recipeAdapter);
         recipeRecyclerView.setLayoutManager(layoutManager);
 
-        App.getRecipeManager().getAccountRecipe()
+        App.getRecipeManager().getAccountRecipes()
                 .onSuccess(recipes -> {
                     CompletableFuture<?>[] completableFutures = new CompletableFuture[recipes.size()];
                     for (int i = 0, recipesSize = recipes.size(); i < recipesSize; i++) {
