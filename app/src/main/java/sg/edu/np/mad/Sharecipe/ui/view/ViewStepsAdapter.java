@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 
 public class ViewStepsAdapter extends RecyclerView.Adapter<ViewStepsViewholder> {
@@ -34,6 +33,9 @@ public class ViewStepsAdapter extends RecyclerView.Adapter<ViewStepsViewholder> 
     @Override
     public void onBindViewHolder(@NotNull ViewStepsViewholder holder, int position) {
         RecipeStep step = steps.get(position);
+
+        holder.stepNumber.setText(String.valueOf(step.getStepNumber()));
+        holder.stepDesc.setText(step.getDescription());
 
     }
 
