@@ -31,18 +31,6 @@
         app:layout_constraintStart_toEndOf="@+id/view"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/stepTimeneeded"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="9dp"
-        android:text="time"
-        app:layout_constraintBottom_toTopOf="@+id/view2"
-        app:layout_constraintStart_toEndOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/stepDescription" />
-
     <View
         android:id="@+id/view"
         android:layout_width="1dp"
