@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.view.RecipeViewActivity;
 
@@ -19,9 +20,9 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder {
     final TextView title;
     final TextView info;
     final ImageView icon;
-    final List<Recipe> recipe;
+    final List<PartialRecipe> recipe;
 
-    public RecipeViewHolder(@NonNull View itemView, List<Recipe> recipe) {
+    public RecipeViewHolder(@NonNull View itemView, List<PartialRecipe> recipe) {
         super(itemView);
         this.recipe = recipe;
         title = itemView.findViewById(R.id.recipeTitle);
@@ -29,7 +30,7 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder {
         icon = itemView.findViewById(R.id.recipeIconImage);
         itemView.setOnClickListener(v -> {
             Intent viewRecipe = new Intent(itemView.getContext(), RecipeViewActivity.class);
-            Recipe selectedRecipe = recipe.get(getAdapterPosition());
+            PartialRecipe selectedRecipe = recipe.get(getAdapterPosition());
             viewRecipe.putExtra("Recipe", selectedRecipe);
 
             itemView.getContext().startActivity(viewRecipe);

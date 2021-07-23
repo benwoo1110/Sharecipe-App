@@ -9,13 +9,13 @@ public class SearchResult {
     @Expose
     private List<User> users;
     @Expose
-    private List<Recipe> recipes;
+    private List<PartialRecipe> recipes;
 
     public List<User> getUsers() {
         return users;
     }
 
-    public List<Recipe> getRecipes() {
+    public List<PartialRecipe> getRecipes() {
         return recipes;
     }
 

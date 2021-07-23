@@ -10,13 +10,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
 
-    private final List<Recipe> recipeList;
+    private final List<PartialRecipe> recipeList;
 
-    public RecipeAdapter(List<Recipe> recipeList) {
+    public RecipeAdapter(List<PartialRecipe> recipeList) {
         this.recipeList = recipeList;
     }
 
@@ -29,7 +30,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
-        Recipe recipe = recipeList.get(position);
+        PartialRecipe recipe = recipeList.get(position);
         holder.title.setText(recipe.getName());
         holder.info.setText(String.valueOf(recipe.getRecipeId()));
         if (recipe.getIcon() != null) {
@@ -44,17 +45,17 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
         return recipeList.size();
     }
 
-    public List<Recipe> getRecipeList() {
+    public List<PartialRecipe> getRecipeList() {
         return recipeList;
     }
 
-    public void setRecipeList(List<Recipe> recipeList) {
+    public void setRecipeList(List<PartialRecipe> recipeList) {
         this.recipeList.clear();
         this.recipeList.addAll(recipeList);
         notifyDataSetChanged();
     }
 
-    public void addRecipe(Recipe recipe) {
+    public void addRecipe(PartialRecipe recipe) {
         this.recipeList.add(recipe);
         notifyItemInserted(this.recipeList.size());
     }

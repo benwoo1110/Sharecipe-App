@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
@@ -64,7 +65,7 @@ public class MyRecipeFragment extends Fragment {
                 .onSuccess(recipes -> {
                     CompletableFuture<?>[] completableFutures = new CompletableFuture[recipes.size()];
                     for (int i = 0, recipesSize = recipes.size(); i < recipesSize; i++) {
-                        Recipe recipe = recipes.get(i);
+                        PartialRecipe recipe = recipes.get(i);
                         completableFutures[i] = App.getRecipeManager().getIcon(recipe)
                                 .onSuccess(recipe::setIcon)
                                 .onFailed(System.out::println)
@@ -72,6 +73,7 @@ public class MyRecipeFragment extends Fragment {
                     }
                     CompletableFuture.allOf(completableFutures).thenAccept(aVoid -> {
                         getActivity().runOnUiThread(() -> {
+                            System.out.println(recipes);
                             recipeAdapter.setRecipeList(recipes);
                             recipeRecyclerView.scheduleLayoutAnimation();
                             shimmerFrameLayout.stopShimmer();

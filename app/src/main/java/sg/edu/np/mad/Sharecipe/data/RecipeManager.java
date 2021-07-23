@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipInputStream;
 
 import okhttp3.ResponseBody;
+import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeLike;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
@@ -97,7 +98,7 @@ public class RecipeManager {
      * @param imageFiles
      * @return
      */
-    public FutureDataResult<Void> addImages(Recipe recipe, List<File> imageFiles) {
+    public FutureDataResult<Void> addImages(PartialRecipe recipe, List<File> imageFiles) {
         if (imageFiles == null || imageFiles.isEmpty()) {
             return FutureDataResult.completed(new DataResult.Failed<>("No recipe images to upload"));
         }
@@ -138,7 +139,7 @@ public class RecipeManager {
      * @param recipe
      * @return
      */
-    public FutureDataResult<Bitmap> getIcon(Recipe recipe) {
+    public FutureDataResult<Bitmap> getIcon(PartialRecipe recipe) {
         FutureDataResult<Bitmap> future = new FutureDataResult<>();
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getRecipeIcon(account.getAccessToken(), recipe.getRecipeId()).onSuccess(response -> {
@@ -165,7 +166,7 @@ public class RecipeManager {
      * @param recipe
      * @return
      */
-    public FutureDataResult<List<Bitmap>> getImages(Recipe recipe) {
+    public FutureDataResult<List<Bitmap>> getImages(PartialRecipe recipe) {
         FutureDataResult<List<Bitmap>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
@@ -196,7 +197,7 @@ public class RecipeManager {
      * @param recipe
      * @return
      */
-    public FutureDataResult<List<RecipeLike>> getLikes(Recipe recipe) {
+    public FutureDataResult<List<RecipeLike>> getLikes(PartialRecipe recipe) {
         FutureDataResult<List<RecipeLike>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
@@ -218,14 +219,14 @@ public class RecipeManager {
      * @param userId
      * @return
      */
-    public FutureDataResult<List<Recipe>> getAllForUser(int userId) {
-        FutureDataResult<List<Recipe>> future = new FutureDataResult<>();
+    public FutureDataResult<List<PartialRecipe>> getAllForUser(int userId) {
+        FutureDataResult<List<PartialRecipe>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getUserRecipes(account.getAccessToken(), userId).onSuccessJson(future, (response, json) -> {
-                List<Recipe> recipes = new ArrayList<>();
+                List<PartialRecipe> recipes = new ArrayList<>();
                 for (JsonElement recipeData : json.getAsJsonArray()) {
-                    recipes.add(JsonUtils.convertToObject(recipeData, Recipe.class));
+                    recipes.add(JsonUtils.convertToObject(recipeData, PartialRecipe.class));
                 }
                 future.complete(new DataResult.Success<>(recipes));
             }).onFailed(future).onError(future);
@@ -240,7 +241,7 @@ public class RecipeManager {
      * @return Future result of user data.
      */
     @NonNull
-    public FutureDataResult<List<Recipe>> getAccountRecipes() {
+    public FutureDataResult<List<PartialRecipe>> getAccountRecipes() {
         if (!accountManager.isLoggedIn()) {
             return FutureDataResult.completed(new DataResult.Failed<>("No account logged in!"));
         }
@@ -253,7 +254,7 @@ public class RecipeManager {
      * @param recipe
      * @return
      */
-    public FutureDataResult<Void> accountLikeRecipe(Recipe recipe) {
+    public FutureDataResult<Void> accountLikeRecipe(PartialRecipe recipe) {
         FutureDataResult<Void> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
@@ -271,7 +272,7 @@ public class RecipeManager {
      * @param recipe
      * @return
      */
-    public FutureDataResult<Void> accountUnlikeRecipe(Recipe recipe) {
+    public FutureDataResult<Void> accountUnlikeRecipe(PartialRecipe recipe) {
         FutureDataResult<Void> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
