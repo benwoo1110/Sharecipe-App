@@ -10,14 +10,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Recipe implements Serializable {
+public class Recipe extends PartialRecipe implements Serializable {
 
-    @Expose
-    private int userId;
-    @Expose
-    private int recipeId;
-    @Expose
-    private String name;
     @Expose
     private int portion;
     @Expose
@@ -33,25 +27,7 @@ public class Recipe implements Serializable {
     @Expose
     private List<RecipeImage> images;
 
-    private transient Bitmap icon;
-
     public Recipe() { }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public int getRecipeId() {
-        return recipeId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public int getPortion() {
         return portion;
@@ -103,14 +79,6 @@ public class Recipe implements Serializable {
 
     public void setImages(List<RecipeImage> images) {
         this.images = images;
-    }
-
-    public Bitmap getIcon() {
-        return icon;
-    }
-
-    public void setIcon(Bitmap icon) {
-        this.icon = icon;
     }
 
     @Override

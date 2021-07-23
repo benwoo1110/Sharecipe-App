@@ -16,6 +16,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 
 /**
  * Handles web requests to the server.
@@ -341,8 +342,8 @@ public class SharecipeRequests {
      */
     @NotNull
     public static FutureWebResponse deleteUserFollows(@NonNull String accessToken,
-                                                   int userId,
-                                                   int followId) {
+                                                      int userId,
+                                                      int followId) {
 
         String payload;
         try {
@@ -386,21 +387,75 @@ public class SharecipeRequests {
     }
 
     /**
-     * GET `/users/user_id/recipes/recipe_id` endpoint.
+     * GET `/users/user_id/recipes/likes` endpoint.
      *
      * @param accessToken
      * @param userId
-     * @param recipeId
      * @return
      */
-    public static FutureWebResponse getUserRecipe(@NonNull String accessToken,
-                                                  int userId,
-                                                  int recipeId) {
+    public static FutureWebResponse getUserRecipeLikes(@NonNull String accessToken,
+                                                       int userId) {
 
         return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addPathSegment(String.valueOf(userId))
+                        .addPathSegment(UrlPath.RECIPES)
+                        .addPathSegment(UrlPath.LIKES)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
+
+    /**
+     * GET `/recipes` endpoint.
+     *
+     * @param accessToken
+     * @return
+     */
+    public static FutureWebResponse getRecipes(@NonNull String accessToken) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.RECIPES)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
+
+    /**
+     * PUT `/recipes` endpoint.
+     *
+     * @param accessToken
+     * @param recipeData
+     * @return
+     */
+    public static FutureWebResponse putRecipes(@NonNull String accessToken,
+                                               JsonElement recipeData) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.RECIPES)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .put(RequestBody.create(recipeData.toString(), JSON_TYPE))
+                .build());
+    }
+
+    /**
+     * GET `/recipes/recipe_id` endpoint.
+     *
+     * @param accessToken
+     * @param recipeId
+     * @return
+     */
+    public static FutureWebResponse getRecipe(@NonNull String accessToken,
+                                              int recipeId) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .build())
@@ -410,45 +465,21 @@ public class SharecipeRequests {
     }
 
     /**
-     * PUT `/users/user_id/recipes` endpoint.
+     * PATCH `/recipes/recipe_id` endpoint.
      *
      * @param accessToken
-     * @param userId
+     * @param recipeId
      * @param recipeData
      * @return
      */
-    public static FutureWebResponse putUserRecipe(@NonNull String accessToken,
-                                                  int userId,
-                                                  JsonElement recipeData) {
+    public static FutureWebResponse patchRecipe(@NonNull String accessToken,
+                                                int recipeId,
+                                                JsonElement recipeData) {
 
         return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
-                        .addPathSegment(UrlPath.USERS)
-                        .addPathSegment(String.valueOf(userId))
                         .addPathSegment(UrlPath.RECIPES)
-                        .build())
-                .header("Authorization", "Bearer " + accessToken)
-                .put(RequestBody.create(recipeData.toString(), JSON_TYPE))
-                .build());
-    }
-
-    /**
-     * PATCH `/users/user_id/recipes/recipe_id` endpoint.
-     *
-     * @param accessToken
-     * @param userId
-     * @param recipeData
-     * @return
-     */
-    public static FutureWebResponse patchUserRecipe(@NonNull String accessToken,
-                                                    int userId,
-                                                    JsonElement recipeData) {
-
-        return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
-                        .addPathSegment(UrlPath.USERS)
-                        .addPathSegment(String.valueOf(userId))
-                        .addPathSegment(UrlPath.RECIPES)
+                        .addPathSegment(String.valueOf(recipeId))
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
                 .patch(RequestBody.create(recipeData.toString(), JSON_TYPE))
@@ -456,21 +487,17 @@ public class SharecipeRequests {
     }
 
     /**
-     * GET `/users/user_id/recipes/recipe_id/icon` endpoint.
+     * GET `/recipes/recipe_id/icon` endpoint.
      *
      * @param accessToken
-     * @param userId
      * @param recipeId
      * @return
      */
-    public static FutureWebResponse getUserRecipeIcon(@NonNull String accessToken,
-                                                      int userId,
-                                                      int recipeId) {
+    public static FutureWebResponse getRecipeIcon(@NonNull String accessToken,
+                                                  int recipeId) {
 
         return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
-                        .addPathSegment(UrlPath.USERS)
-                        .addPathSegment(String.valueOf(userId))
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .addPathSegment(UrlPath.ICON)
@@ -481,18 +508,16 @@ public class SharecipeRequests {
     }
 
     /**
-     * PUT `/users/user_id/recipes/recipe_id/images` endpoint.
+     * PUT `/recipes/recipe_id/images` endpoint.
      *
      * @param accessToken
-     * @param userId
      * @param recipeId
      * @param imageFiles
      * @return
      */
-    public static FutureWebResponse putUserRecipeImages(@NonNull String accessToken,
-                                                        int userId,
-                                                        int recipeId,
-                                                        List<File> imageFiles) {
+    public static FutureWebResponse putRecipeImages(@NonNull String accessToken,
+                                                    int recipeId,
+                                                    List<File> imageFiles) {
 
         MultipartBody.Builder requestBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         for (File imageFile : imageFiles) {
@@ -505,8 +530,6 @@ public class SharecipeRequests {
 
         return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
-                        .addPathSegment(UrlPath.USERS)
-                        .addPathSegment(String.valueOf(userId))
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .addPathSegment(UrlPath.IMAGES)
@@ -520,24 +543,83 @@ public class SharecipeRequests {
      * GET `/users/user_id/recipes/recipe_id/images` endpoint.
      *
      * @param accessToken
-     * @param userId
      * @param recipeId
      * @return
      */
-    public static FutureWebResponse getUserRecipeImages(@NonNull String accessToken,
-                                                        int userId,
-                                                        int recipeId) {
+    public static FutureWebResponse getRecipeImages(@NonNull String accessToken,
+                                                    int recipeId) {
 
         return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
-                        .addPathSegment(UrlPath.USERS)
-                        .addPathSegment(String.valueOf(userId))
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .addPathSegment(UrlPath.IMAGES)
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
                 .get()
+                .build());
+    }
+
+    /**
+     *  GET `/users/user_id/recipes/recipe_id/likes` endpoint.
+     *
+     * @param accessToken
+     * @param recipeId
+     * @return
+     */
+    public static FutureWebResponse getRecipeLikes(@NonNull String accessToken,
+                                                   int recipeId) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.RECIPES)
+                        .addPathSegment(String.valueOf(recipeId))
+                        .addPathSegment(UrlPath.LIKES)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
+
+    /**
+     *  PUT `/users/user_id/recipes/recipe_id/likes` endpoint.
+     *
+     * @param accessToken
+     * @param recipeId
+     * @return
+     */
+    public static FutureWebResponse putRecipeLikes(@NonNull String accessToken,
+                                                   int recipeId) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.RECIPES)
+                        .addPathSegment(String.valueOf(recipeId))
+                        .addPathSegment(UrlPath.LIKES)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .put(RequestBody.create("", null))
+                .build());
+    }
+
+    /**
+     *  DELETE `/users/user_id/recipes/recipe_id/likes` endpoint.
+     *
+     * @param accessToken
+     * @param recipeId
+     * @return
+     */
+    public static FutureWebResponse deleteRecipeLikes(@NonNull String accessToken,
+                                                      int recipeId) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.RECIPES)
+                        .addPathSegment(String.valueOf(recipeId))
+                        .addPathSegment(UrlPath.LIKES)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .delete(RequestBody.create("", null))
                 .build());
     }
 
