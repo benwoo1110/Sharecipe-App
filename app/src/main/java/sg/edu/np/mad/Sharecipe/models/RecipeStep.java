@@ -14,8 +14,6 @@ public class RecipeStep implements Serializable {
     private String name;
     @Expose
     private String description;
-    @Expose
-    private int timeNeeded;
 
     public RecipeStep() { }
 
@@ -45,14 +43,6 @@ public class RecipeStep implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public int getTimeNeeded() {
-        return timeNeeded;
-    }
-
-    public void setTimeNeeded(int timeNeeded) {
-        this.timeNeeded = timeNeeded;
     }
 
     @Override

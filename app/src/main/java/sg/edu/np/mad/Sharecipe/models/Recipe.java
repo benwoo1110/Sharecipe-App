@@ -4,24 +4,20 @@ import android.graphics.Bitmap;
 
 import com.google.gson.annotations.Expose;
 
+import org.threeten.bp.Duration;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Recipe implements Serializable {
+public class Recipe extends PartialRecipe implements Serializable {
 
-    @Expose
-    private int userId;
-    @Expose
-    private int recipeId;
-    @Expose
-    private String name;
     @Expose
     private int portion;
     @Expose
     private int difficulty;
     @Expose
-    private int totalTimeNeeded;
+    private Duration totalTimeNeeded;
     @Expose(serialize = false)
     private Date timeCreated;
     @Expose
@@ -31,25 +27,7 @@ public class Recipe implements Serializable {
     @Expose
     private List<RecipeImage> images;
 
-    private transient Bitmap icon;
-
     public Recipe() { }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public int getRecipeId() {
-        return recipeId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public int getPortion() {
         return portion;
@@ -67,11 +45,11 @@ public class Recipe implements Serializable {
         this.difficulty = difficulty;
     }
 
-    public int getTotalTimeNeeded() {
-        return totalTimeNeeded;
+    public Duration getTotalTimeNeeded() {
+        return totalTimeNeeded == null ? Duration.ZERO : totalTimeNeeded;
     }
 
-    public void setTotalTimeNeeded(int totalTimeNeeded) {
+    public void setTotalTimeNeeded(Duration totalTimeNeeded) {
         this.totalTimeNeeded = totalTimeNeeded;
     }
 
@@ -101,14 +79,6 @@ public class Recipe implements Serializable {
 
     public void setImages(List<RecipeImage> images) {
         this.images = images;
-    }
-
-    public Bitmap getIcon() {
-        return icon;
-    }
-
-    public void setIcon(Bitmap icon) {
-        this.icon = icon;
     }
 
     @Override

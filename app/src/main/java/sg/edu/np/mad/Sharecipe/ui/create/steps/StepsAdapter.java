@@ -10,43 +10,39 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 
 public class StepsAdapter extends RecyclerView.Adapter<StepsViewHolder> {
-    ArrayList<RecipeStep> data;
-    Activity activity;
-    public static int EDIT_STEP = 2;
+
+    private final ArrayList<RecipeStep> data;
+    private final Activity activity;
 
     public StepsAdapter(ArrayList<RecipeStep> input, Activity activity) {
         this.data = input;
         this.activity = activity;
     }
 
+    @NotNull
     public StepsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_steps, parent, false);
         StepsViewHolder holder = new StepsViewHolder(item);
 
-        holder.stepDescription.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(activity, StepsCreationActivity.class);
-                intent.putExtra("New step", holder.step);
-                intent.putExtra("Edit description", holder.step.getDescription());
-                intent.putExtra("Step number", holder.step.getStepNumber());
-                intent.putExtra("Edit time", holder.step.getTimeNeeded());
-                activity.startActivity(intent);
-            }
+        holder.stepDescription.setOnClickListener(v -> {
+            Intent intent = new Intent(activity, StepsCreationActivity.class);
+            intent.putExtra("New step", holder.step);
+            intent.putExtra("Edit description", holder.step.getDescription());
+            intent.putExtra("Step number", holder.step.getStepNumber());
+            activity.startActivity(intent);
         });
 
-        holder.stepDescription.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                removeDialog(holder.step);
-                return false;
-            }
+        holder.stepDescription.setOnLongClickListener(v -> {
+            removeDialog(holder.step);
+            return false;
         });
 
         return holder;
@@ -57,82 +53,24 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewHolder> {
         holder.stepNumber.setText(String.valueOf(step.getStepNumber()));
         holder.stepDescription.setText(step.getDescription());
         holder.step = data.get(position);
-
-        if (step.getTimeNeeded() == 0) {
-            holder.timeNeeded.setText("");
-        }
-
-        else if (step.getTimeNeeded() <= 59) {
-            holder.timeNeeded.setText(step.getTimeNeeded() + " seconds");
-        }
-
-        else if (step.getTimeNeeded() <= 3599) {
-            int minutes = (step.getTimeNeeded() - step.getTimeNeeded() % 60) / 60;
-            int seconds = step.getTimeNeeded() - (minutes * 60);
-
-            if (seconds == 0) {
-                holder.timeNeeded.setText(minutes + " minutes ");
-            }
-
-            else {
-                holder.timeNeeded.setText(minutes + " minutes " + seconds + " seconds");
-            }
-
-        }
-
-        else {
-            int hours = (step.getTimeNeeded() - step.getTimeNeeded() % 3600) / 3600;
-            int x = (step.getTimeNeeded() / 60) - (hours * 60) ;
-            int minutes = x - (((x * 60) % 60) / 60);
-            int seconds = (step.getTimeNeeded() - (hours * 3600) - (minutes * 60));
-
-            if (minutes == 0) {
-                if (seconds == 0) {
-                    holder.timeNeeded.setText(hours + " hours");
-                }
-                else {
-                    holder.timeNeeded.setText(hours + " hours " + seconds + " seconds ");
-                }
-            }
-
-            else if (seconds == 0) {
-                holder.timeNeeded.setText(hours + " hours " + minutes + " minutes");
-            }
-
-            else {
-                holder.timeNeeded.setText(hours + " hours " + minutes + " minutes " + seconds + " seconds") ;
-            }
-
-        }
     }
 
     public int getItemCount() {
         return data.size();
     }
 
-    public void removeDialog(RecipeStep step) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setTitle("Remove step");
-        builder.setMessage("Would you like to remove this step?");
-        builder.setPositiveButton("Remove", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                data.remove(step);
-                notifyDataSetChanged();
-                for (RecipeStep step : data
-                     ) {
-                    step.setStepNumber(data.indexOf(step) + 1);
-                }
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
+    public void removeDialog(RecipeStep stepToRemove) {
+        new AlertDialog.Builder(activity)
+                .setTitle("Remove step")
+                .setMessage("Would you like to remove this step?")
+                .setPositiveButton("Remove", (dialog, which) -> {
+                    data.remove(stepToRemove);
+                    notifyDataSetChanged();
+                    for (RecipeStep step : data) {
+                        step.setStepNumber(data.indexOf(step) + 1);
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
-
 }

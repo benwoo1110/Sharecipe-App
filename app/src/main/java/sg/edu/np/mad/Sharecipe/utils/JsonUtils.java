@@ -9,6 +9,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
+import org.threeten.bp.Duration;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -27,6 +29,7 @@ public class JsonUtils {
             .excludeFieldsWithoutExposeAnnotation()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
+            .registerTypeAdapter(Duration.class, new DurationParser())
             .create();
 
     /**

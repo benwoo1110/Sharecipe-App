@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,6 +18,7 @@ import com.google.android.material.tabs.TabLayout;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
+import sg.edu.np.mad.Sharecipe.ui.common.OnTabSelectedListener;
 import sg.edu.np.mad.Sharecipe.ui.main.recipe.MyRecipeFragment;
 
 // TODO: Finish up bottom menu bar including their actions, add a cross out bar on top to close recipe creation (ask if want to save as draft)
@@ -51,20 +53,7 @@ public class RecipeCreateActivity extends AppCompatActivity {
             }
         });
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
+        tabLayout.addOnTabSelectedListener((OnTabSelectedListener) tab -> viewPager.setCurrentItem(tab.getPosition()));
 
         bottomNavigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
@@ -81,12 +70,12 @@ public class RecipeCreateActivity extends AppCompatActivity {
             } else if (itemId == R.id.recipe_done_menu) {
                 Toast.makeText(RecipeCreateActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
                 App.getRecipeManager().create(recipe).onSuccess(createdRecipe -> {
-                    App.getRecipeManager().addImages(createdRecipe, adapter.getImageFileList()).onSuccess(aVoid -> {
+                    App.getRecipeManager().addImages(createdRecipe, adapter.getImageFileList()).thenAccept(result -> {
                         RecipeCreateActivity.this.runOnUiThread(() -> {
                             Toast.makeText(RecipeCreateActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
                             Intent resultData = new Intent();
                             resultData.putExtra("recipe", createdRecipe);
-                            setResult(MyRecipeFragment.LAUNCH_RECIPE_CREATION, resultData);
+                            setResult(Activity.RESULT_OK, resultData);
                             finish();
                         });
                     });

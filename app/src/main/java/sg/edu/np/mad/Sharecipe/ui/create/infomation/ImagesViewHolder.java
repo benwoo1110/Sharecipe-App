@@ -11,7 +11,6 @@ import sg.edu.np.mad.Sharecipe.R;
 public class ImagesViewHolder extends RecyclerView.ViewHolder {
 
     final ImageView image;
-
     Uri imgUri;
 
     public ImagesViewHolder(View itemView){
