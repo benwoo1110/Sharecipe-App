@@ -61,7 +61,7 @@ public class RecipeManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             JsonElement recipeData = JsonUtils.convertToJson(newRecipe);
-            SharecipeRequests.putRecipe(account.getAccessToken(), account.getUserId(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
+            SharecipeRequests.putRecipe(account.getAccessToken(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
                 //TODO: Add to cache
                 future.complete(new DataResult.Success<>(recipe));
             }).onFailed(future).onError(future);
@@ -81,7 +81,7 @@ public class RecipeManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             JsonElement recipeData = JsonUtils.convertToJson(modifiedRecipe);
-            SharecipeRequests.putRecipe(account.getAccessToken(), account.getUserId(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
+            SharecipeRequests.putRecipe(account.getAccessToken(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
                 future.complete(new DataResult.Success<>(recipe));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
@@ -92,17 +92,15 @@ public class RecipeManager {
     /**
      * Gets a recipe data.
      *
-     * @param userId    Author of the recipe
      * @param recipeId  Target recipe to get info on.
      * @return Future result of the recipe data.
      */
-    public FutureDataResult<Recipe> get(int userId,
-                                        int recipeId) {
+    public FutureDataResult<Recipe> get(int recipeId) {
 
         FutureDataResult<Recipe> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.getRecipe(account.getAccessToken(), userId, recipeId).onSuccessModel(future, Recipe.class, (response, recipe) -> {
+            SharecipeRequests.getRecipe(account.getAccessToken(), recipeId).onSuccessModel(future, Recipe.class, (response, recipe) -> {
                 future.complete(new DataResult.Success<>(recipe));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
@@ -113,7 +111,7 @@ public class RecipeManager {
     public FutureDataResult<Bitmap> getIcon(Recipe recipe) {
         FutureDataResult<Bitmap> future = new FutureDataResult<>();
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.getRecipeIcon(account.getAccessToken(), recipe.getUserId(), recipe.getRecipeId()).onSuccess(response -> {
+            SharecipeRequests.getRecipeIcon(account.getAccessToken(), recipe.getRecipeId()).onSuccess(response -> {
                 ResponseBody body = response.body();
                 if (body == null) {
                     future.complete(new DataResult.Failed<>("No icon image data."));
@@ -139,7 +137,7 @@ public class RecipeManager {
         FutureDataResult<Void> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.putRecipeImages(account.getAccessToken(), recipe.getUserId(), recipe.getRecipeId(), imageFiles).onSuccess(response -> {
+            SharecipeRequests.putRecipeImages(account.getAccessToken(), recipe.getRecipeId(), imageFiles).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
@@ -151,7 +149,7 @@ public class RecipeManager {
         FutureDataResult<List<Bitmap>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.getRecipeImages(account.getAccessToken(), recipe.getUserId(), recipe.getRecipeId()).onSuccess(response -> {
+            SharecipeRequests.getRecipeImages(account.getAccessToken(), recipe.getRecipeId()).onSuccess(response -> {
                 ResponseBody body = response.body();
                 if (body == null) {
                     future.complete(new DataResult.Failed<>("No images data."));

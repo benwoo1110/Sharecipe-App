@@ -341,8 +341,8 @@ public class SharecipeRequests {
      */
     @NotNull
     public static FutureWebResponse deleteUserFollows(@NonNull String accessToken,
-                                                   int userId,
-                                                   int followId) {
+                                                      int userId,
+                                                      int followId) {
 
         String payload;
         try {

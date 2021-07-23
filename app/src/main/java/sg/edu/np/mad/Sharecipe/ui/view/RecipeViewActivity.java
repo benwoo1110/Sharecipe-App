@@ -41,7 +41,7 @@ public class RecipeViewActivity extends AppCompatActivity {
 
         tabLayout.addOnTabSelectedListener((OnTabSelectedListener) tab -> viewpager.setCurrentItem(tab.getPosition()));
 
-        App.getRecipeManager().get(selectedRecipe.getUserId(), selectedRecipe.getRecipeId()).onSuccess(recipe -> {
+        App.getRecipeManager().get(selectedRecipe.getRecipeId()).onSuccess(recipe -> {
             RecipeViewActivity.this.runOnUiThread(() -> {
                 RecipeViewAdapter adapter = new RecipeViewAdapter(this, tabLayout.getTabCount(), recipe);
                 viewpager.setAdapter(adapter);
