@@ -26,7 +26,7 @@ public class IngredientsViewHolder extends RecyclerView.ViewHolder {
         name = itemView.findViewById(R.id.inputIngredientName);
         quantity = itemView.findViewById(R.id.inputIngredientQuantity);
         unit = itemView.findViewById(R.id.inputIngredientUnit);
-        number = itemView.findViewById(R.id.displayNumberIngredient);
+        number = itemView.findViewById(R.id.createdIngredientNumber);
 
         name.addTextChangedListener(new TextWatcher() {
             @Override

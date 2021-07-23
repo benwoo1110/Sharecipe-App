@@ -8,11 +8,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
 
 public class ViewIngredientsAdapter extends RecyclerView.Adapter<ViewIngredientsViewholder> {
+    List<RecipeIngredient> ingredients;
 
-    public ViewIngredientsAdapter() {}
+    public ViewIngredientsAdapter(List<RecipeIngredient> ingredients) {
+        this.ingredients = ingredients;
+    }
 
     @Override
     @NotNull
@@ -25,13 +32,16 @@ public class ViewIngredientsAdapter extends RecyclerView.Adapter<ViewIngredients
 
     @Override
     public void onBindViewHolder(@NotNull ViewIngredientsViewholder holder, int position) {
-        // TODO: Bind stuff here
+        RecipeIngredient ingredient = ingredients.get(position);
+        holder.number.setText(String.valueOf(ingredients.indexOf(ingredient) + 1));
+        holder.name.setText(ingredient.getName());
+        holder.quantity.setText(String.valueOf(ingredient.getQuantity()));
+        holder.unit.setText(ingredient.getUnit());
+
     }
 
     @Override
     public int getItemCount() {
-        // TODO: Stuff
-        int x = 1;
-        return x;
+        return ingredients.size();
     }
 }
