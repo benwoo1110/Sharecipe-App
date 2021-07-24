@@ -33,6 +33,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
         PartialRecipe recipe = recipeList.get(position);
+        holder.recipe = recipe;
         holder.title.setText(recipe.getName());
         holder.info.setText(String.valueOf(recipe.getRecipeId()));
 
@@ -44,8 +45,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
         } else {
             holder.icon.setImageResource(R.drawable.ic_baseline_fastfood_24);
         }
-
-        holder.recipe = recipe;
     }
 
     @Override

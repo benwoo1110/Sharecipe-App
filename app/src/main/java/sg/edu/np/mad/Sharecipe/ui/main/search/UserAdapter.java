@@ -1,5 +1,7 @@
 package sg.edu.np.mad.Sharecipe.ui.main.search;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.User;
+import sg.edu.np.mad.Sharecipe.ui.App;
 
 public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
 
@@ -38,8 +41,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
         holder.userId = user.getUserId();
         holder.name.setText(user.getUsername());
         holder.bio.setText(user.getBio());
-        if (user.getProfileImage() != null) {
-            holder.profileImage.setImageBitmap(user.getProfileImage());
+        if (user.getProfileImageId() != null) {
+            App.getUserManager().getProfileImage(user).onSuccess(bitmap -> {
+                new Handler(Looper.getMainLooper()).post(() -> holder.profileImage.setImageBitmap(bitmap));
+            });
         } else {
             holder.profileImage.setImageResource(R.drawable.ic_baseline_person_24);
         }

@@ -19,9 +19,6 @@ public class User {
     @Expose(serialize = false)
     private String profileImageId;
 
-    @Deprecated
-    private transient Bitmap profileImage;
-
     private User() { }
 
     public int getUserId() {
@@ -52,15 +49,6 @@ public class User {
         return profileImageId;
     }
 
-    public Bitmap getProfileImage() {
-        return profileImage;
-    }
-
-    @Deprecated
-    public void setProfileImage(Bitmap profileImage) {
-        this.profileImage = profileImage;
-    }
-
     @Override
     public String toString() {
         return "User{" +
@@ -68,6 +56,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", bio='" + bio + '\'' +
                 ", timeCreated=" + timeCreated +
+                ", profileImageId='" + profileImageId + '\'' +
                 '}';
     }
 }
