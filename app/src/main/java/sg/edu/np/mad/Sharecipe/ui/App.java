@@ -5,6 +5,7 @@ import android.app.Application;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
+import sg.edu.np.mad.Sharecipe.data.BitmapCacheManager;
 import sg.edu.np.mad.Sharecipe.data.RecipeManager;
 import sg.edu.np.mad.Sharecipe.data.SearchManager;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
@@ -15,6 +16,7 @@ public class App extends Application {
     private static RecipeManager recipeManager;
     private static SearchManager searchManager;
     private static UserManager userManager;
+    private static BitmapCacheManager bitmapCacheManager;
 
     public static AccountManager getAccountManager() {
         return accountManager;
@@ -32,6 +34,10 @@ public class App extends Application {
         return userManager;
     }
 
+    public static BitmapCacheManager getBitmapCacheManager() {
+        return bitmapCacheManager;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -42,5 +48,6 @@ public class App extends Application {
         recipeManager = RecipeManager.getInstance(App.this);
         searchManager = SearchManager.getInstance(App.this);
         userManager = UserManager.getInstance(App.this);
+        bitmapCacheManager = BitmapCacheManager.getInstance();
     }
 }

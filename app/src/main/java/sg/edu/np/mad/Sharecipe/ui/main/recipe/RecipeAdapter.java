@@ -11,7 +11,6 @@ import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
-import sg.edu.np.mad.Sharecipe.models.Recipe;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
 
@@ -33,8 +32,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
         PartialRecipe recipe = recipeList.get(position);
         holder.title.setText(recipe.getName());
         holder.info.setText(String.valueOf(recipe.getRecipeId()));
-        if (recipe.getIcon() != null) {
-            holder.icon.setImageBitmap(recipe.getIcon());
+        if (recipe.getIconEE() != null) {
+            holder.icon.setImageBitmap(recipe.getIconEE());
         } else {
             holder.icon.setImageResource(R.drawable.ic_baseline_fastfood_24);
         }

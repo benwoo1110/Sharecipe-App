@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
 
+import com.google.common.base.Strings;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonElement;
@@ -20,6 +21,7 @@ import java.util.zip.ZipInputStream;
 import okhttp3.ResponseBody;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.models.RecipeImage;
 import sg.edu.np.mad.Sharecipe.models.RecipeLike;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
@@ -38,18 +40,20 @@ public class RecipeManager {
      */
     public static RecipeManager getInstance(Context context) {
         if (instance == null) {
-            instance = new RecipeManager(AccountManager.getInstance(context.getApplicationContext()));
+            instance = new RecipeManager(AccountManager.getInstance(context.getApplicationContext()), BitmapCacheManager.getInstance());
         }
         return instance;
     }
 
     private final AccountManager accountManager;
+    private final BitmapCacheManager bitmapCacheManager;
     private final Cache<Integer, Recipe> recipeCache = CacheBuilder.newBuilder()
             .expireAfterAccess(10, TimeUnit.MINUTES)
             .build();
 
-    public RecipeManager(AccountManager accountManager) {
+    public RecipeManager(AccountManager accountManager, BitmapCacheManager bitmapCacheManager) {
         this.accountManager = accountManager;
+        this.bitmapCacheManager = bitmapCacheManager;
     }
 
     /**
@@ -140,7 +144,18 @@ public class RecipeManager {
      * @return
      */
     public FutureDataResult<Bitmap> getIcon(PartialRecipe recipe) {
+        RecipeImage icon = recipe.getIcon();
+        if (icon == null || Strings.isNullOrEmpty(icon.getFileId())) {
+            return FutureDataResult.completed(new DataResult.Failed<>("Recipe does not have icon image."));
+        }
+
+        Bitmap cacheImage = bitmapCacheManager.getBitmapFromMemCache(icon.getFileId());
+        if (cacheImage != null) {
+            return FutureDataResult.completed(cacheImage);
+        }
+
         FutureDataResult<Bitmap> future = new FutureDataResult<>();
+
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getRecipeIcon(account.getAccessToken(), recipe.getRecipeId()).onSuccess(response -> {
                 ResponseBody body = response.body();

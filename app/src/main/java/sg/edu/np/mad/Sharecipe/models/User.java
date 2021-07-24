@@ -16,7 +16,10 @@ public class User {
     private String bio;
     @Expose(serialize = false)
     private Date timeCreated;
+    @Expose(serialize = false)
+    private String profileImageId;
 
+    @Deprecated
     private transient Bitmap profileImage;
 
     private User() { }
@@ -45,10 +48,15 @@ public class User {
         return timeCreated;
     }
 
+    public String getProfileImageId() {
+        return profileImageId;
+    }
+
     public Bitmap getProfileImage() {
         return profileImage;
     }
 
+    @Deprecated
     public void setProfileImage(Bitmap profileImage) {
         this.profileImage = profileImage;
     }

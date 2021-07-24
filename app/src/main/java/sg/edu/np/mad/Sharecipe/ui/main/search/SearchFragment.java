@@ -26,7 +26,6 @@ import java.util.List;
 import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
-import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.SectionAdapter;
@@ -97,11 +96,11 @@ public class SearchFragment extends Fragment {
                         for (PartialRecipe recipe : recipes) {
                             completableFutures[i++] = App.getRecipeManager()
                                     .getIcon(recipe)
-                                    .onSuccess(recipe::setIcon);
+                                    .onSuccess(recipe::setIconEE);
                         }
                         for (User user : users) {
                             completableFutures[i++] = App.getUserManager()
-                                    .getProfileImage(user.getUserId())
+                                    .getProfileImage(user)
                                     .onSuccess(user::setProfileImage);
                         }
 

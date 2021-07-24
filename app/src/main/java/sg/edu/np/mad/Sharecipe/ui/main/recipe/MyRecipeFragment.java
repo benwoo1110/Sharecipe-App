@@ -67,7 +67,7 @@ public class MyRecipeFragment extends Fragment {
                     for (int i = 0, recipesSize = recipes.size(); i < recipesSize; i++) {
                         PartialRecipe recipe = recipes.get(i);
                         completableFutures[i] = App.getRecipeManager().getIcon(recipe)
-                                .onSuccess(recipe::setIcon)
+                                .onSuccess(recipe::setIconEE)
                                 .onFailed(System.out::println)
                                 .onError(Throwable::printStackTrace);
                     }
@@ -109,7 +109,7 @@ public class MyRecipeFragment extends Fragment {
         Recipe recipe = (Recipe) data.getSerializableExtra("recipe");
         recipeAdapter.addRecipe(recipe);
         App.getRecipeManager().getIcon(recipe)
-                .onSuccess(recipe::setIcon)
+                .onSuccess(recipe::setIconEE)
                 .thenAccept(result -> getActivity().runOnUiThread(() ->  recipeAdapter.notifyItemChanged(recipeAdapter.getRecipeList().size())));
     }
 }
