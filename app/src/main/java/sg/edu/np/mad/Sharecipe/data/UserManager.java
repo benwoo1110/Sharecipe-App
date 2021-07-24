@@ -141,6 +141,7 @@ public class UserManager {
                     return;
                 }
                 Bitmap bitmap = BitmapFactory.decodeByteArray(rawImageData,0, rawImageData.length);
+                bitmapCacheManager.addBitmapToMemoryCache(user.getProfileImageId(), bitmap);
                 future.complete(new DataResult.Success<>(bitmap));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);

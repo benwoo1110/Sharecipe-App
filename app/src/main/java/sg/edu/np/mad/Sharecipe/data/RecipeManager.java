@@ -168,6 +168,7 @@ public class RecipeManager {
                     future.complete(new DataResult.Failed<>("Failed to load data into image."));
                     return;
                 }
+                bitmapCacheManager.addBitmapToMemoryCache(icon.getFileId(), bitmap);
                 future.complete(new DataResult.Success<>(bitmap));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
