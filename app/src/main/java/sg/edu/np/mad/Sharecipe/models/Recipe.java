@@ -17,6 +17,8 @@ public class Recipe extends PartialRecipe {
     private Duration totalTimeNeeded;
     @Expose
     private String description;
+    @Expose
+    private boolean isPublic;
     @Expose(serialize = false)
     private Date timeCreated;
     @Expose
@@ -58,6 +60,14 @@ public class Recipe extends PartialRecipe {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean isPublic) {
+        this.isPublic = isPublic;
     }
 
     public Date getTimeCreated() {
