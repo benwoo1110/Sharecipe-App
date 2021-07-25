@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
+import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
 public class IngredientsViewHolder extends RecyclerView.ViewHolder {
     EditText name;
@@ -54,13 +55,8 @@ public class IngredientsViewHolder extends RecyclerView.ViewHolder {
 
             @Override
             public void afterTextChanged(Editable s) {
-                int num = 1;
-                try {
-                    num = Integer.parseInt(s.toString());
-                }
-                catch (NumberFormatException ignored) {
-                }
-                ingredientList.get(getAdapterPosition()).setQuantity(num);
+                int quantityNum = FormatUtils.convertToInt(s.toString()).orElse(1);
+                ingredientList.get(getAdapterPosition()).setQuantity(quantityNum);
             }
         });
 

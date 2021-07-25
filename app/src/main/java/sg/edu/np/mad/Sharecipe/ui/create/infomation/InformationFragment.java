@@ -89,7 +89,10 @@ public class InformationFragment extends Fragment {
 
         name.addTextChangedListener((AfterTextChangedWatcher) s -> recipe.setName(s.toString()));
 
-        portions.addTextChangedListener((AfterTextChangedWatcher) s -> recipe.setPortion(Integer.parseInt(s.toString())));
+        portions.addTextChangedListener((AfterTextChangedWatcher) s -> {
+            int portionsNumber = FormatUtils.convertToInt(s.toString()).orElse(0);
+            recipe.setPortion(portionsNumber);
+        });
 
         difficulty.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
             int recipeDifficulty = difficulty.getNumStars();
