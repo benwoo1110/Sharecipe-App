@@ -26,7 +26,6 @@ import java.util.List;
 import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
-import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.SectionAdapter;
@@ -90,34 +89,17 @@ public class SearchFragment extends Fragment {
 
             App.getSearchManager().search(searchText.getText().toString())
                     .onSuccess(searchResult -> {
-                        List<PartialRecipe> recipes = searchResult.getRecipes();
-                        List<User> users = searchResult.getUsers();
-                        CompletableFuture<?>[] completableFutures = new CompletableFuture[recipes.size() + users.size()];
-                        int i = 0;
-                        for (PartialRecipe recipe : recipes) {
-                            completableFutures[i++] = App.getRecipeManager()
-                                    .getIcon(recipe)
-                                    .onSuccess(recipe::setIcon);
-                        }
-                        for (User user : users) {
-                            completableFutures[i++] = App.getUserManager()
-                                    .getProfileImage(user.getUserId())
-                                    .onSuccess(user::setProfileImage);
-                        }
-
-                        CompletableFuture.allOf(completableFutures).thenAccept(aVoid -> {
-                            recipeSection.setRecipeList(searchResult.getRecipes());
-                            userSection.setUserList(searchResult.getUsers());
-                            getActivity().runOnUiThread(() -> {
-                                layoutManager.scrollToPosition(0);
-                                searchResultRecyclerView.setVisibility(View.VISIBLE);
-                                searchSectionAdapter.notifyDataSetChanged();
-                                searchResultRecyclerView.scheduleLayoutAnimation();
-                                shimmerFrameLayout.stopShimmer();
-                                shimmerFrameLayout.setVisibility(View.GONE);
-                            });
-                            hasDoneSearch = true;
+                        recipeSection.setRecipeList(searchResult.getRecipes());
+                        userSection.setUserList(searchResult.getUsers());
+                        getActivity().runOnUiThread(() -> {
+                            layoutManager.scrollToPosition(0);
+                            searchResultRecyclerView.setVisibility(View.VISIBLE);
+                            searchSectionAdapter.notifyDataSetChanged();
+                            searchResultRecyclerView.scheduleLayoutAnimation();
+                            shimmerFrameLayout.stopShimmer();
+                            shimmerFrameLayout.setVisibility(View.GONE);
                         });
+                        hasDoneSearch = true;
                     })
                     .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
                     .onError(Throwable::printStackTrace);

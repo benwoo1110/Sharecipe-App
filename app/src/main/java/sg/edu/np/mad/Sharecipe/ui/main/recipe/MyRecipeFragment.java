@@ -61,28 +61,17 @@ public class MyRecipeFragment extends Fragment {
         recipeRecyclerView.setAdapter(recipeAdapter);
         recipeRecyclerView.setLayoutManager(layoutManager);
 
-        App.getRecipeManager().getAccountRecipes()
-                .onSuccess(recipes -> {
-                    CompletableFuture<?>[] completableFutures = new CompletableFuture[recipes.size()];
-                    for (int i = 0, recipesSize = recipes.size(); i < recipesSize; i++) {
-                        PartialRecipe recipe = recipes.get(i);
-                        completableFutures[i] = App.getRecipeManager().getIcon(recipe)
-                                .onSuccess(recipe::setIcon)
-                                .onFailed(System.out::println)
-                                .onError(Throwable::printStackTrace);
-                    }
-                    CompletableFuture.allOf(completableFutures).thenAccept(aVoid -> {
-                        getActivity().runOnUiThread(() -> {
-                            System.out.println(recipes);
-                            recipeAdapter.setRecipeList(recipes);
-                            recipeRecyclerView.scheduleLayoutAnimation();
-                            shimmerFrameLayout.stopShimmer();
-                            shimmerFrameLayout.setVisibility(View.GONE);
-                        });
-                    });
-                })
-                .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
-                .onError(Throwable::printStackTrace);
+        App.getRecipeManager().getAccountRecipes().onSuccess(recipes -> {
+            getActivity().runOnUiThread(() -> {
+                System.out.println(recipes);
+                recipeAdapter.setRecipeList(recipes);
+                recipeRecyclerView.scheduleLayoutAnimation();
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setVisibility(View.GONE);
+            });
+        })
+        .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
+        .onError(Throwable::printStackTrace);
 
         addRecipe.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), RecipeCreateActivity.class);
@@ -109,7 +98,7 @@ public class MyRecipeFragment extends Fragment {
         Recipe recipe = (Recipe) data.getSerializableExtra("recipe");
         recipeAdapter.addRecipe(recipe);
         App.getRecipeManager().getIcon(recipe)
-                .onSuccess(recipe::setIcon)
+                .onSuccess(recipe::setIconEE)
                 .thenAccept(result -> getActivity().runOnUiThread(() ->  recipeAdapter.notifyItemChanged(recipeAdapter.getRecipeList().size())));
     }
 }

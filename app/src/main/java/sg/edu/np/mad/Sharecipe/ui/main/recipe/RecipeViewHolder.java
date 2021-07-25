@@ -20,19 +20,16 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder {
     final TextView title;
     final TextView info;
     final ImageView icon;
-    final List<PartialRecipe> recipe;
+    PartialRecipe recipe;
 
-    public RecipeViewHolder(@NonNull View itemView, List<PartialRecipe> recipe) {
+    public RecipeViewHolder(@NonNull View itemView) {
         super(itemView);
-        this.recipe = recipe;
         title = itemView.findViewById(R.id.recipeTitle);
         info = itemView.findViewById(R.id.recipeSecondaryInfo);
         icon = itemView.findViewById(R.id.recipeIconImage);
         itemView.setOnClickListener(v -> {
             Intent viewRecipe = new Intent(itemView.getContext(), RecipeViewActivity.class);
-            PartialRecipe selectedRecipe = recipe.get(getAdapterPosition());
-            viewRecipe.putExtra("Recipe", selectedRecipe);
-
+            viewRecipe.putExtra("Recipe", recipe);
             itemView.getContext().startActivity(viewRecipe);
         });
     }

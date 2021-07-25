@@ -1,5 +1,6 @@
 package sg.edu.np.mad.Sharecipe.ui.create.infomation;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -38,6 +39,7 @@ import java.util.Locale;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
+import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
 // TODO: Set limit for images, remove plus button when limit is reached
 // TODO: Saving and storing of values for all input fields along with input validation (required fields)
@@ -58,6 +60,7 @@ public class InformationFragment extends Fragment {
         this.imageFileList = imageFileList;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_information, container, false);
@@ -78,18 +81,21 @@ public class InformationFragment extends Fragment {
         images.setAdapter(adapter);
         images.setLayoutManager(cLayoutManager);
 
-        prep.setText("00:00");
+        prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
 
         prep.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                addDurationDialog(prep.getText().toString());
+                addDurationDialog();
             }
             return false;
         });
 
         name.addTextChangedListener((AfterTextChangedWatcher) s -> recipe.setName(s.toString()));
 
-        portions.addTextChangedListener((AfterTextChangedWatcher) s -> recipe.setPortion(Integer.parseInt(s.toString())));
+        portions.addTextChangedListener((AfterTextChangedWatcher) s -> {
+            int portionsNumber = FormatUtils.convertToInt(s.toString()).orElse(0);
+            recipe.setPortion(portionsNumber);
+        });
 
         description.addTextChangedListener((AfterTextChangedWatcher) s -> recipe.setDescription(s.toString()));
 
@@ -101,7 +107,7 @@ public class InformationFragment extends Fragment {
         return view;
     }
 
-    public void addDurationDialog(String currentDuration) {
+    public void addDurationDialog() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.duration_picker, null);
         NumberPicker inputHours = view.findViewById(R.id.inputHours);
         NumberPicker inputMinutes = view.findViewById(R.id.inputMinutes);
@@ -121,11 +127,9 @@ public class InformationFragment extends Fragment {
                 .setTitle("Preparation time")
                 .setPositiveButton("Confirm", (dialog, which) -> {
                     // On confirm the total time in seconds is added and this is set to recipe total time needed, then the hour and
-                    Duration totalTimeNeeded = Duration.ofHours(inputHours.getValue()).plusMinutes(inputMinutes.getValue());
-                    recipe.setTotalTimeNeeded(totalTimeNeeded);
-                    prep.setText(String.format(Locale.ENGLISH, "%02d:%02d",
-                            totalTimeNeeded.toHours(),
-                            totalTimeNeeded.toMinutesPart()));
+                    Duration newTotalTimeNeeded = Duration.ofHours(inputHours.getValue()).plusMinutes(inputMinutes.getValue());
+                    recipe.setTotalTimeNeeded(newTotalTimeNeeded);
+                    prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
                 })
                 .setNegativeButton("Cancel", null)
                 .show();

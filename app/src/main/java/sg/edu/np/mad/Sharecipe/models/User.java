@@ -16,8 +16,8 @@ public class User {
     private String bio;
     @Expose(serialize = false)
     private Date timeCreated;
-
-    private transient Bitmap profileImage;
+    @Expose(serialize = false)
+    private String profileImageId;
 
     private User() { }
 
@@ -45,12 +45,8 @@ public class User {
         return timeCreated;
     }
 
-    public Bitmap getProfileImage() {
-        return profileImage;
-    }
-
-    public void setProfileImage(Bitmap profileImage) {
-        this.profileImage = profileImage;
+    public String getProfileImageId() {
+        return profileImageId;
     }
 
     @Override
@@ -60,6 +56,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", bio='" + bio + '\'' +
                 ", timeCreated=" + timeCreated +
+                ", profileImageId='" + profileImageId + '\'' +
                 '}';
     }
 }
