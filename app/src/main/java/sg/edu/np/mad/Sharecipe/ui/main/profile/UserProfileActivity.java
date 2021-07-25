@@ -41,6 +41,9 @@ public class UserProfileActivity extends AppCompatActivity {
             runOnUiThread(() -> {
                 username.setText(user.getUsername());
                 description.setText(user.getBio());
+                userManager.getFollows(user).onSuccess(userFollows -> {
+                    followers.setText(userFollows.size());
+                });
             });
         });
 

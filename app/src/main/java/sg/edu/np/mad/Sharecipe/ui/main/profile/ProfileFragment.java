@@ -54,8 +54,12 @@ public class ProfileFragment extends Fragment {
             getActivity().runOnUiThread(() -> {
                 username.setText(user.getUsername());
                 description.setText(user.getBio());
+                userManager.getFollows(user).onSuccess(userFollows -> {
+                    followers.setText(userFollows.size());
+                });
             });
         });
+
 
         userManager.getProfileImage(App.getAccountManager().getAccount().getUserId())
                 .onSuccess(image -> getActivity().runOnUiThread(() -> profileImage.setImageBitmap(image)))

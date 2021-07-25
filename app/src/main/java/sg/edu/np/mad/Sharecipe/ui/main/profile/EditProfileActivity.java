@@ -22,6 +22,7 @@ import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
+import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 
 public class EditProfileActivity extends DynamicFocusAppCompatActivity {
@@ -103,7 +104,9 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
                     .setNegativeButton("Cancel",null)
                     .setPositiveButton("Delete", (dialog, which) -> {
                         Toast.makeText(EditProfileActivity.this, "Account deleted", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(EditProfileActivity.this, LoginActivity.class);
                         AccountManager.getInstance(this).delete();
+                        startActivity(intent);
                     })
                     .show();
         });
