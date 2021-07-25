@@ -21,9 +21,30 @@ public class FormatUtils {
      * @return The integer or null, safely wrapper in {@link Optional} container.
      */
     @NotNull
-    public static Optional<Integer> convertToInt(String value) {
+    public static Optional<Integer> convertToInt(@Nullable String value) {
+        if (value == null) {
+            return Optional.empty();
+        }
         try {
             return Optional.ofNullable(Integer.parseInt(value));
+        } catch (NumberFormatException e) {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Safely convert string to double.
+     *
+     * @param value Target string to convert.
+     * @return The integer or null, safely wrapper in {@link Optional} container.
+     */
+    @NotNull
+    public static Optional<Double> convertToDouble(@Nullable String value) {
+        if (value == null) {
+            return Optional.empty();
+        }
+        try {
+            return Optional.ofNullable(Double.parseDouble(value));
         } catch (NumberFormatException e) {
             return Optional.empty();
         }
