@@ -40,7 +40,7 @@ public class ViewInformationFragment extends Fragment {
         TextView displayPortion = view.findViewById(R.id.viewPortion);
         TextView displayPrep = view.findViewById(R.id.viewPrep);
         TextView displayDifficulty = view.findViewById(R.id.viewDifficulty);
-        TextView displayTotalDiff = view.findViewById(R.id.totalDiff);
+        TextView displayTotalRating = view.findViewById(R.id.totalRate);
         TextView displayDesc = view.findViewById(R.id.displayDescription);
         TextView labelReview = view.findViewById(R.id.labelReview);
         RatingBar inputRating = view.findViewById(R.id.rateRecipe);
