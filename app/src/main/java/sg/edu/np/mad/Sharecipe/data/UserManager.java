@@ -49,6 +49,7 @@ public class UserManager {
     private final BitmapCacheManager bitmapCacheManager;
     private final Cache<Integer, User> userCache = CacheBuilder.newBuilder()
             .expireAfterAccess(10, TimeUnit.MINUTES)
+            .maximumSize(500)
             .build();
 
     public UserManager(AccountManager accountManager, BitmapCacheManager bitmapCacheManager) {

@@ -49,6 +49,7 @@ public class RecipeManager {
     private final BitmapCacheManager bitmapCacheManager;
     private final Cache<Integer, Recipe> recipeCache = CacheBuilder.newBuilder()
             .expireAfterAccess(10, TimeUnit.MINUTES)
+            .maximumSize(500)
             .build();
 
     public RecipeManager(AccountManager accountManager, BitmapCacheManager bitmapCacheManager) {
@@ -68,7 +69,7 @@ public class RecipeManager {
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             JsonElement recipeData = JsonUtils.convertToJson(newRecipe);
             SharecipeRequests.putRecipes(account.getAccessToken(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
-                //TODO: Add to cache
+                recipeCache.put(recipe.getRecipeId(), recipe);
                 future.complete(new DataResult.Success<>(recipe));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
@@ -88,6 +89,7 @@ public class RecipeManager {
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             JsonElement recipeData = JsonUtils.convertToJson(modifiedRecipe);
             SharecipeRequests.patchRecipe(account.getAccessToken(), modifiedRecipe.getRecipeId(), recipeData).onSuccessModel(future, Recipe.class, (response, recipe) -> {
+                recipeCache.put(recipe.getRecipeId(), recipe);
                 future.complete(new DataResult.Success<>(recipe));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
@@ -130,6 +132,7 @@ public class RecipeManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getRecipe(account.getAccessToken(), recipeId).onSuccessModel(future, Recipe.class, (response, recipe) -> {
+                recipeCache.put(recipe.getRecipeId(), recipe);
                 future.complete(new DataResult.Success<>(recipe));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
