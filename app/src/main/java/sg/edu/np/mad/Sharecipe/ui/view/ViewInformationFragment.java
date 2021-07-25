@@ -35,12 +35,13 @@ public class ViewInformationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_information, container, false);
         TextView displayName = view.findViewById(R.id.viewRecipeName);
+        TextView displayAuthor = view.findViewById(R.id.viewAuthor);
         TextView displayPortion = view.findViewById(R.id.viewPortion);
         TextView displayPrep = view.findViewById(R.id.viewPrep);
         TextView displayDifficulty = view.findViewById(R.id.viewDifficulty);
-
         TextView displayTotalDiff = view.findViewById(R.id.totalDiff);
-        TextView displayAuthor = view.findViewById(R.id.viewAuthor);
+        TextView displayDesc = view.findViewById(R.id.displayDescription);
+        TextView labelReview = view.findViewById(R.id.labelReview);
         RatingBar inputRating = view.findViewById(R.id.rateRecipe);
         RecyclerView recyclerView = view.findViewById(R.id.viewImages_recyclerView);
 
@@ -62,6 +63,8 @@ public class ViewInformationFragment extends Fragment {
                 : String.format(Locale.ENGLISH, "%02d hours %02d minutes",
                 recipe.getTotalTimeNeeded().toHours(),
                 recipe.getTotalTimeNeeded().toMinutesPart()));
+
+        displayDesc.setText(recipe.getDescription());
 
         return view;
     }
