@@ -34,10 +34,11 @@ public class ViewInformationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_information, container, false);
-        TextInputEditText displayName = view.findViewById(R.id.viewRecipeName);
-        TextInputEditText displayPortion = view.findViewById(R.id.viewPortion);
-        TextInputEditText displayPrep = view.findViewById(R.id.viewPrep);
-        TextInputEditText displayDifficulty = view.findViewById(R.id.viewDifficulty);
+        TextView displayName = view.findViewById(R.id.viewRecipeName);
+        TextView displayPortion = view.findViewById(R.id.viewPortion);
+        TextView displayPrep = view.findViewById(R.id.viewPrep);
+        TextView displayDifficulty = view.findViewById(R.id.viewDifficulty);
+
         TextView displayTotalDiff = view.findViewById(R.id.totalDiff);
         TextView displayAuthor = view.findViewById(R.id.viewAuthor);
         RatingBar inputRating = view.findViewById(R.id.rateRecipe);

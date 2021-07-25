@@ -66,6 +66,7 @@ public class InformationFragment extends Fragment {
         TextInputEditText name = view.findViewById(R.id.infoName);
         prep = view.findViewById(R.id.infoPrep);
         TextInputEditText portions = view.findViewById(R.id.infoPortions);
+        TextInputEditText description = view.findViewById(R.id.infoDesc);
         SwitchMaterial infoPublic = view.findViewById(R.id.infoPublic);
         RatingBar difficulty = view.findViewById(R.id.infoDifficulty);
         ImageView enlargedImage = view.findViewById(R.id.expanded_image);
@@ -89,6 +90,8 @@ public class InformationFragment extends Fragment {
         name.addTextChangedListener((AfterTextChangedWatcher) s -> recipe.setName(s.toString()));
 
         portions.addTextChangedListener((AfterTextChangedWatcher) s -> recipe.setPortion(Integer.parseInt(s.toString())));
+
+        description.addTextChangedListener((AfterTextChangedWatcher) s -> recipe.setDescription(s.toString()));
 
         difficulty.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
             int recipeDifficulty = difficulty.getNumStars();

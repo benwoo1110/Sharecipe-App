@@ -15,6 +15,8 @@ public class Recipe extends PartialRecipe {
     private int difficulty;
     @Expose
     private Duration totalTimeNeeded;
+    @Expose
+    private String description;
     @Expose(serialize = false)
     private Date timeCreated;
     @Expose
@@ -48,6 +50,14 @@ public class Recipe extends PartialRecipe {
 
     public void setTotalTimeNeeded(Duration totalTimeNeeded) {
         this.totalTimeNeeded = totalTimeNeeded;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Date getTimeCreated() {
