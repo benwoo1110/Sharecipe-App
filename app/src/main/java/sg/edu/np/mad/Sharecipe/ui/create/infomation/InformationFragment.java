@@ -1,5 +1,6 @@
 package sg.edu.np.mad.Sharecipe.ui.create.infomation;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -59,6 +60,7 @@ public class InformationFragment extends Fragment {
         this.imageFileList = imageFileList;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_information, container, false);
@@ -82,7 +84,7 @@ public class InformationFragment extends Fragment {
 
         prep.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                addDurationDialog(prep.getText().toString());
+                addDurationDialog();
             }
             return false;
         });
@@ -102,7 +104,7 @@ public class InformationFragment extends Fragment {
         return view;
     }
 
-    public void addDurationDialog(String currentDuration) {
+    public void addDurationDialog() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.duration_picker, null);
         NumberPicker inputHours = view.findViewById(R.id.inputHours);
         NumberPicker inputMinutes = view.findViewById(R.id.inputMinutes);
