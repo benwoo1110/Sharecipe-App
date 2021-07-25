@@ -17,6 +17,7 @@ import java.util.Locale;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
 public class ViewInformationFragment extends Fragment {
 
@@ -58,9 +59,7 @@ public class ViewInformationFragment extends Fragment {
         // Set preparation time needed, display not specified if it is not set
         displayPrep.setText(recipe.getTotalTimeNeeded().isZero()
                 ? "nil"
-                : String.format(Locale.ENGLISH, "%02d hours %02d minutes",
-                recipe.getTotalTimeNeeded().toHours(),
-                recipe.getTotalTimeNeeded().toMinutesPart()));
+                : FormatUtils.parseDurationLong(recipe.getTotalTimeNeeded()));
 
         return view;
     }

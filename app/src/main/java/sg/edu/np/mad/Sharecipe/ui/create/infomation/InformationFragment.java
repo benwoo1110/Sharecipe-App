@@ -38,6 +38,7 @@ import java.util.Locale;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
+import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
 // TODO: Set limit for images, remove plus button when limit is reached
 // TODO: Saving and storing of values for all input fields along with input validation (required fields)
@@ -118,11 +119,9 @@ public class InformationFragment extends Fragment {
                 .setTitle("Preparation time")
                 .setPositiveButton("Confirm", (dialog, which) -> {
                     // On confirm the total time in seconds is added and this is set to recipe total time needed, then the hour and
-                    Duration totalTimeNeeded = Duration.ofHours(inputHours.getValue()).plusMinutes(inputMinutes.getValue());
-                    recipe.setTotalTimeNeeded(totalTimeNeeded);
-                    prep.setText(String.format(Locale.ENGLISH, "%02d:%02d",
-                            totalTimeNeeded.toHours(),
-                            totalTimeNeeded.toMinutesPart()));
+                    Duration newTotalTimeNeeded = Duration.ofHours(inputHours.getValue()).plusMinutes(inputMinutes.getValue());
+                    recipe.setTotalTimeNeeded(newTotalTimeNeeded);
+                    prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
