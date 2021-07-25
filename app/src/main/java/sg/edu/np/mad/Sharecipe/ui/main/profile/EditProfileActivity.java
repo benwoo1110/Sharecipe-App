@@ -51,12 +51,12 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
             this.user = user;
             editUsername.setText(user.getUsername());
             editBio.setText(user.getBio());
-        });
 
-        userManager.getProfileImage(App.getAccountManager().getAccount().getUserId())
-                .onSuccess(image -> runOnUiThread(() -> profilePic.setImageBitmap(image)))
-                .onFailed(reason -> Toast.makeText(this, reason.getMessage(), Toast.LENGTH_SHORT).show())
-                .onError(Throwable::printStackTrace);
+            userManager.getProfileImage(user)
+                    .onSuccess(image -> runOnUiThread(() -> profilePic.setImageBitmap(image)))
+                    .onFailed(reason -> Toast.makeText(this, reason.getMessage(), Toast.LENGTH_SHORT).show())
+                    .onError(Throwable::printStackTrace);
+        });
 
         profilePic.setOnClickListener(v -> ImagePicker.with(EditProfileActivity.this)
                 .crop()

@@ -38,11 +38,11 @@ public class UserProfileActivity extends AppCompatActivity {
                 username.setText(user.getUsername());
                 description.setText(user.getBio());
             });
-        });
 
-        userManager.getProfileImage(userid)
-                .onSuccess(image -> runOnUiThread(() -> profileImage.setImageBitmap(image)))
-                .onFailed(reason -> runOnUiThread(() -> Toast.makeText(UserProfileActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show()))
-                .onError(Throwable::printStackTrace);
+            userManager.getProfileImage(user)
+                    .onSuccess(image -> runOnUiThread(() -> profileImage.setImageBitmap(image)))
+                    .onFailed(reason -> runOnUiThread(() -> Toast.makeText(UserProfileActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show()))
+                    .onError(Throwable::printStackTrace);
+        });
     }
 }

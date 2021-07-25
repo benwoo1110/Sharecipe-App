@@ -14,8 +14,11 @@ public class PartialRecipe implements Serializable {
     protected int recipeId;
     @Expose
     protected String name;
+    @Expose
+    protected RecipeImage icon;
 
-    protected transient Bitmap icon;
+    @Deprecated
+    protected transient Bitmap iconEE;
 
     public int getUserId() {
         return userId;
@@ -33,12 +36,18 @@ public class PartialRecipe implements Serializable {
         this.name = name;
     }
 
-    public Bitmap getIcon() {
+    public RecipeImage getIcon() {
         return icon;
     }
 
-    public void setIcon(Bitmap icon) {
-        this.icon = icon;
+    @Deprecated
+    public Bitmap getIconEE() {
+        return iconEE;
+    }
+
+    @Deprecated
+    public void setIconEE(Bitmap icon) {
+        this.iconEE = icon;
     }
 
     @Override
@@ -47,6 +56,7 @@ public class PartialRecipe implements Serializable {
                 "userId=" + userId +
                 ", recipeId=" + recipeId +
                 ", name='" + name + '\'' +
+                ", icon=" + icon +
                 '}';
     }
 }
