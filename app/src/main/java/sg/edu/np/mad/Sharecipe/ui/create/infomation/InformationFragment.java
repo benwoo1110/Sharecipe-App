@@ -80,7 +80,7 @@ public class InformationFragment extends Fragment {
         images.setAdapter(adapter);
         images.setLayoutManager(cLayoutManager);
 
-        prep.setText("00:00");
+        prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
 
         prep.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
