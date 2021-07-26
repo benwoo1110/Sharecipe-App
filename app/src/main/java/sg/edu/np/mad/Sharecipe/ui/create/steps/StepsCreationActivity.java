@@ -6,20 +6,20 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.widget.ImageButton;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.common.base.Strings;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
 
 public class StepsCreationActivity extends AppCompatActivity {
+
+    public static final String RECIPE_STEP_INTENT = "Sharecipe.ui.create.steps.StepsCreationActivity.step";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,32 +32,28 @@ public class StepsCreationActivity extends AppCompatActivity {
         TextInputEditText input = findViewById(R.id.input_StepDesc);
 
         Intent data = getIntent();
-        RecipeStep newStep = (RecipeStep) data.getSerializableExtra("New step");
-        int stepNumber = data.getIntExtra("Step number", 0);
-        String stepDesc = data.getStringExtra("Edit description");
+        RecipeStep step = (RecipeStep) data.getSerializableExtra(StepsCreationActivity.RECIPE_STEP_INTENT);
 
-        input.setText(stepDesc);
-        displayStepNo.setText("Step " + stepNumber);
+        displayStepNo.setText("Step " + step.getStepNumber());
+        input.setText(step.getDescription());
 
-        newStep.setStepNumber(stepNumber);
+        String originalDesc = step.getDescription();
 
-        input.addTextChangedListener((AfterTextChangedWatcher) s -> newStep.setDescription(s.toString()));
+        input.addTextChangedListener((AfterTextChangedWatcher) s -> step.setDescription(s.toString()));
 
         close.setOnClickListener(v -> {
-
-            // TODO: BEN SEE THIS WHY IT NO WORK??
-            if (!input.getText().toString().equals(stepDesc)) {
+            if (input.getText().toString().equals(originalDesc)) {
                 finish();
             } else {
-                checkSaveDialog(newStep, stepDesc);
+                checkSaveDialog(step, originalDesc);
             }
         });
 
         save.setOnClickListener(v -> {
-            if (newStep.getDescription() != null) {
-                saveInput(newStep);
-            } else {
+            if (Strings.isNullOrEmpty(step.getDescription())) {
                 Toast.makeText(StepsCreationActivity.this, "You have not typed in anything", Toast.LENGTH_SHORT).show();
+            } else {
+                saveInput(step);
             }
         });
     }
@@ -76,7 +72,7 @@ public class StepsCreationActivity extends AppCompatActivity {
 
     private void saveInput(RecipeStep returnStep) {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("Input step", returnStep);
+        returnIntent.putExtra(StepsFragment.RECIPE_STEP_INTENT, returnStep);
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }

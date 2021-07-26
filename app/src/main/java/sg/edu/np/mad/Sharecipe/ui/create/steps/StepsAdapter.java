@@ -13,16 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 
 public class StepsAdapter extends RecyclerView.Adapter<StepsViewHolder> {
 
-    private final ArrayList<RecipeStep> data;
+    private final List<RecipeStep> data;
     private final Activity activity;
 
-    public StepsAdapter(ArrayList<RecipeStep> input, Activity activity) {
+    public StepsAdapter(List<RecipeStep> input, Activity activity) {
         this.data = input;
         this.activity = activity;
     }
@@ -34,10 +35,8 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewHolder> {
 
         item.setOnClickListener(v -> {
             Intent intent = new Intent(activity, StepsCreationActivity.class);
-            intent.putExtra("New step", holder.step);
-            intent.putExtra("Edit description", holder.step.getDescription());
-            intent.putExtra("Step number", holder.step.getStepNumber());
-            activity.startActivity(intent);
+            intent.putExtra(StepsCreationActivity.RECIPE_STEP_INTENT, holder.step);
+            activity.startActivityForResult(intent, StepsFragment.LAUNCH_STEP_CREATION);
         });
 
         item.setOnLongClickListener(v -> {
