@@ -17,6 +17,7 @@ import java.util.Locale;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
 public class ViewInformationFragment extends Fragment {
@@ -51,6 +52,12 @@ public class ViewInformationFragment extends Fragment {
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(cLayoutManager);
+
+        App.getRecipeManager().getImages(recipe).onSuccess(bitmaps -> {
+            getActivity().runOnUiThread(() -> {
+                adapter.setBitmapList(bitmaps);
+            });
+        }).onFailed(System.out::println).onError(Throwable::printStackTrace);
 
         // Set name of recipe
         displayName.setText(recipe.getName());

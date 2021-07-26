@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import okhttp3.ResponseBody;
@@ -197,8 +198,13 @@ public class RecipeManager {
                 }
                 List<Bitmap> images = new ArrayList<>();
                 try (ZipInputStream imageZipStream = new ZipInputStream(body.byteStream())) {
-                    while (imageZipStream.getNextEntry() != null) {
-                        images.add(BitmapFactory.decodeStream(imageZipStream));
+                    ZipEntry entry;
+                    while ((entry = imageZipStream.getNextEntry()) != null) {
+                        Bitmap bitmap = BitmapFactory.decodeStream(imageZipStream);
+                        if (bitmap != null) {
+                            images.add(bitmap);
+                            bitmapCacheManager.addBitmapToMemoryCache(entry.getName(), bitmap);
+                        }
                     }
                 } catch (IOException e) {
                     future.complete(new DataResult.Error<>(e));
