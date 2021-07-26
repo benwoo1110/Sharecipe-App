@@ -186,11 +186,32 @@ public class RecipeManager {
      * @param recipe
      * @return
      */
-    public FutureDataResult<List<Bitmap>> getImages(PartialRecipe recipe) {
+    public FutureDataResult<List<Bitmap>> getImages(Recipe recipe) {
+
+        List<RecipeImage> recipeImages = recipe.getImages();
+        List<Bitmap> bitmapList = new ArrayList<>();
+        if (recipeImages == null || recipeImages.isEmpty()) {
+            return FutureDataResult.completed(bitmapList);
+        }
+
+        List<String> needToGetFromWeb = new ArrayList<>();
+        for (RecipeImage recipeImage : recipeImages) {
+            Bitmap cachedImage = bitmapCacheManager.getBitmapFromMemCache(recipeImage.getFileId());
+            if (cachedImage == null) {
+                needToGetFromWeb.add(recipeImage.getFileId());
+            } else {
+                bitmapList.add(cachedImage);
+            }
+        }
+
+        if (needToGetFromWeb.isEmpty()) {
+            return FutureDataResult.completed(bitmapList);
+        }
+
         FutureDataResult<List<Bitmap>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.getRecipeImages(account.getAccessToken(), recipe.getRecipeId()).onSuccess(response -> {
+            SharecipeRequests.getRecipeImages(account.getAccessToken(), recipe.getRecipeId(), needToGetFromWeb).onSuccess(response -> {
                 ResponseBody body = response.body();
                 if (body == null) {
                     future.complete(new DataResult.Failed<>("No images data."));
