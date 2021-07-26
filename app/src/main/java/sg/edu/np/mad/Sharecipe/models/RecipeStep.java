@@ -11,8 +11,6 @@ public class RecipeStep implements Serializable {
     @Expose
     private int stepNumber;
     @Expose
-    private String name;
-    @Expose
     private String description;
 
     public RecipeStep() { }
@@ -29,14 +27,6 @@ public class RecipeStep implements Serializable {
         this.stepNumber = stepNumber;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -50,7 +40,6 @@ public class RecipeStep implements Serializable {
         return "RecipeStep{" +
                 "recipeId=" + recipeId +
                 ", stepNumber=" + stepNumber +
-                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }
