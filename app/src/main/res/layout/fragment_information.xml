@@ -51,7 +51,8 @@ xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Time"
-            android:inputType="none|time" />
+            android:inputType="none|time"
+            android:focusable="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
