@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.RatingBar;
@@ -102,6 +103,18 @@ public class InformationFragment extends Fragment {
         difficulty.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
             int recipeDifficulty = difficulty.getNumStars();
             recipe.setDifficulty(recipeDifficulty);
+        });
+
+        infoPublic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    recipe.setPublic(true);
+                }
+                else {
+                    recipe.setPublic(false);
+                }
+            }
         });
 
         return view;
