@@ -47,9 +47,9 @@ public class StepsCreationActivity extends AppCompatActivity {
 
             // TODO: BEN SEE THIS WHY IT NO WORK??
             if (!input.getText().toString().equals(stepDesc)) {
-                checkSaveDialog(newStep, stepDesc);
-            } else {
                 finish();
+            } else {
+                checkSaveDialog(newStep, stepDesc);
             }
         });
 
