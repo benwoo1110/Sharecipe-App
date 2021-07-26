@@ -32,7 +32,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewHolder> {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_steps, parent, false);
         StepsViewHolder holder = new StepsViewHolder(item);
 
-        holder.stepDescription.setOnClickListener(v -> {
+        item.setOnClickListener(v -> {
             Intent intent = new Intent(activity, StepsCreationActivity.class);
             intent.putExtra("New step", holder.step);
             intent.putExtra("Edit description", holder.step.getDescription());
@@ -40,7 +40,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewHolder> {
             activity.startActivity(intent);
         });
 
-        holder.stepDescription.setOnLongClickListener(v -> {
+        item.setOnLongClickListener(v -> {
             removeDialog(holder.step);
             return false;
         });

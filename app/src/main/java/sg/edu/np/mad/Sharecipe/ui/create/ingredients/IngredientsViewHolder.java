@@ -1,12 +1,15 @@
 package sg.edu.np.mad.Sharecipe.ui.create.ingredients;
 
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
@@ -15,9 +18,9 @@ import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
 import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
 public class IngredientsViewHolder extends RecyclerView.ViewHolder {
-    EditText name;
-    EditText quantity;
-    EditText unit;
+    TextInputEditText name;
+    TextInputEditText quantity;
+    TextInputEditText unit;
     TextView number;
     RecipeIngredient ingredient;
 
