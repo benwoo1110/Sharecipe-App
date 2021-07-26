@@ -14,12 +14,11 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.common.base.Strings;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
 
 public class StepsCreationActivity extends AppCompatActivity {
-
-    public static final String RECIPE_STEP_INTENT = "Sharecipe.ui.create.steps.StepsCreationActivity.step";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +31,7 @@ public class StepsCreationActivity extends AppCompatActivity {
         TextInputEditText input = findViewById(R.id.input_StepDesc);
 
         Intent data = getIntent();
-        RecipeStep step = (RecipeStep) data.getSerializableExtra(StepsCreationActivity.RECIPE_STEP_INTENT);
+        RecipeStep step = (RecipeStep) data.getSerializableExtra(IntentKeys.RECIPE_STEP_EDIT_INTENT);
 
         displayStepNo.setText("Step " + step.getStepNumber());
         input.setText(step.getDescription());
@@ -72,7 +71,7 @@ public class StepsCreationActivity extends AppCompatActivity {
 
     private void saveInput(RecipeStep returnStep) {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra(StepsFragment.RECIPE_STEP_INTENT, returnStep);
+        returnIntent.putExtra(IntentKeys.RECIPE_STEP_SAVE_INTENT, returnStep);
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }
