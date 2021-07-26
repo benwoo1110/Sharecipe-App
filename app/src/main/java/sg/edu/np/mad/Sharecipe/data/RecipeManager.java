@@ -128,6 +128,10 @@ public class RecipeManager {
      * @return Future result of the recipe data.
      */
     public FutureDataResult<Recipe> get(int recipeId) {
+        Recipe cachedRecipe = recipeCache.getIfPresent(recipeId);
+        if (cachedRecipe != null) {
+            return FutureDataResult.completed(cachedRecipe);
+        }
 
         FutureDataResult<Recipe> future = new FutureDataResult<>();
 
