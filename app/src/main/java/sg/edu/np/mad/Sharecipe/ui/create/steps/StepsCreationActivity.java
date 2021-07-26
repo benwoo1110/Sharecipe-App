@@ -44,10 +44,12 @@ public class StepsCreationActivity extends AppCompatActivity {
         input.addTextChangedListener((AfterTextChangedWatcher) s -> newStep.setDescription(s.toString()));
 
         close.setOnClickListener(v -> {
-            if (newStep.getDescription() == null) {
-                finish();
+
+            // TODO: BEN SEE THIS WHY IT NO WORK??
+            if (input.getText().toString() != stepDesc) {
+                checkSaveDialog(newStep, stepDesc);
             } else {
-                checkSaveDialog(newStep);
+                finish();
             }
         });
 
@@ -60,12 +62,15 @@ public class StepsCreationActivity extends AppCompatActivity {
         });
     }
 
-    private void checkSaveDialog(RecipeStep step) {
+    private void checkSaveDialog(RecipeStep step, String stepDesc) {
         new AlertDialog.Builder(this)
                 .setTitle("Unsaved changes")
                 .setMessage("Would you like to save your changes?")
                 .setPositiveButton("Yes", (dialog, which) -> saveInput(step))
-                .setNegativeButton("No", (dialog, which) -> finish())
+                .setNegativeButton("No", (dialog, which) -> {
+                    step.setDescription(stepDesc);
+                    finish();
+                })
                 .show();
     }
 
