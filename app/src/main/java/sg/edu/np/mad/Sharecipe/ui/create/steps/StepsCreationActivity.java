@@ -46,7 +46,7 @@ public class StepsCreationActivity extends AppCompatActivity {
         close.setOnClickListener(v -> {
 
             // TODO: BEN SEE THIS WHY IT NO WORK??
-            if (input.getText().toString() != stepDesc) {
+            if (!input.getText().toString().equals(stepDesc)) {
                 checkSaveDialog(newStep, stepDesc);
             } else {
                 finish();
