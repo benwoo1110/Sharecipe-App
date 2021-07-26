@@ -302,6 +302,28 @@ public class SharecipeRequests {
     }
 
     /**
+     * GET `/users/user_id/followers` endpoint.
+     *
+     * @param accessToken
+     * @param userId
+     * @return Response from server.
+     */
+    @NotNull
+    public static FutureWebResponse getUserFollowers(@NonNull String accessToken,
+                                                     int userId) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(userId))
+                        .addPathSegment(UrlPath.FOLLOWERS)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
+
+    /**
      * PUT `/users/user_id/follows` endpoint.
      *
      * @param accessToken
