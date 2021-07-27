@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
@@ -22,11 +24,14 @@ import android.widget.RatingBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.material.chip.ChipDrawable;
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -58,6 +63,7 @@ public class InformationFragment extends Fragment {
     private final List<RecipeTag> recipeTags = new ArrayList<RecipeTag>();
 
     private TextInputEditText prep;
+    private MultiAutoCompleteTextView tags;
 
     public InformationFragment(Recipe recipe, List<File> imageFileList) {
         this.recipe = recipe;
@@ -76,12 +82,22 @@ public class InformationFragment extends Fragment {
         TextInputEditText description = view.findViewById(R.id.infoDesc);
         SwitchMaterial infoPublic = view.findViewById(R.id.infoPublic);
         RatingBar difficulty = view.findViewById(R.id.infoDifficulty);
-        MultiAutoCompleteTextView tags = view.findViewById(R.id.recipetag_autocomplete);
+        tags = view.findViewById(R.id.recipetag_autocomplete);
+        ChipGroup displayTags = view.findViewById(R.id.chipGroup);
         ImageView enlargedImage = view.findViewById(R.id.expanded_image);
 
-//        createTags();
-//        tags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
-//        tags.setThreshold(1);
+        createTags();
+        ArrayAdapter<RecipeTag> tagAdapter = new ArrayAdapter<RecipeTag>(getActivity(), R.layout.tag_layout, recipeTags);
+        tags.setAdapter(tagAdapter);
+        tags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        tags.setThreshold(1);
+        tags.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                RecipeTag selectedTag = (RecipeTag) parent.getItemAtPosition(position);
+                createRecipientChip(selectedTag);
+            }
+        });
 
         adapter = new ImagesAdapter(getActivity(), imageList, imageFileList, enlargedImage, view);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
@@ -218,6 +234,14 @@ public class InformationFragment extends Fragment {
         recipeTags.add(dessert);
     }
 
+    private void createRecipientChip(RecipeTag selectedTag) {
+        ChipDrawable chip = ChipDrawable.createFromResource(getActivity(), R.xml.chip);
+        int cursorPosition = tags.getSelectionStart();
+        int spanLength = selectedTag.getName().length() + 2;
+        Editable text = tags.getText();
+        chip.setText(selectedTag.getName());
+        chip.setBounds(0, 0, chip.getIntrinsicWidth(), chip.getIntrinsicHeight());
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
