@@ -27,6 +27,8 @@ public class Recipe extends PartialRecipe {
     private List<RecipeIngredient> ingredients;
     @Expose
     private List<RecipeImage> images;
+    @Expose
+    private List<RecipeTag> tags;
 
     public Recipe() { }
 
@@ -96,6 +98,14 @@ public class Recipe extends PartialRecipe {
 
     public void setImages(List<RecipeImage> images) {
         this.images = images;
+    }
+
+    public List<RecipeTag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<RecipeTag> tags) {
+        this.tags = tags;
     }
 
     @Override

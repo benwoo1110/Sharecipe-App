@@ -5,9 +5,13 @@ import com.google.gson.annotations.Expose;
 public class RecipeTag {
 
     @Expose
-    private int name;
+    private String name;
 
-    public int getName() { return name; }
+    public String getName() { return name; }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @Override
     public String toString() {

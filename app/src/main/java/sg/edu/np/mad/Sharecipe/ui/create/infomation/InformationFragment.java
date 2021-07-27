@@ -55,6 +55,7 @@ public class InformationFragment extends Fragment {
     private final ArrayList<Uri> imageList = new ArrayList<>();
     private final Recipe recipe;
     private final List<File> imageFileList;
+    private final List<RecipeTag> recipeTags = new ArrayList<RecipeTag>();
 
     private TextInputEditText prep;
 
@@ -78,11 +79,9 @@ public class InformationFragment extends Fragment {
         MultiAutoCompleteTextView tags = view.findViewById(R.id.recipetag_autocomplete);
         ImageView enlargedImage = view.findViewById(R.id.expanded_image);
 
-
-
-//        List<RecipeTag> recipeTags = new ArrayList<RecipeTag>() {{
-//            add(new RecipeTag("Chinese"));
-//        }};
+//        createTags();
+//        tags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+//        tags.setThreshold(1);
 
         adapter = new ImagesAdapter(getActivity(), imageList, imageFileList, enlargedImage, view);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
@@ -155,6 +154,68 @@ public class InformationFragment extends Fragment {
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+    }
+
+    public void createTags() {
+        RecipeTag chinese = new RecipeTag();
+        chinese.setName("Chinese");
+        RecipeTag malay = new RecipeTag();
+        malay.setName("Malay");
+        RecipeTag indian = new RecipeTag();
+        indian.setName("Indian");
+        RecipeTag american = new RecipeTag();
+        american.setName("American");
+        RecipeTag japanese = new RecipeTag();
+        japanese.setName("Japanese");
+        RecipeTag korean = new RecipeTag();
+        korean.setName("Korean");
+        RecipeTag italian = new RecipeTag();
+        italian.setName("Italian");
+        RecipeTag vietnamese = new RecipeTag();
+        vietnamese.setName("Vietnamese");
+        RecipeTag thai = new RecipeTag();
+        thai.setName("Thai");
+
+        RecipeTag rice = new RecipeTag();
+        rice.setName("Rice");
+        RecipeTag noodles = new RecipeTag();
+        noodles.setName("Noodles");
+        RecipeTag sandwich = new RecipeTag();
+        sandwich.setName("Sandwich");
+        RecipeTag burger = new RecipeTag();
+        burger.setName("Burger");
+        RecipeTag meat = new RecipeTag();
+        meat.setName("Meat");
+        RecipeTag vegetarian = new RecipeTag();
+        vegetarian.setName("Vegetarian");
+        RecipeTag seafood = new RecipeTag();
+        seafood.setName("Seafood");
+        RecipeTag snack = new RecipeTag();
+        snack.setName("Snack");
+        RecipeTag drink = new RecipeTag();
+        drink.setName("Drink");
+        RecipeTag dessert = new RecipeTag();
+        dessert.setName("Dessert");
+
+        recipeTags.add(chinese);
+        recipeTags.add(malay);
+        recipeTags.add(indian);
+        recipeTags.add(american);
+        recipeTags.add(japanese);
+        recipeTags.add(korean);
+        recipeTags.add(italian);
+        recipeTags.add(vietnamese);
+        recipeTags.add(thai);
+        recipeTags.add(rice);
+        recipeTags.add(noodles);
+        recipeTags.add(sandwich);
+        recipeTags.add(burger);
+        recipeTags.add(meat);
+        recipeTags.add(vegetarian);
+        recipeTags.add(seafood);
+        recipeTags.add(snack);
+        recipeTags.add(drink);
+        recipeTags.add(dessert);
     }
 
     @Override
