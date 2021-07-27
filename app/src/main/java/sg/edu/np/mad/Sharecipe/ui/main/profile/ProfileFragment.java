@@ -58,13 +58,20 @@ public class ProfileFragment extends Fragment {
                     followers.setText(userFollows.size());
                 });
             });
-        });
 
+<<<<<<< HEAD
 
         userManager.getProfileImage(App.getAccountManager().getAccount().getUserId())
                 .onSuccess(image -> getActivity().runOnUiThread(() -> profileImage.setImageBitmap(image)))
                 .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
                 .onError(Throwable::printStackTrace);
+=======
+            userManager.getProfileImage(user)
+                    .onSuccess(image -> getActivity().runOnUiThread(() -> profileImage.setImageBitmap(image)))
+                    .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
+                    .onError(Throwable::printStackTrace);
+        });
+>>>>>>> main
 
         logoutButton.setOnClickListener(v -> {
             App.getAccountManager().logout()
@@ -94,12 +101,11 @@ public class ProfileFragment extends Fragment {
                 username.setText(user.getUsername());
                 description.setText(user.getBio());
             });
+
+            userManager.getProfileImage(user)
+                    .onSuccess(image -> getActivity().runOnUiThread(() -> profileImage.setImageBitmap(image)))
+                    .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
+                    .onError(Throwable::printStackTrace);
         });
-
-        userManager.getProfileImage(App.getAccountManager().getAccount().getUserId())
-                .onSuccess(image -> getActivity().runOnUiThread(() -> profileImage.setImageBitmap(image)))
-                .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
-                .onError(Throwable::printStackTrace);
-
     }
 }

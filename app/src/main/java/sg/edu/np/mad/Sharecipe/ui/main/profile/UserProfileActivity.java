@@ -45,8 +45,8 @@ public class UserProfileActivity extends AppCompatActivity {
                     followers.setText(userFollows.size());
                 });
             });
-        });
 
+<<<<<<< HEAD
         userManager.getProfileImage(userid)
                 .onSuccess(image -> runOnUiThread(() -> profileImage.setImageBitmap(image)))
                 .onFailed(reason -> runOnUiThread(() -> Toast.makeText(UserProfileActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show()))
@@ -59,6 +59,12 @@ public class UserProfileActivity extends AppCompatActivity {
                     userManager.accountFollowUser(user);
                 });
             }
+=======
+            userManager.getProfileImage(user)
+                    .onSuccess(image -> runOnUiThread(() -> profileImage.setImageBitmap(image)))
+                    .onFailed(reason -> runOnUiThread(() -> Toast.makeText(UserProfileActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show()))
+                    .onError(Throwable::printStackTrace);
+>>>>>>> main
         });
     }
 }

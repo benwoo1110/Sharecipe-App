@@ -1,5 +1,7 @@
 package sg.edu.np.mad.Sharecipe.ui.main.recipe;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +13,7 @@ import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
-import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.ui.App;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
 
@@ -25,16 +27,21 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_holder_recipe, parent, false);
-        return new RecipeViewHolder(view, recipeList);
+        return new RecipeViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
         PartialRecipe recipe = recipeList.get(position);
+        holder.recipe = recipe;
         holder.title.setText(recipe.getName());
         holder.info.setText(String.valueOf(recipe.getRecipeId()));
+
         if (recipe.getIcon() != null) {
-            holder.icon.setImageBitmap(recipe.getIcon());
+            App.getRecipeManager().getIcon(recipe)
+                    .onSuccess(bm ->  {
+                        new Handler(Looper.getMainLooper()).post(() -> holder.icon.setImageBitmap(bm));
+                    });
         } else {
             holder.icon.setImageResource(R.drawable.ic_baseline_fastfood_24);
         }

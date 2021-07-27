@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
 
+import com.google.common.base.Strings;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.gson.JsonElement;
@@ -39,18 +40,21 @@ public class UserManager {
      */
     public static UserManager getInstance(Context context) {
         if (instance == null) {
-            instance = new UserManager(AccountManager.getInstance(context.getApplicationContext()));
+            instance = new UserManager(AccountManager.getInstance(context.getApplicationContext()), BitmapCacheManager.getInstance());
         }
         return instance;
     }
 
     private final AccountManager accountManager;
+    private final BitmapCacheManager bitmapCacheManager;
     private final Cache<Integer, User> userCache = CacheBuilder.newBuilder()
             .expireAfterAccess(10, TimeUnit.MINUTES)
+            .maximumSize(500)
             .build();
 
-    public UserManager(AccountManager accountManager) {
+    public UserManager(AccountManager accountManager, BitmapCacheManager bitmapCacheManager) {
         this.accountManager = accountManager;
+        this.bitmapCacheManager = bitmapCacheManager;
     }
 
     /**
@@ -107,15 +111,24 @@ public class UserManager {
     /**
      * Gets profile picture of a user.
      *
-     * @param userId    Target user to get profile of.
+     * @param user    Target user to get profile of.
      * @return Future result of image in bitmap format.
      */
     @NonNull
-    public FutureDataResult<Bitmap> getProfileImage(int userId) {
+    public FutureDataResult<Bitmap> getProfileImage(User user) {
+        if (Strings.isNullOrEmpty(user.getProfileImageId())) {
+            return FutureDataResult.completed(new DataResult.Failed<>("User does not have profile image."));
+        }
+
+        Bitmap cacheImage = bitmapCacheManager.getBitmapFromMemCache(user.getProfileImageId());
+        if (cacheImage != null) {
+            return FutureDataResult.completed(cacheImage);
+        }
+
         FutureDataResult<Bitmap> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.getUserProfileImage(account.getAccessToken(), userId).onSuccess(response -> {
+            SharecipeRequests.getUserProfileImage(account.getAccessToken(), user.getUserId()).onSuccess(response -> {
                 ResponseBody body = response.body();
                 if (body == null) {
                     future.complete(new DataResult.Failed<>("No profile image data"));
@@ -129,6 +142,7 @@ public class UserManager {
                     return;
                 }
                 Bitmap bitmap = BitmapFactory.decodeByteArray(rawImageData,0, rawImageData.length);
+                bitmapCacheManager.addBitmapToMemoryCache(user.getProfileImageId(), bitmap);
                 future.complete(new DataResult.Success<>(bitmap));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
@@ -147,6 +161,28 @@ public class UserManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getUserFollows(account.getAccessToken(), account.getUserId()).onSuccessJson(future, (response, json) -> {
+                List<UserFollow> followList = new ArrayList<>();
+                for (JsonElement followData : json.getAsJsonArray()) {
+                    followList.add(JsonUtils.convertToObject(followData, UserFollow.class));
+                }
+                future.complete(new DataResult.Success<>(followList));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    /**
+     * Gets all user ids that is following the given user.
+     *
+     * @param user  The target user.
+     * @return Future result of followers data.
+     */
+    public FutureDataResult<List<UserFollow>> getFollowers(User user) {
+        FutureDataResult<List<UserFollow>> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getUserFollowers(account.getAccessToken(), account.getUserId()).onSuccessJson(future, (response, json) -> {
                 List<UserFollow> followList = new ArrayList<>();
                 for (JsonElement followData : json.getAsJsonArray()) {
                     followList.add(JsonUtils.convertToObject(followData, UserFollow.class));
