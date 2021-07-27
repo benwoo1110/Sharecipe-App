@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.NumberPicker;
 import android.widget.RatingBar;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ import java.util.Locale;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.models.RecipeTag;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
 import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
@@ -73,7 +75,14 @@ public class InformationFragment extends Fragment {
         TextInputEditText description = view.findViewById(R.id.infoDesc);
         SwitchMaterial infoPublic = view.findViewById(R.id.infoPublic);
         RatingBar difficulty = view.findViewById(R.id.infoDifficulty);
+        MultiAutoCompleteTextView tags = view.findViewById(R.id.recipetag_autocomplete);
         ImageView enlargedImage = view.findViewById(R.id.expanded_image);
+
+
+
+//        List<RecipeTag> recipeTags = new ArrayList<RecipeTag>() {{
+//            add(new RecipeTag("Chinese"));
+//        }};
 
         adapter = new ImagesAdapter(getActivity(), imageList, imageFileList, enlargedImage, view);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
