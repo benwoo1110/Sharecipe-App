@@ -44,8 +44,8 @@ public class ProfileFragment extends Fragment {
         logoutButton = view.findViewById(R.id.buttonLogout);
         username = view.findViewById(R.id.username);
         description = view.findViewById(R.id.description);
-        TextView following = view.findViewById(R.id.following);
-        TextView followers = view.findViewById(R.id.followers);
+        TextView followingNo = view.findViewById(R.id.followingNo);
+        TextView followersNo = view.findViewById(R.id.followerNo);
         profileImage = view.findViewById(R.id.profileImage);
 
         userManager = App.getUserManager();
@@ -55,23 +55,18 @@ public class ProfileFragment extends Fragment {
                 username.setText(user.getUsername());
                 description.setText(user.getBio());
                 userManager.getFollows(user).onSuccess(userFollows -> {
-                    followers.setText(userFollows.size());
+                    followingNo.setText(userFollows.size());
+                });
+                userManager.getFollowers(user).onSuccess(userFollows -> {
+                    followersNo.setText(userFollows.size());
                 });
             });
-
-<<<<<<< HEAD
-
-        userManager.getProfileImage(App.getAccountManager().getAccount().getUserId())
-                .onSuccess(image -> getActivity().runOnUiThread(() -> profileImage.setImageBitmap(image)))
-                .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
-                .onError(Throwable::printStackTrace);
-=======
             userManager.getProfileImage(user)
                     .onSuccess(image -> getActivity().runOnUiThread(() -> profileImage.setImageBitmap(image)))
                     .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
                     .onError(Throwable::printStackTrace);
         });
->>>>>>> main
+
 
         logoutButton.setOnClickListener(v -> {
             App.getAccountManager().logout()
