@@ -102,23 +102,6 @@ public class InformationFragment extends Fragment {
             createRecipientChip(tagAdapter.getItem(position));
         });
 
-        tags.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                System.out.println("before change: " + s);
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                System.out.println("on change: " + s);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                System.out.println("after change: " + s);
-            }
-        });
-
         adapter = new ImagesAdapter(getActivity(), imageList, imageFileList, enlargedImage, view);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
         cLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
