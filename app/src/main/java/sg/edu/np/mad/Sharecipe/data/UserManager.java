@@ -160,7 +160,7 @@ public class UserManager {
         FutureDataResult<List<UserFollow>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.getUserFollows(account.getAccessToken(), account.getUserId()).onSuccessJson(future, (response, json) -> {
+            SharecipeRequests.getUserFollows(account.getAccessToken(), user.getUserId()).onSuccessJson(future, (response, json) -> {
                 List<UserFollow> followList = new ArrayList<>();
                 for (JsonElement followData : json.getAsJsonArray()) {
                     followList.add(JsonUtils.convertToObject(followData, UserFollow.class));
@@ -182,7 +182,7 @@ public class UserManager {
         FutureDataResult<List<UserFollow>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.getUserFollowers(account.getAccessToken(), account.getUserId()).onSuccessJson(future, (response, json) -> {
+            SharecipeRequests.getUserFollowers(account.getAccessToken(), user.getUserId()).onSuccessJson(future, (response, json) -> {
                 List<UserFollow> followList = new ArrayList<>();
                 for (JsonElement followData : json.getAsJsonArray()) {
                     followList.add(JsonUtils.convertToObject(followData, UserFollow.class));
