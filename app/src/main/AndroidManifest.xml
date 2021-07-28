@@ -17,9 +17,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Sharecipe"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".ui.view.RecipeViewActivity"></activity>
+        android:theme="@style/Theme.Sharecipe">
         <activity
             android:name=".ui.SplashActivity"
             android:theme="@style/AppTheme.Launcher">
@@ -29,10 +27,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.view.RecipeViewActivity" />
         <activity android:name=".ui.main.MainActivity" />
         <activity android:name=".ui.main.profile.EditProfileActivity" />
         <activity android:name=".ui.main.profile.UserProfileActivity" />
-        <activity android:name=".ui.create.RecipeStepsList" />
         <activity android:name=".ui.create.steps.StepsCreationActivity" />
         <activity android:name=".ui.create.RecipeCreateActivity" />
         <activity android:name=".ui.RegisterActivity" />

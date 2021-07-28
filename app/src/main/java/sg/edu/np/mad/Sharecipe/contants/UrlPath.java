@@ -1,17 +1,18 @@
 package sg.edu.np.mad.Sharecipe.contants;
 
 import okhttp3.HttpUrl;
+import sg.edu.np.mad.Sharecipe.BuildConfig;
 
 /**
  * Stores possible endpoints for easy reference and url building.
  */
 public class UrlPath {
-    //TODO remove on production.
-    private static final boolean USER_LOCAL = false;
 
-    public static final String SCHEME = USER_LOCAL ? "http" : "https";
-    public static final String HOST = USER_LOCAL ? "10.0.2.2" : "sharecipe-backend.herokuapp.com";
-    public static final int PORT = USER_LOCAL ? 5000 : 443;
+    private static final boolean DEBUG_MODE = BuildConfig.BUILD_TYPE.equals("debug");
+
+    public static final String SCHEME = "https";
+    public static final String HOST = DEBUG_MODE ? "sharecipe-backend.herokuapp.com" : "sharecipe-production.herokuapp.com";
+    public static final int PORT = 443;
     public static final String HELLO = "hello";
     public static final String ACCOUNT = "account";
     public static final String REGISTER = "register";
