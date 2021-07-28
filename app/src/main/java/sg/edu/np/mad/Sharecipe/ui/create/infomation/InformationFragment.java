@@ -129,17 +129,7 @@ public class InformationFragment extends Fragment {
             recipe.setDifficulty(recipeDifficulty);
         });
 
-        infoPublic.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    recipe.setPublic(true);
-                }
-                else {
-                    recipe.setPublic(false);
-                }
-            }
-        });
+        infoPublic.setOnCheckedChangeListener((buttonView, isChecked) -> recipe.setPublic(isChecked));
 
         return view;
     }
