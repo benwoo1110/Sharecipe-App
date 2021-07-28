@@ -664,4 +664,21 @@ public class SharecipeRequests {
                 .get()
                 .build());
     }
+
+    /**
+     * GET `/discover` endpoint.
+     *
+     * @param accessToken
+     * @return
+     */
+    public static FutureWebResponse getDiscover(@NonNull String accessToken) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.DISCOVER)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
 }
