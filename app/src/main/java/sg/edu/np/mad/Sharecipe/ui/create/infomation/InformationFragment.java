@@ -8,7 +8,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Spanned;
 import android.text.TextWatcher;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -83,19 +85,36 @@ public class InformationFragment extends Fragment {
         SwitchMaterial infoPublic = view.findViewById(R.id.infoPublic);
         RatingBar difficulty = view.findViewById(R.id.infoDifficulty);
         tags = view.findViewById(R.id.recipetag_autocomplete);
-        ChipGroup displayTags = view.findViewById(R.id.chipGroup);
         ImageView enlargedImage = view.findViewById(R.id.expanded_image);
 
         createTags();
-        ArrayAdapter<RecipeTag> tagAdapter = new ArrayAdapter<RecipeTag>(getActivity(), R.layout.tag_layout, recipeTags);
+        ArrayAdapter<String> tagAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, new ArrayList<String>() {{
+            add("What");
+            add("Huh");
+            add("Testing");
+        }});
+
         tags.setAdapter(tagAdapter);
         tags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
         tags.setThreshold(1);
-        tags.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        tags.setOnItemClickListener((parent, view1, position, id) -> {
+            createRecipientChip(tagAdapter.getItem(position));
+        });
+
+        tags.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                RecipeTag selectedTag = (RecipeTag) parent.getItemAtPosition(position);
-                createRecipientChip(selectedTag);
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                System.out.println("before change: " + s);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                System.out.println("on change: " + s);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                System.out.println("after change: " + s);
             }
         });
 
@@ -107,7 +126,6 @@ public class InformationFragment extends Fragment {
         images.setLayoutManager(cLayoutManager);
 
         prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
-
         prep.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 addDurationDialog();
@@ -224,14 +242,15 @@ public class InformationFragment extends Fragment {
         recipeTags.add(dessert);
     }
 
-    private void createRecipientChip(RecipeTag selectedTag) {
+    private void createRecipientChip(String tagName) {
         ChipDrawable chip = ChipDrawable.createFromResource(getActivity(), R.xml.chip);
-        int cursorPosition = tags.getSelectionStart();
-        int spanLength = selectedTag.getName().length() + 2;
-        Editable text = tags.getText();
-        chip.setText(selectedTag.getName());
-        chip.setBounds(0, 0, chip.getIntrinsicWidth(), chip.getIntrinsicHeight());
+        chip.setText(tagName);
+        chip.setBounds(5, 0, chip.getIntrinsicWidth(), chip.getIntrinsicHeight());
+        ImageSpan span = new ImageSpan(chip);
+        int endPoint = tags.getSelectionStart();
+        tags.getText().setSpan(span, endPoint - tagName.length() - 2, endPoint, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
