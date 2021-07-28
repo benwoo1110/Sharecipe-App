@@ -55,10 +55,10 @@ public class ProfileFragment extends Fragment {
                 username.setText(user.getUsername());
                 description.setText(user.getBio());
                 userManager.getFollows(user).onSuccess(userFollows -> {
-                    followingNo.setText(userFollows.size());
+                    followingNo.setText(String.valueOf(userFollows.size()));
                 });
                 userManager.getFollowers(user).onSuccess(userFollows -> {
-                    followersNo.setText(userFollows.size());
+                    followersNo.setText(String.valueOf(userFollows.size()));
                 });
             });
             userManager.getProfileImage(user)
