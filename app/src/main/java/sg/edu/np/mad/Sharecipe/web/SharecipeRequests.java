@@ -165,14 +165,14 @@ public class SharecipeRequests {
     }
 
     /**
-     * POST `/account/delete` endpoint.
+     * DELETE `/account/delete` endpoint.
      *
      * @param refreshToken
      * @return
      */
     @NonNull
-    public static FutureWebResponse postAccountDelete(@NonNull String refreshToken,
-                                                      int userId) {
+    public static FutureWebResponse deleteAccountDelete(@NonNull String refreshToken,
+                                                        int userId) {
 
         String payload;
         try {
@@ -189,7 +189,7 @@ public class SharecipeRequests {
                         .addPathSegment(UrlPath.DELETE)
                         .build())
                 .header("Authorization", "Bearer " + refreshToken)
-                .post(RequestBody.create(payload, JSON_TYPE))
+                .delete(RequestBody.create(payload, JSON_TYPE))
                 .build());
     }
 
