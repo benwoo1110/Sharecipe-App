@@ -21,9 +21,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
+import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
@@ -95,7 +94,7 @@ public class MyRecipeFragment extends Fragment {
             return;
         }
 
-        Recipe recipe = (Recipe) data.getSerializableExtra("recipe");
+        Recipe recipe = (Recipe) data.getSerializableExtra(IntentKeys.RECIPE_SAVE);
         recipeAdapter.addRecipe(recipe);
         App.getRecipeManager().getIcon(recipe)
                 .onSuccess(recipe::setIconEE)

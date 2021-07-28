@@ -6,16 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.widget.ImageButton;
-import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.common.base.Strings;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
 
@@ -32,46 +31,47 @@ public class StepsCreationActivity extends AppCompatActivity {
         TextInputEditText input = findViewById(R.id.input_StepDesc);
 
         Intent data = getIntent();
-        RecipeStep newStep = (RecipeStep) data.getSerializableExtra("New step");
-        int stepNumber = data.getIntExtra("Step number", 0);
-        String stepDesc = data.getStringExtra("Edit description");
+        RecipeStep step = (RecipeStep) data.getSerializableExtra(IntentKeys.RECIPE_STEP_EDIT);
 
-        input.setText(stepDesc);
-        displayStepNo.setText("Step " + stepNumber);
+        displayStepNo.setText("Step " + step.getStepNumber());
+        input.setText(step.getDescription());
 
-        newStep.setStepNumber(stepNumber);
+        String originalDesc = step.getDescription();
 
-        input.addTextChangedListener((AfterTextChangedWatcher) s -> newStep.setDescription(s.toString()));
+        input.addTextChangedListener((AfterTextChangedWatcher) s -> step.setDescription(s.toString()));
 
         close.setOnClickListener(v -> {
-            if (newStep.getDescription() == null) {
+            if (input.getText().toString().equals(originalDesc)) {
                 finish();
             } else {
-                checkSaveDialog(newStep);
+                checkSaveDialog(step, originalDesc);
             }
         });
 
         save.setOnClickListener(v -> {
-            if (newStep.getDescription() != null) {
-                saveInput(newStep);
-            } else {
+            if (Strings.isNullOrEmpty(step.getDescription())) {
                 Toast.makeText(StepsCreationActivity.this, "You have not typed in anything", Toast.LENGTH_SHORT).show();
+            } else {
+                saveInput(step);
             }
         });
     }
 
-    private void checkSaveDialog(RecipeStep step) {
+    private void checkSaveDialog(RecipeStep step, String stepDesc) {
         new AlertDialog.Builder(this)
                 .setTitle("Unsaved changes")
                 .setMessage("Would you like to save your changes?")
                 .setPositiveButton("Yes", (dialog, which) -> saveInput(step))
-                .setNegativeButton("No", (dialog, which) -> finish())
+                .setNegativeButton("No", (dialog, which) -> {
+                    step.setDescription(stepDesc);
+                    finish();
+                })
                 .show();
     }
 
     private void saveInput(RecipeStep returnStep) {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("Input step", returnStep);
+        returnIntent.putExtra(IntentKeys.RECIPE_STEP_SAVE, returnStep);
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }

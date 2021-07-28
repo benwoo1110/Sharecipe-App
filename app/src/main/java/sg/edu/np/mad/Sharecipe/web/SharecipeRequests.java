@@ -16,7 +16,7 @@ import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
+import sg.edu.np.mad.Sharecipe.contants.UrlPath;
 
 /**
  * Handles web requests to the server.
@@ -158,6 +158,35 @@ public class SharecipeRequests {
                 .url(UrlPath.newBuilder()
                         .addPathSegment(UrlPath.ACCOUNT)
                         .addPathSegment(UrlPath.LOGOUT)
+                        .build())
+                .header("Authorization", "Bearer " + refreshToken)
+                .post(RequestBody.create(payload, JSON_TYPE))
+                .build());
+    }
+
+    /**
+     * POST `/account/delete` endpoint.
+     *
+     * @param refreshToken
+     * @return
+     */
+    @NonNull
+    public static FutureWebResponse postAccountDelete(@NonNull String refreshToken,
+                                                      int userId) {
+
+        String payload;
+        try {
+            payload = new JSONObject()
+                    .put("user_id", userId)
+                    .toString();
+        } catch (JSONException e) {
+            return FutureWebResponse.failedFuture(e);
+        }
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.ACCOUNT)
+                        .addPathSegment(UrlPath.DELETE)
                         .build())
                 .header("Authorization", "Bearer " + refreshToken)
                 .post(RequestBody.create(payload, JSON_TYPE))
@@ -569,7 +598,17 @@ public class SharecipeRequests {
      * @return
      */
     public static FutureWebResponse getRecipeImages(@NonNull String accessToken,
-                                                    int recipeId) {
+                                                    int recipeId,
+                                                    List<String> recipeImageIds) {
+
+        String payload;
+        try {
+            payload = new JSONObject()
+                    .put("recipe_image_ids", recipeImageIds)
+                    .toString();
+        } catch (JSONException e) {
+            return FutureWebResponse.failedFuture(e);
+        }
 
         return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
@@ -578,7 +617,7 @@ public class SharecipeRequests {
                         .addPathSegment(UrlPath.IMAGES)
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
-                .get()
+                .post(RequestBody.create(payload, JSON_TYPE))
                 .build());
     }
 
