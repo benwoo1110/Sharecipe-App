@@ -12,13 +12,11 @@ public class StepsViewHolder extends RecyclerView.ViewHolder {
 
     TextView stepNumber;
     TextView stepDescription;
-    TextView timeNeeded;
     RecipeStep step;
 
     public StepsViewHolder(View itemView){
         super(itemView);
         stepNumber = itemView.findViewById(R.id.stepNumber);
         stepDescription = itemView.findViewById(R.id.stepDescription);
-        timeNeeded = itemView.findViewById(R.id.stepTimeneeded);
     }
 }

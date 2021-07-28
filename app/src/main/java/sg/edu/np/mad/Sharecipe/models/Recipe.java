@@ -15,6 +15,10 @@ public class Recipe extends PartialRecipe {
     private int difficulty;
     @Expose
     private Duration totalTimeNeeded;
+    @Expose
+    private String description;
+    @Expose
+    private boolean isPublic;
     @Expose(serialize = false)
     private Date timeCreated;
     @Expose
@@ -23,6 +27,8 @@ public class Recipe extends PartialRecipe {
     private List<RecipeIngredient> ingredients;
     @Expose
     private List<RecipeImage> images;
+    @Expose
+    private List<RecipeTag> tags;
 
     public Recipe() { }
 
@@ -48,6 +54,22 @@ public class Recipe extends PartialRecipe {
 
     public void setTotalTimeNeeded(Duration totalTimeNeeded) {
         this.totalTimeNeeded = totalTimeNeeded;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean isPublic) {
+        this.isPublic = isPublic;
     }
 
     public Date getTimeCreated() {
@@ -76,6 +98,14 @@ public class Recipe extends PartialRecipe {
 
     public void setImages(List<RecipeImage> images) {
         this.images = images;
+    }
+
+    public List<RecipeTag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<RecipeTag> tags) {
+        this.tags = tags;
     }
 
     @Override

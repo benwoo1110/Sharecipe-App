@@ -16,6 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.OnTabSelectedListener;
@@ -73,9 +74,9 @@ public class RecipeCreateActivity extends AppCompatActivity {
                     App.getRecipeManager().addImages(createdRecipe, adapter.getImageFileList()).thenAccept(result -> {
                         RecipeCreateActivity.this.runOnUiThread(() -> {
                             Toast.makeText(RecipeCreateActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
-                            Intent resultData = new Intent();
-                            resultData.putExtra("recipe", createdRecipe);
-                            setResult(Activity.RESULT_OK, resultData);
+                            Intent intent = new Intent();
+                            intent.putExtra(IntentKeys.RECIPE_SAVE_INTENT, createdRecipe);
+                            setResult(Activity.RESULT_OK, intent);
                             finish();
                         });
                     });

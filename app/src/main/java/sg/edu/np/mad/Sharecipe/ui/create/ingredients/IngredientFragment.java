@@ -47,7 +47,6 @@ public class IngredientFragment extends Fragment {
         recyclerView.setLayoutManager(cLayoutManager);
 
         addIngredient.setOnClickListener(v -> {
-            // TODO: Create new ingredient, add to list
             RecipeIngredient newIngredient = new RecipeIngredient();
             newIngredient.setName("");
             newIngredient.setQuantity(1);

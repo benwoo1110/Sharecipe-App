@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.web;
+package sg.edu.np.mad.Sharecipe.contants;
 
 import okhttp3.HttpUrl;
 

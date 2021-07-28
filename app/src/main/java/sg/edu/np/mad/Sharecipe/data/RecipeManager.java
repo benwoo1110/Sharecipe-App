@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import okhttp3.ResponseBody;
@@ -127,6 +128,10 @@ public class RecipeManager {
      * @return Future result of the recipe data.
      */
     public FutureDataResult<Recipe> get(int recipeId) {
+        Recipe cachedRecipe = recipeCache.getIfPresent(recipeId);
+        if (cachedRecipe != null) {
+            return FutureDataResult.completed(cachedRecipe);
+        }
 
         FutureDataResult<Recipe> future = new FutureDataResult<>();
 
@@ -185,11 +190,32 @@ public class RecipeManager {
      * @param recipe
      * @return
      */
-    public FutureDataResult<List<Bitmap>> getImages(PartialRecipe recipe) {
+    public FutureDataResult<List<Bitmap>> getImages(Recipe recipe) {
+
+        List<RecipeImage> recipeImages = recipe.getImages();
+        List<Bitmap> bitmapList = new ArrayList<>();
+        if (recipeImages == null || recipeImages.isEmpty()) {
+            return FutureDataResult.completed(bitmapList);
+        }
+
+        List<String> needToGetFromWeb = new ArrayList<>();
+        for (RecipeImage recipeImage : recipeImages) {
+            Bitmap cachedImage = bitmapCacheManager.getBitmapFromMemCache(recipeImage.getFileId());
+            if (cachedImage == null) {
+                needToGetFromWeb.add(recipeImage.getFileId());
+            } else {
+                bitmapList.add(cachedImage);
+            }
+        }
+
+        if (needToGetFromWeb.isEmpty()) {
+            return FutureDataResult.completed(bitmapList);
+        }
+
         FutureDataResult<List<Bitmap>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.getRecipeImages(account.getAccessToken(), recipe.getRecipeId()).onSuccess(response -> {
+            SharecipeRequests.getRecipeImages(account.getAccessToken(), recipe.getRecipeId(), needToGetFromWeb).onSuccess(response -> {
                 ResponseBody body = response.body();
                 if (body == null) {
                     future.complete(new DataResult.Failed<>("No images data."));
@@ -197,8 +223,13 @@ public class RecipeManager {
                 }
                 List<Bitmap> images = new ArrayList<>();
                 try (ZipInputStream imageZipStream = new ZipInputStream(body.byteStream())) {
-                    while (imageZipStream.getNextEntry() != null) {
-                        images.add(BitmapFactory.decodeStream(imageZipStream));
+                    ZipEntry entry;
+                    while ((entry = imageZipStream.getNextEntry()) != null) {
+                        Bitmap bitmap = BitmapFactory.decodeStream(imageZipStream);
+                        if (bitmap != null) {
+                            images.add(bitmap);
+                            bitmapCacheManager.addBitmapToMemoryCache(entry.getName(), bitmap);
+                        }
                     }
                 } catch (IOException e) {
                     future.complete(new DataResult.Error<>(e));
