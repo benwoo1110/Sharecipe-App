@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 
@@ -23,7 +25,7 @@ public class StepsFragment extends Fragment {
     public static int LAUNCH_STEP_CREATION = 1;
 
     private StepsAdapter adapter;
-    private final ArrayList<RecipeStep> stepsList = new ArrayList<>();
+    private final List<RecipeStep> stepsList = new ArrayList<>();
     private final Recipe recipe;
 
     public StepsFragment(Recipe recipe) {
@@ -45,10 +47,9 @@ public class StepsFragment extends Fragment {
 
         button.setOnClickListener(v -> {
             RecipeStep newStep =  new RecipeStep();
-            int position = stepsList.size() + 1;
+            newStep.setStepNumber(stepsList.size() + 1);
             Intent intent = new Intent(getContext(), StepsCreationActivity.class);
-            intent.putExtra("New step", newStep);
-            intent.putExtra("Step number", position);
+            intent.putExtra(IntentKeys.RECIPE_STEP_EDIT_INTENT, newStep);
             startActivityForResult(intent, LAUNCH_STEP_CREATION);
         });
 
@@ -66,9 +67,16 @@ public class StepsFragment extends Fragment {
         }
 
         if (resultCode == Activity.RESULT_OK) {
-            RecipeStep inputStep = (RecipeStep) data.getSerializableExtra("Input step");
-            stepsList.add(inputStep);
-            adapter.notifyDataSetChanged();
+            RecipeStep inputStep = (RecipeStep) data.getSerializableExtra(IntentKeys.RECIPE_STEP_SAVE_INTENT);
+            System.out.println(inputStep);
+            int targetListIndex = inputStep.getStepNumber() - 1;
+            if (inputStep.getStepNumber() <= stepsList.size()) {
+                stepsList.set(targetListIndex, inputStep);
+                adapter.notifyItemChanged(targetListIndex);
+            } else {
+                stepsList.add(inputStep);
+                adapter.notifyItemInserted(targetListIndex);
+            }
         }
     }
 }

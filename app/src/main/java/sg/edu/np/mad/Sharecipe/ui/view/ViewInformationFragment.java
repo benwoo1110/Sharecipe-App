@@ -17,6 +17,8 @@ import java.util.Locale;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.ui.App;
+import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
 public class ViewInformationFragment extends Fragment {
 
@@ -34,12 +36,14 @@ public class ViewInformationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_information, container, false);
-        TextInputEditText displayName = view.findViewById(R.id.viewRecipeName);
-        TextInputEditText displayPortion = view.findViewById(R.id.viewPortion);
-        TextInputEditText displayPrep = view.findViewById(R.id.viewPrep);
-        TextInputEditText displayDifficulty = view.findViewById(R.id.viewDifficulty);
-        TextView displayTotalDiff = view.findViewById(R.id.totalDiff);
+        TextView displayName = view.findViewById(R.id.viewRecipeName);
         TextView displayAuthor = view.findViewById(R.id.viewAuthor);
+        TextView displayPortion = view.findViewById(R.id.viewPortion);
+        TextView displayPrep = view.findViewById(R.id.viewPrep);
+        TextView displayDifficulty = view.findViewById(R.id.viewDifficulty);
+        TextView displayTotalRating = view.findViewById(R.id.totalRate);
+        TextView displayDesc = view.findViewById(R.id.displayDescription);
+        TextView labelReview = view.findViewById(R.id.labelReview);
         RatingBar inputRating = view.findViewById(R.id.rateRecipe);
         RecyclerView recyclerView = view.findViewById(R.id.viewImages_recyclerView);
 
@@ -48,6 +52,12 @@ public class ViewInformationFragment extends Fragment {
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(cLayoutManager);
+
+        App.getRecipeManager().getImages(recipe).onSuccess(bitmaps -> {
+            getActivity().runOnUiThread(() -> {
+                adapter.setBitmapList(bitmaps);
+            });
+        }).onFailed(System.out::println).onError(Throwable::printStackTrace);
 
         // Set name of recipe
         displayName.setText(recipe.getName());
@@ -58,9 +68,9 @@ public class ViewInformationFragment extends Fragment {
         // Set preparation time needed, display not specified if it is not set
         displayPrep.setText(recipe.getTotalTimeNeeded().isZero()
                 ? "nil"
-                : String.format(Locale.ENGLISH, "%02d hours %02d minutes",
-                recipe.getTotalTimeNeeded().toHours(),
-                recipe.getTotalTimeNeeded().toMinutesPart()));
+                : FormatUtils.parseDurationLong(recipe.getTotalTimeNeeded()));
+
+        displayDesc.setText(recipe.getDescription());
 
         return view;
     }

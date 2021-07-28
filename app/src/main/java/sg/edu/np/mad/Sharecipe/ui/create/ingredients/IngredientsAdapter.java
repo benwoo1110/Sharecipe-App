@@ -30,8 +30,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsViewHold
     public IngredientsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_ingredients, parent, false);
         IngredientsViewHolder holder = new IngredientsViewHolder(item, ingredients);
-
-        holder.number.setOnLongClickListener(v -> {
+        item.setOnLongClickListener(v -> {
             removeDialog(holder.ingredient);
             return false;
         });
