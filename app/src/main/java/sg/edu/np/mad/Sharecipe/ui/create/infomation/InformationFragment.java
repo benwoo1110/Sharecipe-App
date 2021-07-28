@@ -62,7 +62,7 @@ public class InformationFragment extends Fragment {
     private final ArrayList<Uri> imageList = new ArrayList<>();
     private final Recipe recipe;
     private final List<File> imageFileList;
-    private final List<RecipeTag> recipeTags = new ArrayList<RecipeTag>();
+    private final List<RecipeTag> recipeTags = new ArrayList<>();
 
     private TextInputEditText prep;
     private MultiAutoCompleteTextView tags;
@@ -88,11 +88,12 @@ public class InformationFragment extends Fragment {
         ImageView enlargedImage = view.findViewById(R.id.expanded_image);
 
         createTags();
-        ArrayAdapter<String> tagAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, new ArrayList<String>() {{
-            add("What");
-            add("Huh");
-            add("Testing");
-        }});
+        TagNamesAdapter tagAdapter = new TagNamesAdapter(
+                getContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                tags,
+                TagNamesAdapter.convertToTagNames(recipeTags)
+        );
 
         tags.setAdapter(tagAdapter);
         tags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
@@ -245,7 +246,7 @@ public class InformationFragment extends Fragment {
     private void createRecipientChip(String tagName) {
         ChipDrawable chip = ChipDrawable.createFromResource(getActivity(), R.xml.chip);
         chip.setText(tagName);
-        chip.setBounds(5, 0, chip.getIntrinsicWidth(), chip.getIntrinsicHeight());
+        chip.setBounds(5, 0, chip.getIntrinsicWidth() + 5, chip.getIntrinsicHeight());
         ImageSpan span = new ImageSpan(chip);
         int endPoint = tags.getSelectionStart();
         tags.getText().setSpan(span, endPoint - tagName.length() - 2, endPoint, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
