@@ -71,6 +71,7 @@ public class ViewInformationFragment extends Fragment {
                 : FormatUtils.parseDurationLong(recipe.getTotalTimeNeeded()));
 
         displayDesc.setText(recipe.getDescription());
+        labelReview.setText("Leave a review for " + recipe.getName() + "!");
 
         return view;
     }
