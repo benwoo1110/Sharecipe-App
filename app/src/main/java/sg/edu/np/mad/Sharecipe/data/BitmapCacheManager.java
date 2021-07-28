@@ -20,7 +20,7 @@ public class BitmapCacheManager {
     }
 
     private final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-    private final int cacheSize = maxMemory / 6;
+    private final int cacheSize = maxMemory / 4;
     private final LruCache<String, Bitmap> bitmapCache;
 
     private BitmapCacheManager() {

@@ -173,6 +173,28 @@ public class UserManager {
     }
 
     /**
+     * Gets all user ids that is following the given user.
+     *
+     * @param user  The target user.
+     * @return Future result of followers data.
+     */
+    public FutureDataResult<List<UserFollow>> getFollowers(User user) {
+        FutureDataResult<List<UserFollow>> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getUserFollowers(account.getAccessToken(), account.getUserId()).onSuccessJson(future, (response, json) -> {
+                List<UserFollow> followList = new ArrayList<>();
+                for (JsonElement followData : json.getAsJsonArray()) {
+                    followList.add(JsonUtils.convertToObject(followData, UserFollow.class));
+                }
+                future.complete(new DataResult.Success<>(followList));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    /**
      * Gets user data of logged in account.
      *
      * @return Future result of user data.
