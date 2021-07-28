@@ -75,12 +75,17 @@ public class UserProfileActivity extends AppCompatActivity {
         });
 
         follow.setOnClickListener(v -> {
-            isFollowing ^= true;
             follow.setEnabled(false);
             if (isFollowing) {
-                userManager.accountUnfollowUser(user).onSuccess(aVoid -> updateFollowButton());
+                userManager.accountUnfollowUser(user).onSuccess(aVoid -> {
+                    isFollowing = false;
+                    updateFollowButton();
+                });
             } else {
-                userManager.accountFollowUser(user).onSuccess(aVoid -> updateFollowButton());
+                userManager.accountFollowUser(user).onSuccess(aVoid -> {
+                    isFollowing = true;
+                    updateFollowButton();
+                });
             }
         });
     }
