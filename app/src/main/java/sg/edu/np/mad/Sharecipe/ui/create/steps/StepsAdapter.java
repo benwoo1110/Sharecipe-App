@@ -34,7 +34,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewHolder> {
 
         item.setOnClickListener(v -> {
             Intent intent = new Intent(activity, StepsCreationActivity.class);
-            intent.putExtra(IntentKeys.RECIPE_STEP_EDIT_INTENT, holder.step);
+            intent.putExtra(IntentKeys.RECIPE_STEP_EDIT, holder.step);
             activity.startActivityForResult(intent, StepsFragment.LAUNCH_STEP_CREATION);
         });
 

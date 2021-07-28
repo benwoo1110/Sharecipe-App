@@ -49,7 +49,7 @@ public class StepsFragment extends Fragment {
             RecipeStep newStep =  new RecipeStep();
             newStep.setStepNumber(stepsList.size() + 1);
             Intent intent = new Intent(getContext(), StepsCreationActivity.class);
-            intent.putExtra(IntentKeys.RECIPE_STEP_EDIT_INTENT, newStep);
+            intent.putExtra(IntentKeys.RECIPE_STEP_EDIT, newStep);
             startActivityForResult(intent, LAUNCH_STEP_CREATION);
         });
 
@@ -67,7 +67,7 @@ public class StepsFragment extends Fragment {
         }
 
         if (resultCode == Activity.RESULT_OK) {
-            RecipeStep inputStep = (RecipeStep) data.getSerializableExtra(IntentKeys.RECIPE_STEP_SAVE_INTENT);
+            RecipeStep inputStep = (RecipeStep) data.getSerializableExtra(IntentKeys.RECIPE_STEP_SAVE);
             System.out.println(inputStep);
             int targetListIndex = inputStep.getStepNumber() - 1;
             if (inputStep.getStepNumber() <= stepsList.size()) {
