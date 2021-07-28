@@ -165,6 +165,35 @@ public class SharecipeRequests {
     }
 
     /**
+     * POST `/account/delete` endpoint.
+     *
+     * @param refreshToken
+     * @return
+     */
+    @NonNull
+    public static FutureWebResponse postAccountDelete(@NonNull String refreshToken,
+                                                      int userId) {
+
+        String payload;
+        try {
+            payload = new JSONObject()
+                    .put("user_id", userId)
+                    .toString();
+        } catch (JSONException e) {
+            return FutureWebResponse.failedFuture(e);
+        }
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.ACCOUNT)
+                        .addPathSegment(UrlPath.DELETE)
+                        .build())
+                .header("Authorization", "Bearer " + refreshToken)
+                .post(RequestBody.create(payload, JSON_TYPE))
+                .build());
+    }
+
+    /**
      * GET `/users` endpoint.
      *
      * @param accessToken
