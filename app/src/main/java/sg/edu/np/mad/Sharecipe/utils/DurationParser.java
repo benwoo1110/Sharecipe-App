@@ -12,6 +12,9 @@ import org.threeten.bp.Duration;
 
 import java.lang.reflect.Type;
 
+/**
+ * Handlers conversion between seconds int and {@link Duration} object.
+ */
 public class DurationParser implements JsonDeserializer<Duration>, JsonSerializer<Duration> {
 
     @Override

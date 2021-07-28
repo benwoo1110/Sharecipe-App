@@ -19,7 +19,7 @@ import okhttp3.RequestBody;
 import sg.edu.np.mad.Sharecipe.contants.UrlPath;
 
 /**
- * Handles web requests to the server.
+ * Implement the raw web request endpoints to the web server.
  */
 public class SharecipeRequests {
 

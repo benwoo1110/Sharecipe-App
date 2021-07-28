@@ -7,6 +7,9 @@ import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
 
+/**
+ * Contains actions for generally getting of large data.
+ */
 public class SearchManager {
 
     private static SearchManager instance;

@@ -13,6 +13,10 @@ import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
 
+/**
+ * Wraps the async response of a web request into a {@link CompletableFuture} with additional
+ * methods to make life easier.
+ */
 public class FutureWebResponse extends CompletableFuture<Response> {
 
     public static FutureWebResponse failedFuture(Throwable throwable) {

@@ -10,12 +10,26 @@ import java9.util.function.Consumer;
  */
 public class FutureDataResult<T> extends CompletableFuture<DataResult<T>> {
 
+    /**
+     * Shortcut to created an already completed future.
+     *
+     * @param result    The completed result
+     * @param <T>       Completed object type
+     * @return The new {@link FutureDataResult} created.
+     */
     public static <T> FutureDataResult<T> completed(DataResult<T> result) {
         FutureDataResult<T> future =  new FutureDataResult<>();
         future.complete(result);
         return future;
     }
 
+    /**
+     * Shortcut to created an already completed successful future.
+     *
+     * @param t     The completed object
+     * @param <T>   Completed object type
+     * @return The new {@link FutureDataResult} created.
+     */
     public static <T> FutureDataResult<T> completed(T t) {
         return completed(new DataResult.Success<T>(t));
     }
@@ -50,6 +64,12 @@ public class FutureDataResult<T> extends CompletableFuture<DataResult<T>> {
         return this;
     }
 
+    /**
+     * Shortcut to pass failed result from one future to another future.
+     *
+     * @param otherFuture   Target future to pass result to.
+     * @return The same {@link FutureDataResult} for chaining.
+     */
     public FutureDataResult<T> onFailed(FutureDataResult<?> otherFuture) {
         onFailed(failedReason -> otherFuture.complete(new DataResult.Failed<>(failedReason)));
         return this;
@@ -70,6 +90,12 @@ public class FutureDataResult<T> extends CompletableFuture<DataResult<T>> {
         return this;
     }
 
+    /**
+     * Shortcut to pass error result from one future to another future.
+     *
+     * @param otherFuture   Target future to pass result to.
+     * @return The same {@link FutureDataResult} for chaining.
+     */
     public FutureDataResult<T> onError(FutureDataResult<?> otherFuture) {
         onError(throwable -> otherFuture.complete(new DataResult.Error<>(throwable)));
         return this;

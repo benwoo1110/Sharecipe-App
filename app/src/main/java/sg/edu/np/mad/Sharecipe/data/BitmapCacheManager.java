@@ -32,11 +32,25 @@ public class BitmapCacheManager {
         };
     }
 
+    /**
+     * Adds an image into cache for fast loading.
+     *
+     * @param fileId    Unique identifier for the image file
+     * @param bitmap
+     */
     public void addBitmapToMemoryCache(String fileId, Bitmap bitmap) {
         bitmapCache.put(fileId, bitmap);
     }
 
+    /**
+     * Gets image from fast memory cache.
+     *
+     * @param fileId
+     * @return The image bitmap if present, else null.
+     */
     public Bitmap getBitmapFromMemCache(String fileId) {
         return bitmapCache.get(fileId);
     }
+
+    //TODO: Method to remove from cache.
 }

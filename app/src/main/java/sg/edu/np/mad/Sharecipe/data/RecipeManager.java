@@ -99,11 +99,11 @@ public class RecipeManager {
     }
 
     /**
+     * Add recipe images for a given recipe.
      *
-     *
-     * @param recipe
-     * @param imageFiles
-     * @return
+     * @param recipe        Target recipe to add images of.
+     * @param imageFiles    The images to add.
+     * @return Success status, no actual data returned.
      */
     public FutureDataResult<Void> addImages(PartialRecipe recipe, List<File> imageFiles) {
         if (imageFiles == null || imageFiles.isEmpty()) {
@@ -146,10 +146,10 @@ public class RecipeManager {
     }
 
     /**
+     * Gets the icon image loaded into a bitmap.
      *
-     *
-     * @param recipe
-     * @return
+     * @param recipe    Target recipe to get the icon of.
+     * @return Future result of the image.
      */
     public FutureDataResult<Bitmap> getIcon(PartialRecipe recipe) {
         RecipeImage icon = recipe.getIcon();
@@ -185,10 +185,10 @@ public class RecipeManager {
     }
 
     /**
+     * Gets all the images loaded into a bitmap for the given recipe.
      *
-     *
-     * @param recipe
-     * @return
+     * @param recipe    Target recipe to get image of.
+     * @return Future result of a list of image.
      */
     public FutureDataResult<List<Bitmap>> getImages(Recipe recipe) {
 
@@ -242,10 +242,10 @@ public class RecipeManager {
     }
 
     /**
+     * Gets all the user ids that liked this recipe.
      *
-     *
-     * @param recipe
-     * @return
+     * @param recipe    Target recipe to get likes of.
+     * @return Future result of a list of {@link RecipeLike} containing user ids.
      */
     public FutureDataResult<List<RecipeLike>> getLikes(PartialRecipe recipe) {
         FutureDataResult<List<RecipeLike>> future = new FutureDataResult<>();
@@ -264,10 +264,11 @@ public class RecipeManager {
     }
 
     /**
+     * Gets all the recipe created by the given user. Only public account user doesn't
+     * have the required access.
      *
-     *
-     * @param userId
-     * @return
+     * @param userId    //TODO this probably should be the user object.
+     * @return Future result with a list of recipe.
      */
     public FutureDataResult<List<PartialRecipe>> getAllForUser(int userId) {
         FutureDataResult<List<PartialRecipe>> future = new FutureDataResult<>();
@@ -299,10 +300,10 @@ public class RecipeManager {
     }
 
     /**
+     * When account user likes recipe.
      *
-     *
-     * @param recipe
-     * @return
+     * @param recipe    Target recipe that was liked.
+     * @return Success status, no actual data returned.
      */
     public FutureDataResult<Void> accountLikeRecipe(PartialRecipe recipe) {
         FutureDataResult<Void> future = new FutureDataResult<>();
@@ -317,10 +318,10 @@ public class RecipeManager {
     }
 
     /**
+     * When account user remove like from a recipe.
      *
-     *
-     * @param recipe
-     * @return
+     * @param recipe    Target recipe that was liked.
+     * @return Success status, no actual data returned.
      */
     public FutureDataResult<Void> accountUnlikeRecipe(PartialRecipe recipe) {
         FutureDataResult<Void> future = new FutureDataResult<>();

@@ -108,6 +108,12 @@ public class JsonUtils {
         }
     }
 
+    /**
+     * Convert json element to key object mapping.
+     *
+     * @param json  The json data with object information.
+     * @return The map, null if an error occurred.
+     */
     public static Map<String, Object> convertToMap(JsonElement json) {
         return GSON.fromJson(json, MAP_TYPE);
     }
