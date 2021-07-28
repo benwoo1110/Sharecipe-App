@@ -20,7 +20,6 @@ import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.OnTabSelectedListener;
-import sg.edu.np.mad.Sharecipe.ui.main.recipe.MyRecipeFragment;
 
 // TODO: Finish up bottom menu bar including their actions, add a cross out bar on top to close recipe creation (ask if want to save as draft)
 // TODO: Implement option to take in all inputs and save recipe as draft or publish, with input validation (notify users of missing fields)
@@ -75,7 +74,7 @@ public class RecipeCreateActivity extends AppCompatActivity {
                         RecipeCreateActivity.this.runOnUiThread(() -> {
                             Toast.makeText(RecipeCreateActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent();
-                            intent.putExtra(IntentKeys.RECIPE_SAVE_INTENT, createdRecipe);
+                            intent.putExtra(IntentKeys.RECIPE_SAVE, createdRecipe);
                             setResult(Activity.RESULT_OK, intent);
                             finish();
                         });

@@ -31,7 +31,7 @@ public class StepsCreationActivity extends AppCompatActivity {
         TextInputEditText input = findViewById(R.id.input_StepDesc);
 
         Intent data = getIntent();
-        RecipeStep step = (RecipeStep) data.getSerializableExtra(IntentKeys.RECIPE_STEP_EDIT_INTENT);
+        RecipeStep step = (RecipeStep) data.getSerializableExtra(IntentKeys.RECIPE_STEP_EDIT);
 
         displayStepNo.setText("Step " + step.getStepNumber());
         input.setText(step.getDescription());
@@ -71,7 +71,7 @@ public class StepsCreationActivity extends AppCompatActivity {
 
     private void saveInput(RecipeStep returnStep) {
         Intent returnIntent = new Intent();
-        returnIntent.putExtra(IntentKeys.RECIPE_STEP_SAVE_INTENT, returnStep);
+        returnIntent.putExtra(IntentKeys.RECIPE_STEP_SAVE, returnStep);
         setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }

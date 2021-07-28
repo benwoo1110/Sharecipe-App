@@ -12,10 +12,8 @@ import com.google.android.material.tabs.TabLayout;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
-import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.OnTabSelectedListener;
-import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateAdapter;
 
 public class RecipeViewActivity extends AppCompatActivity {
 
@@ -25,7 +23,7 @@ public class RecipeViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_view);
 
         Intent getRecipe = getIntent();
-        PartialRecipe selectedRecipe = (PartialRecipe) getRecipe.getSerializableExtra(IntentKeys.RECIPE_VIEW_INTENT);
+        PartialRecipe selectedRecipe = (PartialRecipe) getRecipe.getSerializableExtra(IntentKeys.RECIPE_VIEW);
 
         TabLayout tabLayout = findViewById(R.id.viewRecipeTab);
         ViewPager2 viewpager = findViewById(R.id.view_recipe_viewpager);
