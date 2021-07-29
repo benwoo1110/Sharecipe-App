@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
@@ -87,8 +88,24 @@ public class InformationFragment extends Fragment {
         tags.setAdapter(tagAdapter);
         tags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
         tags.setThreshold(1);
+
         tags.setOnItemClickListener((parent, view1, position, id) -> {
             createRecipientChip(tagAdapter.getItem(position));
+        });
+
+        tags.addTextChangedListener((AfterTextChangedWatcher) s -> {
+            //TODO This is a bad way to do this.
+            String[] tagNames = s.toString().split(", ");
+            List<RecipeTag> selectedTags = new ArrayList<>();
+            for (String tagName : tagNames) {
+                for (RecipeTag recipeTag : recipeTags) {
+                    if (tagName.equals(recipeTag.getName())) {
+                        selectedTags.add(recipeTag);
+                        break;
+                    }
+                }
+            }
+            recipe.setTags(selectedTags);
         });
 
         adapter = new ImagesAdapter(getActivity(), imageList, imageFileList, enlargedImage, view);
