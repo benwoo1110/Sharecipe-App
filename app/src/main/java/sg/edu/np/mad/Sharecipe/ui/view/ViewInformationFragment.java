@@ -18,6 +18,7 @@ import java.util.Locale;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
@@ -42,10 +43,7 @@ public class ViewInformationFragment extends Fragment {
         TextView displayPortion = view.findViewById(R.id.viewPortion);
         TextView displayPrep = view.findViewById(R.id.viewPrep);
         TextView displayDifficulty = view.findViewById(R.id.viewDifficulty);
-        TextView displayTotalRating = view.findViewById(R.id.totalRate);
         TextView displayDesc = view.findViewById(R.id.displayDescription);
-        TextView labelReview = view.findViewById(R.id.labelReview);
-        RatingBar inputRating = view.findViewById(R.id.rateRecipe);
         ImageView enlargedImage = view.findViewById(R.id.view_enlargedimage);
         RecyclerView recyclerView = view.findViewById(R.id.viewImages_recyclerView);
 
@@ -73,7 +71,8 @@ public class ViewInformationFragment extends Fragment {
                 : FormatUtils.parseDurationLong(recipe.getTotalTimeNeeded()));
 
         displayDesc.setText(recipe.getDescription());
-        labelReview.setText("Leave a review for " + recipe.getName() + "!");
+        displayDifficulty.setText("Difficulty: " + String.valueOf(recipe.getDifficulty()) + "/5");
+
         return view;
     }
 }

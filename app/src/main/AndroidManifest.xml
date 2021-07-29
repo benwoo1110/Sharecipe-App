@@ -18,6 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sharecipe">
+        <activity android:name=".ui.view.RecipeReviewActivity"></activity>
         <activity
             android:name=".ui.SplashActivity"
             android:theme="@style/AppTheme.Launcher">

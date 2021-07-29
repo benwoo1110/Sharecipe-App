@@ -15,6 +15,7 @@ import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.OnTabSelectedListener;
+import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 
 public class RecipeViewActivity extends AppCompatActivity {
 
@@ -48,6 +49,11 @@ public class RecipeViewActivity extends AppCompatActivity {
         bottomNavigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.recipe_review_menu) {
+                App.getRecipeManager().get(selectedRecipe.getRecipeId()).onSuccess(recipe -> {
+                    Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
+                    review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
+                    startActivity(review);
+                });
                 // TODO: Go to review screen
                 return false;
             } else if (itemId == R.id.recipe_edit_menu) {
