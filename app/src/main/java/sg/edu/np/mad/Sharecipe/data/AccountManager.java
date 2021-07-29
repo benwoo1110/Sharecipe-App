@@ -159,7 +159,7 @@ public class AccountManager {
 
         FutureDataResult<Void> future = new FutureDataResult<>();
 
-        SharecipeRequests.postAccountDelete(account.getRefreshToken(), account.getUserId()).onSuccess(response -> {
+        SharecipeRequests.deleteAccountDelete(account.getRefreshToken(), account.getUserId()).onSuccess(response -> {
             setAccount(null);
             future.complete(new DataResult.Success<>(null));
         }).onFailed(future).onError(future);

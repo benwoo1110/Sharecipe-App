@@ -46,7 +46,7 @@
         android:id="@+id/followers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="94dp"
+        android:layout_marginTop="92dp"
         android:layout_marginEnd="40dp"
         android:text="Followers:"
         app:layout_constraintEnd_toEndOf="parent"
@@ -56,9 +56,9 @@
         android:id="@+id/followerNo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:layout_marginEnd="59dp"
-        android:text="no."
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="68dp"
+        android:text="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/followers" />
 
@@ -78,9 +78,9 @@
         android:id="@+id/followingNo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
-        android:layout_marginEnd="96dp"
-        android:text="no."
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="104dp"
+        android:text="0"
         app:layout_constraintEnd_toStartOf="@+id/followerNo"
         app:layout_constraintTop_toBottomOf="@+id/following" />
 
@@ -91,7 +91,7 @@
         android:layout_marginStart="158dp"
         android:layout_marginEnd="159dp"
         android:layout_marginBottom="145dp"
-        android:text="Follow"
+        android:text=". . ."
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

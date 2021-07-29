@@ -18,9 +18,11 @@ import java.io.File;
 
 import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
+import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 
 public class EditProfileActivity extends DynamicFocusAppCompatActivity {
@@ -31,6 +33,7 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
     private TextView editBio;
     private TextView editPassword;
     private Button saveButton;
+    private Button deleteButton;
 
     private String newProfileImagePath;
 
@@ -44,6 +47,7 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
         editUsername = findViewById(R.id.editUsername);
         editBio = findViewById(R.id.editDescription);
         editPassword = findViewById(R.id.editPassword);
+        deleteButton = findViewById(R.id.deleteAcc);
 
         UserManager userManager = App.getUserManager();
 
@@ -89,12 +93,23 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
                     .show();
         });
 
-        /*editPassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                UserManager.getInstance(EditProfileActivity.this).getAccountUser()
-            }
+        /*editPassword.setOnClickListener(v -> {
+            AccountManager.getInstance(this)
         });*/
+
+        deleteButton.setOnClickListener(v -> {
+            new AlertDialog.Builder(EditProfileActivity.this)
+                    .setTitle("Delete account")
+                    .setMessage("Are you sure you want to delete account?").setCancelable(false)
+                    .setNegativeButton("Cancel",null)
+                    .setPositiveButton("Delete", (dialog, which) -> {
+                        Toast.makeText(EditProfileActivity.this, "Account deleted", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(EditProfileActivity.this, LoginActivity.class);
+                        AccountManager.getInstance(this).delete();
+                        startActivity(intent);
+                    })
+                    .show();
+        });
     }
 
     @Override
