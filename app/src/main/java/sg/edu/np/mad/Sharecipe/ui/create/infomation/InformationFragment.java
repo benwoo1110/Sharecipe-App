@@ -3,22 +3,16 @@ package sg.edu.np.mad.Sharecipe.ui.create.infomation;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Spanned;
-import android.text.TextWatcher;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.NumberPicker;
@@ -26,24 +20,20 @@ import android.widget.RatingBar;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.chip.ChipDrawable;
-import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.threeten.bp.Duration;
-import org.threeten.bp.temporal.TemporalAmount;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
@@ -98,8 +88,24 @@ public class InformationFragment extends Fragment {
         tags.setAdapter(tagAdapter);
         tags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
         tags.setThreshold(1);
+
         tags.setOnItemClickListener((parent, view1, position, id) -> {
             createRecipientChip(tagAdapter.getItem(position));
+        });
+
+        tags.addTextChangedListener((AfterTextChangedWatcher) s -> {
+            //TODO This is a bad way to do this.
+            String[] tagNames = s.toString().split(", ");
+            List<RecipeTag> selectedTags = new ArrayList<>();
+            for (String tagName : tagNames) {
+                for (RecipeTag recipeTag : recipeTags) {
+                    if (tagName.equals(recipeTag.getName())) {
+                        selectedTags.add(recipeTag);
+                        break;
+                    }
+                }
+            }
+            recipe.setTags(selectedTags);
         });
 
         adapter = new ImagesAdapter(getActivity(), imageList, imageFileList, enlargedImage, view);
@@ -137,7 +143,7 @@ public class InformationFragment extends Fragment {
     }
 
     public void addDurationDialog() {
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.duration_picker, null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog_duration_picker, null);
         NumberPicker inputHours = view.findViewById(R.id.inputHours);
         NumberPicker inputMinutes = view.findViewById(R.id.inputMinutes);
 

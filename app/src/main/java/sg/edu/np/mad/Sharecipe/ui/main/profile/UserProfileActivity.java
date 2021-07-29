@@ -55,6 +55,10 @@ public class UserProfileActivity extends AppCompatActivity {
                 description.setText(user.getBio());
             });
 
+            userManager.getFollows(user).onSuccess(userFollows -> {
+                runOnUiThread(() -> following.setText(String.valueOf(userFollows.size())));
+            });
+
             userManager.getFollowers(user).onSuccess(userFollowers -> {
                 runOnUiThread(() -> followers.setText(String.valueOf(userFollowers.size())));
 
