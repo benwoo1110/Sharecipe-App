@@ -51,10 +51,6 @@ import sg.edu.np.mad.Sharecipe.models.RecipeTag;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
 import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
-// TODO: Set limit for images, remove plus button when limit is reached
-// TODO: Saving and storing of values for all input fields along with input validation (required fields)
-// TODO: Touch up on the UI
-
 public class InformationFragment extends Fragment {
 
     private ImagesAdapter adapter;
