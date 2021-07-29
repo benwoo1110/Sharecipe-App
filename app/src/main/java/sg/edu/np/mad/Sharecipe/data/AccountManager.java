@@ -1,6 +1,5 @@
 package sg.edu.np.mad.Sharecipe.data;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 

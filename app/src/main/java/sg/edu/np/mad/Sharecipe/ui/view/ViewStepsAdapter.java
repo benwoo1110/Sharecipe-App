@@ -24,7 +24,7 @@ public class ViewStepsAdapter extends RecyclerView.Adapter<ViewStepsViewholder> 
     @Override
     @NotNull
     public ViewStepsViewholder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_viewsteps, parent, false);
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_holder_view_steps, parent, false);
         ViewStepsViewholder holder = new ViewStepsViewholder(item);
 
         return holder;
