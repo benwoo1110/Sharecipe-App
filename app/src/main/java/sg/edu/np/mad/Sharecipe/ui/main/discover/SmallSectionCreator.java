@@ -10,16 +10,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.takusemba.multisnaprecyclerview.MultiSnapHelper;
 import com.takusemba.multisnaprecyclerview.SnapGravity;
 
+import java.util.List;
+
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.ui.common.SectionCreator;
 import sg.edu.np.mad.Sharecipe.ui.common.SectionViewHolder;
 
 public class SmallSectionCreator implements SectionCreator {
 
     private final String headerText;
+    private final List<PartialRecipe> recipes;
 
-    public SmallSectionCreator(String headerText) {
+    public SmallSectionCreator(String headerText, List<PartialRecipe> recipes) {
         this.headerText = headerText;
+        this.recipes = recipes;
     }
 
     @Override
@@ -43,7 +48,7 @@ public class SmallSectionCreator implements SectionCreator {
             header = itemView.findViewById(R.id.discoverSectionTitle);
             discoverSectionRecyclerView = itemView.findViewById(R.id.discoverSectionRecyclerView);
 
-            SmallCardAdapter adapter = new SmallCardAdapter();
+            SmallCardAdapter adapter = new SmallCardAdapter(recipes);
             LinearLayoutManager layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
             discoverSectionRecyclerView.setAdapter(adapter);
             discoverSectionRecyclerView.setLayoutManager(layoutManager);

@@ -2,6 +2,7 @@ package sg.edu.np.mad.Sharecipe.data;
 
 import android.content.Context;
 
+import sg.edu.np.mad.Sharecipe.models.Discover;
 import sg.edu.np.mad.Sharecipe.models.SearchResult;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
@@ -44,6 +45,18 @@ public class SearchManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getSearch(account.getAccessToken(), searchQuery).onSuccessModel(future, SearchResult.class, (response, searchResult) -> {
+                future.complete(new DataResult.Success<>(searchResult));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    public FutureDataResult<Discover> discover() {
+        FutureDataResult<Discover> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getDiscover(account.getAccessToken()).onSuccessModel(future, Discover.class, (response, searchResult) -> {
                 future.complete(new DataResult.Success<>(searchResult));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);

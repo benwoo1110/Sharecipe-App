@@ -14,7 +14,7 @@ public class PartialRecipe implements Serializable {
     protected int recipeId;
     @Expose
     protected String name;
-    @Expose
+   @Expose
     protected RecipeImage icon;
 
     @Deprecated

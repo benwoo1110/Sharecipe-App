@@ -1,5 +1,7 @@
 package sg.edu.np.mad.Sharecipe.ui.main.discover;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,11 +9,18 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
+import sg.edu.np.mad.Sharecipe.ui.App;
 
 public class LargeCardAdapter extends RecyclerView.Adapter<LargeCardViewHolder> {
 
-    public LargeCardAdapter() {
+    private final List<PartialRecipe> recipes;
+
+    public LargeCardAdapter(List<PartialRecipe> recipes) {
+        this.recipes = recipes;
     }
 
     @NonNull
@@ -23,11 +32,20 @@ public class LargeCardAdapter extends RecyclerView.Adapter<LargeCardViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull LargeCardViewHolder holder, int position) {
-
+        PartialRecipe recipe = recipes.get(position);
+        holder.title.setText(recipe.getName());
+        if (recipe.getIcon() != null) {
+            App.getRecipeManager().getIcon(recipe)
+                    .onSuccess(bm ->  {
+                        new Handler(Looper.getMainLooper()).post(() -> holder.image.setImageBitmap(bm));
+                    });
+        } else {
+            holder.image.setImageResource(R.drawable.ic_baseline_fastfood_24);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return 5;
+        return recipes.size();
     }
 }
