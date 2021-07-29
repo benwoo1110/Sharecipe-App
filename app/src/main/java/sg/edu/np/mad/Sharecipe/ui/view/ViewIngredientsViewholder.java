@@ -17,7 +17,6 @@ public class ViewIngredientsViewholder extends RecyclerView.ViewHolder {
     public ViewIngredientsViewholder(View itemView) {
         super(itemView);
 
-        number = itemView.findViewById(R.id.displayIngredientNumber);
         name = itemView.findViewById(R.id.displayIngredientName);
         quantity = itemView.findViewById(R.id.displayIngredientQuantity);
         unit = itemView.findViewById(R.id.displayingredientUnit);
