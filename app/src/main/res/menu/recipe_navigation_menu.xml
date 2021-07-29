@@ -8,11 +8,6 @@
         android:title="Back"
         app:labelVisibilityMode="labeled" />
     <item
-        android:id="@+id/recipe_clear_menu"
-        android:icon="@drawable/outline_delete_24"
-        android:title="Clear"
-        app:labelVisibilityMode="labeled" />
-    <item
         android:id="@+id/recipe_save_menu"
         android:icon="@drawable/outline_save_24"
         android:title="Save"
@@ -20,6 +15,11 @@
     <item
         android:id="@+id/recipe_done_menu"
         android:icon="@drawable/done"
-        android:title="Done"
+        android:title="Publish"
         app:labelVisibilityMode="labeled" />
+    <item
+        android:id="@+id/invisible"
+        android:visible="false"
+        android:icon="@drawable/ic_baseline_person_24"
+        android:title="invisible" />
 </menu>

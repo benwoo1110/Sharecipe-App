@@ -43,6 +43,8 @@ public class StepsCreationActivity extends AppCompatActivity {
         close.setOnClickListener(v -> {
             if (input.getText().toString().equals(originalDesc)) {
                 finish();
+            } else if (input.getText().toString().equals("")) {
+                finish();
             } else {
                 checkSaveDialog(step, originalDesc);
             }
