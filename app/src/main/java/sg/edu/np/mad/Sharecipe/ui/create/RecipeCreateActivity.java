@@ -19,6 +19,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
+import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.OnTabSelectedListener;
@@ -35,6 +36,9 @@ public class RecipeCreateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_create);
 
         Recipe recipe = new Recipe();
+
+        Intent getRecipe = getIntent();
+        Recipe editRecipe = (Recipe) getRecipe.getSerializableExtra(IntentKeys.RECIPE_EDIT);
 
         TabLayout tabLayout = findViewById(R.id.recipeTab);
         ViewPager2 viewPager = findViewById(R.id.recipe_info_viewpager);
