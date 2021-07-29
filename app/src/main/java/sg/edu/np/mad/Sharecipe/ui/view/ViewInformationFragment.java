@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -45,9 +46,10 @@ public class ViewInformationFragment extends Fragment {
         TextView displayDesc = view.findViewById(R.id.displayDescription);
         TextView labelReview = view.findViewById(R.id.labelReview);
         RatingBar inputRating = view.findViewById(R.id.rateRecipe);
+        ImageView enlargedImage = view.findViewById(R.id.view_enlargedimage);
         RecyclerView recyclerView = view.findViewById(R.id.viewImages_recyclerView);
 
-        ViewImagesAdapter adapter = new ViewImagesAdapter();
+        ViewImagesAdapter adapter = new ViewImagesAdapter(getActivity(), enlargedImage, view);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
 
         recyclerView.setAdapter(adapter);
