@@ -74,7 +74,6 @@ public class ViewInformationFragment extends Fragment {
 
         displayDesc.setText(recipe.getDescription());
         labelReview.setText("Leave a review for " + recipe.getName() + "!");
-
         return view;
     }
 }
