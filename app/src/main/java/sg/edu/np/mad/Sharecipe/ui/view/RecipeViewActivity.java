@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import sg.edu.np.mad.Sharecipe.R;
@@ -27,6 +28,8 @@ public class RecipeViewActivity extends AppCompatActivity {
 
         TabLayout tabLayout = findViewById(R.id.viewRecipeTab);
         ViewPager2 viewpager = findViewById(R.id.view_recipe_viewpager);
+        BottomNavigationView bottomNavigation = findViewById(R.id.viewRecipe_navigation);
+        bottomNavigation.setSelectedItemId(R.id.invisibleView);
 
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
         tabLayout.addTab(tabLayout.newTab().setText("Ingredients"));
@@ -41,6 +44,21 @@ public class RecipeViewActivity extends AppCompatActivity {
         });
 
         tabLayout.addOnTabSelectedListener((OnTabSelectedListener) tab -> viewpager.setCurrentItem(tab.getPosition()));
+
+        bottomNavigation.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.recipe_review_menu) {
+                // TODO: Go to review screen
+                return false;
+            } else if (itemId == R.id.recipe_edit_menu) {
+                // TODO: Edit recipe
+                return false;
+            } else if (itemId == R.id.recipe_like_menu) {
+                // TODO: Like recipe
+                return false;
+            }
+            return false;
+        });
 
         App.getRecipeManager().get(selectedRecipe.getRecipeId()).onSuccess(recipe -> {
             RecipeViewActivity.this.runOnUiThread(() -> {
