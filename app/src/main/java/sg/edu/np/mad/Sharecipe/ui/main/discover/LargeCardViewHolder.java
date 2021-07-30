@@ -17,7 +17,8 @@ public class LargeCardViewHolder extends RecyclerView.ViewHolder {
 
     final TextView title;
     final ImageView image;
-    PartialRecipe recipe;
+
+    int recipeId;
 
     public LargeCardViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -27,7 +28,7 @@ public class LargeCardViewHolder extends RecyclerView.ViewHolder {
 
         itemView.setOnClickListener(v -> {
             Intent viewRecipe = new Intent(itemView.getContext(), RecipeViewActivity.class);
-            viewRecipe.putExtra(IntentKeys.RECIPE_VIEW, recipe.getRecipeId());
+            viewRecipe.putExtra(IntentKeys.RECIPE_VIEW, recipeId);
             itemView.getContext().startActivity(viewRecipe);
         });
     }

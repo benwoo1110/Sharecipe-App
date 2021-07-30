@@ -33,7 +33,7 @@ public class LargeCardAdapter extends RecyclerView.Adapter<LargeCardViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull LargeCardViewHolder holder, int position) {
         PartialRecipe recipe = recipes.get(position);
-        holder.recipe = recipe;
+        holder.recipeId = recipe.getRecipeId();
         holder.title.setText(recipe.getName());
         if (recipe.getIcon() != null) {
             App.getRecipeManager().getIcon(recipe)
