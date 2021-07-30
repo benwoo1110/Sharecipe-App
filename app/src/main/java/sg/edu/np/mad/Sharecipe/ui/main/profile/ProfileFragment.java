@@ -11,6 +11,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
@@ -38,26 +41,24 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        username = view.findViewById(R.id.username);
+        description = view.findViewById(R.id.description);
+        profileImage = view.findViewById(R.id.profileImage);
         Button editProfileButton = view.findViewById(R.id.editUserinfo);
         Button editPasswordButton = view.findViewById(R.id.passwordButton);
         Button logoutButton = view.findViewById(R.id.buttonLogout);
-        username = view.findViewById(R.id.username);
-        description = view.findViewById(R.id.description);
-        TextView followingNo = view.findViewById(R.id.followingNo);
-        TextView followersNo = view.findViewById(R.id.followerNo);
-        profileImage = view.findViewById(R.id.profileImage);
+        RecyclerView gridStatsView = view.findViewById(R.id.statsRecyclerView);
 
         userManager = App.getUserManager();
-
         userManager.getAccountUser().onSuccess(user -> {
             getActivity().runOnUiThread(() -> {
                 username.setText(user.getUsername());
                 description.setText(user.getBio());
                 userManager.getFollows(user).onSuccess(userFollows -> {
-                    getActivity().runOnUiThread(() -> followingNo.setText(String.valueOf(userFollows.size())));
+                    // getActivity().runOnUiThread(() -> followingNo.setText(String.valueOf(userFollows.size())));
                 });
                 userManager.getFollowers(user).onSuccess(userFollows -> {
-                    getActivity().runOnUiThread(() -> followersNo.setText(String.valueOf(userFollows.size())));
+                    // getActivity().runOnUiThread(() -> followersNo.setText(String.valueOf(userFollows.size())));
                 });
             });
             userManager.getProfileImage(user)
@@ -86,6 +87,16 @@ public class ProfileFragment extends Fragment {
             Intent intent = new Intent(getActivity(), EditPasswordActivity.class);
             getActivity().startActivity(intent);
         });
+
+        StatsAdapter adapter = new StatsAdapter();
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2) {
+            @Override
+            public boolean canScrollVertically() {
+                return false;
+            }
+        };
+        gridStatsView.setAdapter(adapter);
+        gridStatsView.setLayoutManager(layoutManager);
 
         return view;
     }
