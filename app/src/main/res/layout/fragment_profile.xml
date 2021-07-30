@@ -7,13 +7,15 @@
 
     <TextView
         android:id="@+id/username"
-        android:layout_width="221dp"
+        android:layout_width="0dp"
         android:layout_height="54dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="25dp"
+        android:layout_marginEnd="32dp"
         android:text="Username"
         android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileImage" />
 
@@ -32,12 +34,14 @@
 
     <TextView
         android:id="@+id/description"
-        android:layout_width="293dp"
+        android:layout_width="0dp"
         android:layout_height="75dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="17dp"
+        android:layout_marginEnd="32dp"
         android:text="description"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
@@ -86,21 +90,37 @@
 
     <Button
         android:id="@+id/editUserinfo"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="14dp"
         android:text="Edit account info"
-        app:layout_constraintBottom_toTopOf="@+id/buttonLogout"
+        app:layout_constraintBottom_toTopOf="@+id/passwordButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/buttonLogout"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
         android:layout_marginBottom="24dp"
         android:text="Logout"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/passwordButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
+        android:layout_marginBottom="14dp"
+        android:text="Update password"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLogout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
