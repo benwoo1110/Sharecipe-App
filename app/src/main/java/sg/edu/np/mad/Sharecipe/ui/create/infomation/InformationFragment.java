@@ -89,7 +89,6 @@ public class InformationFragment extends Fragment {
         else {
             infoPublic.setChecked(false);
         }
-        //TODO: Properly display public status
         if (recipe.getTotalTimeNeeded() != null) {
             prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
         }
