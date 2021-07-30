@@ -78,16 +78,16 @@ public class InformationFragment extends Fragment {
             name.setText(recipe.getName());
         }
         if (recipe.getDifficulty() > 0) {
-            difficulty.setNumStars(recipe.getDifficulty());
+            difficulty.setRating(recipe.getDifficulty());
         }
         if (recipe.getPortion() > 0) {
             portions.setText(String.valueOf(recipe.getPortion()));
         }
         if (recipe.isPublic()) {
-            infoPublic.setActivated(true);
+            infoPublic.setChecked(true);
         }
         else {
-            infoPublic.setActivated(false);
+            infoPublic.setChecked(false);
         }
         //TODO: Properly display public status
         if (recipe.getTotalTimeNeeded() != null) {

@@ -77,6 +77,7 @@ public class RecipeCreateActivity extends AppCompatActivity {
                 .setNegativeButton("No", null)
                 .setPositiveButton("Confirm", ((dialog, which) -> {
                     Toast.makeText(RecipeCreateActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
+// TODO                   App.getRecipeManager().update(recipe) how to differentiate modified and created
                     App.getRecipeManager().create(recipe).onSuccess(createdRecipe -> {
                         App.getRecipeManager().addImages(createdRecipe, adapter.getImageFileList()).thenAccept(result -> {
                             RecipeCreateActivity.this.runOnUiThread(() -> {
