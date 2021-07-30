@@ -46,7 +46,13 @@ public class RecipeReviewActivity extends AppCompatActivity {
         inputRating.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> newReview.setRating(inputRating.getNumStars()));
         inputReview.addTextChangedListener((AfterTextChangedWatcher) s -> newReview.setComment(inputReview.toString()));
 
-        reviewsNumber.setText("(" + String.valueOf(recipe.getReviews().size()) + ")");
+        if (recipe.getReviews() != null) {
+            reviewsNumber.setText("(" + String.valueOf(recipe.getReviews().size()) + ")");
+        }
+        else {
+            reviewsNumber.setText("(0)");
+        }
+
 
 
 

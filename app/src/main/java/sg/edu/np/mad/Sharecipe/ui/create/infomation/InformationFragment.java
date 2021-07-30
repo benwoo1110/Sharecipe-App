@@ -47,6 +47,7 @@ import java.util.Locale;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.models.RecipeImage;
 import sg.edu.np.mad.Sharecipe.models.RecipeTag;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
 import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
@@ -82,6 +83,28 @@ public class InformationFragment extends Fragment {
         RatingBar difficulty = view.findViewById(R.id.infoDifficulty);
         tags = view.findViewById(R.id.recipetag_autocomplete);
         ImageView enlargedImage = view.findViewById(R.id.expanded_image);
+
+        if (recipe.getName() != null) {
+            name.setText(recipe.getName());
+        }
+        if (recipe.getDifficulty() > 0) {
+            difficulty.setNumStars(recipe.getDifficulty());
+        }
+        if (recipe.getPortion() > 0) {
+            portions.setText(String.valueOf(recipe.getPortion()));
+        }
+        if (recipe.getTotalTimeNeeded() != null) {
+            prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
+        }
+        if (recipe.getTags() != null) {
+            for (RecipeTag tag:recipe.getTags()
+                 ) {
+                recipeTags.add(tag);
+            }
+        }
+        if (recipe.getDescription() != null) {
+            description.setText(recipe.getDescription());
+        }
 
         createTags();
         TagNamesAdapter tagAdapter = new TagNamesAdapter(

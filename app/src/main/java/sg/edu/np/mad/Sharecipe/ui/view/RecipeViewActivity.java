@@ -5,6 +5,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -15,6 +16,7 @@ import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.OnTabSelectedListener;
+import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 
 public class RecipeViewActivity extends AppCompatActivity {
@@ -46,6 +48,12 @@ public class RecipeViewActivity extends AppCompatActivity {
 
         tabLayout.addOnTabSelectedListener((OnTabSelectedListener) tab -> viewpager.setCurrentItem(tab.getPosition()));
 
+        int userID = App.getAccountManager().getAccount().getUserId();
+
+        if (selectedRecipe.getUserId() != userID) {
+            bottomNavigation.getMenu().findItem(R.id.recipe_edit_menu).setVisible(false);
+        }
+
         bottomNavigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.recipe_review_menu) {
@@ -53,10 +61,16 @@ public class RecipeViewActivity extends AppCompatActivity {
                     Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
                     review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
                     startActivity(review);
+                    Log.v("Lol", "LOL");
                 });
-                // TODO: Go to review screen
                 return false;
             } else if (itemId == R.id.recipe_edit_menu) {
+                App.getRecipeManager().get(selectedRecipe.getRecipeId()).onSuccess(recipe -> {
+                    Intent editRecipe = new Intent(RecipeViewActivity.this, RecipeCreateActivity.class);
+                    editRecipe.putExtra(IntentKeys.RECIPE_EDIT, recipe);
+                    startActivity(editRecipe);
+                });
+
                 // TODO: Edit recipe
                 return false;
             } else if (itemId == R.id.recipe_like_menu) {
