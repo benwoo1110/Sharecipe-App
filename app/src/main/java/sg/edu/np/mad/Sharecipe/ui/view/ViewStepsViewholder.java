@@ -18,5 +18,4 @@ public class ViewStepsViewholder extends RecyclerView.ViewHolder {
         stepNumber = itemView.findViewById(R.id.displayStepNumber_view);
         stepDesc = itemView.findViewById(R.id.displayStepDescription_view);
     }
-
 }

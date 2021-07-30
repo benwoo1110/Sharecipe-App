@@ -49,7 +49,7 @@ public class UserManager {
     private final AccountManager accountManager;
     private final BitmapCacheManager bitmapCacheManager;
     private final Cache<Integer, User> userCache = CacheBuilder.newBuilder()
-            .expireAfterAccess(10, TimeUnit.MINUTES)
+            .expireAfterAccess(1, TimeUnit.MINUTES)
             .maximumSize(500)
             .build();
 
@@ -101,7 +101,7 @@ public class UserManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getUser(account.getAccessToken(), userId).onSuccessModel(future, User.class, (response, user) -> {
-                userCache.put(userId, user);
+                userCache.put(user.getUserId(), user);
                 future.complete(new DataResult.Success<>(user));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
@@ -303,5 +303,17 @@ public class UserManager {
         }).onFailed(future).onError(future);
 
         return future;
+    }
+
+    public void invalidateUser(User user) {
+        userCache.invalidate(user.getUserId());
+    }
+
+    public void invalidateAll() {
+        userCache.invalidateAll();
+    }
+
+    void addToCache(User user) {
+        userCache.put(user.getUserId(), user);
     }
 }

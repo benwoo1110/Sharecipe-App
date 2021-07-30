@@ -67,7 +67,6 @@ public class ProfileFragment extends Fragment {
                     .onError(Throwable::printStackTrace);
         });
 
-
         logoutButton.setOnClickListener(v -> {
             App.getAccountManager().logout()
                     .onSuccess(ignore -> {

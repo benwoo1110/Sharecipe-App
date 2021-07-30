@@ -77,8 +77,8 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
                         File imageFile = newProfileImagePath == null ? null : new File(newProfileImagePath);
                         user.setUsername(editUsername.getText().toString());
                         user.setBio(editBio.getText().toString());
-                        
                         Toast.makeText(EditProfileActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
+                        userManager.invalidateUser(user);
                         CompletableFuture.allOf(
                                 userManager.updateAccountUser(user),
                                 userManager.setAccountProfileImage(imageFile)
@@ -92,10 +92,6 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
                     .setNegativeButton("Cancel", null)
                     .show();
         });
-
-        /*editPassword.setOnClickListener(v -> {
-            AccountManager.getInstance(this)
-        });*/
 
         deleteButton.setOnClickListener(v -> {
             new AlertDialog.Builder(EditProfileActivity.this)
