@@ -20,6 +20,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import okhttp3.ResponseBody;
+import sg.edu.np.mad.Sharecipe.models.BooleanState;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeImage;
@@ -352,6 +353,24 @@ public class RecipeManager {
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.deleteRecipeLikeUser(account.getAccessToken(), recipe.getRecipeId(), account.getUserId()).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    /**
+     * Check if the account likes a given recipe.
+     *
+     * @param recipe  Target user to check.
+     * @return Future result of boolean state.
+     */
+    public FutureDataResult<BooleanState> checkIfAccountLikes(PartialRecipe recipe) {
+        FutureDataResult<BooleanState> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getRecipeLikeUser(account.getAccessToken(), recipe.getRecipeId(), account.getUserId()).onSuccessModel(future, BooleanState.class, (response, booleanState) -> {
+                future.complete(new DataResult.Success<>(booleanState));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
 

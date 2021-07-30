@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.ResponseBody;
+import sg.edu.np.mad.Sharecipe.models.BooleanState;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.models.UserFollow;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
@@ -280,6 +281,24 @@ public class UserManager {
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.deleteUserFollowUser(account.getAccessToken(), account.getUserId(), user.getUserId()).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    /**
+     * Check if the account is following a given user.
+     *
+     * @param user  Target user to check.
+     * @return Future result of boolean state.
+     */
+    public FutureDataResult<BooleanState> checkIfAccountFollow(User user) {
+        FutureDataResult<BooleanState> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getUserFollowUser(account.getAccessToken(), account.getUserId(), user.getUserId()).onSuccessModel(future, BooleanState.class, (response, booleanState) -> {
+                future.complete(new DataResult.Success<>(booleanState));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
 

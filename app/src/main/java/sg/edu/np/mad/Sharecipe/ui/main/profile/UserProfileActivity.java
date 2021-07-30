@@ -62,14 +62,11 @@ public class UserProfileActivity extends AppCompatActivity {
 
             userManager.getFollowers(user).onSuccess(userFollowers -> {
                 runOnUiThread(() -> followers.setText(String.valueOf(userFollowers.size())));
+                updateFollowButton();
+            });
 
-                int accountUserId = accountManager.getAccount().getUserId();
-                for (UserFollow userFollow : userFollowers) {
-                    if (userFollow.getUserId() == accountUserId) {
-                        isFollowing = true;
-                        break;
-                    }
-                }
+            userManager.checkIfAccountFollow(user).onSuccess(state -> {
+                isFollowing = state.getState();
                 updateFollowButton();
             });
 
