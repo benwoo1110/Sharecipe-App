@@ -27,7 +27,7 @@ public class SmallCardViewHolder extends RecyclerView.ViewHolder {
 
         itemView.setOnClickListener(v -> {
             Intent viewRecipe = new Intent(itemView.getContext(), RecipeViewActivity.class);
-            viewRecipe.putExtra(IntentKeys.RECIPE_VIEW, recipe);
+            viewRecipe.putExtra(IntentKeys.RECIPE_VIEW, recipe.getRecipeId());
             itemView.getContext().startActivity(viewRecipe);
         });
     }

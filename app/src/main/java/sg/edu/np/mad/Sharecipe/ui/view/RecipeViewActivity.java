@@ -23,7 +23,7 @@ public class RecipeViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_view);
 
         Intent getRecipe = getIntent();
-        PartialRecipe selectedRecipe = (PartialRecipe) getRecipe.getSerializableExtra(IntentKeys.RECIPE_VIEW);
+        int selectedRecipeId = getRecipe.getIntExtra(IntentKeys.RECIPE_VIEW, 0);
 
         TabLayout tabLayout = findViewById(R.id.viewRecipeTab);
         ViewPager2 viewpager = findViewById(R.id.view_recipe_viewpager);
@@ -42,7 +42,7 @@ public class RecipeViewActivity extends AppCompatActivity {
 
         tabLayout.addOnTabSelectedListener((OnTabSelectedListener) tab -> viewpager.setCurrentItem(tab.getPosition()));
 
-        App.getRecipeManager().get(selectedRecipe.getRecipeId()).onSuccess(recipe -> {
+        App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
             RecipeViewActivity.this.runOnUiThread(() -> {
                 RecipeViewAdapter adapter = new RecipeViewAdapter(this, tabLayout.getTabCount(), recipe);
                 viewpager.setAdapter(adapter);
