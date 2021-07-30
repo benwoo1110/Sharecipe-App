@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
@@ -24,7 +23,7 @@ public class ViewIngredientsAdapter extends RecyclerView.Adapter<ViewIngredients
     @Override
     @NotNull
     public ViewIngredientsViewholder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_viewingredients, parent, false);
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_holder_view_ingredients, parent, false);
         ViewIngredientsViewholder holder = new ViewIngredientsViewholder(item);
 
         return holder;

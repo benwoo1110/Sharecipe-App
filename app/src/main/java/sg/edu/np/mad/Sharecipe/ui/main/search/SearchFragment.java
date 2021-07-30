@@ -21,12 +21,7 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.List;
-
-import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
-import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.SectionAdapter;
 

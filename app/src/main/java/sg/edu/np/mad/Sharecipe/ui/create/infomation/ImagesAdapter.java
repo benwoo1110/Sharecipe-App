@@ -52,7 +52,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
     @Override
     @NotNull
     public ImagesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_images, parent, false);
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_holder_recipe_images, parent, false);
         ImagesViewHolder holder = new ImagesViewHolder(item);
 
         if (viewType == 0) {
@@ -208,7 +208,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
     }
 
     private void AlertDialog(Uri image) {
-        View view = LayoutInflater.from(activity).inflate(R.layout.alert_image, null);
+        View view = LayoutInflater.from(activity).inflate(R.layout.dialog_image, null);
         ImageView targetImage = view.findViewById(R.id.alertImage);
         targetImage.setImageURI(image);
 

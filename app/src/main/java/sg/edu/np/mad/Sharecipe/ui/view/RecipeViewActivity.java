@@ -27,7 +27,7 @@ public class RecipeViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_recipe_view);
 
         Intent getRecipe = getIntent();
-        PartialRecipe selectedRecipe = (PartialRecipe) getRecipe.getSerializableExtra(IntentKeys.RECIPE_VIEW);
+        int selectedRecipeId = getRecipe.getIntExtra(IntentKeys.RECIPE_VIEW, 0);
 
         TabLayout tabLayout = findViewById(R.id.viewRecipeTab);
         ViewPager2 viewpager = findViewById(R.id.view_recipe_viewpager);
@@ -50,14 +50,10 @@ public class RecipeViewActivity extends AppCompatActivity {
 
         int userID = App.getAccountManager().getAccount().getUserId();
 
-        if (selectedRecipe.getUserId() != userID) {
-            bottomNavigation.getMenu().findItem(R.id.recipe_edit_menu).setVisible(false);
-        }
-
         bottomNavigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.recipe_review_menu) {
-                App.getRecipeManager().get(selectedRecipe.getRecipeId()).onSuccess(recipe -> {
+                App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
                     Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
                     review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
                     startActivity(review);
@@ -65,7 +61,7 @@ public class RecipeViewActivity extends AppCompatActivity {
                 });
                 return false;
             } else if (itemId == R.id.recipe_edit_menu) {
-                App.getRecipeManager().get(selectedRecipe.getRecipeId()).onSuccess(recipe -> {
+                App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
                     Intent editRecipe = new Intent(RecipeViewActivity.this, RecipeCreateActivity.class);
                     editRecipe.putExtra(IntentKeys.RECIPE_EDIT, recipe);
                     startActivity(editRecipe);
@@ -80,8 +76,11 @@ public class RecipeViewActivity extends AppCompatActivity {
             return false;
         });
 
-        App.getRecipeManager().get(selectedRecipe.getRecipeId()).onSuccess(recipe -> {
+        App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
             RecipeViewActivity.this.runOnUiThread(() -> {
+                if (recipe.getUserId() != userID) {
+                    bottomNavigation.getMenu().findItem(R.id.recipe_edit_menu).setVisible(false);
+                }
                 RecipeViewAdapter adapter = new RecipeViewAdapter(this, tabLayout.getTabCount(), recipe);
                 viewpager.setAdapter(adapter);
             });

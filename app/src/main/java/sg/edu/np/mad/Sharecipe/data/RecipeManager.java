@@ -20,10 +20,12 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import okhttp3.ResponseBody;
+import sg.edu.np.mad.Sharecipe.models.BooleanState;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeImage;
 import sg.edu.np.mad.Sharecipe.models.RecipeLike;
+import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
@@ -242,6 +244,28 @@ public class RecipeManager {
     }
 
     /**
+     * Gets all the recipe ids for the recipes that are liked by the user.
+     *
+     * @param user    Target recipe to get likes of.
+     * @return Future result of a list of {@link RecipeLike} containing recipe ids.
+     */
+    public FutureDataResult<List<RecipeLike>> getUserLikes(User user) {
+        FutureDataResult<List<RecipeLike>> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getUserRecipeLikes(account.getAccessToken(), user.getUserId()).onSuccessJson(future, (response, json) -> {
+                List<RecipeLike> recipes = new ArrayList<>();
+                for (JsonElement likeData : json.getAsJsonArray()) {
+                    recipes.add(JsonUtils.convertToObject(likeData, RecipeLike.class));
+                }
+                future.complete(new DataResult.Success<>(recipes));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    /**
      * Gets all the user ids that liked this recipe.
      *
      * @param recipe    Target recipe to get likes of.
@@ -309,7 +333,7 @@ public class RecipeManager {
         FutureDataResult<Void> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.putRecipeLikes(account.getAccessToken(), recipe.getRecipeId()).onSuccess(response -> {
+            SharecipeRequests.putRecipeLikeUser(account.getAccessToken(), recipe.getRecipeId(), account.getUserId()).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
@@ -327,8 +351,26 @@ public class RecipeManager {
         FutureDataResult<Void> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.deleteRecipeLikes(account.getAccessToken(), recipe.getRecipeId()).onSuccess(response -> {
+            SharecipeRequests.deleteRecipeLikeUser(account.getAccessToken(), recipe.getRecipeId(), account.getUserId()).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    /**
+     * Check if the account likes a given recipe.
+     *
+     * @param recipe  Target user to check.
+     * @return Future result of boolean state.
+     */
+    public FutureDataResult<BooleanState> checkIfAccountLikes(PartialRecipe recipe) {
+        FutureDataResult<BooleanState> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getRecipeLikeUser(account.getAccessToken(), recipe.getRecipeId(), account.getUserId()).onSuccessModel(future, BooleanState.class, (response, booleanState) -> {
+                future.complete(new DataResult.Success<>(booleanState));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
 

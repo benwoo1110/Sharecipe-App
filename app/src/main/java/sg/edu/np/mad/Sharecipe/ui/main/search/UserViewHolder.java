@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.ui.main.profile.UserProfileActivity;
 
 public class UserViewHolder extends RecyclerView.ViewHolder {
@@ -29,7 +30,7 @@ public class UserViewHolder extends RecyclerView.ViewHolder {
         Context context = itemView.getContext();
         itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, UserProfileActivity.class);
-            intent.putExtra("userId", userId);
+            intent.putExtra(IntentKeys.USER_ID, userId);
             context.startActivity(intent);
         });
     }

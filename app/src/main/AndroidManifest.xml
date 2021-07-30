@@ -21,21 +21,21 @@
         <activity android:name=".ui.view.RecipeReviewActivity"></activity>
         <activity
             android:name=".ui.SplashActivity"
-            android:theme="@style/AppTheme.Launcher">
+            android:theme="@style/AppTheme.Launcher"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.view.RecipeViewActivity" />
-        <activity android:name=".ui.main.MainActivity" />
-        <activity android:name=".ui.main.profile.EditProfileActivity" />
-        <activity android:name=".ui.main.profile.UserProfileActivity" />
-        <activity android:name=".ui.create.steps.StepsCreationActivity" />
-        <activity android:name=".ui.create.RecipeCreateActivity" />
-        <activity android:name=".ui.RegisterActivity" />
-        <activity android:name=".ui.LoginActivity" />
+        <activity android:name=".ui.view.RecipeViewActivity" android:screenOrientation="portrait" />
+        <activity android:name=".ui.main.MainActivity" android:screenOrientation="portrait" />
+        <activity android:name=".ui.main.profile.EditProfileActivity" android:screenOrientation="portrait" />
+        <activity android:name=".ui.main.profile.UserProfileActivity" android:screenOrientation="portrait" />
+        <activity android:name=".ui.create.steps.StepsCreationActivity" android:screenOrientation="portrait" />
+        <activity android:name=".ui.create.RecipeCreateActivity" android:screenOrientation="portrait" />
+        <activity android:name=".ui.RegisterActivity" android:screenOrientation="portrait" />
+        <activity android:name=".ui.LoginActivity" android:screenOrientation="portrait" />
     </application>
 
 </manifest>
