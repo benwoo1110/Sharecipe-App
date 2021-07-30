@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
+import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 import sg.edu.np.mad.Sharecipe.ui.view.RecipeViewActivity;
 
 public class RecipeViewHolder extends RecyclerView.ViewHolder {
@@ -29,6 +30,13 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder {
             Intent viewRecipe = new Intent(itemView.getContext(), RecipeViewActivity.class);
             viewRecipe.putExtra(IntentKeys.RECIPE_VIEW, recipe.getRecipeId());
             itemView.getContext().startActivity(viewRecipe);
+        });
+
+        itemView.setOnLongClickListener(v -> {
+            Intent editRecipe = new Intent(itemView.getContext(), RecipeCreateActivity.class);
+            editRecipe.putExtra(IntentKeys.RECIPE_EDIT, recipe);
+            itemView.getContext().startActivity(editRecipe);
+            return false;
         });
     }
 }

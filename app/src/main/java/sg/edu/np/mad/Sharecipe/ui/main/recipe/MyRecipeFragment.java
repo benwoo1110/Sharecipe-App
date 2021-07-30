@@ -74,6 +74,8 @@ public class MyRecipeFragment extends Fragment {
 
         addRecipe.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), RecipeCreateActivity.class);
+            Recipe recipe = new Recipe();
+            intent.putExtra(IntentKeys.RECIPE_EDIT, recipe);
             startActivityForResult(intent, LAUNCH_RECIPE_CREATION);
         });
 
