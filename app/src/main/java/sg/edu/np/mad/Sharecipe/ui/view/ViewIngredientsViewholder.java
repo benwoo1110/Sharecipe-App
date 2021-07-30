@@ -9,7 +9,6 @@ import sg.edu.np.mad.Sharecipe.R;
 
 public class ViewIngredientsViewholder extends RecyclerView.ViewHolder {
 
-    TextView number;
     TextView name;
     TextView quantity;
     TextView unit;

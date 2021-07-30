@@ -1,5 +1,7 @@
 package sg.edu.np.mad.Sharecipe.models;
 
+import android.graphics.Bitmap;
+
 import com.google.gson.annotations.Expose;
 
 public class RecipeReviews {
@@ -9,6 +11,12 @@ public class RecipeReviews {
 
     @Expose
     private int rating;
+
+    @Expose
+    private String username;
+
+    @Expose
+    private Bitmap profilePic;
 
     public String getComment() {
         return comment;
@@ -24,5 +32,21 @@ public class RecipeReviews {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Bitmap getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(Bitmap profilePic) {
+        this.profilePic = profilePic;
     }
 }

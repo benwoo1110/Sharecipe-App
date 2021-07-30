@@ -31,7 +31,11 @@ public class RecipeReviewAdapter extends RecyclerView.Adapter<RecipeReviewViewho
 
     @Override
     public void onBindViewHolder(@NotNull RecipeReviewViewholder holder, int position) {
-        // Stuff
+        RecipeReviews review = reviews.get(position);
+        holder.profilePic.setImageBitmap(review.getProfilePic());
+        holder.username.setText(review.getUsername());
+        holder.review.setText(review.getComment());
+        holder.score.setText(String.valueOf(review.getRating()) + " /5");
     }
 
     @Override
