@@ -19,8 +19,6 @@ import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 
 public class ProfileFragment extends Fragment {
 
-    private Button editButton;
-    private Button logoutButton;
     private TextView username;
     private TextView description;
     private ImageView profileImage;
@@ -40,8 +38,9 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        editButton = view.findViewById(R.id.editUserinfo);
-        logoutButton = view.findViewById(R.id.buttonLogout);
+        Button editProfileButton = view.findViewById(R.id.editUserinfo);
+        Button editPasswordButton = view.findViewById(R.id.passwordButton);
+        Button logoutButton = view.findViewById(R.id.buttonLogout);
         username = view.findViewById(R.id.username);
         description = view.findViewById(R.id.description);
         TextView followingNo = view.findViewById(R.id.followingNo);
@@ -78,8 +77,13 @@ public class ProfileFragment extends Fragment {
                     .onError(Throwable::printStackTrace);
         });
 
-        editButton.setOnClickListener(v -> {
+        editProfileButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+            getActivity().startActivity(intent);
+        });
+
+        editPasswordButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EditPasswordActivity.class);
             getActivity().startActivity(intent);
         });
 
