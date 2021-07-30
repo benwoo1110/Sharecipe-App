@@ -160,7 +160,7 @@ public class InformationFragment extends Fragment {
         description.addTextChangedListener((AfterTextChangedWatcher) s -> recipe.setDescription(s.toString()));
 
         difficulty.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
-            int recipeDifficulty = difficulty.getNumStars();
+            int recipeDifficulty = Math.round(difficulty.getRating());
             recipe.setDifficulty(recipeDifficulty);
         });
 

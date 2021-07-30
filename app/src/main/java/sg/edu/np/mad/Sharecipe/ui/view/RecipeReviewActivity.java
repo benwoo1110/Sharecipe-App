@@ -10,8 +10,12 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
@@ -21,6 +25,8 @@ import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
 
 public class RecipeReviewActivity extends AppCompatActivity {
 
+    private final ArrayList<RecipeReviews> recipeReviews = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,9 +34,9 @@ public class RecipeReviewActivity extends AppCompatActivity {
 
         Intent review = getIntent();
         Recipe recipe = (Recipe) review.getSerializableExtra(IntentKeys.RECIPE_REVIEW);
+        recipe.setReviews(recipeReviews);
 
         RecipeReviews newReview = new RecipeReviews();
-
 
         TextView labelReview = findViewById(R.id.labelReview);
         RatingBar inputRating = findViewById(R.id.inputRating);
@@ -41,9 +47,11 @@ public class RecipeReviewActivity extends AppCompatActivity {
 
         RecipeReviewAdapter adapter = new RecipeReviewAdapter(recipe.getReviews());
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(cLayoutManager);
 
         labelReview.setText("Rate " + recipe.getName());
-        inputRating.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> newReview.setRating(inputRating.getNumStars()));
+        inputRating.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> newReview.setRating(Math.round(inputRating.getRating())));
         inputReview.addTextChangedListener((AfterTextChangedWatcher) s -> newReview.setComment(inputReview.toString()));
 
         if (recipe.getReviews() != null) {
@@ -52,6 +60,15 @@ public class RecipeReviewActivity extends AppCompatActivity {
         else {
             reviewsNumber.setText("(0)");
         }
+
+        submitReview.setOnClickListener(v -> {
+            if (newReview.getRating() == 0) {
+                Toast.makeText(RecipeReviewActivity.this, "Please rate this recipe 1 to 5 stars", Toast.LENGTH_SHORT);
+            }
+            else {
+                // TODO: Somehow save the new review to the recipe
+            }
+        });
 
 
 

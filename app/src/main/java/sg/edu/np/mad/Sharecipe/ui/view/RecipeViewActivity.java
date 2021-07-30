@@ -57,7 +57,6 @@ public class RecipeViewActivity extends AppCompatActivity {
                     Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
                     review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
                     startActivity(review);
-                    Log.v("Lol", "LOL");
                 });
                 return false;
             } else if (itemId == R.id.recipe_edit_menu) {
