@@ -2,9 +2,11 @@ package sg.edu.np.mad.Sharecipe.ui.main.profile;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.github.dhaval2404.imagepicker.listener.DismissListener;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
@@ -25,6 +28,7 @@ import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
+import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
 
 public class EditProfileActivity extends DynamicFocusAppCompatActivity {
 
@@ -43,7 +47,7 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
         profilePic = findViewById(R.id.editPic);
         editUsername = findViewById(R.id.editUsername);
         editBio = findViewById(R.id.editBio);
-        Button saveButton = findViewById(R.id.saveInfo);
+        Button updateButton = findViewById(R.id.saveInfo);
         Button deleteButton = findViewById(R.id.deleteAcc);
 
         UserManager userManager = App.getUserManager();
@@ -62,55 +66,68 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
                     .onError(Throwable::printStackTrace);
         });
 
-        profilePic.setOnClickListener(v -> ImagePicker.with(EditProfileActivity.this)
+        profilePic.setOnClickListener((OnSingleClickListener) v -> ImagePicker.with(EditProfileActivity.this)
                 .crop()
                 .compress(1024)
                 .maxResultSize(500, 500)
+                .setDismissListener(() -> profilePic.setEnabled(true))
                 .start());
 
-        saveButton.setOnClickListener(v -> {
-            new AlertDialog.Builder(EditProfileActivity.this)
-                    .setTitle("Save Changes")
-                    .setMessage("Are you sure you want to save changes?").setCancelable(false)
-                    .setCancelable(false)
-                    .setPositiveButton("Save", (dialog, which) -> {
-                        File imageFile = newProfileImagePath == null ? null : new File(newProfileImagePath);
-                        user.setUsername(editUsername.getEditText().getText().toString());
-                        user.setBio(editBio.getEditText().getText().toString());
-                        Toast.makeText(EditProfileActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
-                        userManager.invalidateUser(user);
-                        CompletableFuture.allOf(
-                                userManager.updateAccountUser(user),
-                                userManager.setAccountProfileImage(imageFile)
-                        ).thenAccept(aVoid -> {
-                            runOnUiThread(() -> {
-                                Toast.makeText(EditProfileActivity.this, "Saved", Toast.LENGTH_SHORT).show();
-                                finish();
-                            });
+        updateButton.setOnClickListener((OnSingleClickListener) v -> new AlertDialog.Builder(EditProfileActivity.this)
+                .setTitle("Save Changes")
+                .setMessage("Are you sure you want to save changes?").setCancelable(false)
+                .setCancelable(false)
+                .setPositiveButton("Save", (dialog, which) -> {
+                    File imageFile = newProfileImagePath == null ? null : new File(newProfileImagePath);
+                    user.setUsername(editUsername.getEditText().getText().toString());
+                    user.setBio(editBio.getEditText().getText().toString());
+                    Toast.makeText(EditProfileActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
+                    userManager.invalidateUser(user);
+                    CompletableFuture.allOf(
+                            userManager.updateAccountUser(user),
+                            userManager.setAccountProfileImage(imageFile)
+                    ).thenAccept(aVoid -> {
+                        runOnUiThread(() -> {
+                            Toast.makeText(EditProfileActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                            finish();
                         });
-                    })
-                    .setNegativeButton("Cancel", null)
-                    .show();
-        });
+                    });
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    updateButton.setEnabled(true);
+                })
+                .show());
 
-        deleteButton.setOnClickListener(v -> {
-            new AlertDialog.Builder(EditProfileActivity.this)
-                    .setTitle("Delete account")
-                    .setMessage("Are you sure you want to delete account?").setCancelable(false)
-                    .setNegativeButton("Cancel",null)
-                    .setPositiveButton("Delete", (dialog, which) -> {
+        deleteButton.setOnClickListener((OnSingleClickListener) v -> new AlertDialog.Builder(EditProfileActivity.this)
+                .setTitle("Delete account")
+                .setMessage("Are you sure you want to delete account?").setCancelable(false)
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    AccountManager.getInstance(this).delete().onSuccess(aVoid -> {
                         Toast.makeText(EditProfileActivity.this, "Account deleted", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(EditProfileActivity.this, LoginActivity.class);
-                        AccountManager.getInstance(this).delete();
-                        startActivity(intent);
-                    })
-                    .show();
-        });
+
+                        runOnUiThread(() -> {
+                            Intent intent = new Intent(EditProfileActivity.this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        });
+                    });
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    deleteButton.setEnabled(true);
+                })
+                .show());
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode != ImagePicker.REQUEST_CODE) {
+            return;
+        }
+
+        profilePic.setEnabled(true);
+
         if (resultCode == Activity.RESULT_OK && data != null) {
             Uri uri = data.getData();
             profilePic.setImageURI(uri);
