@@ -332,7 +332,7 @@ public class RecipeManager {
         FutureDataResult<Void> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.putRecipeLikes(account.getAccessToken(), recipe.getRecipeId()).onSuccess(response -> {
+            SharecipeRequests.putRecipeLikeUser(account.getAccessToken(), recipe.getRecipeId(), account.getUserId()).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
@@ -350,7 +350,7 @@ public class RecipeManager {
         FutureDataResult<Void> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.deleteRecipeLikes(account.getAccessToken(), recipe.getRecipeId()).onSuccess(response -> {
+            SharecipeRequests.deleteRecipeLikeUser(account.getAccessToken(), recipe.getRecipeId(), account.getUserId()).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);

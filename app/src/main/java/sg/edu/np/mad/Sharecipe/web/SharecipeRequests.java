@@ -675,20 +675,22 @@ public class SharecipeRequests {
     }
 
     /**
-     *  PUT `/recipes/recipe_id/likes` endpoint.
+     *  PUT `/recipes/recipe_id/likes/user_id` endpoint.
      *
      * @param accessToken
      * @param recipeId
      * @return
      */
-    public static FutureWebResponse putRecipeLikes(@NonNull String accessToken,
-                                                   int recipeId) {
+    public static FutureWebResponse putRecipeLikeUser(@NonNull String accessToken,
+                                                      int recipeId,
+                                                      int userId) {
 
         return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .addPathSegment(UrlPath.LIKES)
+                        .addPathSegment(String.valueOf(userId))
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
                 .put(RequestBody.create("", null))
@@ -696,20 +698,22 @@ public class SharecipeRequests {
     }
 
     /**
-     *  DELETE `/recipes/recipe_id/likes` endpoint.
+     *  DELETE `/recipes/recipe_id/likes/user_id` endpoint.
      *
      * @param accessToken
      * @param recipeId
      * @return
      */
-    public static FutureWebResponse deleteRecipeLikes(@NonNull String accessToken,
-                                                      int recipeId) {
+    public static FutureWebResponse deleteRecipeLikeUser(@NonNull String accessToken,
+                                                         int recipeId,
+                                                         int userId) {
 
         return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .addPathSegment(UrlPath.LIKES)
+                        .addPathSegment(String.valueOf(userId))
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
                 .delete(RequestBody.create("", null))
