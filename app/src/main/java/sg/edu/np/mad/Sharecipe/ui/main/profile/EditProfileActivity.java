@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.io.File;
 
@@ -29,11 +30,8 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
 
     private User user;
     private ImageView profilePic;
-    private TextView editUsername;
-    private TextView editBio;
-    private TextView editPassword;
-    private Button saveButton;
-    private Button deleteButton;
+    private TextInputLayout editUsername;
+    private TextInputLayout editBio;
 
     private String newProfileImagePath;
 
@@ -43,18 +41,20 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
         setContentView(R.layout.activity_edit_profile);
 
         profilePic = findViewById(R.id.editPic);
-        saveButton = findViewById(R.id.saveInfo);
         editUsername = findViewById(R.id.editUsername);
-        editBio = findViewById(R.id.editDescription);
-        editPassword = findViewById(R.id.editPassword);
-        deleteButton = findViewById(R.id.deleteAcc);
+        editBio = findViewById(R.id.editBio);
+        Button saveButton = findViewById(R.id.saveInfo);
+        Button deleteButton = findViewById(R.id.deleteAcc);
 
         UserManager userManager = App.getUserManager();
 
         userManager.getAccountUser().onSuccess(user -> {
             this.user = user;
-            editUsername.setText(user.getUsername());
-            editBio.setText(user.getBio());
+
+            runOnUiThread(() -> {
+                editUsername.getEditText().setText(user.getUsername());
+                editBio.getEditText().setText(user.getBio());
+            });
 
             userManager.getProfileImage(user)
                     .onSuccess(image -> runOnUiThread(() -> profilePic.setImageBitmap(image)))
@@ -75,8 +75,8 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
                     .setCancelable(false)
                     .setPositiveButton("Save", (dialog, which) -> {
                         File imageFile = newProfileImagePath == null ? null : new File(newProfileImagePath);
-                        user.setUsername(editUsername.getText().toString());
-                        user.setBio(editBio.getText().toString());
+                        user.setUsername(editUsername.getEditText().getText().toString());
+                        user.setBio(editBio.getEditText().getText().toString());
                         Toast.makeText(EditProfileActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
                         userManager.invalidateUser(user);
                         CompletableFuture.allOf(
