@@ -8,4 +8,5 @@ public class IntentKeys {
     public static final String RECIPE_STEP_EDIT = "RECIPE_STEP_EDIT";
     public static final String RECIPE_SAVE = "RECIPE_SAVE";
     public static final String RECIPE_VIEW = "RECIPE_VIEW";
+    public static final String USER_ID = "USER_ID";
 }

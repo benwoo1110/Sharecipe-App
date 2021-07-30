@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.models.User;
@@ -40,14 +41,14 @@ public class UserProfileActivity extends AppCompatActivity {
 
         // Grab the target user id to load
         Intent receivedData = getIntent();
-        int userid = receivedData.getIntExtra("userId", 0);
+        int userId = receivedData.getIntExtra(IntentKeys.USER_ID, 0);
 
         // Get required data managers
         UserManager userManager = App.getUserManager();
         AccountManager accountManager = App.getAccountManager();
 
         // Load the data from web
-        userManager.get(userid).onSuccess(resultUser -> {
+        userManager.get(userId).onSuccess(resultUser -> {
             user = resultUser;
 
             runOnUiThread(() -> {
