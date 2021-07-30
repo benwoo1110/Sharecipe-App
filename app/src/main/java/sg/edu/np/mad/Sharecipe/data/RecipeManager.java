@@ -24,6 +24,7 @@ import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeImage;
 import sg.edu.np.mad.Sharecipe.models.RecipeLike;
+import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
@@ -235,6 +236,28 @@ public class RecipeManager {
                     future.complete(new DataResult.Error<>(e));
                 }
                 future.complete(new DataResult.Success<>(images));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    /**
+     * Gets all the recipe ids for the recipes that are liked by the user.
+     *
+     * @param user    Target recipe to get likes of.
+     * @return Future result of a list of {@link RecipeLike} containing recipe ids.
+     */
+    public FutureDataResult<List<RecipeLike>> getUserLikes(User user) {
+        FutureDataResult<List<RecipeLike>> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getUserRecipeLikes(account.getAccessToken(), user.getUserId()).onSuccessJson(future, (response, json) -> {
+                List<RecipeLike> recipes = new ArrayList<>();
+                for (JsonElement likeData : json.getAsJsonArray()) {
+                    recipes.add(JsonUtils.convertToObject(likeData, RecipeLike.class));
+                }
+                future.complete(new DataResult.Success<>(recipes));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
 
