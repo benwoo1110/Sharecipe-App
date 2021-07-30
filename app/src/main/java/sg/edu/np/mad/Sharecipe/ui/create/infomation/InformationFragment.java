@@ -93,6 +93,13 @@ public class InformationFragment extends Fragment {
         if (recipe.getPortion() > 0) {
             portions.setText(String.valueOf(recipe.getPortion()));
         }
+        if (recipe.isPublic()) {
+            infoPublic.setActivated(true);
+        }
+        else {
+            infoPublic.setActivated(false);
+        }
+        //TODO: Properly display public status
         if (recipe.getTotalTimeNeeded() != null) {
             prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
         }
@@ -100,6 +107,7 @@ public class InformationFragment extends Fragment {
             for (RecipeTag tag:recipe.getTags()
                  ) {
                 recipeTags.add(tag);
+                // TODO: Display the tags
             }
         }
         if (recipe.getDescription() != null) {
