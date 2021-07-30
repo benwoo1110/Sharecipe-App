@@ -260,7 +260,7 @@ public class UserManager {
         FutureDataResult<Void> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.putUserFollows(account.getAccessToken(), account.getUserId(), user.getUserId()).onSuccess(response -> {
+            SharecipeRequests.postUserFollowUser(account.getAccessToken(), account.getUserId(), user.getUserId()).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
@@ -278,7 +278,7 @@ public class UserManager {
         FutureDataResult<Void> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.deleteUserFollows(account.getAccessToken(), account.getUserId(), user.getUserId()).onSuccess(response -> {
+            SharecipeRequests.deleteUserFollowUser(account.getAccessToken(), account.getUserId(), user.getUserId()).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);

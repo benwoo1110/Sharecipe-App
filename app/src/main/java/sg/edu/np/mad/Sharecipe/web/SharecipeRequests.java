@@ -353,66 +353,75 @@ public class SharecipeRequests {
     }
 
     /**
-     * PUT `/users/user_id/follows` endpoint.
+     * GET `/users/user_id/follows/follow_id` endpoint.
      *
      * @param accessToken
      * @param userId
+     * @param followId
      * @return Response from server.
      */
     @NotNull
-    public static FutureWebResponse putUserFollows(@NonNull String accessToken,
-                                                   int userId,
-                                                   int followId) {
-
-        String payload;
-        try {
-            payload = new JSONObject()
-                    .put("follow_id", followId)
-                    .toString();
-        } catch (JSONException e) {
-            return FutureWebResponse.failedFuture(e);
-        }
+    public static FutureWebResponse getUserFollowUser(@NonNull String accessToken,
+                                                      int userId,
+                                                      int followId) {
 
         return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addPathSegment(String.valueOf(userId))
                         .addPathSegment(UrlPath.FOLLOWS)
+                        .addPathSegment(String.valueOf(followId))
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
-                .put(RequestBody.create(payload, JSON_TYPE))
+                .get()
                 .build());
     }
 
     /**
-     * DELETE `/users/user_id/follows` endpoint.
+     * POST `/users/user_id/follows/follow_id` endpoint.
      *
      * @param accessToken
      * @param userId
      * @return Response from server.
      */
     @NotNull
-    public static FutureWebResponse deleteUserFollows(@NonNull String accessToken,
-                                                      int userId,
-                                                      int followId) {
-
-        String payload;
-        try {
-            payload = new JSONObject()
-                    .put("follow_id", followId)
-                    .toString();
-        } catch (JSONException e) {
-            return FutureWebResponse.failedFuture(e);
-        }
+    public static FutureWebResponse postUserFollowUser(@NonNull String accessToken,
+                                                       int userId,
+                                                       int followId) {
 
         return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addPathSegment(String.valueOf(userId))
                         .addPathSegment(UrlPath.FOLLOWS)
+                        .addPathSegment(String.valueOf(followId))
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
-                .delete(RequestBody.create(payload, JSON_TYPE))
+                .post(RequestBody.create("", null))
+                .build());
+    }
+
+    /**
+     * DELETE `/users/user_id/follows/follow_id` endpoint.
+     *
+     * @param accessToken
+     * @param userId
+     * @return Response from server.
+     */
+    @NotNull
+    public static FutureWebResponse deleteUserFollowUser(@NonNull String accessToken,
+                                                         int userId,
+                                                         int followId) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(userId))
+                        .addPathSegment(UrlPath.FOLLOWS)
+                        .addPathSegment(String.valueOf(followId))
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .delete()
                 .build());
     }
 
@@ -591,7 +600,7 @@ public class SharecipeRequests {
     }
 
     /**
-     * GET `/users/user_id/recipes/recipe_id/images` endpoint.
+     * GET `/recipes/recipe_id/images` endpoint.
      *
      * @param accessToken
      * @param recipeId
@@ -622,7 +631,7 @@ public class SharecipeRequests {
     }
 
     /**
-     *  GET `/users/user_id/recipes/recipe_id/likes` endpoint.
+     *  GET `/recipes/recipe_id/likes` endpoint.
      *
      * @param accessToken
      * @param recipeId
@@ -643,7 +652,30 @@ public class SharecipeRequests {
     }
 
     /**
-     *  PUT `/users/user_id/recipes/recipe_id/likes` endpoint.
+     *  GET `/recipes/recipe_id/likes/user_id` endpoint.
+     *
+     * @param accessToken
+     * @param recipeId
+     * @return
+     */
+    public static FutureWebResponse getRecipeLikeUser(@NonNull String accessToken,
+                                                      int recipeId,
+                                                      int userId) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.RECIPES)
+                        .addPathSegment(String.valueOf(recipeId))
+                        .addPathSegment(UrlPath.LIKES)
+                        .addPathSegment(String.valueOf(userId))
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
+
+    /**
+     *  PUT `/recipes/recipe_id/likes` endpoint.
      *
      * @param accessToken
      * @param recipeId
@@ -664,7 +696,7 @@ public class SharecipeRequests {
     }
 
     /**
-     *  DELETE `/users/user_id/recipes/recipe_id/likes` endpoint.
+     *  DELETE `/recipes/recipe_id/likes` endpoint.
      *
      * @param accessToken
      * @param recipeId
