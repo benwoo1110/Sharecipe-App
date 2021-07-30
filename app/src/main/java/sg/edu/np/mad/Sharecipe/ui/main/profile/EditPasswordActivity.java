@@ -1,25 +1,20 @@
 package sg.edu.np.mad.Sharecipe.ui.main.profile;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.io.File;
-
-import java9.util.concurrent.CompletableFuture;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.ui.App;
+import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
 
-public class EditPasswordActivity extends AppCompatActivity {
+public class EditPasswordActivity extends DynamicFocusAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
