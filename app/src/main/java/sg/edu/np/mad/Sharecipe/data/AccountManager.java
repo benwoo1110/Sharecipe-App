@@ -124,6 +124,26 @@ public class AccountManager {
     }
 
     /**
+     *
+     *
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
+    @NonNull
+    public FutureDataResult<Void> changePassword(String oldPassword, String newPassword) {
+        FutureDataResult<Void> future = new FutureDataResult<>();
+
+        refresh().onSuccess(refreshedAccount -> {
+            SharecipeRequests.postChangePassword(refreshedAccount.getRefreshToken(), oldPassword, newPassword).onSuccess(response -> {
+                future.complete(new DataResult.Success<>(null));
+            });
+        });
+
+        return future;
+    }
+
+    /**
      * Logout from the current account. Tokens should be removed and invalidated.
      *
      * @return Success status, no actual data returned.

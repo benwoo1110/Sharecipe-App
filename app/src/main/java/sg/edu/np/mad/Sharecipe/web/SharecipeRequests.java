@@ -135,6 +135,39 @@ public class SharecipeRequests {
     }
 
     /**
+     * POST `/account/changepassword` endpoint.
+     *
+     * @param refreshToken
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
+    @NonNull
+    public static FutureWebResponse postChangePassword(@NonNull String refreshToken,
+                                                       String oldPassword,
+                                                       String newPassword) {
+
+        String payload;
+        try {
+            payload = new JSONObject()
+                    .put("old_password", oldPassword)
+                    .put("new_password", newPassword)
+                    .toString();
+        } catch (JSONException e) {
+            return FutureWebResponse.failedFuture(e);
+        }
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.ACCOUNT)
+                        .addPathSegment(UrlPath.CHANGE_PASSWORD)
+                        .build())
+                .header("Authorization", "Bearer " + refreshToken)
+                .post(RequestBody.create(payload, JSON_TYPE))
+                .build());
+    }
+
+    /**
      * POST `/account/logout` endpoint.
      *
      * @param refreshToken
