@@ -1,21 +1,20 @@
-package sg.edu.np.mad.Sharecipe.ui.view;
+package sg.edu.np.mad.Sharecipe.ui.view.information;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
-import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
@@ -46,13 +45,15 @@ public class ViewInformationFragment extends Fragment {
 
         ViewImagesAdapter adapter = new ViewImagesAdapter(getActivity(), enlargedImage, view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-
+        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_fall_down);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setLayoutAnimation(controller);
 
         App.getRecipeManager().getImages(recipe).onSuccess(bitmaps -> {
             getActivity().runOnUiThread(() -> {
                 adapter.setBitmapList(bitmaps);
+                recyclerView.scheduleLayoutAnimation();
             });
         }).onFailed(System.out::println).onError(Throwable::printStackTrace);
 
@@ -70,8 +71,8 @@ public class ViewInformationFragment extends Fragment {
         displayDesc.setText(recipe.getDescription());
         displayDifficulty.setText("Difficulty: " + String.valueOf(recipe.getDifficulty()) + "/5");
 
-        App.getUserManager().getAccountUser().onSuccess(user -> {
-            displayAuthor.setText("By " + user.getUsername());
+        App.getUserManager().get(recipe.getUserId()).onSuccess(user -> {
+            getActivity().runOnUiThread(() -> displayAuthor.setText("By " + user.getUsername()));
         });
 
         return view;

@@ -1,11 +1,9 @@
-package sg.edu.np.mad.Sharecipe.ui.view;
+package sg.edu.np.mad.Sharecipe.ui.view.reviews;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.media.Rating;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.RatingBar;
@@ -15,16 +13,15 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeReviews;
-import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
+import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 
-public class RecipeReviewActivity extends AppCompatActivity {
+public class RecipeReviewActivity extends DynamicFocusAppCompatActivity {
 
     private final ArrayList<RecipeReviews> recipeReviews = new ArrayList<>();
 

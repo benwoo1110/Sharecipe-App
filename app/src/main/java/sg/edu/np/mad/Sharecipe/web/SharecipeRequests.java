@@ -135,6 +135,39 @@ public class SharecipeRequests {
     }
 
     /**
+     * POST `/account/changepassword` endpoint.
+     *
+     * @param refreshToken
+     * @param oldPassword
+     * @param newPassword
+     * @return
+     */
+    @NonNull
+    public static FutureWebResponse postChangePassword(@NonNull String refreshToken,
+                                                       String oldPassword,
+                                                       String newPassword) {
+
+        String payload;
+        try {
+            payload = new JSONObject()
+                    .put("old_password", oldPassword)
+                    .put("new_password", newPassword)
+                    .toString();
+        } catch (JSONException e) {
+            return FutureWebResponse.failedFuture(e);
+        }
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.ACCOUNT)
+                        .addPathSegment(UrlPath.CHANGE_PASSWORD)
+                        .build())
+                .header("Authorization", "Bearer " + refreshToken)
+                .post(RequestBody.create(payload, JSON_TYPE))
+                .build());
+    }
+
+    /**
      * POST `/account/logout` endpoint.
      *
      * @param refreshToken
@@ -254,6 +287,28 @@ public class SharecipeRequests {
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
                 .patch(RequestBody.create(userData.toString(), JSON_TYPE))
+                .build());
+    }
+
+    /**
+     * GET `/users/user_id/stats` endpoint.
+     *
+     * @param accessToken
+     * @param userId
+     * @return Response from server.
+     */
+    @NonNull
+    public static FutureWebResponse getUserStats(@NonNull String accessToken,
+                                                 int userId) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(userId))
+                        .addPathSegment(UrlPath.STATS)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
                 .build());
     }
 

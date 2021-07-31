@@ -4,6 +4,7 @@ import android.content.Context;
 
 import sg.edu.np.mad.Sharecipe.models.Discover;
 import sg.edu.np.mad.Sharecipe.models.SearchResult;
+import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.web.SharecipeRequests;
@@ -23,15 +24,17 @@ public class SearchManager {
      */
     public static SearchManager getInstance(Context context) {
         if (instance == null) {
-            instance = new SearchManager(AccountManager.getInstance(context.getApplicationContext()));
+            instance = new SearchManager(AccountManager.getInstance(context.getApplicationContext()), UserManager.getInstance(context));
         }
         return instance;
     }
 
     private final AccountManager accountManager;
+    private final UserManager userManager;
 
-    public SearchManager(AccountManager accountManager) {
+    public SearchManager(AccountManager accountManager, UserManager userManager) {
         this.accountManager = accountManager;
+        this.userManager = userManager;
     }
 
     /**
@@ -45,6 +48,9 @@ public class SearchManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getSearch(account.getAccessToken(), searchQuery).onSuccessModel(future, SearchResult.class, (response, searchResult) -> {
+                for (User user : searchResult.getUsers()) {
+                    userManager.addToCache(user);
+                }
                 future.complete(new DataResult.Success<>(searchResult));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);

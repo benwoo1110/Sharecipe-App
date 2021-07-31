@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -32,6 +33,9 @@ public class MyRecipeFragment extends Fragment {
     public static int LAUNCH_RECIPE_CREATION = 50;
 
     private RecipeAdapter recipeAdapter;
+    private ShimmerFrameLayout shimmerFrameLayout;
+    private RecyclerView recipeRecyclerView;
+    private SwipeRefreshLayout myRecipeRefresh;
 
     public MyRecipeFragment() {
         // Required empty public constructor
@@ -48,10 +52,9 @@ public class MyRecipeFragment extends Fragment {
 
         Toolbar myRecipeToolbar = view.findViewById(R.id.myRecipeToolbar);
         FloatingActionButton addRecipe = view.findViewById(R.id.button_create_recipe);
-        ShimmerFrameLayout shimmerFrameLayout = view.findViewById(R.id.recipeShimmerLayout);
-        RecyclerView recipeRecyclerView = view.findViewById(R.id.myRecipeRecyclerView);
-
-        shimmerFrameLayout.startShimmer();
+        shimmerFrameLayout = view.findViewById(R.id.recipeShimmerLayout);
+        recipeRecyclerView = view.findViewById(R.id.myRecipeRecyclerView);
+        myRecipeRefresh = view.findViewById(R.id.myRecipeRefresh);
 
         recipeAdapter = new RecipeAdapter(new ArrayList<>());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -59,18 +62,6 @@ public class MyRecipeFragment extends Fragment {
         recipeRecyclerView.setLayoutAnimation(controller);
         recipeRecyclerView.setAdapter(recipeAdapter);
         recipeRecyclerView.setLayoutManager(layoutManager);
-
-        App.getRecipeManager().getAccountRecipes().onSuccess(recipes -> {
-            getActivity().runOnUiThread(() -> {
-                System.out.println(recipes);
-                recipeAdapter.setRecipeList(recipes);
-                recipeRecyclerView.scheduleLayoutAnimation();
-                shimmerFrameLayout.stopShimmer();
-                shimmerFrameLayout.setVisibility(View.GONE);
-            });
-        })
-        .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
-        .onError(Throwable::printStackTrace);
 
         addRecipe.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), RecipeCreateActivity.class);
@@ -85,7 +76,30 @@ public class MyRecipeFragment extends Fragment {
             });
         });
 
+        myRecipeRefresh.setOnRefreshListener(this::loadMyRecipe);
+
+        loadMyRecipe();
+
         return view;
+    }
+
+    private void loadMyRecipe() {
+        recipeRecyclerView.setVisibility(View.GONE);
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        shimmerFrameLayout.startShimmer();
+
+        App.getRecipeManager().getAccountRecipes().onSuccess(recipes -> {
+            getActivity().runOnUiThread(() -> {
+                recipeAdapter.setRecipeList(recipes);
+                recipeRecyclerView.scheduleLayoutAnimation();
+                recipeRecyclerView.setVisibility(View.VISIBLE);
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setVisibility(View.GONE);
+                myRecipeRefresh.setRefreshing(false);
+            });
+        })
+        .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
+        .onError(Throwable::printStackTrace);
     }
 
     @Override

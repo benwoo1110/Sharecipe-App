@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.view;
+package sg.edu.np.mad.Sharecipe.ui.view.ingredients;
 
 import android.view.View;
 import android.widget.TextView;

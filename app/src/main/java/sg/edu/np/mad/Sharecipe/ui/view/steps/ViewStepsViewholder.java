@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.view;
+package sg.edu.np.mad.Sharecipe.ui.view.steps;
 
 import android.view.View;
 import android.widget.TextView;
@@ -18,5 +18,4 @@ public class ViewStepsViewholder extends RecyclerView.ViewHolder {
         stepNumber = itemView.findViewById(R.id.displayStepNumber_view);
         stepDesc = itemView.findViewById(R.id.displayStepDescription_view);
     }
-
 }

@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 import okhttp3.ResponseBody;
 import sg.edu.np.mad.Sharecipe.models.BooleanState;
+import sg.edu.np.mad.Sharecipe.models.Stats;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.models.UserFollow;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
@@ -49,7 +50,7 @@ public class UserManager {
     private final AccountManager accountManager;
     private final BitmapCacheManager bitmapCacheManager;
     private final Cache<Integer, User> userCache = CacheBuilder.newBuilder()
-            .expireAfterAccess(10, TimeUnit.MINUTES)
+            .expireAfterAccess(1, TimeUnit.MINUTES)
             .maximumSize(500)
             .build();
 
@@ -101,9 +102,26 @@ public class UserManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getUser(account.getAccessToken(), userId).onSuccessModel(future, User.class, (response, user) -> {
-                userCache.put(userId, user);
+                userCache.put(user.getUserId(), user);
                 future.complete(new DataResult.Success<>(user));
             }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    @NonNull
+    public FutureDataResult<List<Stats>> getStats(User user) {
+        FutureDataResult<List<Stats>> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getUserStats(account.getAccessToken(), user.getUserId()).onSuccessJson(future, (response, json) -> {
+                List<Stats> statsList = new ArrayList<>();
+                for (JsonElement statsData : json.getAsJsonArray()) {
+                    statsList.add(JsonUtils.convertToObject(statsData, Stats.class));
+                }
+                future.complete(new DataResult.Success<>(statsList));
+            });
         }).onFailed(future).onError(future);
 
         return future;
@@ -303,5 +321,17 @@ public class UserManager {
         }).onFailed(future).onError(future);
 
         return future;
+    }
+
+    public void invalidateUser(User user) {
+        userCache.invalidate(user.getUserId());
+    }
+
+    public void invalidateAll() {
+        userCache.invalidateAll();
+    }
+
+    void addToCache(User user) {
+        userCache.put(user.getUserId(), user);
     }
 }
