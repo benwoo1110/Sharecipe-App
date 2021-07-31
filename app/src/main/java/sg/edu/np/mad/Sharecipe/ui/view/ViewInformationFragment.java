@@ -44,7 +44,7 @@ public class ViewInformationFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.viewImages_recyclerView);
 
         ViewImagesAdapter adapter = new ViewImagesAdapter(getActivity(), enlargedImage, view);
-        LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(cLayoutManager);
