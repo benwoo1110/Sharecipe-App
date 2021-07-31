@@ -36,7 +36,7 @@
                     android:scaleType="centerCrop"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize16dp"
-                    app:srcCompat="@drawable/demo_pizza"
+                    app:srcCompat="@drawable/ic_baseline_fastfood_24"
                     tools:layout_editor_absoluteY="16dp" />
 
                 <TextView
