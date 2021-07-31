@@ -33,6 +33,7 @@
                     android:id="@+id/discoverLargeImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="?attr/colorPrimaryVariant"
                     android:scaleType="centerCrop"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize16dp"
