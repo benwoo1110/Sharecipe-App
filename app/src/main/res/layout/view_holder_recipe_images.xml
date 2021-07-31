@@ -21,8 +21,5 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize16dp"
-        app:srcCompat="@drawable/outline_add_circle_24" />
-
+        app:srcCompat="@drawable/outline_add_box_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>

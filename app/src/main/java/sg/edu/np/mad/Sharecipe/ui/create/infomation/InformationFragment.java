@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -147,11 +148,12 @@ public class InformationFragment extends Fragment {
         });
 
         adapter = new ImagesAdapter(getActivity(), imageList, imageFileList, enlargedImage, view);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
         cLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
         images.setAdapter(adapter);
-        images.setLayoutManager(cLayoutManager);
+        images.setLayoutManager(gridLayoutManager);
 
         prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
         prep.setOnTouchListener((v, event) -> {
