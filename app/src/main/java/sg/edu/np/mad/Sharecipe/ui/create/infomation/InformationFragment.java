@@ -93,7 +93,7 @@ public class InformationFragment extends Fragment {
             prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
         }
         if (recipe.getTags() != null) {
-            for (RecipeTag tag:recipe.getTags()
+            for (RecipeTag tag : recipe.getTags()
                  ) {
                 recipeTags.add(tag);
                 // TODO: Display the tags
@@ -102,6 +102,12 @@ public class InformationFragment extends Fragment {
         if (recipe.getDescription() != null) {
             description.setText(recipe.getDescription());
         }
+//        if (recipe.getImages() != null) {
+//            for (RecipeImage image : recipe.getImages()
+//            ) {
+//
+//            }
+//        }
 
         createTags();
         TagNamesAdapter tagAdapter = new TagNamesAdapter(

@@ -45,6 +45,14 @@ public class StepsFragment extends Fragment {
         stepsView.setAdapter(adapter);
         stepsView.setLayoutManager(cLayoutManager);
 
+        if (recipe.getSteps() != null) {
+            for (RecipeStep step : recipe.getSteps()
+                 ) {
+                stepsList.add(step);
+                adapter.notifyDataSetChanged();
+            }
+        }
+
         button.setOnClickListener(v -> {
             RecipeStep newStep =  new RecipeStep();
             newStep.setStepNumber(stepsList.size() + 1);
