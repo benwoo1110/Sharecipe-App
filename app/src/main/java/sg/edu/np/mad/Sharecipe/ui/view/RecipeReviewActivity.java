@@ -21,6 +21,7 @@ import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeReviews;
+import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
 
 public class RecipeReviewActivity extends AppCompatActivity {
@@ -66,7 +67,6 @@ public class RecipeReviewActivity extends AppCompatActivity {
                 Toast.makeText(RecipeReviewActivity.this, "Please rate this recipe 1 to 5 stars", Toast.LENGTH_SHORT);
             }
             else {
-                // TODO: Somehow save the new review to the recipe
             }
         });
 

@@ -10,5 +10,6 @@ public class IntentKeys {
     public static final String RECIPE_VIEW = "RECIPE_VIEW";
     public static final String RECIPE_EDIT = "RECIPE_EDIT";
     public static final String RECIPE_REVIEW = "RECIPE_REVIEW";
+    public static final String CHECK_RECIPE_EDIT = "CHECK_RECIPE_EDIT";
     public static final String USER_ID = "USER_ID";
 }

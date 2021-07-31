@@ -37,6 +37,7 @@ public class RecipeCreateActivity extends AppCompatActivity {
 
         Intent getRecipe = getIntent();
         Recipe recipe = (Recipe) getRecipe.getSerializableExtra(IntentKeys.RECIPE_EDIT);
+        boolean checkEdit = getRecipe.getBooleanExtra(IntentKeys.CHECK_RECIPE_EDIT, false);
 
         TabLayout tabLayout = findViewById(R.id.recipeTab);
         ViewPager2 viewPager = findViewById(R.id.recipe_info_viewpager);
@@ -63,34 +64,47 @@ public class RecipeCreateActivity extends AppCompatActivity {
         bottomNavigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.recipe_save_menu) {
-                confirmPublish(recipe, adapter);
+                confirmPublish(recipe, adapter, checkEdit);
                 return false;
             }
             return false;
         });
     }
 
-    public void confirmPublish(Recipe recipe, RecipeCreateAdapter adapter) {
+    public void confirmPublish(Recipe recipe, RecipeCreateAdapter adapter, boolean checkEdit) {
         new AlertDialog.Builder(this)
                 .setTitle("Confirm changes")
                 .setMessage("Are you sure you want to publish this recipe?")
                 .setNegativeButton("No", null)
                 .setPositiveButton("Confirm", ((dialog, which) -> {
                     Toast.makeText(RecipeCreateActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
-// TODO                   App.getRecipeManager().update(recipe) how to differentiate modified and created
-                    App.getRecipeManager().create(recipe).onSuccess(createdRecipe -> {
-                        App.getRecipeManager().addImages(createdRecipe, adapter.getImageFileList()).thenAccept(result -> {
+                    if (checkEdit) {
+                        App.getRecipeManager().update(recipe).onSuccess(recipe1 -> {
                             RecipeCreateActivity.this.runOnUiThread(() -> {
                                 Toast.makeText(RecipeCreateActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent();
-                                intent.putExtra(IntentKeys.RECIPE_SAVE, createdRecipe);
+                                intent.putExtra(IntentKeys.RECIPE_SAVE, recipe1);
                                 setResult(Activity.RESULT_OK, intent);
                                 finish();
                             });
                         });
-                    }).onFailed(recipeFailed -> {
-                        RecipeCreateActivity.this.runOnUiThread(() -> Toast.makeText(RecipeCreateActivity.this, recipeFailed.getMessage(), Toast.LENGTH_SHORT).show());
-                    });
+                    }
+                    else {
+                        App.getRecipeManager().create(recipe).onSuccess(createdRecipe -> {
+                            App.getRecipeManager().addImages(createdRecipe, adapter.getImageFileList()).thenAccept(result -> {
+                                RecipeCreateActivity.this.runOnUiThread(() -> {
+                                    Toast.makeText(RecipeCreateActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent();
+                                    intent.putExtra(IntentKeys.RECIPE_SAVE, createdRecipe);
+                                    setResult(Activity.RESULT_OK, intent);
+                                    finish();
+                                });
+                            });
+                        }).onFailed(recipeFailed -> {
+                            RecipeCreateActivity.this.runOnUiThread(() -> Toast.makeText(RecipeCreateActivity.this, recipeFailed.getMessage(), Toast.LENGTH_SHORT).show());
+                        });
+                    }
+
                 }))
                 .show();
     }

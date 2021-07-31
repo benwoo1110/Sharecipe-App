@@ -63,6 +63,7 @@ public class RecipeViewActivity extends AppCompatActivity {
                 App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
                     Intent editRecipe = new Intent(RecipeViewActivity.this, RecipeCreateActivity.class);
                     editRecipe.putExtra(IntentKeys.RECIPE_EDIT, recipe);
+                    editRecipe.putExtra(IntentKeys.CHECK_RECIPE_EDIT, true);
                     startActivity(editRecipe);
                 });
 
