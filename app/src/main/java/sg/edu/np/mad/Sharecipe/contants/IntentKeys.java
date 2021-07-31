@@ -9,8 +9,9 @@ public class IntentKeys {
     public static final String RECIPE_SAVE = "RECIPE_SAVE";
     public static final String RECIPE_VIEW = "RECIPE_VIEW";
     public static final String RECIPE_EDIT = "RECIPE_EDIT";
-    public static final String RECIPE_REVIEW = "RECIPE_REVIEW";
     public static final String CHECK_RECIPE_EDIT = "CHECK_RECIPE_EDIT";
+    public static final String RECIPE_REVIEW = "RECIPE_REVIEW";
+    public static final String RECIPE_REVIEW_SAVE = "RECIPE_REVIEW_SAVE";
     public static final String USER_ID = "USER_ID";
     public static final String USER_EDIT = "USER_EDIT";
     public static final String RECIPE_SHOW_LIKED = "RECIPE_SHOW_LIKED";

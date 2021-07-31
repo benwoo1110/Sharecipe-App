@@ -3,6 +3,7 @@ package sg.edu.np.mad.Sharecipe.ui.view;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -14,17 +15,22 @@ import com.google.android.material.tabs.TabLayout;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.models.RecipeReview;
+import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.OnTabSelectedListener;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 import sg.edu.np.mad.Sharecipe.ui.view.reviews.RecipeReviewActivity;
+import sg.edu.np.mad.Sharecipe.ui.view.reviews.RecipeReviewAdapter;
 
 public class RecipeViewActivity extends AppCompatActivity {
+    public static int LAUNCH_REVIEW_CREATION = 1;
 
     private boolean ignoreSelect = false;
     private boolean isLiked;
     private Recipe recipe;
     private BottomNavigationView bottomNavigation;
+    private RecipeViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +79,7 @@ public class RecipeViewActivity extends AppCompatActivity {
 
             int itemId = item.getItemId();
             if (itemId == R.id.recipe_review_menu) {
+                adapter.notifyDataSetChanged();
                 App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
                     Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
                     review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
@@ -80,7 +87,6 @@ public class RecipeViewActivity extends AppCompatActivity {
                 });
                 return false;
             } else if (itemId == R.id.recipe_edit_menu) {
-                //TODO Edit recipe
                 App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
                     Intent editRecipe = new Intent(RecipeViewActivity.this, RecipeCreateActivity.class);
                     editRecipe.putExtra(IntentKeys.RECIPE_EDIT, recipe);
@@ -111,7 +117,7 @@ public class RecipeViewActivity extends AppCompatActivity {
             RecipeViewActivity.this.recipe = recipe;
 
             RecipeViewActivity.this.runOnUiThread(() -> {
-                RecipeViewAdapter adapter = new RecipeViewAdapter(this, tabLayout.getTabCount(), recipe);
+                adapter = new RecipeViewAdapter(this, tabLayout.getTabCount(), recipe);
                 viewpager.setAdapter(adapter);
                 if (recipe.getUserId() == userID) {
                     bottomNavigation.getMenu().findItem(R.id.recipe_edit_menu).setVisible(true);

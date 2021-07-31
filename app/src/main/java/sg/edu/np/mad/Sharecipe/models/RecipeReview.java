@@ -4,7 +4,9 @@ import android.graphics.Bitmap;
 
 import com.google.gson.annotations.Expose;
 
-public class RecipeReviews {
+import java.io.Serializable;
+
+public class RecipeReview implements Serializable {
 
     @Expose
     private String comment;
@@ -16,7 +18,7 @@ public class RecipeReviews {
     private String username;
 
     @Expose
-    private Bitmap profilePic;
+    private User user;
 
     public String getComment() {
         return comment;
@@ -42,11 +44,11 @@ public class RecipeReviews {
         this.username = username;
     }
 
-    public Bitmap getProfilePic() {
-        return profilePic;
+    public User getUser() {
+        return user;
     }
 
-    public void setProfilePic(Bitmap profilePic) {
-        this.profilePic = profilePic;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

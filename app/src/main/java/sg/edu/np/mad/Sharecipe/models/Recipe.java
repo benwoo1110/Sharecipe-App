@@ -30,7 +30,7 @@ public class Recipe extends PartialRecipe {
     @Expose
     private List<RecipeTag> tags;
     @Expose
-    private List<RecipeReviews> reviews;
+    private List<RecipeReview> reviews;
 
     public Recipe() { }
 
@@ -110,11 +110,11 @@ public class Recipe extends PartialRecipe {
         this.tags = tags;
     }
 
-    public List<RecipeReviews> getReviews() {
+    public List<RecipeReview> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<RecipeReviews> reviews) {
+    public void setReviews(List<RecipeReview> reviews) {
         this.reviews = reviews;
     }
 

@@ -11,12 +11,13 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.models.RecipeReviews;
+import sg.edu.np.mad.Sharecipe.models.RecipeReview;
+import sg.edu.np.mad.Sharecipe.ui.App;
 
 public class RecipeReviewAdapter extends RecyclerView.Adapter<RecipeReviewViewholder> {
-    List<RecipeReviews> reviews;
+    List<RecipeReview> reviews;
 
-    public RecipeReviewAdapter(List<RecipeReviews> reviews) {
+    public RecipeReviewAdapter(List<RecipeReview> reviews) {
         this.reviews = reviews;
     }
 
@@ -31,8 +32,8 @@ public class RecipeReviewAdapter extends RecyclerView.Adapter<RecipeReviewViewho
 
     @Override
     public void onBindViewHolder(@NotNull RecipeReviewViewholder holder, int position) {
-        RecipeReviews review = reviews.get(position);
-        holder.profilePic.setImageBitmap(review.getProfilePic());
+        RecipeReview review = reviews.get(position);
+        App.getUserManager().getProfileImage(review.getUser()).onSuccess(bitmap -> holder.profilePic.setImageBitmap(bitmap));
         holder.username.setText(review.getUsername());
         holder.review.setText(review.getComment());
         holder.score.setText(String.valueOf(review.getRating()) + " /5");
