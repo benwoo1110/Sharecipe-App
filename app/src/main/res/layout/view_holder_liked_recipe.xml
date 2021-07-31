@@ -49,7 +49,8 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/recipeIconImage"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:fontFamily="@font/quicksand_regular"/>
 
             <TextView
                 android:id="@+id/recipeSecondaryInfo"
@@ -61,7 +62,8 @@
                 android:text="TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/recipeIconImage" />
+                app:layout_constraintStart_toEndOf="@+id/recipeIconImage"
+                android:fontFamily="@font/quicksand_light"/>
 
             <TextView
                 android:id="@+id/likes"
@@ -71,7 +73,8 @@
                 android:layout_marginTop="15dp"
                 android:text="Likes:"
                 app:layout_constraintStart_toEndOf="@+id/recipeIconImage"
-                app:layout_constraintTop_toBottomOf="@+id/recipeTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/recipeTitle"
+                android:fontFamily="@font/quicksand_light"/>
 
             <TextView
                 android:id="@+id/likesNo"
@@ -81,7 +84,8 @@
                 android:layout_marginTop="15dp"
                 android:text="0"
                 app:layout_constraintStart_toEndOf="@+id/likes"
-                app:layout_constraintTop_toBottomOf="@+id/recipeTitle" />
+                app:layout_constraintTop_toBottomOf="@+id/recipeTitle"
+                android:fontFamily="@font/quicksand_light"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
