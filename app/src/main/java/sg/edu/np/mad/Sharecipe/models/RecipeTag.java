@@ -2,7 +2,9 @@ package sg.edu.np.mad.Sharecipe.models;
 
 import com.google.gson.annotations.Expose;
 
-public class RecipeTag {
+import java.io.Serializable;
+
+public class RecipeTag implements Serializable {
 
     @Expose
     private String name;
