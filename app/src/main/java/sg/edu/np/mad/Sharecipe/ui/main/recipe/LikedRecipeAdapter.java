@@ -39,9 +39,9 @@ public class LikedRecipeAdapter extends RecyclerView.Adapter<LikedRecipeViewHold
         holder.recipe = recipe;
         holder.title.setText(recipe.getName());
         holder.info.setText(String.valueOf(recipe.getRecipeId()));
-        //RecipeManager.getInstance(this.context).getLikes(recipe).onSuccess(recipeLikes -> {
-        //    likes = recipeLikes.size();
-        //});
+        App.getRecipeManager().getLikes(recipe).onSuccess(recipeLikes -> {
+            likes = recipeLikes.size();
+        });
         holder.likedNo.setText(String.valueOf(likes));
 
         if (recipe.getIcon() != null) {

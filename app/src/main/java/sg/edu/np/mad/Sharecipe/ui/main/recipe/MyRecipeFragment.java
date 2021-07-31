@@ -87,7 +87,7 @@ public class MyRecipeFragment extends Fragment {
         });
 
         likedRecipe.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), LikedRecipeFragment.class);
+            Intent intent = new Intent(getContext(), LikedRecipeActivity.class);
             startActivity(intent);
         });
 
