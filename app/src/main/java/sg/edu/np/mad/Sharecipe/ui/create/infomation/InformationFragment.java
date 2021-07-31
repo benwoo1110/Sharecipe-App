@@ -265,7 +265,9 @@ public class InformationFragment extends Fragment {
         recipeTags.add(snack);
         recipeTags.add(drink);
         recipeTags.add(dessert);
-        recipeTags.addAll(recipe.getTags());
+        if (recipe.getTags() != null) {
+            recipeTags.addAll(recipe.getTags());
+        }
     }
 
     private void createRecipientChip(String tagName) {
