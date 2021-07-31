@@ -121,13 +121,17 @@ public class Recipe extends PartialRecipe {
     @Override
     public String toString() {
         return "Recipe{" +
-                "userId=" + userId +
-                ", recipeId=" + recipeId +
-                ", name='" + name + '\'' +
-                ", portion=" + portion +
+                "portion=" + portion +
                 ", difficulty=" + difficulty +
+                ", totalTimeNeeded=" + totalTimeNeeded +
+                ", description='" + description + '\'' +
+                ", isPublic=" + isPublic +
                 ", timeCreated=" + timeCreated +
                 ", steps=" + steps +
+                ", ingredients=" + ingredients +
+                ", images=" + images +
+                ", tags=" + tags +
+                ", reviews=" + reviews +
                 '}';
     }
 }

@@ -11,15 +11,27 @@
         layout="@layout/partial_view_profile" />
 
     <Button
-        android:id="@+id/follow"
+        android:id="@+id/viewUserRecipesButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="48dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="48dp"
-        android:text=". . ."
+        android:text="View created recipes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileLayout" />
+
+    <Button
+        android:id="@+id/follow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="48dp"
+        android:text=". . ."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewUserRecipesButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

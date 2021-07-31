@@ -18,8 +18,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sharecipe">
-        <activity android:name=".ui.main.profile.EditPasswordActivity"></activity>
-        <activity android:name=".ui.view.reviews.RecipeReviewActivity" />
         <activity
             android:name=".ui.SplashActivity"
             android:screenOrientation="portrait"
@@ -30,6 +28,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.main.recipe.UserRecipeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.main.profile.EditPasswordActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.RecipeReviewActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.view.RecipeViewActivity"
             android:screenOrientation="portrait" />

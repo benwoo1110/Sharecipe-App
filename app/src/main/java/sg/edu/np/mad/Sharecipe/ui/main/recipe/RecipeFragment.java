@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -25,20 +26,36 @@ import java.util.ArrayList;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 
-public class MyRecipeFragment extends Fragment {
+public class RecipeFragment extends Fragment {
 
     public static int LAUNCH_RECIPE_CREATION = 50;
+
+    private final int userId;
+    private final boolean showLiked;
+    private final boolean isAccountUser;
 
     private RecipeAdapter recipeAdapter;
     private ShimmerFrameLayout shimmerFrameLayout;
     private RecyclerView recipeRecyclerView;
     private SwipeRefreshLayout myRecipeRefresh;
 
-    public MyRecipeFragment() {
-        // Required empty public constructor
+    private User user;
+    private TextView noRecipeMessage;
+
+    public RecipeFragment() {
+        userId = App.getAccountManager().getAccount().getUserId();
+        showLiked = false;
+        isAccountUser = true;
+    }
+
+    public RecipeFragment(int userId, boolean showLiked) {
+        this.userId = userId;
+        this.showLiked = showLiked;
+        this.isAccountUser = App.getAccountManager().getAccount().getUserId() == userId;
     }
 
     @Override
@@ -48,10 +65,11 @@ public class MyRecipeFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_my_recipe, container, false);
+        View view = inflater.inflate(R.layout.fragment_recipe, container, false);
 
-        Toolbar myRecipeToolbar = view.findViewById(R.id.myRecipeToolbar);
+        Toolbar recipeToolbar = view.findViewById(R.id.recipeToolbar);
         FloatingActionButton addRecipe = view.findViewById(R.id.button_create_recipe);
+        noRecipeMessage = view.findViewById(R.id.noRecipeMessage);
         shimmerFrameLayout = view.findViewById(R.id.recipeShimmerLayout);
         recipeRecyclerView = view.findViewById(R.id.myRecipeRecyclerView);
         myRecipeRefresh = view.findViewById(R.id.myRecipeRefresh);
@@ -63,32 +81,51 @@ public class MyRecipeFragment extends Fragment {
         recipeRecyclerView.setAdapter(recipeAdapter);
         recipeRecyclerView.setLayoutManager(layoutManager);
 
-        addRecipe.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), RecipeCreateActivity.class);
-            Recipe recipe = new Recipe();
-            intent.putExtra(IntentKeys.RECIPE_EDIT, recipe);
-            startActivityForResult(intent, LAUNCH_RECIPE_CREATION);
-        });
+        if (!showLiked && isAccountUser) {
 
-        App.getUserManager().getAccountUser().onSuccess(user -> {
+            recipeToolbar.inflateMenu(R.menu.recipe_like_menu);
+            recipeToolbar.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() != R.id.liked_recipe_item) {
+                    return false;
+                }
+
+                Intent intent = new Intent(getContext(), UserRecipeActivity.class);
+                intent.putExtra(IntentKeys.USER_ID, userId);
+                intent.putExtra(IntentKeys.RECIPE_SHOW_LIKED, true);
+                startActivity(intent);
+                return true;
+            });
+
+            addRecipe.setOnClickListener(v -> {
+                Intent intent = new Intent(getContext(), RecipeCreateActivity.class);
+                Recipe recipe = new Recipe();
+                intent.putExtra(IntentKeys.RECIPE_EDIT, recipe);
+                startActivityForResult(intent, LAUNCH_RECIPE_CREATION);
+            });
+
+        } else {
+            addRecipe.setVisibility(View.GONE);
+        }
+
+        App.getUserManager().get(userId).onSuccess(user -> {
+            RecipeFragment.this.user = user;
             getActivity().runOnUiThread(() -> {
-                myRecipeToolbar.setTitle(user.getUsername() + "'s Recipe");
+                recipeToolbar.setTitle(user.getUsername() + "'s " + (showLiked ? "Favourites" : "Recipe"));
+                myRecipeRefresh.setOnRefreshListener(this::loadRecipe);
+                loadRecipe();
             });
         });
-
-        myRecipeRefresh.setOnRefreshListener(this::loadMyRecipe);
-
-        loadMyRecipe();
 
         return view;
     }
 
-    private void loadMyRecipe() {
+    private void loadRecipe() {
+        noRecipeMessage.setVisibility(View.GONE);
         recipeRecyclerView.setVisibility(View.GONE);
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmer();
 
-        App.getRecipeManager().getAccountRecipes().onSuccess(recipes -> {
+        (showLiked ? App.getRecipeManager().getForUserLikes(user) : App.getRecipeManager().getAllForUser(userId)).onSuccess(recipes -> {
             getActivity().runOnUiThread(() -> {
                 recipeAdapter.setRecipeList(recipes);
                 recipeRecyclerView.scheduleLayoutAnimation();
@@ -96,6 +133,12 @@ public class MyRecipeFragment extends Fragment {
                 shimmerFrameLayout.stopShimmer();
                 shimmerFrameLayout.setVisibility(View.GONE);
                 myRecipeRefresh.setRefreshing(false);
+                if (recipes.size() <= 0) {
+                    String text =  isAccountUser ? "You" : user.getUsername();
+                    text += showLiked ? " have not liked any recipe." : " have not created any recipe.";
+                    noRecipeMessage.setText(text);
+                    noRecipeMessage.setVisibility(View.VISIBLE);
+                }
             });
         })
         .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))

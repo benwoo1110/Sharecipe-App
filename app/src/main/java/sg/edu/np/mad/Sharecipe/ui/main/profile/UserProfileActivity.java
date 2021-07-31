@@ -2,6 +2,7 @@ package sg.edu.np.mad.Sharecipe.ui.main.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
@@ -21,6 +22,7 @@ import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
+import sg.edu.np.mad.Sharecipe.ui.main.recipe.UserRecipeActivity;
 
 public class UserProfileActivity extends AppCompatActivity {
 
@@ -37,6 +39,7 @@ public class UserProfileActivity extends AppCompatActivity {
         RecyclerView gridStatsView = findViewById(R.id.statsRecyclerView);
         TextView username = findViewById(R.id.username);
         TextView description = findViewById(R.id.description);
+        Button viewRecipe = findViewById(R.id.viewUserRecipesButton);
         follow = findViewById(R.id.follow);
 
         // Setup stats grid
@@ -77,6 +80,12 @@ public class UserProfileActivity extends AppCompatActivity {
                     gridStatsView.scheduleLayoutAnimation();
                 });
             });
+        });
+
+        viewRecipe.setOnClickListener(v -> {
+            Intent intent = new Intent(UserProfileActivity.this, UserRecipeActivity.class);
+            intent.putExtra(IntentKeys.USER_ID, userId);
+            startActivity(intent);
         });
 
         // Enabled only after data loaded.

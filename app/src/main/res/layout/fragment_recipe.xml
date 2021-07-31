@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layoutAnimation="@anim/layout_animation_fall_down"
-    tools:context=".ui.main.recipe.MyRecipeFragment">
+    tools:context=".ui.main.recipe.RecipeFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/myRecipeToolbar"
+        android:id="@+id/recipeToolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
@@ -17,7 +17,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="My Recipe"
+        app:title="Recipe"
         app:titleTextColor="?attr/colorOnBackground"
         app:titleTextAppearance="@style/Widget.AppCompat.Toolbar."/>
 
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myRecipeToolbar"
+        app:layout_constraintTop_toBottomOf="@+id/recipeToolbar"
         app:shimmer_repeat_mode="restart"
         app:shimmer_shape="linear">
 
@@ -69,7 +69,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myRecipeToolbar">
+        app:layout_constraintTop_toBottomOf="@+id/recipeToolbar">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/myRecipeRecyclerView"
@@ -78,16 +78,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/myRecipeToolbar" />
+            app:layout_constraintTop_toBottomOf="@+id/recipeToolbar" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <Button
-        android:id="@+id/button"
+    <TextView
+        android:id="@+id/noRecipeMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Liked"
-        android:textColor="@color/black"
+        android:text="No recipes."
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recipeToolbar" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
