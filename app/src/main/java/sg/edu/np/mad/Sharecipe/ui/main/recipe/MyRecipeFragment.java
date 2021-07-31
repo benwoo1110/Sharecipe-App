@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
+import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 
 public class MyRecipeFragment extends Fragment {
 
@@ -50,6 +52,7 @@ public class MyRecipeFragment extends Fragment {
         FloatingActionButton addRecipe = view.findViewById(R.id.button_create_recipe);
         ShimmerFrameLayout shimmerFrameLayout = view.findViewById(R.id.recipeShimmerLayout);
         RecyclerView recipeRecyclerView = view.findViewById(R.id.myRecipeRecyclerView);
+        Button likedRecipe = view.findViewById(R.id.liked);
 
         shimmerFrameLayout.startShimmer();
 
@@ -81,6 +84,11 @@ public class MyRecipeFragment extends Fragment {
             getActivity().runOnUiThread(() -> {
                 myRecipeToolbar.setTitle(user.getUsername() + "'s Recipe");
             });
+        });
+
+        likedRecipe.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), LikedRecipeFragment.class);
+            startActivity(intent);
         });
 
         return view;
