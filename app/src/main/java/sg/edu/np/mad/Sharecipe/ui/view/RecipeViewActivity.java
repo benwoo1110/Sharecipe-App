@@ -6,6 +6,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -80,8 +81,9 @@ public class RecipeViewActivity extends AppCompatActivity {
 
             int itemId = item.getItemId();
             if (itemId == R.id.recipe_review_menu) {
-                adapter.notifyDataSetChanged();
+                Log.v("This", "Works");
                 App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
+                    Log.v("This", "Also Works");
                     Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
                     review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
                     startActivity(review);
