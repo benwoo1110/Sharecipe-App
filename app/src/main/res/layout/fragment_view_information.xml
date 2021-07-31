@@ -12,16 +12,6 @@
 
 
         <View
-            android:id="@+id/view3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="32dp"
-            android:background="@android:color/darker_gray"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/displayDescription" />
-
-        <View
             android:id="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -45,28 +35,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/viewRecipeName"
             app:layout_constraintVertical_bias="0.214" />
-
-        <RatingBar
-            android:id="@+id/rateRecipe"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/labelReview" />
-
-        <TextView
-            android:id="@+id/labelReview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="48dp"
-            android:text="Review"
-            android:textSize="24sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view3" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/viewImages_recyclerView"
@@ -147,19 +115,6 @@
             app:layout_constraintTop_toBottomOf="@+id/viewPortion" />
 
         <TextView
-            android:id="@+id/totalRate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="51dp"
-            android:text="(0)"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/rateRecipe"
-            app:layout_constraintTop_toBottomOf="@+id/labelReview" />
-
-        <TextView
             android:id="@+id/displayDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -181,6 +136,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView3"
             app:srcCompat="@drawable/outline_whatshot_24" />
+
+        <ImageView
+            android:id="@+id/view_enlargedimage"
+            android:layout_width="417dp"
+            android:layout_height="594dp"
+            android:layout_marginTop="8dp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/viewRecipeName"
+            tools:srcCompat="@tools:sample/avatars" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

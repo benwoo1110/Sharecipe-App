@@ -4,20 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.MenuStateAdapter;
 import sg.edu.np.mad.Sharecipe.ui.main.discover.DiscoverFragment;
 import sg.edu.np.mad.Sharecipe.ui.main.profile.ProfileFragment;
-import sg.edu.np.mad.Sharecipe.ui.main.recipe.MyRecipeFragment;
+import sg.edu.np.mad.Sharecipe.ui.main.recipe.RecipeFragment;
 import sg.edu.np.mad.Sharecipe.ui.main.search.SearchFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends DynamicFocusAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
         MenuStateAdapter fragmentStateAdapter = new MenuStateAdapter(MainActivity.this)
                 .addFragmentClass(DiscoverFragment.class, R.id.discover_menu)
-                .addFragmentClass(MyRecipeFragment.class, R.id.my_recipes_menu)
+                .addFragmentClass(RecipeFragment.class, R.id.my_recipes_menu)
                 .addFragmentClass(SearchFragment.class, R.id.search_menu)
                 .addFragmentClass(ProfileFragment.class, R.id.profile_menu);
 

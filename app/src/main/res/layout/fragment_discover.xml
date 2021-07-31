@@ -7,7 +7,7 @@
     tools:context=".ui.main.discover.DiscoverFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/myRecipeToolbar2"
+        android:id="@+id/discoverToolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minHeight="?attr/actionBarSize"
@@ -16,15 +16,55 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="Welcome"
+        app:title="Sharecipe"
         app:titleTextColor="?attr/colorOnBackground" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/discoverRecyclerView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/discoverRefresh"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/myRecipeToolbar2" />
+        app:layout_constraintTop_toBottomOf="@+id/discoverToolbar">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/discoverRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/discoverToolbar" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/discoverShimmerLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/discoverToolbar"
+        app:shimmer_repeat_mode="restart"
+        app:shimmer_shape="linear">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include layout="@layout/view_shimmer_discover_large" />
+
+            <include layout="@layout/view_shimmer_discover_small" />
+
+            <include layout="@layout/view_shimmer_discover_small" />
+
+            <include layout="@layout/view_shimmer_discover_small" />
+
+            <include layout="@layout/view_shimmer_discover_small" />
+
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
