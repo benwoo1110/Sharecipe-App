@@ -19,14 +19,25 @@
         app:title="Sharecipe"
         app:titleTextColor="?attr/colorOnBackground" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/discoverRecyclerView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/discoverRefresh"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/discoverToolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/discoverToolbar">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/discoverRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/discoverToolbar" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/discoverShimmerLayout"
