@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -35,12 +36,12 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
     private Animator currentAnimator;
 
     private final Activity activity;
-    private final ArrayList<Uri> images;
+    private final ArrayList<Bitmap> images;
     private final List<File> imageFileList;
     private final ImageView enlarge;
     private final View view;
 
-    public ImagesAdapter(Activity activity, ArrayList<Uri> input, List<File> imageFileList, ImageView enlargedImage, View view) {
+    public ImagesAdapter(Activity activity, ArrayList<Bitmap> input, List<File> imageFileList, ImageView enlargedImage, View view) {
         this.activity = activity;
         this.images = input;
         this.imageFileList = imageFileList;
@@ -65,11 +66,11 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         }
 
         holder.image.setOnClickListener(v -> {
-            displayLargeImage(holder.image, holder.imgUri);
+            displayLargeImage(holder.image, holder.imgBitmap);
         });
 
         holder.image.setOnLongClickListener(v -> {
-            AlertDialog(holder.imgUri);
+            AlertDialog(holder.imgBitmap);
             return false;
         });
 
@@ -82,9 +83,9 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
             return;
         }
 
-        Uri image = images.get(position - 1);
-        holder.image.setImageURI(image);
-        holder.imgUri = images.get(position - 1);
+        Bitmap image = images.get(position - 1);
+        holder.image.setImageBitmap(image);
+        holder.imgBitmap = images.get(position - 1);
     }
 
     @Override
@@ -97,14 +98,14 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         return position == 0 ? 0 : 1; // if position == 0, set position = 0 else position = 1
     }
 
-    private void displayLargeImage(final ImageView thumbView, Uri imguri) {
+    private void displayLargeImage(final ImageView thumbView, Bitmap imgBitmap) {
         // If there's an animation in progress, cancel it
         // immediately and proceed with this one.
         if (currentAnimator != null) {
             currentAnimator.cancel();
         }
         final ImageView expandedImageView = enlarge;
-        expandedImageView.setImageURI(imguri);
+        expandedImageView.setImageBitmap(imgBitmap);
 
         final Rect startBounds = new Rect();
         final Rect finalBounds = new Rect();
@@ -207,10 +208,10 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         });
     }
 
-    private void AlertDialog(Uri image) {
+    private void AlertDialog(Bitmap image) {
         View view = LayoutInflater.from(activity).inflate(R.layout.dialog_image, null);
         ImageView targetImage = view.findViewById(R.id.alertImage);
-        targetImage.setImageURI(image);
+        targetImage.setImageBitmap(image);
 
         new AlertDialog.Builder(activity)
                 .setView(view)

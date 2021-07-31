@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Spanned;
@@ -37,6 +39,7 @@ import java.util.List;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeTag;
+import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
 import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
@@ -44,7 +47,7 @@ public class InformationFragment extends Fragment {
 
     private ImagesAdapter adapter;
 
-    private final ArrayList<Uri> imageList = new ArrayList<>();
+    private final ArrayList<Bitmap> imageList = new ArrayList<>();
     private final Recipe recipe;
     private final List<File> imageFileList;
     private final List<RecipeTag> recipeTags = new ArrayList<>();
@@ -100,12 +103,17 @@ public class InformationFragment extends Fragment {
         if (recipe.getDescription() != null) {
             description.setText(recipe.getDescription());
         }
-//        if (recipe.getImages() != null) {
-//            for (RecipeImage image : recipe.getImages()
-//            ) {
-//
-//            }
-//        }
+        if (recipe.getImages() != null) {
+            App.getRecipeManager().getImages(recipe).onSuccess(bitmaps -> {
+                getActivity().runOnUiThread(() -> {
+                    for (Bitmap image : bitmaps
+                    ) {
+                        imageList.add(image);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            });
+        }
 
         createTags();
         TagNamesAdapter tagAdapter = new TagNamesAdapter(
@@ -281,7 +289,8 @@ public class InformationFragment extends Fragment {
 
         if (resultCode == Activity.RESULT_OK && data != null) {
             Uri uri = data.getData();
-            imageList.add(uri);
+            Bitmap image = BitmapFactory.decodeFile(uri.getPath());
+            imageList.add(image);
             imageFileList.add(new File(uri.getPath()));
             adapter.notifyDataSetChanged();
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
