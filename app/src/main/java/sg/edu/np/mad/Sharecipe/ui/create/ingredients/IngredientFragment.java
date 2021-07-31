@@ -38,9 +38,17 @@ public class IngredientFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerviewIngredient);
 
         IngredientsAdapter adapter = new IngredientsAdapter(ingredientsList, getActivity());
-        LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(cLayoutManager);
+
+        if (recipe.getIngredients() != null) {
+            for (RecipeIngredient ingredient : recipe.getIngredients()
+            ) {
+                ingredientsList.add(ingredient);
+                adapter.notifyDataSetChanged();
+            }
+        }
 
         addIngredient.setOnClickListener(v -> {
             RecipeIngredient newIngredient = new RecipeIngredient();

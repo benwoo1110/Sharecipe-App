@@ -73,6 +73,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Portions"
                 android:inputType="number" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.switchmaterial.SwitchMaterial
@@ -103,15 +104,14 @@
 
         <RatingBar
             android:id="@+id/infoDifficulty"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="125dp"
+            android:layout_marginEnd="139dp"
             android:numStars="5"
             android:stepSize="1"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -122,22 +122,15 @@
             android:layout_marginStart="24dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recipetag_autocomplete" />
-
-        <ImageView
-            android:id="@+id/expanded_image"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:visibility="invisible"
+            android:layout_marginBottom="32dp"
+            android:overScrollMode="never"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/recipetag_autocomplete">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout5"
@@ -157,6 +150,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Description"
                 android:inputType="textMultiLine" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <MultiAutoCompleteTextView
@@ -170,6 +164,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout5" />
+
+        <ImageView
+            android:id="@+id/expanded_image"
+            android:layout_width="417dp"
+            android:layout_height="594dp"
+            android:layout_marginTop="20dp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_launcher_foreground" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

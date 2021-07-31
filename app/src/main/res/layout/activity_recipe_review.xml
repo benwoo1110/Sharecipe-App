@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.view.RecipeReviewActivity">
+    tools:context=".ui.view.reviews.RecipeReviewActivity">
 
     <TextView
         android:id="@+id/labelReview"

@@ -8,6 +8,9 @@ import org.jetbrains.annotations.NotNull;
 
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.ErrorFragment;
+import sg.edu.np.mad.Sharecipe.ui.view.information.ViewInformationFragment;
+import sg.edu.np.mad.Sharecipe.ui.view.ingredients.ViewIngredientsFragment;
+import sg.edu.np.mad.Sharecipe.ui.view.steps.ViewStepsFragment;
 
 public class RecipeViewAdapter extends FragmentStateAdapter {
 
@@ -27,7 +30,7 @@ public class RecipeViewAdapter extends FragmentStateAdapter {
             case 0:
                 return new ViewInformationFragment(recipe);
             case 1:
-                return new ViewIngredientFragment(recipe);
+                return new ViewIngredientsFragment(recipe);
             case 2:
                 return new ViewStepsFragment(recipe);
             default:
