@@ -74,8 +74,8 @@ public class ViewInformationFragment extends Fragment {
         displayDesc.setText(recipe.getDescription());
         displayDifficulty.setText("Difficulty: " + String.valueOf(recipe.getDifficulty()) + "/5");
 
-        App.getUserManager().getAccountUser().onSuccess(user -> {
-            displayAuthor.setText("By " + user.getUsername());
+        App.getUserManager().get(recipe.getUserId()).onSuccess(user -> {
+            getActivity().runOnUiThread(() -> displayAuthor.setText("By " + user.getUsername()));
         });
 
         return view;
