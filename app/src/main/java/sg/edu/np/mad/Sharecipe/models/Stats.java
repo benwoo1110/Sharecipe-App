@@ -2,7 +2,7 @@ package sg.edu.np.mad.Sharecipe.models;
 
 import com.google.gson.annotations.Expose;
 
-public class UserStats {
+public class Stats {
 
     @Expose
     private String name;
@@ -19,7 +19,7 @@ public class UserStats {
 
     @Override
     public String toString() {
-        return "UserStats{" +
+        return "Stats{" +
                 "name='" + name + '\'' +
                 ", number=" + number +
                 '}';
