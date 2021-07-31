@@ -37,9 +37,10 @@
         <item name="android:textSize">28dp</item>
     </style>
 
-    <style name="CustomAlertDialog" parent="">
-        <item name="fontFamily">@font/quicksand_regular</item>
-        <item name="android:textAppearanceSmall">@font/quicksand_regular</item>
-        <item name="android:textAppearanceMedium">@font/quicksand_regular</item>
+    <style name="AlertDialogCustom" parent="Theme.MaterialComponents.Dialog">
+        <item name="android:fontFamily">@font/quicksand_semibold</item>
+        <item name="android:textColor">#F8AA9D</item>
+        <item name="colorPrimary">#F8AA9D</item>
     </style>
+
 </resources>
