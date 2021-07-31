@@ -12,12 +12,16 @@ import androidx.annotation.Nullable;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.common.base.Strings;
 
 import java.io.File;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
+import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
+import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
+import sg.edu.np.mad.Sharecipe.ui.common.textchecks.ConfirmMatchCheck;
+import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
+import sg.edu.np.mad.Sharecipe.ui.common.textchecks.TextLengthChecker;
 import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 
 public class RegisterActivity extends DynamicFocusAppCompatActivity {
@@ -36,57 +40,33 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
         TextInputLayout passwordConfirm = findViewById(R.id.registerConfirmPassword);
         Button signUp = findViewById(R.id.buttonSignup);
 
+        CheckGroup checkGroup = new CheckGroup()
+                .add(username, new RequiredFieldCheck(), new TextLengthChecker(3, 32))
+                .add(bio, new TextLengthChecker(0, 256))
+                .add(password, new RequiredFieldCheck(), new TextLengthChecker(8, 64))
+                .add(passwordConfirm, new RequiredFieldCheck(), new ConfirmMatchCheck(password));
+
         profileImage = findViewById(R.id.registerProfileImage);
-        profileImage.setOnClickListener(v -> {
+        profileImage.setOnClickListener((OnSingleClickListener) v -> {
             ImagePicker.with(this)
                     .crop()	// Crop image(Optional), Check Customization for more option
                     .compress(1024)	// Final image size will be less than 1 MB
                     .maxResultSize(500, 500) // Final image resolution will be less than 500x500
+                    .setDismissListener(() -> profileImage.setEnabled(true))
                     .start();
         });
 
-        username.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                return;
-            }
-            if (isEmptyInput(username)) {
-                return;
-            }
-            username.setError(null);
-        });
-
-        password.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                return;
-            }
-            if (isEmptyInput(password)) {
-                return;
-            }
-            password.setError(null);
-        });
-
-        passwordConfirm.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
-            if (hasFocus) {
-                return;
-            }
-            if (isEmptyInput(passwordConfirm)) {
-                return;
-            }
-            passwordConfirm.setError(null);
-        });
-
-        signUp.setOnClickListener(v -> {
+        signUp.setOnClickListener((OnSingleClickListener) v -> {
             hideSoftKeyBoard();
+
+            if (!checkGroup.checkAll()) {
+                signUp.setEnabled(true);
+                return;
+            }
 
             String usernameText = username.getEditText().getText().toString();
             String bioText = bio.getEditText().getText().toString();
             String passwordText = password.getEditText().getText().toString();
-            String passwordConfirmText = passwordConfirm.getEditText().getText().toString();
-
-            if (!passwordText.equals(passwordConfirmText)) {
-                passwordConfirm.setError("Password does not match.");
-                return;
-            }
 
             File imageFile = profileImagePath == null ? null : new File(profileImagePath);
 
@@ -99,9 +79,15 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
                     startActivity(intent);
                 });
             }).onFailed(reason -> {
-                RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show());
+                RegisterActivity.this.runOnUiThread(() -> {
+                    Toast.makeText(RegisterActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show();
+                    signUp.setEnabled(true);
+                });
             }).onError(error -> {
-                RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show());
+                RegisterActivity.this.runOnUiThread(() -> {
+                    Toast.makeText(RegisterActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show();
+                    signUp.setEnabled(true);
+                });
             });
         });
     }
@@ -109,6 +95,13 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode != ImagePicker.REQUEST_CODE) {
+            return;
+        }
+
+        profileImage.setEnabled(true);
+
         if (resultCode == Activity.RESULT_OK && data != null) {
             Uri uri = data.getData();
             profileImage.setImageURI(uri);
@@ -118,14 +111,5 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
         } else {
             Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private boolean isEmptyInput(TextInputLayout input) {
-        String inputText = input.getEditText().getText().toString();
-        if (Strings.isNullOrEmpty(inputText)) {
-            input.setError("* This is a required field.");
-            return true;
-        }
-        return false;
     }
 }

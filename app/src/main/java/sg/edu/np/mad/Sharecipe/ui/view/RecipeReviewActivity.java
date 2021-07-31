@@ -23,8 +23,9 @@ import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeReviews;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
+import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 
-public class RecipeReviewActivity extends AppCompatActivity {
+public class RecipeReviewActivity extends DynamicFocusAppCompatActivity {
 
     private final ArrayList<RecipeReviews> recipeReviews = new ArrayList<>();
 

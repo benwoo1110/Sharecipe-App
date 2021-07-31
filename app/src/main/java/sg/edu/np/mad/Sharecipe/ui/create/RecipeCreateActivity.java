@@ -21,9 +21,10 @@ import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
+import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.OnTabSelectedListener;
 
-public class RecipeCreateActivity extends AppCompatActivity {
+public class RecipeCreateActivity extends DynamicFocusAppCompatActivity {
 
     @Override
     public void onBackPressed() {

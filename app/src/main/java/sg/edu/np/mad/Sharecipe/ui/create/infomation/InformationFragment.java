@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
@@ -37,7 +36,6 @@ import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
-import sg.edu.np.mad.Sharecipe.models.RecipeImage;
 import sg.edu.np.mad.Sharecipe.models.RecipeTag;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
 import sg.edu.np.mad.Sharecipe.utils.FormatUtils;

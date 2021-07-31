@@ -18,24 +18,42 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sharecipe">
-        <activity android:name=".ui.view.RecipeReviewActivity"></activity>
+        <activity android:name=".ui.main.profile.EditPasswordActivity"></activity>
+        <activity android:name=".ui.view.RecipeReviewActivity" />
         <activity
             android:name=".ui.SplashActivity"
-            android:theme="@style/AppTheme.Launcher"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Launcher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.view.RecipeViewActivity" android:screenOrientation="portrait" />
-        <activity android:name=".ui.main.MainActivity" android:screenOrientation="portrait" />
-        <activity android:name=".ui.main.profile.EditProfileActivity" android:screenOrientation="portrait" />
-        <activity android:name=".ui.main.profile.UserProfileActivity" android:screenOrientation="portrait" />
-        <activity android:name=".ui.create.steps.StepsCreationActivity" android:screenOrientation="portrait" />
-        <activity android:name=".ui.create.RecipeCreateActivity" android:screenOrientation="portrait" />
-        <activity android:name=".ui.RegisterActivity" android:screenOrientation="portrait" />
-        <activity android:name=".ui.LoginActivity" android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.RecipeViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.main.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.main.profile.EditProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.main.profile.UserProfileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.create.steps.StepsCreationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.create.RecipeCreateActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.LoginActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
