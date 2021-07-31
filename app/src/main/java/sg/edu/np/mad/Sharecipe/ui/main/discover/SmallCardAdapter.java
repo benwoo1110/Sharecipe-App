@@ -36,11 +36,17 @@ public class SmallCardAdapter extends RecyclerView.Adapter<SmallCardViewHolder> 
         holder.recipeId = recipe.getRecipeId();
         holder.title.setText(recipe.getName());
         if (recipe.getIcon() != null) {
+            holder.image.setImageBitmap(null);
+            holder.progressBar.setVisibility(View.VISIBLE);
             App.getRecipeManager().getIcon(recipe)
                     .onSuccess(bm ->  {
-                        new Handler(Looper.getMainLooper()).post(() -> holder.image.setImageBitmap(bm));
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            holder.progressBar.setVisibility(View.GONE);
+                            holder.image.setImageBitmap(bm);
+                        });
                     });
         } else {
+            holder.progressBar.setVisibility(View.GONE);
             holder.image.setImageResource(R.drawable.ic_baseline_fastfood_24);
         }
     }

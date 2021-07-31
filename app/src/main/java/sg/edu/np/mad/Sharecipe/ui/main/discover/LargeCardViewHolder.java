@@ -3,6 +3,7 @@ package sg.edu.np.mad.Sharecipe.ui.main.discover;
 import android.content.Intent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ public class LargeCardViewHolder extends RecyclerView.ViewHolder {
 
     final TextView title;
     final ImageView image;
+    final ProgressBar progressBar;
 
     int recipeId;
 
@@ -25,6 +27,7 @@ public class LargeCardViewHolder extends RecyclerView.ViewHolder {
 
         title = itemView.findViewById(R.id.discoverLargeTitle);
         image = itemView.findViewById(R.id.discoverLargeImage);
+        progressBar = itemView.findViewById(R.id.imageLoadProgress);
 
         itemView.setOnClickListener(v -> {
             Intent viewRecipe = new Intent(itemView.getContext(), RecipeViewActivity.class);

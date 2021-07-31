@@ -13,13 +13,12 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:background="?attr/colorPrimaryVariant"
-        android:scaleType="centerCrop"
         android:elevation="6dp"
+        android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize16dp"
-        app:srcCompat="@drawable/ic_baseline_fastfood_24" />
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize16dp" />
 
     <TextView
         android:id="@+id/discoverSmallTitle"
@@ -33,5 +32,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/discoverSmallImage" />
+
+    <ProgressBar
+        android:id="@+id/imageLoadProgress"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="6dp"
+        android:indeterminateTint="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/discoverSmallImage"
+        app:layout_constraintEnd_toEndOf="@+id/discoverSmallImage"
+        app:layout_constraintStart_toStartOf="@+id/discoverSmallImage"
+        app:layout_constraintTop_toTopOf="@+id/discoverSmallImage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
