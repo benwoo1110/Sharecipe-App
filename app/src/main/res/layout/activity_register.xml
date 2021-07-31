@@ -51,7 +51,8 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/registerProfileImage"
-                app:startIconDrawable="@drawable/ic_baseline_person_24">
+                app:startIconDrawable="@drawable/ic_baseline_person_24"
+                android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -75,7 +76,8 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/registerUsername"
-                app:startIconDrawable="@drawable/ic_baseline_info_24">
+                app:startIconDrawable="@drawable/ic_baseline_info_24"
+                android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -100,7 +102,8 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/registerBio"
-                app:startIconDrawable="@drawable/ic_round_lock_24">
+                app:startIconDrawable="@drawable/ic_round_lock_24"
+                android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
@@ -124,7 +127,8 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/registerPassword"
-                app:startIconDrawable="@drawable/ic_round_lock_24">
+                app:startIconDrawable="@drawable/ic_round_lock_24"
+                android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
