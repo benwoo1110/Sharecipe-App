@@ -19,4 +19,8 @@
     <style name="Widget.MaterialComponents.BottomNavigationView." parent="Widget.Design.BottomNavigationView">
         <item name="fontFamily">@font/quicksand_regular</item>
     </style>
+
+    <style name="Widget.MaterialComponents.TabLayout." parent="Widget.MaterialComponents.TabLayout">
+        <item name="fontFamily">@font/quicksand_semibold</item>
+    </style>
 </resources>
