@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -46,13 +48,15 @@ public class ViewInformationFragment extends Fragment {
 
         ViewImagesAdapter adapter = new ViewImagesAdapter(getActivity(), enlargedImage, view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
-
+        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_fall_down);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(gridLayoutManager);
+        recyclerView.setLayoutAnimation(controller);
 
         App.getRecipeManager().getImages(recipe).onSuccess(bitmaps -> {
             getActivity().runOnUiThread(() -> {
                 adapter.setBitmapList(bitmaps);
+                recyclerView.scheduleLayoutAnimation();
             });
         }).onFailed(System.out::println).onError(Throwable::printStackTrace);
 
