@@ -18,8 +18,9 @@ import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeReviews;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
+import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 
-public class RecipeReviewActivity extends AppCompatActivity {
+public class RecipeReviewActivity extends DynamicFocusAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
