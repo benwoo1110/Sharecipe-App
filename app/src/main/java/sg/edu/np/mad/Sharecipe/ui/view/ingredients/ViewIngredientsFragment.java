@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.view;
+package sg.edu.np.mad.Sharecipe.ui.view.ingredients;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 
-public class ViewIngredientFragment extends Fragment {
+public class ViewIngredientsFragment extends Fragment {
 
     private final Recipe recipe;
 
-    public ViewIngredientFragment(Recipe recipe) {
+    public ViewIngredientsFragment(Recipe recipe) {
         this.recipe = recipe;
     }
 

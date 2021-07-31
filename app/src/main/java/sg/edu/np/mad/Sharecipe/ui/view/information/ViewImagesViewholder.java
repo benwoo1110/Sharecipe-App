@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.view;
+package sg.edu.np.mad.Sharecipe.ui.view.information;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;
