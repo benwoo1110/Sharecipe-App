@@ -249,14 +249,14 @@ public class RecipeManager {
      * @param user    Target recipe to get likes of.
      * @return Future result of a list of {@link RecipeLike} containing recipe ids.
      */
-    public FutureDataResult<List<RecipeLike>> getUserLikes(User user) {
-        FutureDataResult<List<RecipeLike>> future = new FutureDataResult<>();
+    public FutureDataResult<List<PartialRecipe>> getForUserLikes(User user) {
+        FutureDataResult<List<PartialRecipe>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getUserRecipeLikes(account.getAccessToken(), user.getUserId()).onSuccessJson(future, (response, json) -> {
-                List<RecipeLike> recipes = new ArrayList<>();
+                List<PartialRecipe> recipes = new ArrayList<>();
                 for (JsonElement likeData : json.getAsJsonArray()) {
-                    recipes.add(JsonUtils.convertToObject(likeData, RecipeLike.class));
+                    recipes.add(JsonUtils.convertToObject(likeData, PartialRecipe.class));
                 }
                 future.complete(new DataResult.Success<>(recipes));
             }).onFailed(future).onError(future);
@@ -333,7 +333,7 @@ public class RecipeManager {
         FutureDataResult<Void> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
-            SharecipeRequests.putRecipeLikeUser(account.getAccessToken(), recipe.getRecipeId(), account.getUserId()).onSuccess(response -> {
+            SharecipeRequests.postRecipeLikeUser(account.getAccessToken(), recipe.getRecipeId(), account.getUserId()).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);

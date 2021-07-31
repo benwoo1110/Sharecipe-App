@@ -74,14 +74,21 @@ public class ProfileFragment extends Fragment {
         });
 
         logoutButton.setOnClickListener(v -> {
-            App.getAccountManager().logout()
-                    .onSuccess(ignore -> {
-                        Intent intent = new Intent(getActivity(), LoginActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Logout")
+                    .setMessage("Are you sure you want to logout?").setCancelable(false)
+                    .setNegativeButton("Cancel",null)
+                    .setPositiveButton("Logout", (dialog, which) -> {
+                        App.getAccountManager().logout()
+                                .onSuccess(ignore -> {
+                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                })
+                                .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
+                                .onError(Throwable::printStackTrace);
                     })
-                    .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
-                    .onError(Throwable::printStackTrace);
+                    .show();
         });
 
         deleteButton.setOnClickListener((OnSingleClickListener) v -> new AlertDialog.Builder(getContext())
