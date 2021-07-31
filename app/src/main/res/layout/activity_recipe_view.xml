@@ -39,6 +39,7 @@
             android:id="@+id/viewRecipe_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:menu="@menu/viewrecipe_navigation_menu"/>
+            app:menu="@menu/viewrecipe_navigation_menu"
+            android:theme="@style/Widget.MaterialComponents.BottomNavigationView."/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

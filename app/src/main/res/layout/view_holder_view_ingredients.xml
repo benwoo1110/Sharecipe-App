@@ -40,6 +40,7 @@
 
                     <TextView
                         android:id="@+id/displayIngredientName"
+                        android:fontFamily="@font/quicksand_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -59,6 +60,7 @@
 
             <TextView
                 android:id="@+id/displayIngredientQuantity"
+                android:fontFamily="@font/quicksand_light"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
