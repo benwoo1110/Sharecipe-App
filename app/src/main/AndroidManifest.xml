@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sharecipe">
         <activity android:name=".ui.main.profile.EditPasswordActivity"></activity>
-        <activity android:name=".ui.view.RecipeReviewActivity" />
+        <activity android:name=".ui.view.reviews.RecipeReviewActivity" />
         <activity
             android:name=".ui.SplashActivity"
             android:screenOrientation="portrait"

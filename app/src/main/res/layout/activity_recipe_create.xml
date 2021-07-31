@@ -25,7 +25,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/Widget.MaterialComponents.TabLayout."/>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -40,7 +41,8 @@
             android:id="@+id/recipe_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:menu="@menu/recipe_navigation_menu" />
+            app:menu="@menu/recipe_navigation_menu"
+            android:theme="@style/Widget.MaterialComponents.BottomNavigationView."/>
 
     </LinearLayout>
 

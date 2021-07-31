@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Spanned;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -37,6 +40,7 @@ import java.util.List;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeTag;
+import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
 import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
@@ -44,7 +48,7 @@ public class InformationFragment extends Fragment {
 
     private ImagesAdapter adapter;
 
-    private final ArrayList<Uri> imageList = new ArrayList<>();
+    private final ArrayList<Bitmap> imageList = new ArrayList<>();
     private final Recipe recipe;
     private final List<File> imageFileList;
     private final List<RecipeTag> recipeTags = new ArrayList<>();
@@ -76,23 +80,22 @@ public class InformationFragment extends Fragment {
             name.setText(recipe.getName());
         }
         if (recipe.getDifficulty() > 0) {
-            difficulty.setNumStars(recipe.getDifficulty());
+            difficulty.setRating(recipe.getDifficulty());
         }
         if (recipe.getPortion() > 0) {
             portions.setText(String.valueOf(recipe.getPortion()));
         }
         if (recipe.isPublic()) {
-            infoPublic.setActivated(true);
+            infoPublic.setChecked(true);
         }
         else {
-            infoPublic.setActivated(false);
+            infoPublic.setChecked(false);
         }
-        //TODO: Properly display public status
         if (recipe.getTotalTimeNeeded() != null) {
             prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
         }
         if (recipe.getTags() != null) {
-            for (RecipeTag tag:recipe.getTags()
+            for (RecipeTag tag : recipe.getTags()
                  ) {
                 recipeTags.add(tag);
                 // TODO: Display the tags
@@ -100,6 +103,17 @@ public class InformationFragment extends Fragment {
         }
         if (recipe.getDescription() != null) {
             description.setText(recipe.getDescription());
+        }
+        if (recipe.getImages() != null) {
+            App.getRecipeManager().getImages(recipe).onSuccess(bitmaps -> {
+                getActivity().runOnUiThread(() -> {
+                    for (Bitmap image : bitmaps
+                    ) {
+                        imageList.add(image);
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            });
         }
 
         createTags();
@@ -134,11 +148,10 @@ public class InformationFragment extends Fragment {
         });
 
         adapter = new ImagesAdapter(getActivity(), imageList, imageFileList, enlargedImage, view);
-        LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
-        cLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
 
         images.setAdapter(adapter);
-        images.setLayoutManager(cLayoutManager);
+        images.setLayoutManager(gridLayoutManager);
 
         prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
         prep.setOnTouchListener((v, event) -> {
@@ -158,7 +171,7 @@ public class InformationFragment extends Fragment {
         description.addTextChangedListener((AfterTextChangedWatcher) s -> recipe.setDescription(s.toString()));
 
         difficulty.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> {
-            int recipeDifficulty = difficulty.getNumStars();
+            int recipeDifficulty = Math.round(difficulty.getRating());
             recipe.setDifficulty(recipeDifficulty);
         });
 
@@ -276,7 +289,8 @@ public class InformationFragment extends Fragment {
 
         if (resultCode == Activity.RESULT_OK && data != null) {
             Uri uri = data.getData();
-            imageList.add(uri);
+            Bitmap image = BitmapFactory.decodeFile(uri.getPath());
+            imageList.add(image);
             imageFileList.add(new File(uri.getPath()));
             adapter.notifyDataSetChanged();
         } else if (resultCode == ImagePicker.RESULT_ERROR) {

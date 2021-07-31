@@ -5,7 +5,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -13,11 +12,10 @@ import com.google.android.material.tabs.TabLayout;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
-import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.OnTabSelectedListener;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
-import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
+import sg.edu.np.mad.Sharecipe.ui.view.reviews.RecipeReviewActivity;
 
 public class RecipeViewActivity extends AppCompatActivity {
 
@@ -57,13 +55,13 @@ public class RecipeViewActivity extends AppCompatActivity {
                     Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
                     review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
                     startActivity(review);
-                    Log.v("Lol", "LOL");
                 });
                 return false;
             } else if (itemId == R.id.recipe_edit_menu) {
                 App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
                     Intent editRecipe = new Intent(RecipeViewActivity.this, RecipeCreateActivity.class);
                     editRecipe.putExtra(IntentKeys.RECIPE_EDIT, recipe);
+                    editRecipe.putExtra(IntentKeys.CHECK_RECIPE_EDIT, true);
                     startActivity(editRecipe);
                 });
 
