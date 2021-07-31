@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 
@@ -39,6 +40,8 @@ public class RecipeFragment extends Fragment {
     private ShimmerFrameLayout shimmerFrameLayout;
     private RecyclerView recipeRecyclerView;
     private SwipeRefreshLayout myRecipeRefresh;
+
+    private User user;
 
     public RecipeFragment() {
         userId = App.getAccountManager().getAccount().getUserId();
@@ -99,6 +102,7 @@ public class RecipeFragment extends Fragment {
         }
 
         App.getUserManager().get(userId).onSuccess(user -> {
+            RecipeFragment.this.user = user;
             getActivity().runOnUiThread(() -> {
                 recipeToolbar.setTitle(user.getUsername() + "'s Recipe");
                 myRecipeRefresh.setOnRefreshListener(this::loadRecipe);
@@ -114,7 +118,7 @@ public class RecipeFragment extends Fragment {
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmer();
 
-        App.getRecipeManager().getAllForUser(userId).onSuccess(recipes -> {
+        (showLiked ? App.getRecipeManager().getForUserLikes(user) : App.getRecipeManager().getAllForUser(userId)).onSuccess(recipes -> {
             getActivity().runOnUiThread(() -> {
                 recipeAdapter.setRecipeList(recipes);
                 recipeRecyclerView.scheduleLayoutAnimation();
