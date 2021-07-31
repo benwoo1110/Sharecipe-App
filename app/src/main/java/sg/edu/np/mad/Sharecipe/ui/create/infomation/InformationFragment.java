@@ -6,7 +6,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.Spanned;
 import android.text.style.ImageSpan;
 import android.view.LayoutInflater;
@@ -41,10 +40,6 @@ import sg.edu.np.mad.Sharecipe.models.RecipeTag;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
 import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
-// TODO: Set limit for images, remove plus button when limit is reached
-// TODO: Saving and storing of values for all input fields along with input validation (required fields)
-// TODO: Touch up on the UI
-
 public class InformationFragment extends Fragment {
 
     private ImagesAdapter adapter;
@@ -76,6 +71,36 @@ public class InformationFragment extends Fragment {
         RatingBar difficulty = view.findViewById(R.id.infoDifficulty);
         tags = view.findViewById(R.id.recipetag_autocomplete);
         ImageView enlargedImage = view.findViewById(R.id.expanded_image);
+
+        if (recipe.getName() != null) {
+            name.setText(recipe.getName());
+        }
+        if (recipe.getDifficulty() > 0) {
+            difficulty.setNumStars(recipe.getDifficulty());
+        }
+        if (recipe.getPortion() > 0) {
+            portions.setText(String.valueOf(recipe.getPortion()));
+        }
+        if (recipe.isPublic()) {
+            infoPublic.setActivated(true);
+        }
+        else {
+            infoPublic.setActivated(false);
+        }
+        //TODO: Properly display public status
+        if (recipe.getTotalTimeNeeded() != null) {
+            prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
+        }
+        if (recipe.getTags() != null) {
+            for (RecipeTag tag:recipe.getTags()
+                 ) {
+                recipeTags.add(tag);
+                // TODO: Display the tags
+            }
+        }
+        if (recipe.getDescription() != null) {
+            description.setText(recipe.getDescription());
+        }
 
         createTags();
         TagNamesAdapter tagAdapter = new TagNamesAdapter(

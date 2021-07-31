@@ -5,8 +5,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import sg.edu.np.mad.Sharecipe.R;
@@ -14,6 +16,8 @@ import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.OnTabSelectedListener;
+import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
+import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 
 public class RecipeViewActivity extends AppCompatActivity {
 
@@ -27,6 +31,8 @@ public class RecipeViewActivity extends AppCompatActivity {
 
         TabLayout tabLayout = findViewById(R.id.viewRecipeTab);
         ViewPager2 viewpager = findViewById(R.id.view_recipe_viewpager);
+        BottomNavigationView bottomNavigation = findViewById(R.id.viewRecipe_navigation);
+        bottomNavigation.setSelectedItemId(R.id.invisibleView);
 
         tabLayout.addTab(tabLayout.newTab().setText("Information"));
         tabLayout.addTab(tabLayout.newTab().setText("Ingredients"));
@@ -42,8 +48,39 @@ public class RecipeViewActivity extends AppCompatActivity {
 
         tabLayout.addOnTabSelectedListener((OnTabSelectedListener) tab -> viewpager.setCurrentItem(tab.getPosition()));
 
+        int userID = App.getAccountManager().getAccount().getUserId();
+
+        bottomNavigation.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.recipe_review_menu) {
+                App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
+                    Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
+                    review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
+                    startActivity(review);
+                    Log.v("Lol", "LOL");
+                });
+                return false;
+            } else if (itemId == R.id.recipe_edit_menu) {
+                App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
+                    Intent editRecipe = new Intent(RecipeViewActivity.this, RecipeCreateActivity.class);
+                    editRecipe.putExtra(IntentKeys.RECIPE_EDIT, recipe);
+                    startActivity(editRecipe);
+                });
+
+                // TODO: Edit recipe
+                return false;
+            } else if (itemId == R.id.recipe_like_menu) {
+                // TODO: Like recipe
+                return false;
+            }
+            return false;
+        });
+
         App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
             RecipeViewActivity.this.runOnUiThread(() -> {
+                if (recipe.getUserId() != userID) {
+                    bottomNavigation.getMenu().findItem(R.id.recipe_edit_menu).setVisible(false);
+                }
                 RecipeViewAdapter adapter = new RecipeViewAdapter(this, tabLayout.getTabCount(), recipe);
                 viewpager.setAdapter(adapter);
             });

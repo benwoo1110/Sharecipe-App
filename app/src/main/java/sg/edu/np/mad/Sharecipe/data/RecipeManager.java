@@ -23,7 +23,7 @@ import okhttp3.ResponseBody;
 import sg.edu.np.mad.Sharecipe.models.BooleanState;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
-import sg.edu.np.mad.Sharecipe.models.RecipeImage;
+import sg.edu.np.mad.Sharecipe.models.ImageRef;
 import sg.edu.np.mad.Sharecipe.models.RecipeLike;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
@@ -51,7 +51,7 @@ public class RecipeManager {
     private final AccountManager accountManager;
     private final BitmapCacheManager bitmapCacheManager;
     private final Cache<Integer, Recipe> recipeCache = CacheBuilder.newBuilder()
-            .expireAfterAccess(10, TimeUnit.MINUTES)
+            .expireAfterAccess(1, TimeUnit.MINUTES)
             .maximumSize(500)
             .build();
 
@@ -154,7 +154,7 @@ public class RecipeManager {
      * @return Future result of the image.
      */
     public FutureDataResult<Bitmap> getIcon(PartialRecipe recipe) {
-        RecipeImage icon = recipe.getIcon();
+        ImageRef icon = recipe.getIcon();
         if (icon == null || Strings.isNullOrEmpty(icon.getFileId())) {
             return FutureDataResult.completed(new DataResult.Failed<>("Recipe does not have icon image."));
         }
@@ -194,14 +194,14 @@ public class RecipeManager {
      */
     public FutureDataResult<List<Bitmap>> getImages(Recipe recipe) {
 
-        List<RecipeImage> recipeImages = recipe.getImages();
+        List<ImageRef> recipeImages = recipe.getImages();
         List<Bitmap> bitmapList = new ArrayList<>();
         if (recipeImages == null || recipeImages.isEmpty()) {
             return FutureDataResult.completed(bitmapList);
         }
 
         List<String> needToGetFromWeb = new ArrayList<>();
-        for (RecipeImage recipeImage : recipeImages) {
+        for (ImageRef recipeImage : recipeImages) {
             Bitmap cachedImage = bitmapCacheManager.getBitmapFromMemCache(recipeImage.getFileId());
             if (cachedImage == null) {
                 needToGetFromWeb.add(recipeImage.getFileId());
@@ -375,5 +375,17 @@ public class RecipeManager {
         }).onFailed(future).onError(future);
 
         return future;
+    }
+
+    public void invalidateRecipe(Recipe recipe) {
+        recipeCache.invalidate(recipe.getRecipeId());
+    }
+
+    public void invalidateAll() {
+        recipeCache.invalidateAll();
+    }
+
+    void addToCache(Recipe recipe) {
+        recipeCache.put(recipe.getRecipeId(), recipe);
     }
 }

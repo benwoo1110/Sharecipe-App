@@ -18,22 +18,26 @@ import com.google.android.material.tabs.TabLayout;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
+import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
+import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.OnTabSelectedListener;
 
-// TODO: Finish up bottom menu bar including their actions, add a cross out bar on top to close recipe creation (ask if want to save as draft)
-// TODO: Implement option to take in all inputs and save recipe as draft or publish, with input validation (notify users of missing fields)
-// TODO: Upon publishing recipe, show user preview of recipe first before finalizing
+public class RecipeCreateActivity extends DynamicFocusAppCompatActivity {
 
-public class RecipeCreateActivity extends AppCompatActivity {
+    @Override
+    public void onBackPressed() {
+        confirmExit();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_create);
 
-        Recipe recipe = new Recipe();
+        Intent getRecipe = getIntent();
+        Recipe recipe = (Recipe) getRecipe.getSerializableExtra(IntentKeys.RECIPE_EDIT);
 
         TabLayout tabLayout = findViewById(R.id.recipeTab);
         ViewPager2 viewPager = findViewById(R.id.recipe_info_viewpager);
@@ -59,16 +63,9 @@ public class RecipeCreateActivity extends AppCompatActivity {
 
         bottomNavigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
-            if (itemId == R.id.recipe_back_menu) {
-                confirmExit(recipe, adapter); //TODO: Check if inputs are empty, if they are then dont save
-                finish();
-                return false;
-            } else if (itemId == R.id.recipe_save_menu) {
-                Log.v("LOL", "Save");
-                return false;
-            } else if (itemId == R.id.recipe_done_menu) {
+            if (itemId == R.id.recipe_save_menu) {
                 confirmPublish(recipe, adapter);
-                return true;
+                return false;
             }
             return false;
         });
@@ -98,27 +95,13 @@ public class RecipeCreateActivity extends AppCompatActivity {
                 .show();
     }
 
-    public void confirmExit(Recipe recipe, RecipeCreateAdapter adapter) {
+    public void confirmExit() {
         new AlertDialog.Builder(this)
                 .setTitle("Exit without saving")
-                .setMessage("You have unsaved changes. Would you like to save the recipe as a draft?")
+                .setMessage("You have unsaved changes. Would you like to exit without saving?")
                 .setNegativeButton("No", null)
                 .setPositiveButton("Yes", ((dialog, which) -> {
-                    recipe.setPublic(false);
-                    Toast.makeText(RecipeCreateActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
-                    App.getRecipeManager().create(recipe).onSuccess(createdRecipe -> {
-                        App.getRecipeManager().addImages(createdRecipe, adapter.getImageFileList()).thenAccept(result -> {
-                            RecipeCreateActivity.this.runOnUiThread(() -> {
-                                Toast.makeText(RecipeCreateActivity.this, "Saved!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent();
-                                intent.putExtra(IntentKeys.RECIPE_SAVE, createdRecipe);
-                                setResult(Activity.RESULT_OK, intent);
-                                finish();
-                            });
-                        });
-                    }).onFailed(recipeFailed -> {
-                        RecipeCreateActivity.this.runOnUiThread(() -> Toast.makeText(RecipeCreateActivity.this, recipeFailed.getMessage(), Toast.LENGTH_SHORT).show());
-                    });
+                    finish();
                 }))
                 .show();
     }

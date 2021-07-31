@@ -16,10 +16,6 @@ import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
 
-// TODO: Saving and storing of values for all input fields along with input validation (unit of measurement must be string?)
-// TODO: Option to delete ingredients (list item selection OR small cross button)
-// TODO: Touch up on UI
-
 public class IngredientFragment extends Fragment {
 
     private final ArrayList<RecipeIngredient> ingredientsList = new ArrayList<>();

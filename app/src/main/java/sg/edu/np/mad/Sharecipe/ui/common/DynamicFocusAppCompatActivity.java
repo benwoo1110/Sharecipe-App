@@ -1,54 +1,35 @@
 package sg.edu.np.mad.Sharecipe.ui.common;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Rect;
-import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class DynamicFocusAppCompatActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        enableDismissEditTextOnTouchOut();
-    }
-
-    @SuppressLint("ClickableViewAccessibility")
-    protected void enableDismissEditTextOnTouchOut() {
-        getWindow().getDecorView().getRootView().setOnTouchListener((v, event) -> {
-            if (v instanceof EditText) {
-                return false;
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    hideSoftKeyBoard();
+                }
             }
-            if (event.getAction() != MotionEvent.ACTION_DOWN) {
-                return false;
-            }
-            View view = getCurrentFocus();
-            if (!(view instanceof EditText)) {
-                return false;
-            }
-            Rect outRect = new Rect();
-            view.getGlobalVisibleRect(outRect);
-            if (outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
-                return false;
-            }
-            view.clearFocus();
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            return false;
-        });
+        }
+        return super.dispatchTouchEvent(event);
     }
 
     protected void hideSoftKeyBoard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         View currentFocus = getCurrentFocus();
         if(currentFocus != null && imm.isAcceptingText()) {
+            currentFocus.clearFocus();
             imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
         }
     }

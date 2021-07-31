@@ -38,11 +38,17 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
         holder.info.setText(String.valueOf(recipe.getRecipeId()));
 
         if (recipe.getIcon() != null) {
+            holder.icon.setImageBitmap(null);
+            holder.progressBar.setVisibility(View.VISIBLE);
             App.getRecipeManager().getIcon(recipe)
                     .onSuccess(bm ->  {
-                        new Handler(Looper.getMainLooper()).post(() -> holder.icon.setImageBitmap(bm));
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            holder.progressBar.setVisibility(View.GONE);
+                            holder.icon.setImageBitmap(bm);
+                        });
                     });
         } else {
+            holder.progressBar.setVisibility(View.GONE);
             holder.icon.setImageResource(R.drawable.ic_baseline_fastfood_24);
         }
     }

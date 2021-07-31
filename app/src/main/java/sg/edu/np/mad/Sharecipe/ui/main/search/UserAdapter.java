@@ -42,10 +42,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
         holder.name.setText(user.getUsername());
         holder.bio.setText(user.getBio());
         if (user.getProfileImageId() != null) {
+            holder.profileImage.setImageBitmap(null);
+            holder.progressBar.setVisibility(View.VISIBLE);
             App.getUserManager().getProfileImage(user).onSuccess(bitmap -> {
-                new Handler(Looper.getMainLooper()).post(() -> holder.profileImage.setImageBitmap(bitmap));
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    holder.progressBar.setVisibility(View.GONE);
+                    holder.profileImage.setImageBitmap(bitmap);
+                });
             });
         } else {
+            holder.progressBar.setVisibility(View.GONE);
             holder.profileImage.setImageResource(R.drawable.ic_baseline_person_24);
         }
     }
