@@ -22,8 +22,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.ui.create.infomation.ImagesViewHolder;
 
-public class ViewImagesAdapter extends RecyclerView.Adapter<ViewImagesViewholder> {
+public class ViewImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
 
     private final int shortAnimationDuration;
     private Animator currentAnimator;
@@ -43,9 +44,9 @@ public class ViewImagesAdapter extends RecyclerView.Adapter<ViewImagesViewholder
 
     @Override
     @NotNull
-    public ViewImagesViewholder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_holder_view_images, parent, false);
-        ViewImagesViewholder holder = new ViewImagesViewholder(item);
+    public ImagesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_holder_recipe_images, parent, false);
+        ImagesViewHolder holder = new ImagesViewHolder(item);
         holder.image.setOnClickListener(v -> {
             displayLargeImage(holder.image, holder.imgBitmap);
         });
@@ -53,7 +54,7 @@ public class ViewImagesAdapter extends RecyclerView.Adapter<ViewImagesViewholder
     }
 
     @Override
-    public void onBindViewHolder(@NotNull ViewImagesViewholder holder, int position) {
+    public void onBindViewHolder(@NotNull ImagesViewHolder holder, int position) {
         holder.image.setImageBitmap(bitmapList.get(position));
         Bitmap image = bitmapList.get(position);
         holder.image.setImageBitmap(image);
