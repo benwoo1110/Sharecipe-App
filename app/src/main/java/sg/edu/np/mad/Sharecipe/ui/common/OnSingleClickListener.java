@@ -8,7 +8,7 @@ public interface OnSingleClickListener extends View.OnClickListener {
 
     @Override
     default void onClick(View v) {
-        onSingleClick(v);
         v.setEnabled(false);
+        onSingleClick(v);
     }
 }

@@ -21,6 +21,7 @@ import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.ConfirmMatchCheck;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
+import sg.edu.np.mad.Sharecipe.ui.common.textchecks.TextLengthChecker;
 import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 
 public class RegisterActivity extends DynamicFocusAppCompatActivity {
@@ -49,8 +50,8 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
         });
 
         CheckGroup checkGroup = new CheckGroup()
-                .add(username, new RequiredFieldCheck())
-                .add(password, new RequiredFieldCheck())
+                .add(username, new RequiredFieldCheck(), new TextLengthChecker(3, 32))
+                .add(password, new RequiredFieldCheck(), new TextLengthChecker(8, 64))
                 .add(passwordConfirm, new RequiredFieldCheck(), new ConfirmMatchCheck(password));
 
         signUp.setOnClickListener((OnSingleClickListener) v -> {
@@ -76,9 +77,15 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
                     startActivity(intent);
                 });
             }).onFailed(reason -> {
-                RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show());
+                RegisterActivity.this.runOnUiThread(() -> {
+                    Toast.makeText(RegisterActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show();
+                    signUp.setEnabled(true);
+                });
             }).onError(error -> {
-                RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show());
+                RegisterActivity.this.runOnUiThread(() -> {
+                    Toast.makeText(RegisterActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show();
+                    signUp.setEnabled(true);
+                });
             });
         });
     }

@@ -13,8 +13,8 @@ public class ConfirmMatchCheck extends AbstractChecker {
 
     @Override
     public boolean check() {
-        String inputText = input.getEditText().getText().toString();
-        String otherText = otherInput.getEditText().getText().toString();
+        String inputText = getInputText();
+        String otherText = getText(otherInput);
         if (!inputText.equals(otherText)) {
             input.setError("Password does not match.");
             return false;
