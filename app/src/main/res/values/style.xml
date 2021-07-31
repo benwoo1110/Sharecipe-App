@@ -28,8 +28,18 @@
         <item name="fontFamily">@font/quicksand_regular</item>
     </style>
 
+    <style name="CustomTab" parent="">
+        <item name="fontFamily">@font/quicksand_regular</item>
+    </style>
+
     <style name="Widget.AppCompat.Toolbar." parent="">
         <item name="fontFamily">@font/lobster_regular</item>
         <item name="android:textSize">28dp</item>
+    </style>
+
+    <style name="CustomAlertDialog" parent="">
+        <item name="fontFamily">@font/quicksand_regular</item>
+        <item name="android:textAppearanceSmall">@font/quicksand_regular</item>
+        <item name="android:textAppearanceMedium">@font/quicksand_regular</item>
     </style>
 </resources>

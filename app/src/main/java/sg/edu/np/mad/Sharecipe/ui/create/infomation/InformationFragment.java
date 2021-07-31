@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.NumberPicker;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -201,7 +202,7 @@ public class InformationFragment extends Fragment {
         inputHours.setValue((int) recipe.getTotalTimeNeeded().toHours());
         inputMinutes.setValue(recipe.getTotalTimeNeeded().toMinutesPart());
 
-        new AlertDialog.Builder(getActivity())
+        new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialog)
                 .setView(view)
                 .setTitle("Preparation time")
                 .setPositiveButton("Confirm", (dialog, which) -> {
