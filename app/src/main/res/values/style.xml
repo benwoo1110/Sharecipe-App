@@ -20,10 +20,6 @@
         <item name="fontFamily">@font/quicksand_regular</item>
     </style>
 
-    <style name="Widget.MaterialComponents.TabLayout." parent="Widget.MaterialComponents.TabLayout">
-        <item name="fontFamily">@font/quicksand_semibold</item>
-    </style>
-
     <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox." parent="">
         <item name="fontFamily">@font/quicksand_regular</item>
     </style>
