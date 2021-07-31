@@ -39,7 +39,7 @@ public class LoginActivity extends DynamicFocusAppCompatActivity {
                 login.setEnabled(true);
                 return;
             }
-            
+
             App.getAccountManager().login(username.getEditText().getText().toString(), password.getEditText().getText().toString())
                     .onSuccess(result -> {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);

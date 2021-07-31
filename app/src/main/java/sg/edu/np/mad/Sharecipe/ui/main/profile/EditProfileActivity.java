@@ -29,6 +29,9 @@ import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
+import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
+import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
+import sg.edu.np.mad.Sharecipe.ui.common.textchecks.TextLengthChecker;
 
 public class EditProfileActivity extends DynamicFocusAppCompatActivity {
 
@@ -48,6 +51,10 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
         editUsername = findViewById(R.id.editUsername);
         editBio = findViewById(R.id.editBio);
         Button updateButton = findViewById(R.id.saveInfo);
+
+        CheckGroup checkGroup = new CheckGroup()
+                .add(editUsername, new RequiredFieldCheck(), new TextLengthChecker(3, 32))
+                .add(editBio, new TextLengthChecker(0, 256));
 
         UserManager userManager = App.getUserManager();
         userManager.getAccountUser().onSuccess(user -> {
@@ -71,30 +78,37 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
                 .setDismissListener(() -> profilePic.setEnabled(true))
                 .start());
 
-        updateButton.setOnClickListener((OnSingleClickListener) v -> new AlertDialog.Builder(EditProfileActivity.this)
-                .setTitle("Save Changes")
-                .setMessage("Are you sure you want to save changes?").setCancelable(false)
-                .setCancelable(false)
-                .setPositiveButton("Save", (dialog, which) -> {
-                    File imageFile = newProfileImagePath == null ? null : new File(newProfileImagePath);
-                    user.setUsername(editUsername.getEditText().getText().toString());
-                    user.setBio(editBio.getEditText().getText().toString());
-                    Toast.makeText(EditProfileActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
-                    userManager.invalidateUser(user);
-                    CompletableFuture.allOf(
-                            userManager.updateAccountUser(user),
-                            userManager.setAccountProfileImage(imageFile)
-                    ).thenAccept(aVoid -> {
-                        runOnUiThread(() -> {
-                            Toast.makeText(EditProfileActivity.this, "Saved", Toast.LENGTH_SHORT).show();
-                            finish();
+        updateButton.setOnClickListener((OnSingleClickListener) v -> {
+            if (!checkGroup.checkAll()) {
+                updateButton.setEnabled(true);
+                return;
+            }
+
+            new AlertDialog.Builder(EditProfileActivity.this)
+                    .setTitle("Save Changes")
+                    .setMessage("Are you sure you want to save changes?").setCancelable(false)
+                    .setCancelable(false)
+                    .setPositiveButton("Save", (dialog, which) -> {
+                        File imageFile = newProfileImagePath == null ? null : new File(newProfileImagePath);
+                        user.setUsername(editUsername.getEditText().getText().toString());
+                        user.setBio(editBio.getEditText().getText().toString());
+                        Toast.makeText(EditProfileActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
+                        userManager.invalidateUser(user);
+                        CompletableFuture.allOf(
+                                userManager.updateAccountUser(user),
+                                userManager.setAccountProfileImage(imageFile)
+                        ).thenAccept(aVoid -> {
+                            runOnUiThread(() -> {
+                                Toast.makeText(EditProfileActivity.this, "Saved", Toast.LENGTH_SHORT).show();
+                                finish();
+                            });
                         });
-                    });
-                })
-                .setNegativeButton("Cancel", (dialog, which) -> {
-                    updateButton.setEnabled(true);
-                })
-                .show());
+                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> {
+                        updateButton.setEnabled(true);
+                    })
+                    .show();
+        });
     }
 
     @Override
