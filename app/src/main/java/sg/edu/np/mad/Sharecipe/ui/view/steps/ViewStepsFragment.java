@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,11 +30,17 @@ public class ViewStepsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_view_steps, container, false);
 
         RecyclerView recyclerView = view.findViewById(R.id.viewSteps_recyclerView);
+        TextView emptyText = view.findViewById(R.id.empty_view_steps);
 
         ViewStepsAdapter adapter = new ViewStepsAdapter(recipe.getSteps());
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(cLayoutManager);
+
+        if (recipe.getSteps().isEmpty()) {
+            recyclerView.setVisibility(view.GONE);
+            emptyText.setVisibility(view.VISIBLE);
+        }
 
         return view;
     }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,11 +31,17 @@ public class ViewIngredientsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_view_ingredient, container, false);
 
         RecyclerView recyclerView = view.findViewById(R.id.viewIngredients_recyclerView);
+        TextView emptyText = view.findViewById(R.id.empty_view_ingredients);
 
         ViewIngredientsAdapter adapter = new ViewIngredientsAdapter(recipe.getIngredients());
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(cLayoutManager);
+
+        if (recipe.getIngredients().isEmpty()) {
+            recyclerView.setVisibility(view.GONE);
+            emptyText.setVisibility(view.VISIBLE);
+        }
 
         return view;
     }

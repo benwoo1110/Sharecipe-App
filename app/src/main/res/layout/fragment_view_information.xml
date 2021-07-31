@@ -23,13 +23,13 @@
 
         <TextView
             android:id="@+id/viewAuthor"
-            android:fontFamily="@font/quicksand_semibold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="48dp"
             android:layout_marginBottom="21dp"
+            android:fontFamily="@font/quicksand_semibold"
             android:text="By Author"
             app:layout_constraintBottom_toTopOf="@+id/view2"
             app:layout_constraintEnd_toEndOf="parent"
@@ -52,12 +52,12 @@
 
         <TextView
             android:id="@+id/viewRecipeName"
-            android:fontFamily="@font/quicksand_semibold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="48dp"
+            android:fontFamily="@font/quicksand_semibold"
             android:gravity="center_vertical|center_horizontal"
             android:text="Recipe"
             android:textSize="36sp"
@@ -67,11 +67,11 @@
 
         <TextView
             android:id="@+id/viewPrep"
-            android:fontFamily="@font/quicksand_light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="20dp"
+            android:fontFamily="@font/quicksand_light"
             android:text="Preparation time"
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/imageView2"
@@ -79,11 +79,11 @@
 
         <TextView
             android:id="@+id/viewPortion"
-            android:fontFamily="@font/quicksand_light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/quicksand_light"
             android:text="Portions"
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/imageView3"
@@ -111,11 +111,11 @@
 
         <TextView
             android:id="@+id/viewDifficulty"
-            android:fontFamily="@font/quicksand_light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
+            android:fontFamily="@font/quicksand_light"
             android:text="Difficulty"
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/imageView4"
@@ -123,12 +123,12 @@
 
         <TextView
             android:id="@+id/displayDescription"
-            android:fontFamily="@font/quicksand_regular"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="24dp"
+            android:fontFamily="@font/quicksand_regular"
             android:text="Description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -151,18 +151,20 @@
             android:layout_height="594dp"
             android:layout_marginTop="8dp"
             android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/viewRecipeName"
+            app:layout_constraintVertical_bias="1.0"
             tools:srcCompat="@tools:sample/avatars" />
 
-        <com.google.android.material.chip.ChipGroup
-            android:layout_width="225dp"
-            android:layout_height="91dp"
-            tools:layout_editor_absoluteX="20dp"
-            tools:layout_editor_absoluteY="513dp">
-
-        </com.google.android.material.chip.ChipGroup>
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="801dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
