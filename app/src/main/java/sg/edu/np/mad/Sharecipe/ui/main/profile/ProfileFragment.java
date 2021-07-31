@@ -29,11 +29,12 @@ import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
 
 public class ProfileFragment extends Fragment {
 
+    private boolean isFirstTime = true;
     private TextView username;
     private TextView description;
     private ImageView profileImage;
-
-    private UserManager userManager;
+    private RecyclerView gridStatsView;
+    private StatsAdapter adapter;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -51,40 +52,18 @@ public class ProfileFragment extends Fragment {
         username = view.findViewById(R.id.username);
         description = view.findViewById(R.id.description);
         profileImage = view.findViewById(R.id.profileImage);
+        gridStatsView = view.findViewById(R.id.statsRecyclerView);
         Button editProfileButton = view.findViewById(R.id.editUserinfo);
         Button editPasswordButton = view.findViewById(R.id.passwordButton);
         Button logoutButton = view.findViewById(R.id.buttonLogout);
         Button deleteButton = view.findViewById(R.id.deletaAccountButton);
-        RecyclerView gridStatsView = view.findViewById(R.id.statsRecyclerView);
 
-        List<UserStats> stats = new ArrayList<>();
-
-        StatsAdapter adapter = new StatsAdapter(stats);
+        adapter = new StatsAdapter(new ArrayList<>());
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_from_bottom);
         gridStatsView.setAdapter(adapter);
         gridStatsView.setLayoutManager(layoutManager);
         gridStatsView.setLayoutAnimation(controller);
-
-        userManager = App.getUserManager();
-        userManager.getAccountUser().onSuccess(user -> {
-            getActivity().runOnUiThread(() -> {
-                username.setText(user.getUsername());
-                description.setText(user.getBio());
-
-                stats.add(new UserStats("Follow", 10));
-                stats.add(new UserStats("Follower", 14));
-                stats.add(new UserStats("Liked recipes", 6));
-                stats.add(new UserStats("Created recipes", 3));
-
-                adapter.notifyDataSetChanged();
-                gridStatsView.scheduleLayoutAnimation();
-            });
-            userManager.getProfileImage(user)
-                    .onSuccess(image -> getActivity().runOnUiThread(() -> profileImage.setImageBitmap(image)))
-                    .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
-                    .onError(Throwable::printStackTrace);
-        });
 
         editProfileButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EditProfileActivity.class);
@@ -133,6 +112,7 @@ public class ProfileFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        UserManager userManager = App.getUserManager();
         userManager.getAccountUser().onSuccess(user -> {
             getActivity().runOnUiThread(() -> {
                 username.setText(user.getUsername());
@@ -143,6 +123,16 @@ public class ProfileFragment extends Fragment {
                     .onSuccess(image -> getActivity().runOnUiThread(() -> profileImage.setImageBitmap(image)))
                     .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
                     .onError(Throwable::printStackTrace);
+
+            userManager.getStats(user).onSuccess(stats -> {
+                getActivity().runOnUiThread(() -> {
+                    adapter.setStatsList(stats);
+                    if (isFirstTime) {
+                        gridStatsView.scheduleLayoutAnimation();
+                        isFirstTime = false;
+                    }
+                });
+            });
         });
     }
 }

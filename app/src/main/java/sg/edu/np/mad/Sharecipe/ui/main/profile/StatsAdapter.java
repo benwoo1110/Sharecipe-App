@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.UserStats;
 
 public class StatsAdapter extends RecyclerView.Adapter<StatsViewHolder> {
@@ -37,5 +38,11 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsViewHolder> {
     @Override
     public int getItemCount() {
         return statsList.size();
+    }
+
+    public void setStatsList(List<UserStats> statsList) {
+        this.statsList.clear();
+        this.statsList.addAll(statsList);
+        notifyDataSetChanged();
     }
 }

@@ -21,6 +21,7 @@ import okhttp3.ResponseBody;
 import sg.edu.np.mad.Sharecipe.models.BooleanState;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.models.UserFollow;
+import sg.edu.np.mad.Sharecipe.models.UserStats;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.utils.JsonUtils;
@@ -104,6 +105,23 @@ public class UserManager {
                 userCache.put(user.getUserId(), user);
                 future.complete(new DataResult.Success<>(user));
             }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+    @NonNull
+    public FutureDataResult<List<UserStats>> getStats(User user) {
+        FutureDataResult<List<UserStats>> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getUserStats(account.getAccessToken(), user.getUserId()).onSuccessJson(future, (response, json) -> {
+                List<UserStats> statsList = new ArrayList<>();
+                for (JsonElement statsData : json.getAsJsonArray()) {
+                    statsList.add(JsonUtils.convertToObject(statsData, UserStats.class));
+                }
+                future.complete(new DataResult.Success<>(statsList));
+            });
         }).onFailed(future).onError(future);
 
         return future;

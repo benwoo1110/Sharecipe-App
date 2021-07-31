@@ -4,14 +4,10 @@ import com.google.gson.annotations.Expose;
 
 public class UserStats {
 
-    @Expose(deserialize = false)
+    @Expose
     private String name;
+    @Expose
     private int number;
-
-    public UserStats(String name, int number) {
-        this.name = name;
-        this.number = number;
-    }
 
     public String getName() {
         return name;

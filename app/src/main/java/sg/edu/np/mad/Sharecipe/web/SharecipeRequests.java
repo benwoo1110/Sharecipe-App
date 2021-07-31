@@ -291,6 +291,28 @@ public class SharecipeRequests {
     }
 
     /**
+     * GET `/users/user_id/stats` endpoint.
+     *
+     * @param accessToken
+     * @param userId
+     * @return Response from server.
+     */
+    @NonNull
+    public static FutureWebResponse getUserStats(@NonNull String accessToken,
+                                                 int userId) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.USERS)
+                        .addPathSegment(String.valueOf(userId))
+                        .addPathSegment(UrlPath.STATS)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
+
+    /**
      * GET `/users/user_id/profileimage` endpoint.
      *
      * @param accessToken
