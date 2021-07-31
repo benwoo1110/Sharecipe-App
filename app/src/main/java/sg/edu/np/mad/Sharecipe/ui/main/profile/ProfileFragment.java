@@ -13,12 +13,14 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
+import sg.edu.np.mad.Sharecipe.models.UserStats;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
@@ -111,7 +113,14 @@ public class ProfileFragment extends Fragment {
                 })
                 .show());
 
-        StatsAdapter adapter = new StatsAdapter();
+        List<UserStats> stats = new ArrayList<UserStats>() {{
+            add(new UserStats("Follow", 10));
+            add(new UserStats("Follower", 14));
+            add(new UserStats("Liked recipes", 6));
+            add(new UserStats("Created recipes", 3));
+        }};
+
+        StatsAdapter adapter = new StatsAdapter(stats);
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         gridStatsView.setAdapter(adapter);
         gridStatsView.setLayoutManager(layoutManager);

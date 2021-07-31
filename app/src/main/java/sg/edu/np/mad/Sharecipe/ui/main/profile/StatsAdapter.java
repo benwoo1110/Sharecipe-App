@@ -7,9 +7,18 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.models.UserStats;
 
 public class StatsAdapter extends RecyclerView.Adapter<StatsViewHolder> {
+
+    private final List<UserStats> statsList;
+
+    public StatsAdapter(@NonNull List<UserStats> statsList) {
+        this.statsList = statsList;
+    }
 
     @NonNull
     @Override
@@ -20,11 +29,13 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull StatsViewHolder holder, int position) {
-
+        UserStats stats = statsList.get(position);
+        holder.name.setText(stats.getName());
+        holder.number.setText(String.valueOf(stats.getNumber()));
     }
 
     @Override
     public int getItemCount() {
-        return 4;
+        return statsList.size();
     }
 }
