@@ -20,7 +20,16 @@
         <item name="fontFamily">@font/quicksand_regular</item>
     </style>
 
-    <style name="Widget.MaterialComponents.TabLayout." parent="Widget.MaterialComponents.TabLayout">
-        <item name="fontFamily">@font/quicksand_semibold</item>
+    <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox." parent="">
+        <item name="fontFamily">@font/quicksand_regular</item>
+    </style>
+
+    <style name="Widget.MaterialComponents.TextInputLayout.FilledBox." parent="">
+        <item name="fontFamily">@font/quicksand_regular</item>
+    </style>
+
+    <style name="Widget.AppCompat.Toolbar." parent="">
+        <item name="fontFamily">@font/lobster_regular</item>
+        <item name="android:textSize">28dp</item>
     </style>
 </resources>

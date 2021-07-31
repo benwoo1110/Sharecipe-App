@@ -9,6 +9,13 @@ public class RecipeTag implements Serializable {
     @Expose
     private String name;
 
+    public RecipeTag() {
+    }
+
+    public RecipeTag(String name) {
+        this.name = name;
+    }
+
     public String getName() { return name; }
 
     public void setName(String name) {

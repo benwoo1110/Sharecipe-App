@@ -18,7 +18,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="Recipe"
-        app:titleTextColor="?attr/colorOnBackground" />
+        app:titleTextColor="?attr/colorOnBackground"
+        app:titleTextAppearance="@style/Widget.AppCompat.Toolbar."/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_create_recipe"

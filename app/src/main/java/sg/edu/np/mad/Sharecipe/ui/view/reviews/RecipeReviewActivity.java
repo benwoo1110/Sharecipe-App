@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.common.base.Strings;
 
 import java.util.ArrayList;
 
@@ -63,7 +64,11 @@ public class RecipeReviewActivity extends DynamicFocusAppCompatActivity {
             if (newReview.getRating() == 0) {
                 Toast.makeText(RecipeReviewActivity.this, "Please rate this recipe 1 to 5 stars", Toast.LENGTH_SHORT);
             }
+            else if (Strings.isNullOrEmpty(newReview.getComment())) {
+                Toast.makeText(RecipeReviewActivity.this, "Please leave a comment for this recipe", Toast.LENGTH_SHORT);
+            }
             else {
+
             }
         });
 

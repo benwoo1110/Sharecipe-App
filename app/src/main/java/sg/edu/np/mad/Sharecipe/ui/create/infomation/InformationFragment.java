@@ -55,6 +55,7 @@ public class InformationFragment extends Fragment {
 
     private TextInputEditText prep;
     private MultiAutoCompleteTextView tags;
+    private TagNamesAdapter tagAdapter;
 
     public InformationFragment(Recipe recipe, List<File> imageFileList) {
         this.recipe = recipe;
@@ -79,36 +80,37 @@ public class InformationFragment extends Fragment {
         if (recipe.getName() != null) {
             name.setText(recipe.getName());
         }
+
         if (recipe.getDifficulty() > 0) {
             difficulty.setRating(recipe.getDifficulty());
         }
+
         if (recipe.getPortion() > 0) {
             portions.setText(String.valueOf(recipe.getPortion()));
         }
-        if (recipe.isPublic()) {
-            infoPublic.setChecked(true);
-        }
-        else {
-            infoPublic.setChecked(false);
-        }
+
+        infoPublic.setChecked(recipe.isPublic());
+
         if (recipe.getTotalTimeNeeded() != null) {
             prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
         }
+
         if (recipe.getTags() != null) {
-            for (RecipeTag tag : recipe.getTags()
-                 ) {
-                recipeTags.add(tag);
-                // TODO: Display the tags
+            tags.getText().clear();
+            for (RecipeTag tag : recipe.getTags()) {
+                tags.getText().append(tag.getName()).append(", ");
+                createRecipientChip(tag.getName());
             }
         }
+
         if (recipe.getDescription() != null) {
             description.setText(recipe.getDescription());
         }
+
         if (recipe.getImages() != null) {
             App.getRecipeManager().getImages(recipe).onSuccess(bitmaps -> {
                 getActivity().runOnUiThread(() -> {
-                    for (Bitmap image : bitmaps
-                    ) {
+                    for (Bitmap image : bitmaps) {
                         imageList.add(image);
                         adapter.notifyDataSetChanged();
                     }
@@ -117,7 +119,7 @@ public class InformationFragment extends Fragment {
         }
 
         createTags();
-        TagNamesAdapter tagAdapter = new TagNamesAdapter(
+        tagAdapter = new TagNamesAdapter(
                 getContext(),
                 android.R.layout.simple_spinner_dropdown_item,
                 tags,
@@ -133,16 +135,10 @@ public class InformationFragment extends Fragment {
         });
 
         tags.addTextChangedListener((AfterTextChangedWatcher) s -> {
-            //TODO This is a bad way to do this.
             String[] tagNames = s.toString().split(", ");
             List<RecipeTag> selectedTags = new ArrayList<>();
             for (String tagName : tagNames) {
-                for (RecipeTag recipeTag : recipeTags) {
-                    if (tagName.equals(recipeTag.getName())) {
-                        selectedTags.add(recipeTag);
-                        break;
-                    }
-                }
+                selectedTags.add(new RecipeTag(tagName));
             }
             recipe.setTags(selectedTags);
         });
@@ -268,6 +264,7 @@ public class InformationFragment extends Fragment {
         recipeTags.add(snack);
         recipeTags.add(drink);
         recipeTags.add(dessert);
+        recipeTags.addAll(recipe.getTags());
     }
 
     private void createRecipientChip(String tagName) {
