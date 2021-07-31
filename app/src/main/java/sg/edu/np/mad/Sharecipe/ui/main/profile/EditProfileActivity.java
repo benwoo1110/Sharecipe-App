@@ -48,10 +48,8 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
         editUsername = findViewById(R.id.editUsername);
         editBio = findViewById(R.id.editBio);
         Button updateButton = findViewById(R.id.saveInfo);
-        Button deleteButton = findViewById(R.id.deleteAcc);
 
         UserManager userManager = App.getUserManager();
-
         userManager.getAccountUser().onSuccess(user -> {
             this.user = user;
 
@@ -95,25 +93,6 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
                 })
                 .setNegativeButton("Cancel", (dialog, which) -> {
                     updateButton.setEnabled(true);
-                })
-                .show());
-
-        deleteButton.setOnClickListener((OnSingleClickListener) v -> new AlertDialog.Builder(EditProfileActivity.this)
-                .setTitle("Delete account")
-                .setMessage("Are you sure you want to delete account?").setCancelable(false)
-                .setPositiveButton("Delete", (dialog, which) -> {
-                    AccountManager.getInstance(this).delete().onSuccess(aVoid -> {
-                        Toast.makeText(EditProfileActivity.this, "Account deleted", Toast.LENGTH_SHORT).show();
-
-                        runOnUiThread(() -> {
-                            Intent intent = new Intent(EditProfileActivity.this, LoginActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(intent);
-                        });
-                    });
-                })
-                .setNegativeButton("Cancel", (dialog, which) -> {
-                    deleteButton.setEnabled(true);
                 })
                 .show());
     }

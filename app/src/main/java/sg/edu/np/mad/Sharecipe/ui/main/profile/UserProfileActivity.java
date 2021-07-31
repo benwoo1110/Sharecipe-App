@@ -15,7 +15,6 @@ import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.models.User;
-import sg.edu.np.mad.Sharecipe.models.UserFollow;
 import sg.edu.np.mad.Sharecipe.ui.App;
 
 public class UserProfileActivity extends AppCompatActivity {

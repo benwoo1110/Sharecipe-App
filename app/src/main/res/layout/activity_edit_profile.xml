@@ -23,14 +23,28 @@
         android:id="@+id/editPic"
         android:layout_width="129dp"
         android:layout_height="128dp"
-        android:layout_marginTop="42dp"
+        android:layout_marginTop="36dp"
         android:background="?attr/colorPrimaryVariant"
         android:elevation="6dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editProfileToolbar"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-        app:srcCompat="@drawable/ic_baseline_add_24" />
+        app:srcCompat="@drawable/ic_baseline_person_24" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/imageView5"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="4dp"
+        android:background="?attr/colorOnPrimary"
+        android:elevation="8dp"
+        app:contentPadding="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/editPic"
+        app:layout_constraintEnd_toEndOf="@+id/editPic"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+        app:srcCompat="@drawable/outline_edit_24" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editUsername"
@@ -90,16 +104,5 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editBio" />
-
-    <Button
-        android:id="@+id/deleteAcc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:text="Delete Account"
-        app:backgroundTint="@color/design_default_color_error"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package sg.edu.np.mad.Sharecipe.ui.main.profile;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,9 +17,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
+import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
 
 public class ProfileFragment extends Fragment {
 
@@ -47,6 +50,7 @@ public class ProfileFragment extends Fragment {
         Button editProfileButton = view.findViewById(R.id.editUserinfo);
         Button editPasswordButton = view.findViewById(R.id.passwordButton);
         Button logoutButton = view.findViewById(R.id.buttonLogout);
+        Button deleteButton = view.findViewById(R.id.deletaAccountButton);
         RecyclerView gridStatsView = view.findViewById(R.id.statsRecyclerView);
 
         userManager = App.getUserManager();
@@ -67,6 +71,16 @@ public class ProfileFragment extends Fragment {
                     .onError(Throwable::printStackTrace);
         });
 
+        editProfileButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+            getActivity().startActivity(intent);
+        });
+
+        editPasswordButton.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), EditPasswordActivity.class);
+            getActivity().startActivity(intent);
+        });
+
         logoutButton.setOnClickListener(v -> {
             App.getAccountManager().logout()
                     .onSuccess(ignore -> {
@@ -78,23 +92,27 @@ public class ProfileFragment extends Fragment {
                     .onError(Throwable::printStackTrace);
         });
 
-        editProfileButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-            getActivity().startActivity(intent);
-        });
-
-        editPasswordButton.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), EditPasswordActivity.class);
-            getActivity().startActivity(intent);
-        });
+        deleteButton.setOnClickListener((OnSingleClickListener) v -> new AlertDialog.Builder(getContext())
+                .setTitle("Delete account")
+                .setMessage("Are you sure you want to delete account? You cannot undo this action.")
+                .setCancelable(false)
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    App.getAccountManager().delete().onSuccess(aVoid -> {
+                        Toast.makeText(getContext(), "Account deleted", Toast.LENGTH_SHORT).show();
+                        getActivity().runOnUiThread(() -> {
+                            Intent intent = new Intent(getContext(), LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        });
+                    });
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> {
+                    deleteButton.setEnabled(true);
+                })
+                .show());
 
         StatsAdapter adapter = new StatsAdapter();
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2) {
-            @Override
-            public boolean canScrollVertically() {
-                return false;
-            }
-        };
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         gridStatsView.setAdapter(adapter);
         gridStatsView.setLayoutManager(layoutManager);
 

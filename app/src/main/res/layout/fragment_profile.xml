@@ -73,19 +73,6 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/profileImage"
-            android:layout_width="115dp"
-            android:layout_height="115dp"
-            android:layout_marginTop="32dp"
-            android:background="?attr/colorPrimaryVariant"
-            android:elevation="6dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
-            app:srcCompat="@drawable/ic_baseline_person_24" />
-
         <Button
             android:id="@+id/editUserinfo"
             android:layout_width="0dp"
@@ -97,6 +84,19 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/statsRecyclerView" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileImage"
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            android:layout_marginTop="32dp"
+            android:background="?attr/colorPrimaryVariant"
+            android:elevation="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
+            app:srcCompat="@drawable/ic_baseline_person_24" />
 
         <Button
             android:id="@+id/passwordButton"
