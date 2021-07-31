@@ -14,6 +14,12 @@
         app:labelVisibilityMode="labeled"/>
 
     <item
+        android:id="@+id/recipe_delete_menu"
+        android:icon="@drawable/outline_delete_24"
+        android:title="Delete"
+        app:labelVisibilityMode="labeled"/>
+
+    <item
         android:id="@+id/recipe_like_menu"
         android:icon="@drawable/outline_favorite_border_24"
         android:title="Like"

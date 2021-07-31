@@ -69,6 +69,7 @@ public class RecipeViewActivity extends AppCompatActivity {
         // Setup bottom bar menu
         bottomNavigation.getMenu().findItem(R.id.recipe_edit_menu).setVisible(false);
         bottomNavigation.getMenu().findItem(R.id.recipe_like_menu).setVisible(false);
+        bottomNavigation.getMenu().findItem(R.id.recipe_delete_menu).setVisible(false);
 
         bottomNavigation.setOnItemSelectedListener(item -> {
             if (ignoreSelect) {
@@ -84,6 +85,7 @@ public class RecipeViewActivity extends AppCompatActivity {
                     Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
                     review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
                     startActivity(review);
+                    // TODO: Get this to work
                 });
                 return false;
             } else if (itemId == R.id.recipe_edit_menu) {
@@ -94,6 +96,10 @@ public class RecipeViewActivity extends AppCompatActivity {
                     startActivity(editRecipe);
                 });
                 return false;
+            } else if (itemId == R.id.recipe_delete_menu) {
+                App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe1 -> {
+                   // TODO: Delete recipe here
+                });
             } else if (itemId == R.id.recipe_like_menu) {
                 item.setEnabled(false);
                 if (isLiked) {
@@ -121,6 +127,7 @@ public class RecipeViewActivity extends AppCompatActivity {
                 viewpager.setAdapter(adapter);
                 if (recipe.getUserId() == userID) {
                     bottomNavigation.getMenu().findItem(R.id.recipe_edit_menu).setVisible(true);
+                    bottomNavigation.getMenu().findItem(R.id.recipe_delete_menu).setVisible(true);
                 }
             });
 
