@@ -148,7 +148,7 @@ public class InformationFragment extends Fragment {
         });
 
         adapter = new ImagesAdapter(getActivity(), imageList, imageFileList, enlargedImage, view);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 4);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
 
         images.setAdapter(adapter);
         images.setLayoutManager(gridLayoutManager);
