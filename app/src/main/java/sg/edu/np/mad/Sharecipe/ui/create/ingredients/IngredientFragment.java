@@ -38,7 +38,7 @@ public class IngredientFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerviewIngredient);
 
         IngredientsAdapter adapter = new IngredientsAdapter(ingredientsList, getActivity());
-        LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(cLayoutManager);
 
