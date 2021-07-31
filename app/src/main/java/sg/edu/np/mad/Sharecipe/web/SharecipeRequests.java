@@ -730,15 +730,15 @@ public class SharecipeRequests {
     }
 
     /**
-     *  PUT `/recipes/recipe_id/likes/user_id` endpoint.
+     *  POST `/recipes/recipe_id/likes/user_id` endpoint.
      *
      * @param accessToken
      * @param recipeId
      * @return
      */
-    public static FutureWebResponse putRecipeLikeUser(@NonNull String accessToken,
-                                                      int recipeId,
-                                                      int userId) {
+    public static FutureWebResponse postRecipeLikeUser(@NonNull String accessToken,
+                                                       int recipeId,
+                                                       int userId) {
 
         return CLIENT.runAsync(new Request.Builder()
                 .url(UrlPath.newBuilder()
@@ -748,7 +748,7 @@ public class SharecipeRequests {
                         .addPathSegment(String.valueOf(userId))
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
-                .put(RequestBody.create("", null))
+                .post(RequestBody.create("", null))
                 .build());
     }
 
