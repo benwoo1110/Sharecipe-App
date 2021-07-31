@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -55,17 +57,28 @@ public class ProfileFragment extends Fragment {
         Button deleteButton = view.findViewById(R.id.deletaAccountButton);
         RecyclerView gridStatsView = view.findViewById(R.id.statsRecyclerView);
 
+        List<UserStats> stats = new ArrayList<>();
+
+        StatsAdapter adapter = new StatsAdapter(stats);
+        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_from_bottom);
+        gridStatsView.setAdapter(adapter);
+        gridStatsView.setLayoutManager(layoutManager);
+        gridStatsView.setLayoutAnimation(controller);
+
         userManager = App.getUserManager();
         userManager.getAccountUser().onSuccess(user -> {
             getActivity().runOnUiThread(() -> {
                 username.setText(user.getUsername());
                 description.setText(user.getBio());
-                userManager.getFollows(user).onSuccess(userFollows -> {
-                    // getActivity().runOnUiThread(() -> followingNo.setText(String.valueOf(userFollows.size())));
-                });
-                userManager.getFollowers(user).onSuccess(userFollows -> {
-                    // getActivity().runOnUiThread(() -> followersNo.setText(String.valueOf(userFollows.size())));
-                });
+
+                stats.add(new UserStats("Follow", 10));
+                stats.add(new UserStats("Follower", 14));
+                stats.add(new UserStats("Liked recipes", 6));
+                stats.add(new UserStats("Created recipes", 3));
+
+                adapter.notifyDataSetChanged();
+                gridStatsView.scheduleLayoutAnimation();
             });
             userManager.getProfileImage(user)
                     .onSuccess(image -> getActivity().runOnUiThread(() -> profileImage.setImageBitmap(image)))
@@ -112,18 +125,6 @@ public class ProfileFragment extends Fragment {
                     deleteButton.setEnabled(true);
                 })
                 .show());
-
-        List<UserStats> stats = new ArrayList<UserStats>() {{
-            add(new UserStats("Follow", 10));
-            add(new UserStats("Follower", 14));
-            add(new UserStats("Liked recipes", 6));
-            add(new UserStats("Created recipes", 3));
-        }};
-
-        StatsAdapter adapter = new StatsAdapter(stats);
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
-        gridStatsView.setAdapter(adapter);
-        gridStatsView.setLayoutManager(layoutManager);
 
         return view;
     }

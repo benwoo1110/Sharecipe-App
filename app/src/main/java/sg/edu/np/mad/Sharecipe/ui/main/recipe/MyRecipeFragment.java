@@ -62,7 +62,6 @@ public class MyRecipeFragment extends Fragment {
 
         App.getRecipeManager().getAccountRecipes().onSuccess(recipes -> {
             getActivity().runOnUiThread(() -> {
-                System.out.println(recipes);
                 recipeAdapter.setRecipeList(recipes);
                 recipeRecyclerView.scheduleLayoutAnimation();
                 shimmerFrameLayout.stopShimmer();
