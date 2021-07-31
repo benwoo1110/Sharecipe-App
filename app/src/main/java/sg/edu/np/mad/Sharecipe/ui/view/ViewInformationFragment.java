@@ -9,6 +9,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,10 +45,10 @@ public class ViewInformationFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.viewImages_recyclerView);
 
         ViewImagesAdapter adapter = new ViewImagesAdapter(getActivity(), enlargedImage, view);
-        LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
 
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(cLayoutManager);
+        recyclerView.setLayoutManager(gridLayoutManager);
 
         App.getRecipeManager().getImages(recipe).onSuccess(bitmaps -> {
             getActivity().runOnUiThread(() -> {
