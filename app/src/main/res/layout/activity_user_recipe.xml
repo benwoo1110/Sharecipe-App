@@ -4,13 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.recipe.LikedRecipeActivity">
+    tools:context=".ui.main.recipe.UserRecipeActivity">
 
-    <fragment
+    <FrameLayout
         android:id="@+id/fragment"
-        android:name="sg.edu.np.mad.Sharecipe.ui.main.recipe.LikedRecipeFragment"
-        android:layout_width="410dp"
-        android:layout_height="732dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
