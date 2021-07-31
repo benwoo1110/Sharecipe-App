@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Locale;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
@@ -33,8 +34,7 @@ public class ViewIngredientsAdapter extends RecyclerView.Adapter<ViewIngredients
     public void onBindViewHolder(@NotNull ViewIngredientsViewholder holder, int position) {
         RecipeIngredient ingredient = ingredients.get(position);
         holder.name.setText(ingredient.getName());
-        holder.quantity.setText(String.valueOf(ingredient.getQuantity()));
-        holder.unit.setText(ingredient.getUnit());
+        holder.quantity.setText(String.format(Locale.ENGLISH, "%d %s", ingredient.getQuantity(), ingredient.getUnit()));
 
     }
 

@@ -30,7 +30,7 @@
                 android:layout_height="30dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginBottom="4dp"
-                android:background="?attr/colorOnPrimary"
+                android:background="?attr/colorSurface"
                 android:elevation="8dp"
                 app:contentPadding="5dp"
                 app:layout_constraintBottom_toBottomOf="@+id/registerProfileImage"

@@ -11,13 +11,11 @@ public class ViewIngredientsViewholder extends RecyclerView.ViewHolder {
 
     TextView name;
     TextView quantity;
-    TextView unit;
 
     public ViewIngredientsViewholder(View itemView) {
         super(itemView);
 
         name = itemView.findViewById(R.id.displayIngredientName);
         quantity = itemView.findViewById(R.id.displayIngredientQuantity);
-        unit = itemView.findViewById(R.id.displayingredientUnit);
     }
 }
