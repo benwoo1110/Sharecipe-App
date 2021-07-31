@@ -23,7 +23,7 @@ public class RecipeReviewAdapter extends RecyclerView.Adapter<RecipeReviewViewho
     @Override
     @NotNull
     public RecipeReviewViewholder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.recyclerview_recipereviews, parent, false);
+        View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_holder_recipe_reviews, parent, false);
         RecipeReviewViewholder holder = new RecipeReviewViewholder(item);
 
         return holder;
