@@ -58,7 +58,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewHolder> {
     }
 
     public void removeDialog(RecipeStep stepToRemove) {
-        new AlertDialog.Builder(activity)
+        new AlertDialog.Builder(activity, R.style.AlertDialogCustom)
                 .setTitle("Remove step")
                 .setMessage("Would you like to remove this step?")
                 .setPositiveButton("Remove", (dialog, which) -> {

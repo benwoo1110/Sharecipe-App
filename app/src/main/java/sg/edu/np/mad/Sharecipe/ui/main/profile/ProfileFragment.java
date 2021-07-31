@@ -74,7 +74,7 @@ public class ProfileFragment extends Fragment {
         });
 
         logoutButton.setOnClickListener(v -> {
-            new AlertDialog.Builder(getContext())
+            new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom)
                     .setTitle("Logout")
                     .setMessage("Are you sure you want to logout?").setCancelable(false)
                     .setNegativeButton("Cancel",null)
@@ -91,7 +91,7 @@ public class ProfileFragment extends Fragment {
                     .show();
         });
 
-        deleteButton.setOnClickListener((OnSingleClickListener) v -> new AlertDialog.Builder(getContext())
+        deleteButton.setOnClickListener((OnSingleClickListener) v -> new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom)
                 .setTitle("Delete account")
                 .setMessage("Are you sure you want to delete account? You cannot undo this action.")
                 .setCancelable(false)

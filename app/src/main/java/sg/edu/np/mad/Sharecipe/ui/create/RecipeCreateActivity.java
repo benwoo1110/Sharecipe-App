@@ -73,7 +73,7 @@ public class RecipeCreateActivity extends DynamicFocusAppCompatActivity {
     }
 
     public void confirmPublish(Recipe recipe, RecipeCreateAdapter adapter, boolean checkEdit) {
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this, R.style.AlertDialogCustom)
                 .setTitle("Confirm changes")
                 .setMessage("Are you sure you want to publish this recipe?")
                 .setNegativeButton("No", null)
@@ -110,7 +110,7 @@ public class RecipeCreateActivity extends DynamicFocusAppCompatActivity {
     }
 
     public void confirmExit() {
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this, R.style.AlertDialogCustom)
                 .setTitle("Exit without saving")
                 .setMessage("You have unsaved changes. Would you like to exit without saving?")
                 .setNegativeButton("No", null)

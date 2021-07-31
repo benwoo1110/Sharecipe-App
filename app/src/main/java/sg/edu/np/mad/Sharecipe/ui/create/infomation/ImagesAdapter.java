@@ -213,7 +213,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         ImageView targetImage = view.findViewById(R.id.alertImage);
         targetImage.setImageBitmap(image);
 
-        new AlertDialog.Builder(activity)
+        new AlertDialog.Builder(activity, R.style.AlertDialogCustom)
                 .setView(view)
                 .setTitle("Remove image")
                 .setMessage("Would you like to remove this image?")

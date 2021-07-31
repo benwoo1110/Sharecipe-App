@@ -84,7 +84,7 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
                 return;
             }
 
-            new AlertDialog.Builder(EditProfileActivity.this)
+            new AlertDialog.Builder(EditProfileActivity.this, R.style.AlertDialogCustom)
                     .setTitle("Save Changes")
                     .setMessage("Are you sure you want to save changes?").setCancelable(false)
                     .setCancelable(false)

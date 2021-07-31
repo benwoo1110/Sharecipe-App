@@ -50,7 +50,7 @@ public class EditPasswordActivity extends DynamicFocusAppCompatActivity {
                 return;
             }
 
-            new AlertDialog.Builder(EditPasswordActivity.this)
+            new AlertDialog.Builder(EditPasswordActivity.this, R.style.AlertDialogCustom)
                     .setTitle("Save Changes")
                     .setMessage("Are you sure you want to save changes?").setCancelable(false)
                     .setCancelable(false)

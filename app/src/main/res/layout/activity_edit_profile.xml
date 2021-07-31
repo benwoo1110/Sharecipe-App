@@ -21,7 +21,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:title="Edit Profile"
-            app:titleTextColor="?attr/colorOnBackground" />
+            app:titleTextColor="?attr/colorOnBackground"
+            app:titleTextAppearance="@style/Widget.AppCompat.Toolbar.."/>
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/editPic"
