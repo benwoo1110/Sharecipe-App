@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.textfield.TextInputLayout;
@@ -74,9 +75,14 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
                 App.getUserManager().setAccountProfileImage(imageFile).onFailed(reason -> {
                     RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show());
                 }).thenAccept(result -> {
+                    Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(
+                            RegisterActivity.this,
+                            android.R.anim.fade_in,
+                            android.R.anim.fade_out
+                    ).toBundle();
                     Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
+                    startActivity(intent, bundle);
                 });
             }).onFailed(reason -> {
                 RegisterActivity.this.runOnUiThread(() -> {
