@@ -17,7 +17,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="Sharecipe"
-        app:titleTextColor="?attr/colorOnBackground" />
+        app:titleTextColor="?attr/colorOnBackground"
+        app:titleTextAppearance="@style/Widget.AppCompat.Toolbar." />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/discoverRefresh"
