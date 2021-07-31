@@ -55,6 +55,7 @@ public class InformationFragment extends Fragment {
 
     private TextInputEditText prep;
     private MultiAutoCompleteTextView tags;
+    private TagNamesAdapter tagAdapter;
 
     public InformationFragment(Recipe recipe, List<File> imageFileList) {
         this.recipe = recipe;
@@ -95,11 +96,24 @@ public class InformationFragment extends Fragment {
             prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
         }
         if (recipe.getTags() != null) {
+            tagAdapter = new TagNamesAdapter(
+                getContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                tags,
+                TagNamesAdapter.convertToTagNames(recipe.getTags()));
             for (RecipeTag tag : recipe.getTags()
                  ) {
-                recipeTags.add(tag);
-                // TODO: Display the tags
+                createRecipientChip(tagAdapter.getItem(recipe.getTags().indexOf(tag)));
             }
+        }
+        else {
+            createTags();
+            tagAdapter = new TagNamesAdapter(
+                    getContext(),
+                    android.R.layout.simple_spinner_dropdown_item,
+                    tags,
+                    TagNamesAdapter.convertToTagNames(recipeTags)
+            );
         }
         if (recipe.getDescription() != null) {
             description.setText(recipe.getDescription());
@@ -115,14 +129,6 @@ public class InformationFragment extends Fragment {
                 });
             });
         }
-
-        createTags();
-        TagNamesAdapter tagAdapter = new TagNamesAdapter(
-                getContext(),
-                android.R.layout.simple_spinner_dropdown_item,
-                tags,
-                TagNamesAdapter.convertToTagNames(recipeTags)
-        );
 
         tags.setAdapter(tagAdapter);
         tags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());

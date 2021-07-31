@@ -69,7 +69,8 @@ public class ViewInformationFragment extends Fragment {
                 : FormatUtils.parseDurationLong(recipe.getTotalTimeNeeded()));
 
         displayDesc.setText(recipe.getDescription());
-        displayDifficulty.setText("Difficulty: " + String.valueOf(recipe.getDifficulty()) + "/5");
+
+        displayDifficulty.setText(recipe.getDifficulty() > 0 ? "Difficulty: " + String.valueOf(recipe.getDifficulty()) + "/5" : "nil");
 
         App.getUserManager().get(recipe.getUserId()).onSuccess(user -> {
             getActivity().runOnUiThread(() -> displayAuthor.setText("By " + user.getUsername()));

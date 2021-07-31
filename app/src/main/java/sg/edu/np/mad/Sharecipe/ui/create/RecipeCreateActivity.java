@@ -78,7 +78,6 @@ public class RecipeCreateActivity extends DynamicFocusAppCompatActivity {
                 .setMessage("Are you sure you want to publish this recipe?")
                 .setNegativeButton("No", null)
                 .setPositiveButton("Confirm", ((dialog, which) -> {
-                    Toast.makeText(RecipeCreateActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
                     if (checkEdit) {
                         App.getRecipeManager().update(recipe).onSuccess(recipe1 -> {
                             RecipeCreateActivity.this.runOnUiThread(() -> {
