@@ -95,6 +95,7 @@
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="24dp"
                 android:hint="Password"
+                app:endIconMode="password_toggle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
