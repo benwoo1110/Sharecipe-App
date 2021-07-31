@@ -2,6 +2,7 @@ package sg.edu.np.mad.Sharecipe.ui.common;
 
 import android.view.View;
 
+@FunctionalInterface
 public interface OnSingleClickListener extends View.OnClickListener {
 
     void onSingleClick(View v);

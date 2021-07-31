@@ -47,17 +47,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/view_holder_recipe_shimmer" />
+            <include layout="@layout/view_shimmer_recipe" />
 
-            <include layout="@layout/view_holder_recipe_shimmer" />
+            <include layout="@layout/view_shimmer_recipe" />
 
-            <include layout="@layout/view_holder_recipe_shimmer" />
+            <include layout="@layout/view_shimmer_recipe" />
 
-            <include layout="@layout/view_holder_recipe_shimmer" />
+            <include layout="@layout/view_shimmer_recipe" />
 
-            <include layout="@layout/view_holder_recipe_shimmer" />
+            <include layout="@layout/view_shimmer_recipe" />
 
-            <include layout="@layout/view_holder_recipe_shimmer" />
+            <include layout="@layout/view_shimmer_recipe" />
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>
 

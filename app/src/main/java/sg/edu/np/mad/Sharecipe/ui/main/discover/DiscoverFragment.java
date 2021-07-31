@@ -1,5 +1,6 @@
 package sg.edu.np.mad.Sharecipe.ui.main.discover;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.DiscoverSection;
@@ -33,11 +36,15 @@ public class DiscoverFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_discover, container, false);
 
         RecyclerView discoverRecyclerView = view.findViewById(R.id.discoverRecyclerView);
+        ShimmerFrameLayout shimmerFrameLayout = view.findViewById(R.id.discoverShimmerLayout);
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         SectionAdapter adapter = new SectionAdapter();
         discoverRecyclerView.setLayoutManager(layoutManager);
         discoverRecyclerView.setAdapter(adapter);
 
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        shimmerFrameLayout.startShimmer();
         App.getSearchManager().discover().onSuccess(discover -> {
             for (DiscoverSection section : discover.getSections()) {
                 switch (section.getSizeType()) {
@@ -49,7 +56,11 @@ public class DiscoverFragment extends Fragment {
                         break;
                 }
             }
-            getActivity().runOnUiThread(adapter::notifyDataSetChanged);
+            getActivity().runOnUiThread(() -> {
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setVisibility(View.GONE);
+                adapter.notifyDataSetChanged();
+            });
         });
 
         return view;

@@ -2,6 +2,7 @@ package sg.edu.np.mad.Sharecipe.ui.common;
 
 import com.google.android.material.tabs.TabLayout;
 
+@FunctionalInterface
 public interface OnTabSelectedListener extends TabLayout.OnTabSelectedListener {
 
     @Override
