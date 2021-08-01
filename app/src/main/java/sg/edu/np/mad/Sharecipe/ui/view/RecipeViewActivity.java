@@ -171,12 +171,11 @@ public class RecipeViewActivity extends AppCompatActivity {
             if (recipe.getReviews() == null) {
                 reviews.add(newReview);
                 recipe.setReviews(reviews);
-                adapter.notifyDataSetChanged();
             }
             else {
                 recipe.getReviews().add(newReview);
-                adapter.notifyDataSetChanged();
             }
+            adapter.notifyDataSetChanged();
         }
     }
 }
