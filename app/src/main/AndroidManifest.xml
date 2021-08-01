@@ -35,7 +35,7 @@
             android:name=".ui.main.profile.EditPasswordActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.view.RecipeReviewActivity"
+            android:name=".ui.view.reviews.RecipeReviewActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.view.RecipeViewActivity"

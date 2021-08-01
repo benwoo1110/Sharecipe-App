@@ -28,6 +28,7 @@ public class UrlPath {
     public static final String FOLLOWERS = "followers";
     public static final String LIKES = "likes";
     public static final String RECIPES = "recipes";
+    public static final String TAG_SUGGESTIONS = "tagsuggestions";
     public static final String IMAGES = "images";
     public static final String ICON = "icon";
     public static final String SEARCH = "search";

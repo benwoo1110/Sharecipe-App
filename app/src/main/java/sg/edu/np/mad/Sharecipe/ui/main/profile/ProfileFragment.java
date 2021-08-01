@@ -1,6 +1,7 @@
 package sg.edu.np.mad.Sharecipe.ui.main.profile;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -73,20 +74,27 @@ public class ProfileFragment extends Fragment {
             getActivity().startActivity(intent);
         });
 
-        logoutButton.setOnClickListener(v -> {
+        logoutButton.setOnClickListener((OnSingleClickListener) v -> {
             new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom)
                     .setTitle("Logout")
                     .setMessage("Are you sure you want to logout?").setCancelable(false)
-                    .setNegativeButton("Cancel",null)
                     .setPositiveButton("Logout", (dialog, which) -> {
-                        App.getAccountManager().logout()
-                                .onSuccess(ignore -> {
-                                    Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intent);
-                                })
-                                .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
-                                .onError(Throwable::printStackTrace);
+                        App.getAccountManager().logout().onSuccess(ignore -> {
+                            Intent intent = new Intent(getActivity(), LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                        })
+                        .onFailed(reason -> getActivity().runOnUiThread(() -> {
+                            logoutButton.setEnabled(true);
+                            Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show();
+                        }))
+                        .onFailed(reason -> getActivity().runOnUiThread(() -> {
+                            logoutButton.setEnabled(true);
+                            Toast.makeText(getContext(), "Server error.", Toast.LENGTH_SHORT).show();
+                        }));
+                    })
+                    .setNegativeButton("Cancel", (dialog, which) -> {
+                        logoutButton.setEnabled(true);
                     })
                     .show();
         });

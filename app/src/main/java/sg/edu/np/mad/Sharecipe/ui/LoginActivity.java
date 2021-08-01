@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityOptionsCompat;
+
 import com.google.android.material.textfield.TextInputLayout;
 
 import sg.edu.np.mad.Sharecipe.R;
@@ -42,9 +44,14 @@ public class LoginActivity extends DynamicFocusAppCompatActivity {
 
             App.getAccountManager().login(username.getEditText().getText().toString(), password.getEditText().getText().toString())
                     .onSuccess(result -> {
+                        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(
+                                LoginActivity.this,
+                                android.R.anim.fade_in,
+                                android.R.anim.fade_out
+                        ).toBundle();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
+                        startActivity(intent, bundle);
                     })
                     .onFailed(reason -> LoginActivity.this.runOnUiThread(() -> {
                         Toast.makeText(LoginActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show();

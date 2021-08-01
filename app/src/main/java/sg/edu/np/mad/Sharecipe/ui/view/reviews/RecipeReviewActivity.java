@@ -38,6 +38,9 @@ public class RecipeReviewActivity extends DynamicFocusAppCompatActivity {
         Intent review = getIntent();
         Recipe recipe = (Recipe) review.getSerializableExtra(IntentKeys.RECIPE_REVIEW);
         recipeReviews = recipe.getReviews();
+        if (recipeReviews == null) {
+            recipeReviews = new ArrayList<>();
+        }
 
         RecipeReview newReview = new RecipeReview();
 
