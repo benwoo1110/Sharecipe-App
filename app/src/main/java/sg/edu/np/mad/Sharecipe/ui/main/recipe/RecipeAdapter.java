@@ -9,17 +9,20 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
+
 import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
+import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.models.RecipeTag;
 import sg.edu.np.mad.Sharecipe.ui.App;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
 
-    private final List<PartialRecipe> recipeList;
+    private final List<Recipe> recipeList;
 
-    public RecipeAdapter(List<PartialRecipe> recipeList) {
+    public RecipeAdapter(List<Recipe> recipeList) {
         this.recipeList = recipeList;
     }
 
@@ -32,10 +35,26 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
-        PartialRecipe recipe = recipeList.get(position);
+        Recipe recipe = recipeList.get(position);
         holder.recipe = recipe;
         holder.title.setText(recipe.getName());
+
+        //TODO display some cool stats
         holder.info.setText(String.valueOf(recipe.getRecipeId()));
+
+        holder.tags.removeAllViews();
+        if (recipe.getTags() != null) {
+            int count = 0;
+            for (RecipeTag tag : recipe.getTags()) {
+                Chip chip = new Chip(holder.itemView.getContext());
+                chip.setText(tag.getName());
+                chip.setTextIsSelectable(true);
+                holder.tags.addView(chip);
+                if (++count > 2) {
+                    break;
+                }
+            }
+        }
 
         if (recipe.getIcon() != null) {
             holder.icon.setImageBitmap(null);
@@ -58,17 +77,17 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
         return recipeList.size();
     }
 
-    public List<PartialRecipe> getRecipeList() {
+    public List<Recipe> getRecipeList() {
         return recipeList;
     }
 
-    public void setRecipeList(List<PartialRecipe> recipeList) {
+    public void setRecipeList(List<Recipe> recipeList) {
         this.recipeList.clear();
         this.recipeList.addAll(recipeList);
         notifyDataSetChanged();
     }
 
-    public void addRecipe(PartialRecipe recipe) {
+    public void addRecipe(Recipe recipe) {
         this.recipeList.add(recipe);
         notifyItemInserted(this.recipeList.size());
     }

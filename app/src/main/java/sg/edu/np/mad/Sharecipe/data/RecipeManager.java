@@ -249,14 +249,14 @@ public class RecipeManager {
      * @param user    Target recipe to get likes of.
      * @return Future result of a list of {@link RecipeLike} containing recipe ids.
      */
-    public FutureDataResult<List<PartialRecipe>> getForUserLikes(User user) {
-        FutureDataResult<List<PartialRecipe>> future = new FutureDataResult<>();
+    public FutureDataResult<List<Recipe>> getForUserLikes(User user) {
+        FutureDataResult<List<Recipe>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getUserRecipeLikes(account.getAccessToken(), user.getUserId()).onSuccessJson(future, (response, json) -> {
-                List<PartialRecipe> recipes = new ArrayList<>();
+                List<Recipe> recipes = new ArrayList<>();
                 for (JsonElement likeData : json.getAsJsonArray()) {
-                    recipes.add(JsonUtils.convertToObject(likeData, PartialRecipe.class));
+                    recipes.add(JsonUtils.convertToObject(likeData, Recipe.class));
                 }
                 future.complete(new DataResult.Success<>(recipes));
             }).onFailed(future).onError(future);
@@ -294,14 +294,14 @@ public class RecipeManager {
      * @param userId    //TODO this probably should be the user object.
      * @return Future result with a list of recipe.
      */
-    public FutureDataResult<List<PartialRecipe>> getAllForUser(int userId) {
-        FutureDataResult<List<PartialRecipe>> future = new FutureDataResult<>();
+    public FutureDataResult<List<Recipe>> getAllForUser(int userId) {
+        FutureDataResult<List<Recipe>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getUserRecipes(account.getAccessToken(), userId).onSuccessJson(future, (response, json) -> {
-                List<PartialRecipe> recipes = new ArrayList<>();
+                List<Recipe> recipes = new ArrayList<>();
                 for (JsonElement recipeData : json.getAsJsonArray()) {
-                    recipes.add(JsonUtils.convertToObject(recipeData, PartialRecipe.class));
+                    recipes.add(JsonUtils.convertToObject(recipeData, Recipe.class));
                 }
                 future.complete(new DataResult.Success<>(recipes));
             }).onFailed(future).onError(future);
@@ -316,7 +316,7 @@ public class RecipeManager {
      * @return Future result of user data.
      */
     @NonNull
-    public FutureDataResult<List<PartialRecipe>> getAccountRecipes() {
+    public FutureDataResult<List<Recipe>> getAccountRecipes() {
         if (!accountManager.isLoggedIn()) {
             return FutureDataResult.completed(new DataResult.Failed<>("No account logged in!"));
         }

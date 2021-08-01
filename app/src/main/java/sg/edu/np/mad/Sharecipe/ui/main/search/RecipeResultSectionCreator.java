@@ -12,6 +12,7 @@ import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
+import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.common.SectionCreator;
 import sg.edu.np.mad.Sharecipe.ui.common.SectionViewHolder;
 import sg.edu.np.mad.Sharecipe.ui.main.recipe.RecipeAdapter;
@@ -19,7 +20,7 @@ import sg.edu.np.mad.Sharecipe.ui.main.recipe.RecipeAdapter;
 public class RecipeResultSectionCreator implements SectionCreator {
 
     private final String headerText;
-    private final List<PartialRecipe> recipes;
+    private final List<Recipe> recipes;
 
     public RecipeResultSectionCreator(String headerText) {
         this.headerText = headerText;
@@ -36,7 +37,7 @@ public class RecipeResultSectionCreator implements SectionCreator {
         return new RecipeResultSectionViewHolder(view);
     }
 
-    public void setRecipeList(List<PartialRecipe> recipeList) {
+    public void setRecipeList(List<Recipe> recipeList) {
         this.recipes.clear();
         this.recipes.addAll(recipeList);
     }

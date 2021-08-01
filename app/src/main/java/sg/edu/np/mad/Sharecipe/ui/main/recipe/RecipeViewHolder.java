@@ -9,10 +9,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.ChipGroup;
+
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
-import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
-import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
+import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.view.RecipeViewActivity;
 
 public class RecipeViewHolder extends RecyclerView.ViewHolder {
@@ -20,9 +21,10 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder {
     final TextView title;
     final TextView info;
     final ImageView icon;
+    final ChipGroup tags;
     final ProgressBar progressBar;
 
-    PartialRecipe recipe;
+    Recipe recipe;
 
     public RecipeViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -30,6 +32,7 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder {
         title = itemView.findViewById(R.id.recipeTitle);
         info = itemView.findViewById(R.id.recipeSecondaryInfo);
         icon = itemView.findViewById(R.id.recipeIconImage);
+        tags = itemView.findViewById(R.id.recipeTopTags);
         progressBar = itemView.findViewById(R.id.imageLoadProgress);
 
         itemView.setOnClickListener(v -> {
