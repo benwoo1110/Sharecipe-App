@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -37,12 +38,10 @@ public class RecipeReviewActivity extends DynamicFocusAppCompatActivity {
 
         Intent review = getIntent();
         Recipe recipe = (Recipe) review.getSerializableExtra(IntentKeys.RECIPE_REVIEW);
-        recipeReviews = recipe.getReviews();
-        if (recipeReviews == null) {
-            recipeReviews = new ArrayList<>();
-        }
 
         RecipeReview newReview = new RecipeReview();
+
+        recipeReviews = recipe.getReviews();
 
         TextView labelReview = findViewById(R.id.labelReview);
         RatingBar inputRating = findViewById(R.id.inputRating);
@@ -50,11 +49,19 @@ public class RecipeReviewActivity extends DynamicFocusAppCompatActivity {
         TextView reviewsNumber = findViewById(R.id.reviewsNumber);
         Button submitReview = findViewById(R.id.sendReview);
         RecyclerView recyclerView = findViewById(R.id.recyclerview_reviews);
+        TextView noReviews = findViewById(R.id.displayNoReviews);
 
         RecipeReviewAdapter adapter = new RecipeReviewAdapter(recipeReviews);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(cLayoutManager);
+
+
+        if (recipeReviews == null) {
+            recipeReviews = new ArrayList<>();
+            recyclerView.setVisibility(View.GONE);
+            noReviews.setVisibility(View.VISIBLE);
+        }
 
         labelReview.setText("Rate " + recipe.getName());
         inputRating.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> newReview.setRating(Math.round(inputRating.getRating())));
@@ -77,23 +84,25 @@ public class RecipeReviewActivity extends DynamicFocusAppCompatActivity {
             else {
                 App.getUserManager().getAccountUser().onSuccess(user -> newReview.setUser(user));
                 App.getUserManager().getAccountUser().onSuccess(user -> newReview.setUsername(user.getUsername()));
-                checkSubmit(newReview, recipe);
+                checkSubmit(newReview);
             }
         });
 
     }
 
-    private void checkSubmit(RecipeReview newReview, Recipe recipe) {
+    private void checkSubmit(RecipeReview newReview) {
         new AlertDialog.Builder(this, R.style.AlertDialogCustom)
                 .setTitle("Submit review")
                 .setMessage("Are you sure you want to submit this review?")
-                .setPositiveButton("Yes", ((dialog, which) -> saveReview(newReview, recipe)))
+                .setPositiveButton("Yes", ((dialog, which) -> saveReview(newReview)))
                 .setNegativeButton("Cancel", ((dialog, which) -> finish()))
                 .show();
     }
 
-    private void saveReview(RecipeReview review, Recipe recipe) {
-        recipe.getReviews().add(review);
+    private void saveReview(RecipeReview review) {
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra(IntentKeys.RECIPE_REVIEW_SAVE, review);
+        setResult(Activity.RESULT_OK, returnIntent);
         finish();
     }
 }

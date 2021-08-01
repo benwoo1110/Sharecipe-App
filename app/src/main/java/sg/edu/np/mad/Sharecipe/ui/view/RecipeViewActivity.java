@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.List;
+
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
@@ -32,6 +34,7 @@ public class RecipeViewActivity extends AppCompatActivity {
     private Recipe recipe;
     private BottomNavigationView bottomNavigation;
     private RecipeViewAdapter adapter;
+    private List<RecipeReview> reviews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +86,7 @@ public class RecipeViewActivity extends AppCompatActivity {
                 App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
                     Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
                     review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
-                    startActivity(review);
+                    startActivityForResult(review, LAUNCH_REVIEW_CREATION);
                 }).onFailed(System.out::println).onError(Throwable::printStackTrace);
             } else if (itemId == R.id.recipe_edit_menu) {
                 Intent editRecipe = new Intent(RecipeViewActivity.this, RecipeCreateActivity.class);
@@ -153,5 +156,27 @@ public class RecipeViewActivity extends AppCompatActivity {
             likeItem.setTitle("Like");
         }
         likeItem.setEnabled(true);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode != LAUNCH_REVIEW_CREATION) {
+            return;
+        }
+
+        if (resultCode == Activity.RESULT_OK) {
+            RecipeReview newReview = (RecipeReview) data.getSerializableExtra(IntentKeys.RECIPE_REVIEW_SAVE);
+            if (recipe.getReviews() == null) {
+                reviews.add(newReview);
+                recipe.setReviews(reviews);
+                adapter.notifyDataSetChanged();
+            }
+            else {
+                recipe.getReviews().add(newReview);
+                adapter.notifyDataSetChanged();
+            }
+        }
     }
 }
