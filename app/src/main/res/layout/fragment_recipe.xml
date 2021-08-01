@@ -10,16 +10,18 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/recipeToolbar"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
+        android:gravity="center_vertical"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
+        app:buttonGravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="Recipe"
-        app:titleTextColor="?attr/colorOnBackground"
-        app:titleTextAppearance="@style/Widget.AppCompat.Toolbar."/>
+        app:titleTextAppearance="@style/Widget.AppCompat.Toolbar."
+        app:titleTextColor="?attr/colorOnBackground" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_create_recipe"
