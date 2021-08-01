@@ -1,4 +1,5 @@
-# *Sharecipe*
+![Banner](assets/banner.png)
+
 ## Team members:
 1. Benedict Woo Jun Kai S10203296
 2. Melvin Kee Jie En S10205301
@@ -24,7 +25,7 @@ Sharecipe features:
 ## Images
 * Profile 
 
-  ![Profile](https://user-images.githubusercontent.com/82822824/127748162-7badcea4-6112-40e7-8bcf-61494fc6ced9.png)
+  ![Profile](assets/profile.png)
 * Home
 
-  ![Home](https://user-images.githubusercontent.com/82822824/127760321-50308c4d-c838-4b13-aeb6-7ff6a15c4f60.png)
+  ![Home](assets/home.png)
