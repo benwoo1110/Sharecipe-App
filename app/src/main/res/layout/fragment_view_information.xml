@@ -189,7 +189,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/recipeDataCard" />
 
-        <TextView
+        <com.google.android.material.chip.ChipGroup
             android:id="@+id/view_recipeTags"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -197,7 +197,6 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="32dp"
-            android:text="TextView"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
