@@ -13,8 +13,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
+
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.models.RecipeTag;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
@@ -42,6 +46,7 @@ public class ViewInformationFragment extends Fragment {
         TextView displayDesc = view.findViewById(R.id.displayDescription);
         ImageView enlargedImage = view.findViewById(R.id.view_enlargedimage);
         RecyclerView recyclerView = view.findViewById(R.id.viewImages_recyclerView);
+        ChipGroup tags = view.findViewById(R.id.view_recipeTags);
 
         ViewImagesAdapter adapter = new ViewImagesAdapter(getActivity(), enlargedImage, view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
@@ -50,15 +55,16 @@ public class ViewInformationFragment extends Fragment {
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setLayoutAnimation(controller);
 
-        App.getRecipeManager().getImages(recipe).onSuccess(bitmaps -> {
-            getActivity().runOnUiThread(() -> {
-                adapter.setBitmapList(bitmaps);
-                recyclerView.scheduleLayoutAnimation();
-            });
-        }).onFailed(System.out::println).onError(Throwable::printStackTrace);
-
         // Set name of recipe
         displayName.setText(recipe.getName());
+
+        // Load author username
+        App.getUserManager().get(recipe.getUserId()).onSuccess(user -> {
+            getActivity().runOnUiThread(() -> displayAuthor.setText("By " + user.getUsername()));
+        });
+
+        // Set description
+        displayDesc.setText(recipe.getDescription());
 
         // Set number of portions, display not specified if it is not set
         displayPortion.setText(recipe.getPortion() > 0 ? "Serves " + recipe.getPortion() : "nil");
@@ -68,13 +74,26 @@ public class ViewInformationFragment extends Fragment {
                 ? "nil"
                 : FormatUtils.parseDurationLong(recipe.getTotalTimeNeeded()));
 
-        displayDesc.setText(recipe.getDescription());
-
+        // Set difficult level
         displayDifficulty.setText(recipe.getDifficulty() > 0 ? "Difficulty: " + String.valueOf(recipe.getDifficulty()) + "/5" : "nil");
 
-        App.getUserManager().get(recipe.getUserId()).onSuccess(user -> {
-            getActivity().runOnUiThread(() -> displayAuthor.setText("By " + user.getUsername()));
-        });
+        // Load images
+        App.getRecipeManager().getImages(recipe).onSuccess(bitmaps -> {
+            getActivity().runOnUiThread(() -> {
+                adapter.setBitmapList(bitmaps);
+                recyclerView.scheduleLayoutAnimation();
+            });
+        }).onFailed(System.out::println).onError(Throwable::printStackTrace);
+
+        // Set chip tags
+        if (recipe.getTags() != null) {
+            for (RecipeTag tag : recipe.getTags()) {
+                Chip chip = new Chip(getContext());
+                chip.setText(tag.getName());
+                chip.setTextIsSelectable(true);
+                tags.addView(chip);
+            }
+        }
 
         return view;
     }
