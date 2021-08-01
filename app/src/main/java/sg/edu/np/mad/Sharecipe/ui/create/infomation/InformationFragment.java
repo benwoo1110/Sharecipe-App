@@ -2,6 +2,7 @@ package sg.edu.np.mad.Sharecipe.ui.create.infomation;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -154,6 +155,7 @@ public class InformationFragment extends Fragment {
 
         prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
         prep.setOnTouchListener((v, event) -> {
+            prep.setEnabled(false);
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 addDurationDialog();
             }
@@ -197,13 +199,15 @@ public class InformationFragment extends Fragment {
         new AlertDialog.Builder(getActivity(), R.style.AlertDialogCustom)
                 .setView(view)
                 .setTitle("Preparation time")
+                .setCancelable(false)
                 .setPositiveButton("Confirm", (dialog, which) -> {
                     // On confirm the total time in seconds is added and this is set to recipe total time needed, then the hour and
                     Duration newTotalTimeNeeded = Duration.ofHours(inputHours.getValue()).plusMinutes(inputMinutes.getValue());
                     recipe.setTotalTimeNeeded(newTotalTimeNeeded);
                     prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
+                    prep.setEnabled(true);
                 })
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton("Cancel", (dialog, which) -> prep.setEnabled(true))
                 .show();
     }
 
