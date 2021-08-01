@@ -796,6 +796,47 @@ public class SharecipeRequests {
     }
 
     /**
+     * GET `/recipes/recipe_id/reviews` endpoint.
+     *
+     * @param accessToken
+     * @return
+     */
+    public static FutureWebResponse getRecipeReviews(@NonNull String accessToken,
+                                                     int recipeId) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.RECIPES)
+                        .addPathSegment(String.valueOf(recipeId))
+                        .addPathSegment(UrlPath.REVIEWS)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
+
+    /**
+     * PUT `/recipes/recipe_id/reviews` endpoint.
+     *
+     * @param accessToken
+     * @return
+     */
+    public static FutureWebResponse putRecipeReviews(@NonNull String accessToken,
+                                                     int recipeId,
+                                                     JsonElement reviewData) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.RECIPES)
+                        .addPathSegment(String.valueOf(recipeId))
+                        .addPathSegment(UrlPath.REVIEWS)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .put(RequestBody.create(reviewData.toString(), JSON_TYPE))
+                .build());
+    }
+
+    /**
      * GET `/recipes/tagsuggestions` endpoint.
      *
      * @param accessToken

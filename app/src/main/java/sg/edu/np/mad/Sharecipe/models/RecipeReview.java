@@ -1,7 +1,5 @@
 package sg.edu.np.mad.Sharecipe.models;
 
-import android.graphics.Bitmap;
-
 import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;
@@ -9,16 +7,21 @@ import java.io.Serializable;
 public class RecipeReview implements Serializable {
 
     @Expose
-    private String comment;
-
+    private int recipeId;
+    @Expose
+    private int userId;
     @Expose
     private int rating;
-
     @Expose
-    private String username;
+    private String comment;
 
-    @Expose
-    private User user;
+    public int getRecipeId() {
+        return recipeId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
 
     public String getComment() {
         return comment;
@@ -34,21 +37,5 @@ public class RecipeReview implements Serializable {
 
     public void setRating(int rating) {
         this.rating = rating;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 }
