@@ -80,7 +80,7 @@ public class ViewInformationFragment extends Fragment {
         // Load images
         App.getRecipeManager().getImages(recipe).onSuccess(bitmaps -> {
             getActivity().runOnUiThread(() -> {
-                adapter.setBitmapList(bitmaps);
+                adapter.setImageList(bitmaps);
                 recyclerView.scheduleLayoutAnimation();
             });
         }).onFailed(System.out::println).onError(Throwable::printStackTrace);

@@ -49,17 +49,18 @@ public class InformationFragment extends Fragment {
 
     private ImagesAdapter adapter;
 
-    private final ArrayList<Bitmap> imageList = new ArrayList<>();
     private final Recipe recipe;
-    private final List<File> imageFileList;
+    private final List<Uri> newImagesUris;
+    private final List<String> deletedImageIds;
 
     private TextInputEditText prep;
     private AppCompatMultiAutoCompleteTextView tags;
     private TagNamesAdapter tagAdapter;
 
-    public InformationFragment(Recipe recipe, List<File> imageFileList) {
+    public InformationFragment(Recipe recipe, List<Uri> newImagesUris, List<String> deletedImageIds) {
         this.recipe = recipe;
-        this.imageFileList = imageFileList;
+        this.newImagesUris = newImagesUris;
+        this.deletedImageIds = deletedImageIds;
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -107,17 +108,6 @@ public class InformationFragment extends Fragment {
             description.setText(recipe.getDescription());
         }
 
-        if (recipe.getImages() != null) {
-            App.getRecipeManager().getImages(recipe).onSuccess(bitmaps -> {
-                getActivity().runOnUiThread(() -> {
-                    for (Bitmap image : bitmaps) {
-                        imageList.add(image);
-                        adapter.notifyDataSetChanged();
-                    }
-                });
-            });
-        }
-
         MultiAutoCompleteTextView.Tokenizer tokenizer = new MultiAutoCompleteTextView.CommaTokenizer();
         tags.setTokenizer(tokenizer);
         tags.setThreshold(1);
@@ -147,11 +137,20 @@ public class InformationFragment extends Fragment {
             recipe.setTags(selectedTags);
         });
 
-        adapter = new ImagesAdapter(getActivity(), imageList, imageFileList, enlargedImage, view);
+        adapter = new ImagesAdapter(getActivity(), newImagesUris, deletedImageIds, enlargedImage, view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
 
         images.setAdapter(adapter);
         images.setLayoutManager(gridLayoutManager);
+
+        App.getRecipeManager().getImages(recipe).onSuccess(bitmapMap -> {
+            for (String imageId : bitmapMap.keySet()) {
+                adapter.addImage(new BitmapOrUri(imageId, bitmapMap.get(imageId)));
+            }
+            getActivity().runOnUiThread(() -> {
+                adapter.notifyDataSetChanged();
+            });
+        });
 
         prep.setText(FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
         prep.setOnTouchListener((v, event) -> {
@@ -230,9 +229,7 @@ public class InformationFragment extends Fragment {
 
         if (resultCode == Activity.RESULT_OK && data != null) {
             Uri uri = data.getData();
-            Bitmap image = BitmapFactory.decodeFile(uri.getPath());
-            imageList.add(image);
-            imageFileList.add(new File(uri.getPath()));
+            adapter.addImage(new BitmapOrUri(uri));
             adapter.notifyDataSetChanged();
         } else if (resultCode == ImagePicker.RESULT_ERROR) {
             Toast.makeText(getActivity(), ImagePicker.getError(data), Toast.LENGTH_SHORT).show();

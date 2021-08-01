@@ -20,8 +20,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.ui.create.infomation.BitmapOrUri;
 import sg.edu.np.mad.Sharecipe.ui.create.infomation.ImagesViewHolder;
 
 public class ViewImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
@@ -32,14 +34,14 @@ public class ViewImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
     private final ImageView enlarge;
     private final View view;
 
-    List<Bitmap> bitmapList;
+    List<BitmapOrUri> imageList;
 
     public ViewImagesAdapter(Activity activity, ImageView enlargedImage, View view) {
         this.activity = activity;
         this.shortAnimationDuration = activity.getResources().getInteger(android.R.integer.config_shortAnimTime);
         this.enlarge = enlargedImage;
         this.view = view;
-        bitmapList = new ArrayList<>();
+        imageList = new ArrayList<>();
     }
 
     @Override
@@ -48,38 +50,39 @@ public class ViewImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_holder_recipe_images, parent, false);
         ImagesViewHolder holder = new ImagesViewHolder(item);
         holder.image.setOnClickListener(v -> {
-            displayLargeImage(holder.image, holder.imgBitmap);
+            displayLargeImage(holder.image, holder.imageFile);
         });
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NotNull ImagesViewHolder holder, int position) {
-        holder.image.setImageBitmap(bitmapList.get(position));
-        Bitmap image = bitmapList.get(position);
-        holder.image.setImageBitmap(image);
-        holder.imgBitmap = bitmapList.get(position);
+        BitmapOrUri imageFile = imageList.get(position);
+        imageFile.setImageView(holder.image);
+        holder.imageFile = imageList.get(position);
     }
 
     @Override
     public int getItemCount() {
-        return bitmapList.size();
+        return imageList.size();
     }
 
-    public void setBitmapList(List<Bitmap> bitmapList) {
-        this.bitmapList.clear();
-        this.bitmapList.addAll(bitmapList);
+    public void setImageList(Map<String, Bitmap> bitmapMap) {
+        this.imageList.clear();
+        for (String imageId : bitmapMap.keySet()) {
+            this.imageList.add(new BitmapOrUri(imageId, bitmapMap.get(imageId)));
+        }
         this.notifyDataSetChanged();
     }
 
-    private void displayLargeImage(final ImageView thumbView, Bitmap imgBitmap) {
+    private void displayLargeImage(final ImageView thumbView, BitmapOrUri imageFile) {
         // If there's an animation in progress, cancel it
         // immediately and proceed with this one.
         if (currentAnimator != null) {
             currentAnimator.cancel();
         }
         final ImageView expandedImageView = enlarge;
-        expandedImageView.setImageBitmap(imgBitmap);
+        imageFile.setImageView(expandedImageView);
 
         final Rect startBounds = new Rect();
         final Rect finalBounds = new Rect();

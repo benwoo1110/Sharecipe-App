@@ -6,7 +6,6 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -22,7 +21,6 @@ import com.github.dhaval2404.imagepicker.ImagePicker;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,18 +34,27 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
     private Animator currentAnimator;
 
     private final Activity activity;
-    private final ArrayList<Bitmap> images;
-    private final List<File> imageFileList;
+    private final List<Uri> newImagesUris;
+    private final List<String> deletedImageIds;
     private final ImageView enlarge;
     private final View view;
 
-    public ImagesAdapter(Activity activity, ArrayList<Bitmap> input, List<File> imageFileList, ImageView enlargedImage, View view) {
+    private final List<BitmapOrUri> imageList;
+
+    public ImagesAdapter(Activity activity,
+                         List<Uri> newImagesUris,
+                         List<String> deletedImageIds,
+                         ImageView enlargedImage,
+                         View view) {
+
         this.activity = activity;
-        this.images = input;
-        this.imageFileList = imageFileList;
+        this.newImagesUris = newImagesUris;
+        this.deletedImageIds = deletedImageIds;
         this.enlarge = enlargedImage;
         this.view = view;
+
         this.shortAnimationDuration = activity.getResources().getInteger(android.R.integer.config_shortAnimTime);
+        this.imageList = new ArrayList<>();
     }
 
     @Override
@@ -66,11 +73,11 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         }
 
         holder.image.setOnClickListener(v -> {
-            displayLargeImage(holder.image, holder.imgBitmap);
+            displayLargeImage(holder.image, holder.imageFile);
         });
 
         holder.image.setOnLongClickListener(v -> {
-            AlertDialog(holder.imgBitmap);
+            deleteAlertDialog(holder.imageFile);
             return false;
         });
 
@@ -82,15 +89,14 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         if (position == 0) {
             return;
         }
-
-        Bitmap image = images.get(position - 1);
-        holder.image.setImageBitmap(image);
-        holder.imgBitmap = images.get(position - 1);
+        BitmapOrUri imageFile = imageList.get(position - 1);
+        imageFile.setImageView(holder.image);
+        holder.imageFile = imageFile;
     }
 
     @Override
     public int getItemCount() {
-        return images.size() + 1; // +1 because of the add button that remains
+        return imageList.size() + 1; // +1 because of the add button that remains
     }
 
     @Override
@@ -98,14 +104,42 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         return position == 0 ? 0 : 1; // if position == 0, set position = 0 else position = 1
     }
 
-    private void displayLargeImage(final ImageView thumbView, Bitmap imgBitmap) {
+    public void addImage(BitmapOrUri imageFile) {
+        if (imageFile.getType() == BitmapOrUri.Type.URI) {
+            newImagesUris.add(imageFile.getUri());
+        }
+        imageList.add(imageFile);
+    }
+
+    private void deleteAlertDialog(BitmapOrUri imageFile) {
+        View view = LayoutInflater.from(activity).inflate(R.layout.dialog_image, null);
+        ImageView targetImage = view.findViewById(R.id.alertImage);
+        imageFile.setImageView(targetImage);
+
+        new AlertDialog.Builder(activity, R.style.AlertDialogCustom)
+                .setView(view)
+                .setTitle("Remove image")
+                .setMessage("Would you like to remove this image?")
+                .setPositiveButton("Remove", (dialog, which) -> {
+                    if (imageFile.getType() == BitmapOrUri.Type.BITMAP) {
+                        deletedImageIds.add(imageFile.getFileId());
+                    }
+                    imageList.remove(imageFile);
+                    notifyDataSetChanged();
+
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void displayLargeImage(final ImageView thumbView, BitmapOrUri imageFile) {
         // If there's an animation in progress, cancel it
         // immediately and proceed with this one.
         if (currentAnimator != null) {
             currentAnimator.cancel();
         }
         final ImageView expandedImageView = enlarge;
-        expandedImageView.setImageBitmap(imgBitmap);
+        imageFile.setImageView(expandedImageView);
 
         final Rect startBounds = new Rect();
         final Rect finalBounds = new Rect();
@@ -206,25 +240,5 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
                 currentAnimator = set;
             }
         });
-    }
-
-    private void AlertDialog(Bitmap image) {
-        View view = LayoutInflater.from(activity).inflate(R.layout.dialog_image, null);
-        ImageView targetImage = view.findViewById(R.id.alertImage);
-        targetImage.setImageBitmap(image);
-
-        new AlertDialog.Builder(activity, R.style.AlertDialogCustom)
-                .setView(view)
-                .setTitle("Remove image")
-                .setMessage("Would you like to remove this image?")
-                .setPositiveButton("Remove", (dialog, which) -> {
-                    int i = images.indexOf(image);
-                    images.remove(i);
-                    imageFileList.remove(i);
-                    notifyDataSetChanged();
-
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
     }
 }

@@ -15,7 +15,7 @@ import sg.edu.np.mad.Sharecipe.R;
 public class ImagesViewHolder extends RecyclerView.ViewHolder {
 
     public final ImageView image;
-    public Bitmap imgBitmap;
+    public BitmapOrUri imageFile;
 
     public ImagesViewHolder(View itemView){
         super(itemView);

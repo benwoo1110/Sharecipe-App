@@ -14,13 +14,16 @@ import com.google.gson.JsonElement;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import okhttp3.ResponseBody;
 import sg.edu.np.mad.Sharecipe.models.BooleanState;
+import sg.edu.np.mad.Sharecipe.models.ImageGroup;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.ImageRef;
@@ -124,6 +127,23 @@ public class RecipeManager {
         return future;
     }
 
+    public FutureDataResult<Void> removeImages(PartialRecipe recipe, ImageGroup deleteImageGroup) {
+        if (deleteImageGroup == null || deleteImageGroup.getImageIds().isEmpty()) {
+            return FutureDataResult.completed(new DataResult.Failed<>("No recipe images to upload"));
+        }
+
+        FutureDataResult<Void> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            JsonElement imageData = JsonUtils.convertToJson(deleteImageGroup);
+            SharecipeRequests.deleteRecipeImages(account.getAccessToken(), recipe.getRecipeId(), imageData).onSuccess(response -> {
+                future.complete(new DataResult.Success<>(null));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
     /**
      * Gets a recipe data.
      *
@@ -193,12 +213,12 @@ public class RecipeManager {
      * @param recipe    Target recipe to get image of.
      * @return Future result of a list of image.
      */
-    public FutureDataResult<List<Bitmap>> getImages(Recipe recipe) {
+    public FutureDataResult<Map<String, Bitmap>> getImages(Recipe recipe) {
 
         List<ImageRef> recipeImages = recipe.getImages();
-        List<Bitmap> bitmapList = new ArrayList<>();
+        Map<String, Bitmap> bitmapMap = new LinkedHashMap<>();
         if (recipeImages == null || recipeImages.isEmpty()) {
-            return FutureDataResult.completed(bitmapList);
+            return FutureDataResult.completed(bitmapMap);
         }
 
         List<String> needToGetFromWeb = new ArrayList<>();
@@ -207,15 +227,15 @@ public class RecipeManager {
             if (cachedImage == null) {
                 needToGetFromWeb.add(recipeImage.getFileId());
             } else {
-                bitmapList.add(cachedImage);
+                bitmapMap.put(recipeImage.getFileId(), cachedImage);
             }
         }
 
         if (needToGetFromWeb.isEmpty()) {
-            return FutureDataResult.completed(bitmapList);
+            return FutureDataResult.completed(bitmapMap);
         }
 
-        FutureDataResult<List<Bitmap>> future = new FutureDataResult<>();
+        FutureDataResult<Map<String, Bitmap>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getRecipeImages(account.getAccessToken(), recipe.getRecipeId(), needToGetFromWeb).onSuccess(response -> {
@@ -224,20 +244,19 @@ public class RecipeManager {
                     future.complete(new DataResult.Failed<>("No images data."));
                     return;
                 }
-                List<Bitmap> images = new ArrayList<>();
                 try (ZipInputStream imageZipStream = new ZipInputStream(body.byteStream())) {
                     ZipEntry entry;
                     while ((entry = imageZipStream.getNextEntry()) != null) {
                         Bitmap bitmap = BitmapFactory.decodeStream(imageZipStream);
                         if (bitmap != null) {
-                            images.add(bitmap);
                             bitmapCacheManager.addBitmapToMemoryCache(entry.getName(), bitmap);
+                            bitmapMap.put(entry.getName(), bitmap);
                         }
                     }
                 } catch (IOException e) {
                     future.complete(new DataResult.Error<>(e));
                 }
-                future.complete(new DataResult.Success<>(images));
+                future.complete(new DataResult.Success<>(bitmapMap));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
 

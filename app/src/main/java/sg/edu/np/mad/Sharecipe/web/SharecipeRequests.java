@@ -3,6 +3,7 @@ package sg.edu.np.mad.Sharecipe.web;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 import org.jetbrains.annotations.NotNull;
@@ -671,6 +672,30 @@ public class SharecipeRequests {
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
                 .put(requestBodyBuilder.build())
+                .build());
+    }
+
+    /**
+     * DELETE `/recipes/recipe_id/images` endpoint.
+     *
+     * @param accessToken
+     * @param recipeId
+     * @return
+     */
+    public static FutureWebResponse deleteRecipeImages(@NonNull String accessToken,
+                                                       int recipeId,
+                                                       JsonElement imageData) {
+
+        System.out.println(imageData.toString());
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.RECIPES)
+                        .addPathSegment(String.valueOf(recipeId))
+                        .addPathSegment(UrlPath.IMAGES)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .delete(RequestBody.create(imageData.toString(), JSON_TYPE))
                 .build());
     }
 

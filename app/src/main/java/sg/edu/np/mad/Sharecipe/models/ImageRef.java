@@ -10,6 +10,10 @@ public class ImageRef implements Serializable {
     @Expose
     private String fileId;
 
+    public ImageRef(String fileId) {
+        this.fileId = fileId;
+    }
+
     private ImageRef() { }
 
     public String getFileId() {
