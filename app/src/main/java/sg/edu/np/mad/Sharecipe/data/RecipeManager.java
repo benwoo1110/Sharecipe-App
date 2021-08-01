@@ -323,6 +323,20 @@ public class RecipeManager {
         return getAllForUser(accountManager.getAccount().getUserId());
     }
 
+    @NonNull
+    public FutureDataResult<Void> accountDeleteRecipe(Recipe recipe) {
+        FutureDataResult<Void> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+           SharecipeRequests.deleteRecipe(account.getAccessToken(), recipe.getRecipeId()).onSuccess(response -> {
+               invalidateRecipe(recipe);
+               future.complete(new DataResult.Success<>(null));
+           }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
     /**
      * When account user likes recipe.
      *

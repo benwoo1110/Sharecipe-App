@@ -81,27 +81,18 @@ public class RecipeViewActivity extends AppCompatActivity {
             int itemId = item.getItemId();
             if (itemId == R.id.recipe_review_menu) {
                 App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
-                    runOnUiThread(() -> {
-                        System.out.println("TESINGGGGGGGGGG");
-                        Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
-                        review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
-                        startActivity(review);
-                    });
+                    Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
+                    review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
+                    startActivity(review);
                 }).onFailed(System.out::println).onError(Throwable::printStackTrace);
-                return false;
             } else if (itemId == R.id.recipe_edit_menu) {
-                App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
-                    runOnUiThread(() -> {
-                        Intent editRecipe = new Intent(RecipeViewActivity.this, RecipeCreateActivity.class);
-                        editRecipe.putExtra(IntentKeys.RECIPE_EDIT, recipe);
-                        editRecipe.putExtra(IntentKeys.CHECK_RECIPE_EDIT, true);
-                        startActivity(editRecipe);
-                    });
-                });
-                return false;
+                Intent editRecipe = new Intent(RecipeViewActivity.this, RecipeCreateActivity.class);
+                editRecipe.putExtra(IntentKeys.RECIPE_EDIT, recipe);
+                editRecipe.putExtra(IntentKeys.CHECK_RECIPE_EDIT, true);
+                startActivity(editRecipe);
             } else if (itemId == R.id.recipe_delete_menu) {
-                App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe1 -> {
-                   // TODO: Delete recipe here
+                App.getRecipeManager().accountDeleteRecipe(recipe).onSuccess(aVoid -> {
+                    runOnUiThread(this::finish);
                 });
             } else if (itemId == R.id.recipe_like_menu) {
                 item.setEnabled(false);
@@ -146,9 +137,11 @@ public class RecipeViewActivity extends AppCompatActivity {
             });
 
         }).onFailed(failed -> {
-            Toast.makeText(RecipeViewActivity.this, "Failed to load recipe.", Toast.LENGTH_SHORT).show();
-            finish();
-        });
+            runOnUiThread(() -> {
+                Toast.makeText(RecipeViewActivity.this, "Failed to load recipe.", Toast.LENGTH_SHORT).show();
+                finish();
+            });
+        }).onError(Throwable::printStackTrace);
     }
 
     private void updateLikeItem(MenuItem likeItem) {
