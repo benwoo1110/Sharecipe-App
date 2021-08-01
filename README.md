@@ -27,18 +27,22 @@ Sharecipe features:
 
   This is the profile page where the user will be able to see their infomation and change their profile settings.
 
-  ![Profile](assets/profile.png)
+  ![Profile](assets/Profile_page.png)
 * Home:
 
   This is the home page where they will be able to discover recipes that other people posted
   
-  ![Home](assets/home.png)
+  ![Home](assets/home_page.png)
 * My recipe:
 
   This is the page where users will be able to view their own recipes
   
-  ![image](assets/Myrecipe.jpg)
+  ![image](assets/MyRecipe.png)
+* Search:
 
+  This is the search page where users will be able to search for other users and recipes
+  
+  ![image](assets/Search.png)
   
 ## User guide
 * Register or login upon entering the app for the first time.
@@ -46,5 +50,5 @@ Sharecipe features:
 * Press on the bottom right + button to start creating your own recipe
 * Add in the information required and then set to public if you want to share it with other people
 * View own recipes and liked recipes in the my recipe page with the top right heart button to view liked recipes
-* Search for other users and recipes in the search page
+* Search for other users and recipes in the search page with the search bar
 * Account settings is in the profile page with the buttons at the bottom
