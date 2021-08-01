@@ -17,7 +17,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:fontFamily="@font/quicksand_regular"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout6"
@@ -30,14 +31,15 @@
         app:layout_constraintEnd_toStartOf="@+id/textInputLayout7"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/createdIngredientNumber"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputIngredientName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textMultiLine"
-            android:singleLine="true" />
+            android:singleLine="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -48,14 +50,15 @@
         android:layout_marginTop="18dp"
         android:layout_marginEnd="10dp"
         app:layout_constraintEnd_toStartOf="@+id/textInputLayout8"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputIngredientQuantity"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="number"
-            android:singleLine="true" />
+            android:singleLine="false"
+            android:digits="0123456789./"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -66,14 +69,15 @@
         android:layout_marginTop="18dp"
         android:layout_marginEnd="34dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputIngredientUnit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:inputType="textMultiLine"
-            android:singleLine="true" />
+            android:singleLine="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
