@@ -27,12 +27,12 @@ Sharecipe features:
 
   This is the profile page where the user will be able to see their infomation and change their profile settings.
 
-  ![Profile](assets/Profile page.png)
+  ![Profile](assets/Profile_page.png)
 * Home:
 
   This is the home page where they will be able to discover recipes that other people posted
   
-  ![Home](assets/home page.png)
+  ![Home](assets/home_page.png)
 * My recipe:
 
   This is the page where users will be able to view their own recipes
