@@ -68,7 +68,7 @@ public class DiscoverFragment extends Fragment {
         discoverRecyclerView.setVisibility(View.GONE);
         shimmerFrameLayout.startShimmer();
         App.getSearchManager().discover().onSuccess(discover -> {
-            adapter.clear();
+            adapter = new SectionAdapter();
             for (DiscoverSection section : discover.getSections()) {
                 switch (section.getSizeType()) {
                     case LARGE:
@@ -83,7 +83,7 @@ public class DiscoverFragment extends Fragment {
                 discoverRecyclerView.setVisibility(View.VISIBLE);
                 shimmerFrameLayout.stopShimmer();
                 shimmerFrameLayout.setVisibility(View.GONE);
-                adapter.notifyDataSetChanged();
+                discoverRecyclerView.setAdapter(adapter);
                 discoverRecyclerView.scheduleLayoutAnimation();
                 discoverRefresh.setRefreshing(false);
             });
