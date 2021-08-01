@@ -8,6 +8,11 @@
         android:title="Review"
         app:labelVisibilityMode="labeled" />
     <item
+        android:id="@+id/recipe_like_menu"
+        android:icon="@drawable/outline_favorite_border_24"
+        android:title="Like"
+        app:labelVisibilityMode="labeled" />
+    <item
         android:id="@+id/recipe_edit_menu"
         android:icon="@drawable/outline_edit_24"
         android:title="Edit"
@@ -20,13 +25,8 @@
         app:labelVisibilityMode="labeled"/>
 
     <item
-        android:id="@+id/recipe_like_menu"
-        android:icon="@drawable/outline_favorite_border_24"
-        android:title="Like"
-        app:labelVisibilityMode="labeled"/>
-    <item
         android:id="@+id/invisibleView"
-        android:visible="false"
         android:icon="@drawable/ic_baseline_person_24"
-        android:title="invisible" />
+        android:title="invisible"
+        android:visible="false" />
 </menu>
