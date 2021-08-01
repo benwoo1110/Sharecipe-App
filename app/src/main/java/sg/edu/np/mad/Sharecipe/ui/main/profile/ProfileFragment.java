@@ -74,7 +74,7 @@ public class ProfileFragment extends Fragment {
             getActivity().startActivity(intent);
         });
 
-        logoutButton.setOnClickListener(v -> {
+        logoutButton.setOnClickListener((OnSingleClickListener) v -> {
             new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom)
                     .setTitle("Logout")
                     .setMessage("Are you sure you want to logout?").setCancelable(false)
