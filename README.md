@@ -33,3 +33,14 @@ Sharecipe features:
   This is the home page where they will be able to discover recipes that other people posted
   
   ![Home](assets/home.png)
+* My recipe:
+
+  This is the page where users will be able to view their own recipes
+  
+  ![image](https://user-images.githubusercontent.com/82822824/127776352-796e1de9-678d-4a15-8652-47b14cf8c0b1.png)
+
+  
+## User guide
+* Register or login upon entering the app for the first time.
+* Press on the bottom right + button to start creating your own recipe
+* Add in the information required and then set to public if you want to share it with other people
