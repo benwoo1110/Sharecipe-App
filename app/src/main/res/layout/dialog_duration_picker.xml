@@ -2,15 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <NumberPicker
         android:id="@+id/inputMinutes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="124dp"
+        android:layout_marginEnd="42dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7"></NumberPicker>
 
@@ -18,9 +20,11 @@
         android:id="@+id/inputHours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="128dp"
+        android:layout_marginStart="42dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="50dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/inputMinutes"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"></NumberPicker>
@@ -29,14 +33,12 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="126dp"
         android:layout_marginTop="48dp"
-        android:layout_marginEnd="48dp"
         android:fontFamily="@font/quicksand_regular"
         android:text="Hours"
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/textView7"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/inputHours"
+        app:layout_constraintStart_toStartOf="@+id/inputHours"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -44,11 +46,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
-        android:layout_marginEnd="124dp"
         android:fontFamily="@font/quicksand_regular"
         android:text="Minutes"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/inputMinutes"
+        app:layout_constraintStart_toStartOf="@+id/inputMinutes"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
