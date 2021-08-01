@@ -75,27 +75,28 @@ public class RecipeViewActivity extends AppCompatActivity {
         bottomNavigation.setOnItemSelectedListener(item -> {
             if (ignoreSelect) {
                 ignoreSelect = false;
-                System.out.println("IGNORE");
                 return true;
             }
 
             int itemId = item.getItemId();
             if (itemId == R.id.recipe_review_menu) {
-                Log.v("This", "Works");
                 App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
-                    Log.v("This", "Also Works");
-                    Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
-                    review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
-                    startActivity(review);
-                    // TODO: Get this to work
-                });
+                    runOnUiThread(() -> {
+                        System.out.println("TESINGGGGGGGGGG");
+                        Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
+                        review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
+                        startActivity(review);
+                    });
+                }).onFailed(System.out::println).onError(Throwable::printStackTrace);
                 return false;
             } else if (itemId == R.id.recipe_edit_menu) {
                 App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
-                    Intent editRecipe = new Intent(RecipeViewActivity.this, RecipeCreateActivity.class);
-                    editRecipe.putExtra(IntentKeys.RECIPE_EDIT, recipe);
-                    editRecipe.putExtra(IntentKeys.CHECK_RECIPE_EDIT, true);
-                    startActivity(editRecipe);
+                    runOnUiThread(() -> {
+                        Intent editRecipe = new Intent(RecipeViewActivity.this, RecipeCreateActivity.class);
+                        editRecipe.putExtra(IntentKeys.RECIPE_EDIT, recipe);
+                        editRecipe.putExtra(IntentKeys.CHECK_RECIPE_EDIT, true);
+                        startActivity(editRecipe);
+                    });
                 });
                 return false;
             } else if (itemId == R.id.recipe_delete_menu) {
