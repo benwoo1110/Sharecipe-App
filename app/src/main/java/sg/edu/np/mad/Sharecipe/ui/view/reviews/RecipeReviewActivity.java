@@ -3,7 +3,7 @@ package sg.edu.np.mad.Sharecipe.ui.view.reviews;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,88 +21,130 @@ import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
+import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeReview;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
+import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
 
 public class RecipeReviewActivity extends DynamicFocusAppCompatActivity {
 
     private List<RecipeReview> recipeReviews;
+    private RecipeReview newReview;
+    private Button submitReview;
+    private Recipe recipe;
+    private RecyclerView reviewsRecyclerView;
+    private TextView noReviewsMessage;
+    private TextView reviewsNumber;
+    private TextInputEditText inputReview;
+    private RatingBar inputRating;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_review);
 
-        Intent review = getIntent();
-        Recipe recipe = (Recipe) review.getSerializableExtra(IntentKeys.RECIPE_REVIEW);
+        Intent data = getIntent();
+        recipe = (Recipe) data.getSerializableExtra(IntentKeys.RECIPE_REVIEW);
+        newReview = new RecipeReview();
+        recipeReviews = new ArrayList<>();
 
-        RecipeReview newReview = new RecipeReview();
+        inputRating = findViewById(R.id.inputRating);
+        inputReview = findViewById(R.id.inputReview);
+        reviewsNumber = findViewById(R.id.reviewsNumber);
+        submitReview = findViewById(R.id.sendReview);
+        reviewsRecyclerView = findViewById(R.id.recyclerview_reviews);
+        noReviewsMessage = findViewById(R.id.displayNoReviews);
 
-        recipeReviews = recipe.getReviews();
+        inputRating.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> newReview.setRating(Math.round(inputRating.getRating())));
+        inputReview.addTextChangedListener((AfterTextChangedWatcher) s -> newReview.setComment(inputReview.getText().toString()));
 
-        TextView labelReview = findViewById(R.id.labelReview);
-        RatingBar inputRating = findViewById(R.id.inputRating);
-        TextInputEditText inputReview = findViewById(R.id.inputReview);
-        TextView reviewsNumber = findViewById(R.id.reviewsNumber);
-        Button submitReview = findViewById(R.id.sendReview);
-        RecyclerView recyclerView = findViewById(R.id.recyclerview_reviews);
-        TextView noReviews = findViewById(R.id.displayNoReviews);
+        submitReview.setOnClickListener((OnSingleClickListener) v -> {
+            if (newReview.getRating() == 0) {
+                Toast.makeText(RecipeReviewActivity.this, "Please rate this recipe between 1 to 5 stars.", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (Strings.isNullOrEmpty(newReview.getComment())) {
+                Toast.makeText(RecipeReviewActivity.this, "Please leave a comment for this recipe", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            checkSubmit();
+        });
 
         RecipeReviewAdapter adapter = new RecipeReviewAdapter(recipeReviews);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(cLayoutManager);
+        reviewsRecyclerView.setAdapter(adapter);
+        reviewsRecyclerView.setLayoutManager(cLayoutManager);
 
-
-        if (recipeReviews == null) {
-            recipeReviews = new ArrayList<>();
-            recyclerView.setVisibility(View.GONE);
-            noReviews.setVisibility(View.VISIBLE);
-        }
-
-        labelReview.setText("Rate " + recipe.getName());
-        inputRating.setOnRatingBarChangeListener((ratingBar, rating, fromUser) -> newReview.setRating(Math.round(inputRating.getRating())));
-        inputReview.addTextChangedListener((AfterTextChangedWatcher) s -> newReview.setComment(inputReview.toString()));
-
-        if (recipe.getReviews() != null) {
-            reviewsNumber.setText("(" + String.valueOf(recipeReviews.size()) + ")");
-        }
-        else {
-            reviewsNumber.setText("(0)");
-        }
-
-        submitReview.setOnClickListener(v -> {
-            if (newReview.getRating() == 0) {
-                Toast.makeText(RecipeReviewActivity.this, "Please rate this recipe 1 to 5 stars", Toast.LENGTH_SHORT);
+        App.getRecipeManager().getReviews(recipe).onSuccess(recipeReviewList -> {
+            int accountId = App.getAccountManager().getAccount().getUserId();
+            for (RecipeReview recipeReview : recipeReviewList) {
+                if (recipeReview.getUserId() == accountId) {
+                    runOnUiThread(() -> {
+                        newReview = recipeReview;
+                        setAsUpdateRecipe();
+                    });
+                    break;
+                }
             }
-            else if (Strings.isNullOrEmpty(newReview.getComment())) {
-                Toast.makeText(RecipeReviewActivity.this, "Please leave a comment for this recipe", Toast.LENGTH_SHORT);
-            }
-            else {
-                App.getUserManager().getAccountUser().onSuccess(user -> newReview.setUser(user));
-                App.getUserManager().getAccountUser().onSuccess(user -> newReview.setUsername(user.getUsername()));
-                checkSubmit(newReview);
-            }
-        });
-
+            runOnUiThread(() -> {
+                adapter.setReviews(recipeReviewList);
+                updateReviewShowing();
+                submitReview.setEnabled(true);
+            });
+        }).thenAccept(System.out::println);
     }
 
-    private void checkSubmit(RecipeReview newReview) {
+    private void checkSubmit() {
         new AlertDialog.Builder(this, R.style.AlertDialogCustom)
                 .setTitle("Submit review")
                 .setMessage("Are you sure you want to submit this review?")
-                .setPositiveButton("Yes", ((dialog, which) -> saveReview(newReview)))
-                .setNegativeButton("Cancel", ((dialog, which) -> finish()))
+                .setCancelable(false)
+                .setPositiveButton("Yes", ((dialog, which) -> {
+                    App.getRecipeManager().accountAddReview(recipe, newReview).onSuccess(review -> {
+                        newReview = review;
+                        int index = recipeReviews.indexOf(review);
+                        if (index != -1) {
+                            recipeReviews.set(index, review);
+                        }
+                        runOnUiThread(() -> {
+                            Toast.makeText(RecipeReviewActivity.this, "Review successfully submitted.", Toast.LENGTH_SHORT).show();
+                            if (index != -1) {
+                                reviewsRecyclerView.getAdapter().notifyItemChanged(index);
+                            } else {
+                                reviewsRecyclerView.getAdapter().notifyItemInserted(recipeReviews.size() - 1);
+                            }
+                            updateReviewShowing();
+                            setAsUpdateRecipe();
+                            submitReview.setEnabled(true);
+                        });
+                    });
+                }))
+                .setNegativeButton("Cancel", ((dialog, which) -> {
+                    submitReview.setEnabled(true);
+                }))
                 .show();
     }
 
-    private void saveReview(RecipeReview review) {
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra(IntentKeys.RECIPE_REVIEW_SAVE, review);
-        setResult(Activity.RESULT_OK, returnIntent);
-        finish();
+    @SuppressLint("SetTextI18n")
+    private void setAsUpdateRecipe() {
+        inputRating.setRating(newReview.getRating());
+        inputReview.setText(newReview.getComment());
+        submitReview.setText("Update");
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void updateReviewShowing() {
+        if (recipeReviews.size() <= 0) {
+            reviewsRecyclerView.setVisibility(View.GONE);
+            noReviewsMessage.setVisibility(View.VISIBLE);
+        } else {
+            reviewsRecyclerView.setVisibility(View.VISIBLE);
+            noReviewsMessage.setVisibility(View.GONE);
+        }
+
+        reviewsNumber.setText("(" + recipeReviews.size() + ")");
     }
 }

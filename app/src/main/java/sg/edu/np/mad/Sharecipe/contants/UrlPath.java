@@ -31,6 +31,7 @@ public class UrlPath {
     public static final String TAG_SUGGESTIONS = "tagsuggestions";
     public static final String IMAGES = "images";
     public static final String ICON = "icon";
+    public static final String REVIEWS = "reviews";
     public static final String SEARCH = "search";
     public static final String DISCOVER = "discover";
 

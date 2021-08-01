@@ -25,6 +25,7 @@ import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.ImageRef;
 import sg.edu.np.mad.Sharecipe.models.RecipeLike;
+import sg.edu.np.mad.Sharecipe.models.RecipeReview;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
@@ -287,6 +288,22 @@ public class RecipeManager {
         return future;
     }
 
+    public FutureDataResult<List<RecipeReview>> getReviews(PartialRecipe recipe) {
+        FutureDataResult<List<RecipeReview>> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getRecipeReviews(account.getAccessToken(), recipe.getRecipeId()).onSuccessJson(future, (response, json) -> {
+                List<RecipeReview> reviews = new ArrayList<>();
+                for (JsonElement likeData : json.getAsJsonArray()) {
+                    reviews.add(JsonUtils.convertToObject(likeData, RecipeReview.class));
+                }
+                future.complete(new DataResult.Success<>(reviews));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
     /**
      * Gets all the recipe created by the given user. Only public account user doesn't
      * have the required access.
@@ -391,7 +408,27 @@ public class RecipeManager {
         return future;
     }
 
-    public FutureDataResult<List<String>> getTagSuggestions() {
+    /**
+     *
+     *
+     * @param recipe
+     * @param review
+     * @return
+     */
+    public FutureDataResult<RecipeReview> accountAddReview(PartialRecipe recipe, RecipeReview review) {
+        FutureDataResult<RecipeReview> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            JsonElement reviewData = JsonUtils.convertToJson(review);
+            SharecipeRequests.putRecipeReviews(account.getAccessToken(), recipe.getRecipeId(), reviewData).onSuccessModel(future, RecipeReview.class, (response, recipeReview) -> {
+                future.complete(new DataResult.Success<>(recipeReview));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
+        public FutureDataResult<List<String>> getTagSuggestions() {
         FutureDataResult<List<String>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {

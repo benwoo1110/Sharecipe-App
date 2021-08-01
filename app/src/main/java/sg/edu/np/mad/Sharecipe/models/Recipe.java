@@ -29,8 +29,6 @@ public class Recipe extends PartialRecipe {
     private List<ImageRef> images;
     @Expose
     private List<RecipeTag> tags;
-    @Expose
-    private List<RecipeReview> reviews;
 
     public Recipe() { }
 
@@ -110,14 +108,6 @@ public class Recipe extends PartialRecipe {
         this.tags = tags;
     }
 
-    public List<RecipeReview> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<RecipeReview> reviews) {
-        this.reviews = reviews;
-    }
-
     @Override
     public String toString() {
         return "Recipe{" +
@@ -131,7 +121,6 @@ public class Recipe extends PartialRecipe {
                 ", ingredients=" + ingredients +
                 ", images=" + images +
                 ", tags=" + tags +
-                ", reviews=" + reviews +
                 '}';
     }
 }
