@@ -37,10 +37,14 @@ Sharecipe features:
 
   This is the page where users will be able to view their own recipes
   
-  ![image](https://user-images.githubusercontent.com/82822824/127776352-796e1de9-678d-4a15-8652-47b14cf8c0b1.png)
+  ![image](assets/Myrecipe.jpg)
 
   
 ## User guide
 * Register or login upon entering the app for the first time.
+* The home page allows you to look at recipes that other people share and recommended recipes
 * Press on the bottom right + button to start creating your own recipe
 * Add in the information required and then set to public if you want to share it with other people
+* View own recipes and liked recipes in the my recipe page with the top right heart button to view liked recipes
+* Search for other users and recipes in the search page
+* Account settings is in the profile page with the buttons at the bottom
