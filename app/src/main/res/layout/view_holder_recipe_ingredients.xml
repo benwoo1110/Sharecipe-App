@@ -19,15 +19,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
-    <View
-        android:id="@+id/view2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="14dp"
-        android:background="@android:color/darker_gray"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout6" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout6"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -45,7 +36,8 @@
             android:id="@+id/inputIngredientName"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -62,7 +54,8 @@
             android:id="@+id/inputIngredientQuantity"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="number" />
+            android:inputType="number"
+            android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -79,7 +72,8 @@
             android:id="@+id/inputIngredientUnit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:inputType="textMultiLine" />
+            android:inputType="textMultiLine"
+            android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
