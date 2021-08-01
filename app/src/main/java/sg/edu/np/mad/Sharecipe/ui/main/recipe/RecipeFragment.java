@@ -110,7 +110,7 @@ public class RecipeFragment extends Fragment {
         App.getUserManager().get(userId).onSuccess(user -> {
             RecipeFragment.this.user = user;
             getActivity().runOnUiThread(() -> {
-                recipeToolbar.setTitle(user.getUsername() + "'s " + (showLiked ? "Favourites" : "Recipe"));
+                recipeToolbar.setTitle(user.getUsername() + "'s " + (showLiked ? "Favourites" : "Recipes"));
                 myRecipeRefresh.setOnRefreshListener(this::loadRecipe);
                 loadRecipe();
             });

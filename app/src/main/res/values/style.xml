@@ -29,7 +29,7 @@
     </style>
 
     <style name="CustomTab" parent="">
-        <item name="fontFamily">@font/quicksand_regular</item>
+        <item name="fontFamily">@font/quicksand_semibold</item>
     </style>
 
     <style name="Widget.AppCompat.Toolbar." parent="">
@@ -37,9 +37,15 @@
         <item name="android:textSize">28dp</item>
     </style>
 
-    <style name="CustomAlertDialog" parent="">
+    <style name="Widget.AppCompat.Toolbar.." parent="">
         <item name="fontFamily">@font/quicksand_regular</item>
-        <item name="android:textAppearanceSmall">@font/quicksand_regular</item>
-        <item name="android:textAppearanceMedium">@font/quicksand_regular</item>
+        <item name="android:textSize">28dp</item>
     </style>
+
+    <style name="AlertDialogCustom" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="android:fontFamily">@font/quicksand_semibold</item>
+        <item name="android:textColor">#F8AA9D</item>
+        <item name="colorSurface">@color/white</item>
+    </style>
+
 </resources>

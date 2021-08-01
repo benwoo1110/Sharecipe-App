@@ -37,12 +37,5 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder {
             viewRecipe.putExtra(IntentKeys.RECIPE_VIEW, recipe.getRecipeId());
             itemView.getContext().startActivity(viewRecipe);
         });
-
-        itemView.setOnLongClickListener(v -> {
-            Intent editRecipe = new Intent(itemView.getContext(), RecipeCreateActivity.class);
-            editRecipe.putExtra(IntentKeys.RECIPE_EDIT, recipe);
-            itemView.getContext().startActivity(editRecipe);
-            return false;
-        });
     }
 }

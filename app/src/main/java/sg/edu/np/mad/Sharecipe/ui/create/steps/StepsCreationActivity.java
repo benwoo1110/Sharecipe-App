@@ -60,7 +60,7 @@ public class StepsCreationActivity extends AppCompatActivity {
     }
 
     private void checkSaveDialog(RecipeStep step, String stepDesc) {
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(this, R.style.AlertDialogCustom)
                 .setTitle("Unsaved changes")
                 .setMessage("Would you like to save your changes?")
                 .setPositiveButton("Yes", (dialog, which) -> saveInput(step))

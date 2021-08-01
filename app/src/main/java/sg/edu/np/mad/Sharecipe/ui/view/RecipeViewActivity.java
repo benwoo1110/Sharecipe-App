@@ -3,8 +3,10 @@ package sg.edu.np.mad.Sharecipe.ui.view;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -14,17 +16,22 @@ import com.google.android.material.tabs.TabLayout;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.models.RecipeReview;
+import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.OnTabSelectedListener;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 import sg.edu.np.mad.Sharecipe.ui.view.reviews.RecipeReviewActivity;
+import sg.edu.np.mad.Sharecipe.ui.view.reviews.RecipeReviewAdapter;
 
 public class RecipeViewActivity extends AppCompatActivity {
+    public static int LAUNCH_REVIEW_CREATION = 1;
 
     private boolean ignoreSelect = false;
     private boolean isLiked;
     private Recipe recipe;
     private BottomNavigationView bottomNavigation;
+    private RecipeViewAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,31 +70,39 @@ public class RecipeViewActivity extends AppCompatActivity {
         // Setup bottom bar menu
         bottomNavigation.getMenu().findItem(R.id.recipe_edit_menu).setVisible(false);
         bottomNavigation.getMenu().findItem(R.id.recipe_like_menu).setVisible(false);
+        bottomNavigation.getMenu().findItem(R.id.recipe_delete_menu).setVisible(false);
 
         bottomNavigation.setOnItemSelectedListener(item -> {
             if (ignoreSelect) {
                 ignoreSelect = false;
-                System.out.println("IGNORE");
                 return true;
             }
 
             int itemId = item.getItemId();
             if (itemId == R.id.recipe_review_menu) {
                 App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
-                    Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
-                    review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
-                    startActivity(review);
-                });
+                    runOnUiThread(() -> {
+                        System.out.println("TESINGGGGGGGGGG");
+                        Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
+                        review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
+                        startActivity(review);
+                    });
+                }).onFailed(System.out::println).onError(Throwable::printStackTrace);
                 return false;
             } else if (itemId == R.id.recipe_edit_menu) {
-                //TODO Edit recipe
                 App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
-                    Intent editRecipe = new Intent(RecipeViewActivity.this, RecipeCreateActivity.class);
-                    editRecipe.putExtra(IntentKeys.RECIPE_EDIT, recipe);
-                    editRecipe.putExtra(IntentKeys.CHECK_RECIPE_EDIT, true);
-                    startActivity(editRecipe);
+                    runOnUiThread(() -> {
+                        Intent editRecipe = new Intent(RecipeViewActivity.this, RecipeCreateActivity.class);
+                        editRecipe.putExtra(IntentKeys.RECIPE_EDIT, recipe);
+                        editRecipe.putExtra(IntentKeys.CHECK_RECIPE_EDIT, true);
+                        startActivity(editRecipe);
+                    });
                 });
                 return false;
+            } else if (itemId == R.id.recipe_delete_menu) {
+                App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe1 -> {
+                   // TODO: Delete recipe here
+                });
             } else if (itemId == R.id.recipe_like_menu) {
                 item.setEnabled(false);
                 if (isLiked) {
@@ -111,10 +126,11 @@ public class RecipeViewActivity extends AppCompatActivity {
             RecipeViewActivity.this.recipe = recipe;
 
             RecipeViewActivity.this.runOnUiThread(() -> {
-                RecipeViewAdapter adapter = new RecipeViewAdapter(this, tabLayout.getTabCount(), recipe);
+                adapter = new RecipeViewAdapter(this, tabLayout.getTabCount(), recipe);
                 viewpager.setAdapter(adapter);
                 if (recipe.getUserId() == userID) {
                     bottomNavigation.getMenu().findItem(R.id.recipe_edit_menu).setVisible(true);
+                    bottomNavigation.getMenu().findItem(R.id.recipe_delete_menu).setVisible(true);
                 }
             });
 

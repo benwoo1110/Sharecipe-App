@@ -41,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:menu="@menu/viewrecipe_navigation_menu"
-            android:theme="@style/Widget.MaterialComponents.BottomNavigationView."/>
+            android:theme="@style/Widget.MaterialComponents.BottomNavigationView."
+            app:labelVisibilityMode="labeled"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

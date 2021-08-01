@@ -2,7 +2,6 @@ package sg.edu.np.mad.Sharecipe.ui.create.infomation;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,6 +25,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.app.AlertDialog;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.chip.ChipDrawable;
@@ -195,7 +195,7 @@ public class InformationFragment extends Fragment {
         inputHours.setValue((int) recipe.getTotalTimeNeeded().toHours());
         inputMinutes.setValue(recipe.getTotalTimeNeeded().toMinutesPart());
 
-        new AlertDialog.Builder(getActivity(), R.style.CustomAlertDialog)
+        new AlertDialog.Builder(getActivity(), R.style.AlertDialogCustom)
                 .setView(view)
                 .setTitle("Preparation time")
                 .setPositiveButton("Confirm", (dialog, which) -> {
