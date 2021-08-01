@@ -38,6 +38,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewHolder> {
             activity.startActivityForResult(intent, StepsFragment.LAUNCH_STEP_CREATION);
         });
 
+        //TODO swipe to delete
         item.setOnLongClickListener(v -> {
             removeDialog(holder.step);
             return false;

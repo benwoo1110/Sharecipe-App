@@ -34,7 +34,7 @@ public class StepsFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_steps, container, false);
+        View view = inflater.inflate(R.layout.fragment_create_steps, container, false);
 
         RecyclerView stepsView = view.findViewById(R.id.recyclerview_steps);
         Button button = view.findViewById(R.id.buttonAdd);

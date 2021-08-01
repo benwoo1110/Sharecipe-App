@@ -32,7 +32,7 @@ public class IngredientFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ingredient, container, false);
+        View view = inflater.inflate(R.layout.fragment_create_ingredient, container, false);
 
         Button addIngredient = view.findViewById(R.id.buttonIngredient);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerviewIngredient);
