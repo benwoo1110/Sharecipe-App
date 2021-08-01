@@ -72,6 +72,7 @@ public class RecipeViewActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener((OnTabSelectedListener) tab -> viewpager.setCurrentItem(tab.getPosition()));
 
         // Setup bottom bar menu
+        bottomNavigation.setEnabled(false);
         bottomNavigation.getMenu().findItem(R.id.recipe_edit_menu).setVisible(false);
         bottomNavigation.getMenu().findItem(R.id.recipe_like_menu).setVisible(false);
         bottomNavigation.getMenu().findItem(R.id.recipe_delete_menu).setVisible(false);
@@ -119,12 +120,9 @@ public class RecipeViewActivity extends AppCompatActivity {
             RecipeViewActivity.this.recipe = recipe;
 
             RecipeViewActivity.this.runOnUiThread(() -> {
+                bottomNavigation.setEnabled(true);
                 adapter = new RecipeViewAdapter(this, tabLayout.getTabCount(), recipe);
                 viewpager.setAdapter(adapter);
-                if (recipe.getUserId() == userID) {
-                    bottomNavigation.getMenu().findItem(R.id.recipe_edit_menu).setVisible(true);
-                    bottomNavigation.getMenu().findItem(R.id.recipe_delete_menu).setVisible(true);
-                }
             });
 
             App.getRecipeManager().checkIfAccountLikes(recipe).onSuccess(state -> {
@@ -135,6 +133,13 @@ public class RecipeViewActivity extends AppCompatActivity {
                     likeItem.setVisible(true);
                     ignoreSelect = true;
                     bottomNavigation.setSelectedItemId(likeItem.getItemId());
+                });
+            }).thenAccept(ignore -> {
+                RecipeViewActivity.this.runOnUiThread(() -> {
+                    if (recipe.getUserId() == userID) {
+                        bottomNavigation.getMenu().findItem(R.id.recipe_edit_menu).setVisible(true);
+                        bottomNavigation.getMenu().findItem(R.id.recipe_delete_menu).setVisible(true);
+                    }
                 });
             });
 
