@@ -8,7 +8,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
 
         <com.google.android.material.textfield.TextInputLayout
@@ -17,14 +17,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="66dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
+            android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox."
             app:endIconMode="clear_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:startIconDrawable="@drawable/ic_baseline_fastfood_24"
-            android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.">
+            app:startIconDrawable="@drawable/ic_baseline_fastfood_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/infoName"
@@ -36,16 +36,17 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout3"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="11dp"
             android:layout_marginEnd="15dp"
+            android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox."
             app:layout_constraintEnd_toStartOf="@+id/textInputLayout4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-            app:startIconDrawable="@drawable/outline_schedule_24"
-            android:theme="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.">
+            app:startIconDrawable="@drawable/outline_schedule_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/infoPrep"
@@ -58,17 +59,18 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout4"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:layout_marginTop="11dp"
             android:layout_marginEnd="32dp"
+            android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox."
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@id/textInputLayout3"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-            app:startIconDrawable="@drawable/outline_tag_24"
-            android:theme="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.">
+            app:startIconDrawable="@drawable/outline_tag_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/infoPortions"
@@ -83,29 +85,23 @@
             android:id="@+id/infoPublic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="36dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="293dp"
+            android:fontFamily="@font/quicksand_regular"
             android:text="Public"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textInputLayout3"
-            android:fontFamily="@font/quicksand_regular"/>
+            app:layout_constraintTop_toBottomOf="@id/textInputLayout3" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="38dp"
+            android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="48dp"
+            android:fontFamily="@font/quicksand_regular"
             android:text="Difficulty"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/infoPublic"
-            android:fontFamily="@font/quicksand_regular"/>
+            app:layout_constraintTop_toBottomOf="@+id/infoPublic" />
 
         <RatingBar
             android:id="@+id/infoDifficulty"
@@ -113,10 +109,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="139dp"
             android:numStars="5"
             android:stepSize="1"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -124,16 +118,16 @@
             android:id="@+id/recyclerview_images"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="32dp"
             android:overScrollMode="never"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recipetag_autocomplete">
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout6">
 
         </androidx.recyclerview.widget.RecyclerView>
 
@@ -145,10 +139,10 @@
             android:layout_marginStart="32dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
+            android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox."
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/infoDifficulty"
-            android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.">
+            app:layout_constraintTop_toBottomOf="@+id/infoDifficulty">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/infoDesc"
@@ -159,18 +153,31 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <MultiAutoCompleteTextView
-            android:id="@+id/recipetag_autocomplete"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout6"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="32dp"
-            android:hint="Add some tags to make your recipe more discoverable!"
+            android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox."
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout5"
-            android:fontFamily="@font/quicksand_regular"/>
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
+
+            <androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView
+                android:id="@+id/recipetag_autocomplete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="tags"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:inputType="textMultiLine" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
             android:id="@+id/expanded_image"

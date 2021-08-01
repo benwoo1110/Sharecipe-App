@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -54,7 +55,7 @@ public class InformationFragment extends Fragment {
     private final List<File> imageFileList;
 
     private TextInputEditText prep;
-    private MultiAutoCompleteTextView tags;
+    private AppCompatMultiAutoCompleteTextView tags;
     private TagNamesAdapter tagAdapter;
 
     public InformationFragment(Recipe recipe, List<File> imageFileList) {

@@ -68,7 +68,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/display_StepNum"
-            app:startIconDrawable="@drawable/ic_baseline_person_24">
+            app:startIconDrawable="@drawable/ic_baseline_info_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_StepDesc"
