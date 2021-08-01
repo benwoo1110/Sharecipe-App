@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -94,9 +95,7 @@ public class RecipeViewActivity extends AppCompatActivity {
                 editRecipe.putExtra(IntentKeys.CHECK_RECIPE_EDIT, true);
                 startActivity(editRecipe);
             } else if (itemId == R.id.recipe_delete_menu) {
-                App.getRecipeManager().accountDeleteRecipe(recipe).onSuccess(aVoid -> {
-                    runOnUiThread(this::finish);
-                });
+                confirmDeleteDialog(recipe);
             } else if (itemId == R.id.recipe_like_menu) {
                 item.setEnabled(false);
                 if (isLiked) {
@@ -158,6 +157,19 @@ public class RecipeViewActivity extends AppCompatActivity {
         likeItem.setEnabled(true);
     }
 
+    private void confirmDeleteDialog(Recipe recipe) {
+        new AlertDialog.Builder(this, R.style.AlertDialogCustom)
+                .setTitle("Delete recipe")
+                .setMessage("Are you sure you want to delete '" + recipe.getName() + "'? This action cannot be reverted!")
+                .setPositiveButton("Delete", (dialog, which) -> {
+                    App.getRecipeManager().accountDeleteRecipe(recipe).onSuccess(aVoid -> {
+                        runOnUiThread(this::finish);
+                    });
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -171,12 +183,11 @@ public class RecipeViewActivity extends AppCompatActivity {
             if (recipe.getReviews() == null) {
                 reviews.add(newReview);
                 recipe.setReviews(reviews);
-                adapter.notifyDataSetChanged();
             }
             else {
                 recipe.getReviews().add(newReview);
-                adapter.notifyDataSetChanged();
             }
+            adapter.notifyDataSetChanged();
         }
     }
 }

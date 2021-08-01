@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.common.base.Strings;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -34,8 +36,12 @@ public class ViewIngredientsAdapter extends RecyclerView.Adapter<ViewIngredients
     public void onBindViewHolder(@NotNull ViewIngredientsViewholder holder, int position) {
         RecipeIngredient ingredient = ingredients.get(position);
         holder.name.setText(ingredient.getName());
-        holder.quantity.setText(String.format(Locale.ENGLISH, "%d %s", ingredient.getQuantity(), ingredient.getUnit()));
-
+        if (Strings.isNullOrEmpty(ingredient.getUnit())) {
+            holder.quantity.setText(String.format(Locale.ENGLISH, "%d %s", ingredient.getQuantity(), ""));
+        }
+        else {
+            holder.quantity.setText(String.format(Locale.ENGLISH, "%d %s", ingredient.getQuantity(), ingredient.getUnit()));
+        }
     }
 
     @Override
