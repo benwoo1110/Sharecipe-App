@@ -37,9 +37,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputIngredientName"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textMultiLine"
-            android:singleLine="false" />
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -56,9 +56,10 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputIngredientQuantity"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:singleLine="false"
-            android:digits="0123456789./"/>
+            android:layout_height="wrap_content"
+            android:digits="0123456789./"
+            android:inputType="numberDecimal"
+            android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -75,9 +76,9 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputIngredientUnit"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textMultiLine"
-            android:singleLine="false" />
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:singleLine="true" />
     </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

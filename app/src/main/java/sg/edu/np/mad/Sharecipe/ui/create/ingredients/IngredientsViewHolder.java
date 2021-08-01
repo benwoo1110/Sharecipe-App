@@ -33,7 +33,7 @@ public class IngredientsViewHolder extends RecyclerView.ViewHolder {
                 .setName(s.toString()));
 
         quantity.addTextChangedListener((AfterTextChangedWatcher) s -> ingredientList.get(getAdapterPosition())
-                .setQuantity(FormatUtils.convertToInt(s.toString()).orElse(1)));
+                .setQuantity(FormatUtils.convertToDouble(s.toString()).orElse(1D)));
 
         unit.addTextChangedListener((AfterTextChangedWatcher) s -> ingredientList.get(getAdapterPosition())
                 .setUnit(s.toString()));

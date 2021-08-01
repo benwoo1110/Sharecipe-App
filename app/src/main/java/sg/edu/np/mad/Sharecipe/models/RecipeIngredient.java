@@ -11,7 +11,7 @@ public class RecipeIngredient implements Serializable {
     @Expose
     private String name;
     @Expose
-    private int quantity;
+    private double quantity;
     @Expose
     private String unit;
 
@@ -29,11 +29,11 @@ public class RecipeIngredient implements Serializable {
         this.name = name;
     }
 
-    public int getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(double quantity) {
         this.quantity = quantity;
     }
 

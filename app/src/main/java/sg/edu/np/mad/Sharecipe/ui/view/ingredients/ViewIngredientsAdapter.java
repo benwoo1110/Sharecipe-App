@@ -27,9 +27,7 @@ public class ViewIngredientsAdapter extends RecyclerView.Adapter<ViewIngredients
     @NotNull
     public ViewIngredientsViewholder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_holder_view_ingredients, parent, false);
-        ViewIngredientsViewholder holder = new ViewIngredientsViewholder(item);
-
-        return holder;
+        return new ViewIngredientsViewholder(item);
     }
 
     @Override
@@ -37,10 +35,10 @@ public class ViewIngredientsAdapter extends RecyclerView.Adapter<ViewIngredients
         RecipeIngredient ingredient = ingredients.get(position);
         holder.name.setText(ingredient.getName());
         if (Strings.isNullOrEmpty(ingredient.getUnit())) {
-            holder.quantity.setText(String.format(Locale.ENGLISH, "%d %s", ingredient.getQuantity(), ""));
+            holder.quantity.setText(String.format(Locale.ENGLISH, "%s %s", ingredient.getQuantity(), ""));
         }
         else {
-            holder.quantity.setText(String.format(Locale.ENGLISH, "%d %s", ingredient.getQuantity(), ingredient.getUnit()));
+            holder.quantity.setText(String.format(Locale.ENGLISH, "%s %s", ingredient.getQuantity(), ingredient.getUnit()));
         }
     }
 
