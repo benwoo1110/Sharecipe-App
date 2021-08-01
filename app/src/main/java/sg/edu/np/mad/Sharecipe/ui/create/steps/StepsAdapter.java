@@ -38,12 +38,6 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewHolder> {
             activity.startActivityForResult(intent, StepsFragment.LAUNCH_STEP_CREATION);
         });
 
-        //TODO swipe to delete
-        item.setOnLongClickListener(v -> {
-            removeDialog(holder.step);
-            return false;
-        });
-
         return holder;
     }
 
@@ -56,20 +50,5 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsViewHolder> {
 
     public int getItemCount() {
         return stepList.size();
-    }
-
-    public void removeDialog(RecipeStep stepToRemove) {
-        new AlertDialog.Builder(activity, R.style.AlertDialogCustom)
-                .setTitle("Remove step")
-                .setMessage("Would you like to remove this step?")
-                .setPositiveButton("Remove", (dialog, which) -> {
-                    stepList.remove(stepToRemove);
-                    notifyDataSetChanged();
-                    for (RecipeStep step : stepList) {
-                        step.setStepNumber(stepList.indexOf(step) + 1);
-                    }
-                })
-                .setNegativeButton("No", null)
-                .show();
     }
 }
