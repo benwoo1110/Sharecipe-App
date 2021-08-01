@@ -1,5 +1,6 @@
 package sg.edu.np.mad.Sharecipe.ui.main.recipe;
 
+import android.annotation.SuppressLint;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
@@ -10,6 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
+import com.google.common.base.Strings;
+
+import org.threeten.bp.Duration;
 
 import java.util.List;
 
@@ -17,6 +21,7 @@ import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeTag;
 import sg.edu.np.mad.Sharecipe.ui.App;
+import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
 
@@ -33,14 +38,30 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
         return new RecipeViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull RecipeViewHolder holder, int position) {
         Recipe recipe = recipeList.get(position);
         holder.recipe = recipe;
         holder.title.setText(recipe.getName());
 
-        //TODO display some cool stats
-        holder.info.setText(String.valueOf(recipe.getRecipeId()));
+        if (recipe.getTotalTimeNeeded() != Duration.ZERO) {
+            holder.info.setCompoundDrawablesWithIntrinsicBounds(R.drawable.outline_schedule_24, 0, 0, 0);
+            holder.info.setText(" " + FormatUtils.parseDurationShort(recipe.getTotalTimeNeeded()));
+        } else if (recipe.getDifficulty() > 0) {
+            holder.info.setCompoundDrawablesWithIntrinsicBounds(R.drawable.outline_whatshot_24, 0, 0, 0);
+            holder.info.setText(" " + recipe.getDifficulty() + " diff");
+        } else if (recipe.getPortion() > 0) {
+            holder.info.setCompoundDrawablesWithIntrinsicBounds(R.drawable.outline_tag_24, 0, 0, 0);
+            holder.info.setText(" " + recipe.getPortion() + " pax");
+        } else {
+            holder.info.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_person_24, 0, 0, 0);
+            App.getUserManager().get(recipe.getUserId()).onSuccess(user -> {
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    holder.info.setText(" " + user.getUsername());
+                });
+            });
+        }
 
         holder.tags.removeAllViews();
         if (recipe.getTags() != null) {
@@ -50,7 +71,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeViewHolder> {
                 chip.setText(tag.getName());
                 chip.setTextIsSelectable(true);
                 holder.tags.addView(chip);
-                if (++count > 2) {
+                if (++count >= 2) {
                     break;
                 }
             }
