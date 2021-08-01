@@ -377,6 +377,22 @@ public class RecipeManager {
         return future;
     }
 
+    public FutureDataResult<List<String>> getTagSuggestions() {
+        FutureDataResult<List<String>> future = new FutureDataResult<>();
+
+        accountManager.getOrRefreshAccount().onSuccess(account -> {
+            SharecipeRequests.getRecipeTagSuggestions(account.getAccessToken()).onSuccessJson(future, (response, json) -> {
+                List<String> tagNames = new ArrayList<>();
+                for (JsonElement jsonElement : json.getAsJsonArray()) {
+                    tagNames.add(jsonElement.getAsString());
+                }
+                future.complete(new DataResult.Success<>(tagNames));
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
+
+        return future;
+    }
+
     public void invalidateRecipe(Recipe recipe) {
         recipeCache.invalidate(recipe.getRecipeId());
     }

@@ -580,6 +580,24 @@ public class SharecipeRequests {
     }
 
     /**
+     * GET `/recipes/tagsuggestions` endpoint.
+     *
+     * @param accessToken
+     * @return
+     */
+    public static FutureWebResponse getRecipeTagSuggestions(@NonNull String accessToken) {
+
+        return CLIENT.runAsync(new Request.Builder()
+                .url(UrlPath.newBuilder()
+                        .addPathSegment(UrlPath.RECIPES)
+                        .addPathSegment(UrlPath.TAG_SUGGESTIONS)
+                        .build())
+                .header("Authorization", "Bearer " + accessToken)
+                .get()
+                .build());
+    }
+
+    /**
      * PATCH `/recipes/recipe_id` endpoint.
      *
      * @param accessToken

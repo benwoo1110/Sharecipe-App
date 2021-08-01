@@ -52,7 +52,6 @@ public class InformationFragment extends Fragment {
     private final ArrayList<Bitmap> imageList = new ArrayList<>();
     private final Recipe recipe;
     private final List<File> imageFileList;
-    private final List<RecipeTag> recipeTags = new ArrayList<>();
 
     private TextInputEditText prep;
     private MultiAutoCompleteTextView tags;
@@ -99,7 +98,7 @@ public class InformationFragment extends Fragment {
         if (recipe.getTags() != null) {
             tags.getText().clear();
             for (RecipeTag tag : recipe.getTags()) {
-                tags.getText().append(tag.getName()).append(", ");
+                tags.getText().append(tag.getName() + ", ");
                 createRecipientChip(tag.getName());
             }
         }
@@ -119,17 +118,21 @@ public class InformationFragment extends Fragment {
             });
         }
 
-        createTags();
-        tagAdapter = new TagNamesAdapter(
-                getContext(),
-                android.R.layout.simple_spinner_dropdown_item,
-                tags,
-                TagNamesAdapter.convertToTagNames(recipeTags)
-        );
-
-        tags.setAdapter(tagAdapter);
-        tags.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+        MultiAutoCompleteTextView.Tokenizer tokenizer = new MultiAutoCompleteTextView.CommaTokenizer();
+        tags.setTokenizer(tokenizer);
         tags.setThreshold(1);
+
+        App.getRecipeManager().getTagSuggestions().onSuccess(tagsNames -> {
+            getActivity().runOnUiThread(() -> {
+                tagAdapter = new TagNamesAdapter(
+                        getContext(),
+                        android.R.layout.simple_spinner_dropdown_item,
+                        tags,
+                        tagsNames
+                );
+                tags.setAdapter(tagAdapter);
+            });
+        }).onFailed(System.out::println).onError(Throwable::printStackTrace);
 
         tags.setOnItemClickListener((parent, view1, position, id) -> {
             createRecipientChip(tagAdapter.getItem(position));
@@ -203,71 +206,6 @@ public class InformationFragment extends Fragment {
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
-    }
-
-    public void createTags() {
-        RecipeTag chinese = new RecipeTag();
-        chinese.setName("Chinese");
-        RecipeTag malay = new RecipeTag();
-        malay.setName("Malay");
-        RecipeTag indian = new RecipeTag();
-        indian.setName("Indian");
-        RecipeTag american = new RecipeTag();
-        american.setName("American");
-        RecipeTag japanese = new RecipeTag();
-        japanese.setName("Japanese");
-        RecipeTag korean = new RecipeTag();
-        korean.setName("Korean");
-        RecipeTag italian = new RecipeTag();
-        italian.setName("Italian");
-        RecipeTag vietnamese = new RecipeTag();
-        vietnamese.setName("Vietnamese");
-        RecipeTag thai = new RecipeTag();
-        thai.setName("Thai");
-
-        RecipeTag rice = new RecipeTag();
-        rice.setName("Rice");
-        RecipeTag noodles = new RecipeTag();
-        noodles.setName("Noodles");
-        RecipeTag sandwich = new RecipeTag();
-        sandwich.setName("Sandwich");
-        RecipeTag burger = new RecipeTag();
-        burger.setName("Burger");
-        RecipeTag meat = new RecipeTag();
-        meat.setName("Meat");
-        RecipeTag vegetarian = new RecipeTag();
-        vegetarian.setName("Vegetarian");
-        RecipeTag seafood = new RecipeTag();
-        seafood.setName("Seafood");
-        RecipeTag snack = new RecipeTag();
-        snack.setName("Snack");
-        RecipeTag drink = new RecipeTag();
-        drink.setName("Drink");
-        RecipeTag dessert = new RecipeTag();
-        dessert.setName("Dessert");
-
-        recipeTags.add(chinese);
-        recipeTags.add(malay);
-        recipeTags.add(indian);
-        recipeTags.add(american);
-        recipeTags.add(japanese);
-        recipeTags.add(korean);
-        recipeTags.add(italian);
-        recipeTags.add(vietnamese);
-        recipeTags.add(thai);
-        recipeTags.add(rice);
-        recipeTags.add(noodles);
-        recipeTags.add(sandwich);
-        recipeTags.add(burger);
-        recipeTags.add(meat);
-        recipeTags.add(vegetarian);
-        recipeTags.add(seafood);
-        recipeTags.add(snack);
-        recipeTags.add(drink);
-        recipeTags.add(dessert);
-        if (recipe.getTags() != null) {
-            recipeTags.addAll(recipe.getTags());
-        }
     }
 
     private void createRecipientChip(String tagName) {
