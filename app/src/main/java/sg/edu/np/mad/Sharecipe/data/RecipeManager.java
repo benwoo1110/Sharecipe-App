@@ -293,11 +293,11 @@ public class RecipeManager {
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getRecipeReviews(account.getAccessToken(), recipe.getRecipeId()).onSuccessJson(future, (response, json) -> {
-                List<RecipeReview> recipes = new ArrayList<>();
+                List<RecipeReview> reviews = new ArrayList<>();
                 for (JsonElement likeData : json.getAsJsonArray()) {
-                    recipes.add(JsonUtils.convertToObject(likeData, RecipeReview.class));
+                    reviews.add(JsonUtils.convertToObject(likeData, RecipeReview.class));
                 }
-                future.complete(new DataResult.Success<>(recipes));
+                future.complete(new DataResult.Success<>(reviews));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
 
@@ -422,8 +422,8 @@ public class RecipeManager {
             JsonElement reviewData = JsonUtils.convertToJson(review);
             SharecipeRequests.putRecipeReviews(account.getAccessToken(), recipe.getRecipeId(), reviewData).onSuccessModel(future, RecipeReview.class, (response, recipeReview) -> {
                 future.complete(new DataResult.Success<>(recipeReview));
-            });
-        });
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
 
         return future;
     }

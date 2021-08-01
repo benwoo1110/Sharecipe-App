@@ -35,7 +35,6 @@ public class RecipeViewActivity extends AppCompatActivity {
     private Recipe recipe;
     private BottomNavigationView bottomNavigation;
     private RecipeViewAdapter adapter;
-    private List<RecipeReview> reviews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +87,7 @@ public class RecipeViewActivity extends AppCompatActivity {
                 App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
                     Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
                     review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
-                    startActivityForResult(review, LAUNCH_REVIEW_CREATION);
+                    startActivity(review);
                 }).onFailed(System.out::println).onError(Throwable::printStackTrace);
             } else if (itemId == R.id.recipe_edit_menu) {
                 Intent editRecipe = new Intent(RecipeViewActivity.this, RecipeCreateActivity.class);
@@ -173,26 +172,5 @@ public class RecipeViewActivity extends AppCompatActivity {
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode != LAUNCH_REVIEW_CREATION) {
-            return;
-        }
-
-        if (resultCode == Activity.RESULT_OK) {
-            RecipeReview newReview = (RecipeReview) data.getSerializableExtra(IntentKeys.RECIPE_REVIEW_SAVE);
-            if (recipe.getReviews() == null) {
-                reviews.add(newReview);
-                recipe.setReviews(reviews);
-            }
-            else {
-                recipe.getReviews().add(newReview);
-            }
-            adapter.notifyDataSetChanged();
-        }
     }
 }
