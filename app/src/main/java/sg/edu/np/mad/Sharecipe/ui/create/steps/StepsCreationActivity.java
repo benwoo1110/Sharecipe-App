@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.common.base.Strings;
 
@@ -26,8 +27,8 @@ public class StepsCreationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_steps_creation);
 
         TextView displayStepNo = findViewById(R.id.display_StepNum);
-        ImageButton close = findViewById(R.id.buttonCloseStep);
-        ImageButton save = findViewById(R.id.buttonSaveStep);
+        MaterialButton close = findViewById(R.id.buttonCloseStep);
+        MaterialButton save = findViewById(R.id.buttonSaveStep);
         TextInputEditText input = findViewById(R.id.input_StepDesc);
 
         Intent data = getIntent();

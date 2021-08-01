@@ -7,7 +7,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".ui.create.steps.StepsCreationActivity">
 
 
@@ -15,66 +15,65 @@
             android:id="@+id/display_StepNum"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
             android:fontFamily="@font/quicksand_semibold"
             android:gravity="center"
             android:text="TextView"
             android:textSize="28sp"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonCloseStep"
             app:layout_constraintEnd_toStartOf="@+id/buttonSaveStep"
             app:layout_constraintStart_toEndOf="@+id/buttonCloseStep"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@+id/buttonCloseStep" />
 
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonCloseStep"
             android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="12dp"
-            android:background="@color/white"
+            android:layout_height="50dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            app:icon="@drawable/outline_close_24"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize16dp"
-            app:srcCompat="@drawable/outline_close_24" />
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
-        <View
-            android:id="@+id/view2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="72dp"
-            android:background="@android:color/darker_gray"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonSaveStep"
             android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="16dp"
-            android:background="@color/white"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            app:icon="@drawable/done"
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent"
             app:srcCompat="@drawable/done" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout2"
-            android:layout_width="0dp"
+            android:id="@+id/editUsername"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="30dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="32dp"
+            android:hint="Procedure"
+            android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox."
+            app:endIconMode="clear_text"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view2"
-            android:theme="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.">
+            app:layout_constraintTop_toBottomOf="@+id/display_StepNum"
+            app:startIconDrawable="@drawable/ic_baseline_person_24">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/input_StepDesc"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Procedure" />
+                android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
