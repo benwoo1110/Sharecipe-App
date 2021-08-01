@@ -22,10 +22,14 @@ Sharecipe features:
 * **Melvin**: Recipe creation and editing
 * **Jia Hao**: Profile page and editing
 
-## Images
-* Profile 
+## Features
+* Profile:
+
+  This is the profile page where the user will be able to see their infomation and change their profile settings.
 
   ![Profile](assets/profile.png)
-* Home
+* Home:
 
+  This is the home page where they will be able to discover recipes that other people posted
+  
   ![Home](assets/home.png)
