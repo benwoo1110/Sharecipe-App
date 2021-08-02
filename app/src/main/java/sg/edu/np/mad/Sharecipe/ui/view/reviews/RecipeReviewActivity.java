@@ -40,6 +40,7 @@ public class RecipeReviewActivity extends DynamicFocusAppCompatActivity {
     private TextView reviewsNumber;
     private TextInputEditText inputReview;
     private RatingBar inputRating;
+    private RecipeReviewAdapter adapter;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -65,15 +66,17 @@ public class RecipeReviewActivity extends DynamicFocusAppCompatActivity {
         submitReview.setOnClickListener((OnSingleClickListener) v -> {
             if (newReview.getRating() == 0) {
                 Toast.makeText(RecipeReviewActivity.this, "Please rate this recipe between 1 to 5 stars.", Toast.LENGTH_SHORT).show();
+                submitReview.setEnabled(true);
                 return;
             } else if (Strings.isNullOrEmpty(newReview.getComment())) {
                 Toast.makeText(RecipeReviewActivity.this, "Please leave a comment for this recipe", Toast.LENGTH_SHORT).show();
+                submitReview.setEnabled(true);
                 return;
             }
             checkSubmit();
         });
 
-        RecipeReviewAdapter adapter = new RecipeReviewAdapter(recipeReviews);
+        adapter = new RecipeReviewAdapter(recipeReviews);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         reviewsRecyclerView.setAdapter(adapter);
         reviewsRecyclerView.setLayoutManager(cLayoutManager);
@@ -108,16 +111,14 @@ public class RecipeReviewActivity extends DynamicFocusAppCompatActivity {
                         int index = recipeReviews.indexOf(review);
                         if (index != -1) {
                             recipeReviews.set(index, review);
+                        } else {
+                            recipeReviews.add(review);
                         }
                         runOnUiThread(() -> {
                             Toast.makeText(RecipeReviewActivity.this, "Review successfully submitted.", Toast.LENGTH_SHORT).show();
-                            if (index != -1) {
-                                reviewsRecyclerView.getAdapter().notifyItemChanged(index);
-                            } else {
-                                reviewsRecyclerView.getAdapter().notifyItemInserted(recipeReviews.size() - 1);
-                            }
-                            updateReviewShowing();
+                            adapter.notifyDataSetChanged();
                             setAsUpdateRecipe();
+                            updateReviewShowing();
                             submitReview.setEnabled(true);
                         });
                     });
