@@ -77,7 +77,7 @@ public class RecipeReviewActivity extends DynamicFocusAppCompatActivity {
         });
 
         adapter = new RecipeReviewAdapter(recipeReviews);
-        LinearLayoutManager cLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager cLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         reviewsRecyclerView.setAdapter(adapter);
         reviewsRecyclerView.setLayoutManager(cLayoutManager);
 
