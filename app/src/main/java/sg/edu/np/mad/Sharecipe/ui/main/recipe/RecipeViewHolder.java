@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.chip.ChipGroup;
 
 import sg.edu.np.mad.Sharecipe.R;
@@ -18,6 +19,7 @@ import sg.edu.np.mad.Sharecipe.ui.view.RecipeViewActivity;
 
 public class RecipeViewHolder extends RecyclerView.ViewHolder {
 
+    final MaterialCardView card;
     final TextView title;
     final TextView info;
     final ImageView icon;
@@ -29,13 +31,14 @@ public class RecipeViewHolder extends RecyclerView.ViewHolder {
     public RecipeViewHolder(@NonNull View itemView) {
         super(itemView);
 
+        card = itemView.findViewById(R.id.recipeCard);
         title = itemView.findViewById(R.id.recipeTitle);
         info = itemView.findViewById(R.id.recipeSecondaryInfo);
         icon = itemView.findViewById(R.id.recipeIconImage);
         tags = itemView.findViewById(R.id.recipeTopTags);
         progressBar = itemView.findViewById(R.id.imageLoadProgress);
 
-        itemView.setOnClickListener(v -> {
+        card.setOnClickListener(v -> {
             Intent viewRecipe = new Intent(itemView.getContext(), RecipeViewActivity.class);
             viewRecipe.putExtra(IntentKeys.RECIPE_VIEW, recipe.getRecipeId());
             itemView.getContext().startActivity(viewRecipe);
