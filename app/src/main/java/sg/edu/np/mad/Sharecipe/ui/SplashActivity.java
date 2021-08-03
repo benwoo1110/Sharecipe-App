@@ -6,9 +6,11 @@ import androidx.core.app.ActivityOptionsCompat;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.contants.RunMode;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 
@@ -18,6 +20,19 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        TextView version = findViewById(R.id.versionText);
+        TextView development = findViewById(R.id.developmentText);
+
+        version.setText(RunMode.VERSION);
+        if (!RunMode.IS_PRODUCTION) {
+            development.setText("Development Build");
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         init();
     }
 
