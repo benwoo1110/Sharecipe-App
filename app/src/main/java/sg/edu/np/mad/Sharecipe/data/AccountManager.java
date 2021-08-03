@@ -171,14 +171,14 @@ public class AccountManager {
      * @return Success status, no actual data returned.
      */
     @NonNull
-    public FutureDataResult<Void> delete() {
+    public FutureDataResult<Void> delete(String password) {
         if (!isLoggedIn()) {
             return FutureDataResult.completed(new DataResult.Failed<>("No account logged in!"));
         }
 
         FutureDataResult<Void> future = new FutureDataResult<>();
 
-        SharecipeRequests.deleteAccountDelete(account.getRefreshToken(), account.getUserId()).onSuccess(response -> {
+        SharecipeRequests.deleteAccountDelete(account.getRefreshToken(), account.getUserId(), password).onSuccess(response -> {
             setAccount(null);
             future.complete(new DataResult.Success<>(null));
         }).onFailed(future).onError(future);

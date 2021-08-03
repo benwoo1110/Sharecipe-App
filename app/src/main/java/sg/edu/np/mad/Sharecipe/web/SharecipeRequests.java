@@ -206,12 +206,14 @@ public class SharecipeRequests {
      */
     @NonNull
     public static FutureWebResponse deleteAccountDelete(@NonNull String refreshToken,
-                                                        int userId) {
+                                                        int userId,
+                                                        String password) {
 
         String payload;
         try {
             payload = new JSONObject()
                     .put("user_id", userId)
+                    .put("password", password)
                     .toString();
         } catch (JSONException e) {
             return FutureWebResponse.failedFuture(e);
