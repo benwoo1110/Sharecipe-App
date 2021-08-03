@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
@@ -37,27 +36,28 @@ public class RecipeReviewAdapter extends RecyclerView.Adapter<RecipeReviewViewho
     @Override
     public void onBindViewHolder(@NotNull RecipeReviewViewholder holder, int position) {
         RecipeReview review = reviews.get(position);
-        holder.review.setText(review.getComment());
-        holder.score.setText(review.getRating() + " / 5");
+        holder.review = review;
+        holder.comment.setText(review.getComment());
+        holder.rating.setText(review.getRating() + " / 5");
 
         App.getUserManager().get(review.getUserId()).onSuccess(user -> {
             new Handler(Looper.getMainLooper()).post(() -> {
                 holder.username.setText(user.getUsername());
-            });
 
-            if (user.getProfileImageId() != null) {
-                holder.profilePic.setImageBitmap(null);
-                holder.progressBar.setVisibility(View.VISIBLE);
-                App.getUserManager().getProfileImage(user).onSuccess(bitmap -> {
-                    new Handler(Looper.getMainLooper()).post(() -> {
-                        holder.progressBar.setVisibility(View.GONE);
-                        holder.profilePic.setImageBitmap(bitmap);
+                if (user.getProfileImageId() != null) {
+                    holder.profilePic.setImageBitmap(null);
+                    holder.progressBar.setVisibility(View.VISIBLE);
+                    App.getUserManager().getProfileImage(user).onSuccess(bitmap -> {
+                        new Handler(Looper.getMainLooper()).post(() -> {
+                            holder.progressBar.setVisibility(View.GONE);
+                            holder.profilePic.setImageBitmap(bitmap);
+                        });
                     });
-                });
-            } else {
-                holder.progressBar.setVisibility(View.GONE);
-                holder.profilePic.setImageResource(R.drawable.ic_baseline_person_24);
-            }
+                } else {
+                    holder.progressBar.setVisibility(View.GONE);
+                    holder.profilePic.setImageResource(R.drawable.ic_baseline_person_24);
+                }
+            });
         });
     }
 
