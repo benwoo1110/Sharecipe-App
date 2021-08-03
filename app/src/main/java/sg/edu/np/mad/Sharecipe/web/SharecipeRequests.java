@@ -3,7 +3,6 @@ package sg.edu.np.mad.Sharecipe.web;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +12,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.util.List;
 
+import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.Request;
@@ -36,7 +36,7 @@ public class SharecipeRequests {
     @NonNull
     public static FutureWebResponse getHello() {
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.HELLO)
                         .build())
                 .get()
@@ -67,7 +67,7 @@ public class SharecipeRequests {
         }
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.ACCOUNT)
                         .addPathSegment(UrlPath.REGISTER)
                         .build())
@@ -97,7 +97,7 @@ public class SharecipeRequests {
         }
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.ACCOUNT)
                         .addPathSegment(UrlPath.LOGIN)
                         .build())
@@ -126,7 +126,7 @@ public class SharecipeRequests {
         }
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.ACCOUNT)
                         .addPathSegment(UrlPath.REFRESH)
                         .build())
@@ -159,7 +159,7 @@ public class SharecipeRequests {
         }
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.ACCOUNT)
                         .addPathSegment(UrlPath.CHANGE_PASSWORD)
                         .build())
@@ -189,7 +189,7 @@ public class SharecipeRequests {
         }
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.ACCOUNT)
                         .addPathSegment(UrlPath.LOGOUT)
                         .build())
@@ -220,7 +220,7 @@ public class SharecipeRequests {
         }
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.ACCOUNT)
                         .addPathSegment(UrlPath.DELETE)
                         .build())
@@ -241,7 +241,7 @@ public class SharecipeRequests {
                                              @NonNull String username) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addQueryParameter("username", username)
                         .build())
@@ -262,7 +262,7 @@ public class SharecipeRequests {
                                             int userId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addPathSegment(String.valueOf(userId))
                         .build())
@@ -284,7 +284,7 @@ public class SharecipeRequests {
                                               JsonElement userData) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addPathSegment(String.valueOf(userId))
                         .build())
@@ -305,7 +305,7 @@ public class SharecipeRequests {
                                                  int userId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addPathSegment(String.valueOf(userId))
                         .addPathSegment(UrlPath.STATS)
@@ -327,7 +327,7 @@ public class SharecipeRequests {
                                                         int userId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addPathSegment(String.valueOf(userId))
                         .addPathSegment(UrlPath.PROFILE_IMAGE)
@@ -356,7 +356,7 @@ public class SharecipeRequests {
                 .build();
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addPathSegment(String.valueOf(userId))
                         .addPathSegment(UrlPath.PROFILE_IMAGE)
@@ -378,7 +378,7 @@ public class SharecipeRequests {
                                                    int userId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addPathSegment(String.valueOf(userId))
                         .addPathSegment(UrlPath.FOLLOWS)
@@ -400,7 +400,7 @@ public class SharecipeRequests {
                                                      int userId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addPathSegment(String.valueOf(userId))
                         .addPathSegment(UrlPath.FOLLOWERS)
@@ -424,7 +424,7 @@ public class SharecipeRequests {
                                                       int followId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addPathSegment(String.valueOf(userId))
                         .addPathSegment(UrlPath.FOLLOWS)
@@ -448,7 +448,7 @@ public class SharecipeRequests {
                                                        int followId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addPathSegment(String.valueOf(userId))
                         .addPathSegment(UrlPath.FOLLOWS)
@@ -472,7 +472,7 @@ public class SharecipeRequests {
                                                          int followId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addPathSegment(String.valueOf(userId))
                         .addPathSegment(UrlPath.FOLLOWS)
@@ -494,7 +494,7 @@ public class SharecipeRequests {
                                                    int userId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addPathSegment(String.valueOf(userId))
                         .addPathSegment(UrlPath.RECIPES)
@@ -515,7 +515,7 @@ public class SharecipeRequests {
                                                        int userId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.USERS)
                         .addPathSegment(String.valueOf(userId))
                         .addPathSegment(UrlPath.RECIPES)
@@ -535,7 +535,7 @@ public class SharecipeRequests {
     public static FutureWebResponse getRecipes(@NonNull String accessToken) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
@@ -554,7 +554,7 @@ public class SharecipeRequests {
                                                JsonElement recipeData) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
@@ -573,7 +573,7 @@ public class SharecipeRequests {
                                               int recipeId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .build())
@@ -595,7 +595,7 @@ public class SharecipeRequests {
                                                 JsonElement recipeData) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .build())
@@ -615,7 +615,7 @@ public class SharecipeRequests {
                                                 int recipeId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .build())
@@ -635,7 +635,7 @@ public class SharecipeRequests {
                                                   int recipeId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .addPathSegment(UrlPath.ICON)
@@ -667,7 +667,7 @@ public class SharecipeRequests {
         }
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .addPathSegment(UrlPath.IMAGES)
@@ -691,7 +691,7 @@ public class SharecipeRequests {
         System.out.println(imageData.toString());
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .addPathSegment(UrlPath.IMAGES)
@@ -722,7 +722,7 @@ public class SharecipeRequests {
         }
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .addPathSegment(UrlPath.IMAGES)
@@ -743,7 +743,7 @@ public class SharecipeRequests {
                                                    int recipeId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .addPathSegment(UrlPath.LIKES)
@@ -765,7 +765,7 @@ public class SharecipeRequests {
                                                       int userId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .addPathSegment(UrlPath.LIKES)
@@ -788,7 +788,7 @@ public class SharecipeRequests {
                                                        int userId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .addPathSegment(UrlPath.LIKES)
@@ -811,7 +811,7 @@ public class SharecipeRequests {
                                                          int userId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .addPathSegment(UrlPath.LIKES)
@@ -832,7 +832,7 @@ public class SharecipeRequests {
                                                      int recipeId) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .addPathSegment(UrlPath.REVIEWS)
@@ -853,7 +853,7 @@ public class SharecipeRequests {
                                                      JsonElement reviewData) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(String.valueOf(recipeId))
                         .addPathSegment(UrlPath.REVIEWS)
@@ -872,7 +872,7 @@ public class SharecipeRequests {
     public static FutureWebResponse getRecipeTagSuggestions(@NonNull String accessToken) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.RECIPES)
                         .addPathSegment(UrlPath.TAG_SUGGESTIONS)
                         .build())
@@ -892,7 +892,7 @@ public class SharecipeRequests {
                                               @Nullable String queryString) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.SEARCH)
                         .addQueryParameter("search_string", queryString)
                         .build())
@@ -910,11 +910,20 @@ public class SharecipeRequests {
     public static FutureWebResponse getDiscover(@NonNull String accessToken) {
 
         return CLIENT.runAsync(new Request.Builder()
-                .url(UrlPath.newBuilder()
+                .url(newUrlBuilder()
                         .addPathSegment(UrlPath.DISCOVER)
                         .build())
                 .header("Authorization", "Bearer " + accessToken)
                 .get()
                 .build());
+    }
+
+    /**
+     * Creates new url builder instance with default host target.
+     *
+     * @return The url builder.
+     */
+    private static HttpUrl.Builder newUrlBuilder() {
+        return new HttpUrl.Builder().scheme(UrlPath.SCHEME).host(UrlPath.HOST).port(UrlPath.PORT);
     }
 }
