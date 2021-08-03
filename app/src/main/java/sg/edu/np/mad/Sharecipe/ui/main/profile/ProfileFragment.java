@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.common.base.Strings;
 
 import java.util.ArrayList;
 
@@ -164,9 +165,11 @@ public class ProfileFragment extends Fragment {
                 description.setText(user.getBio());
             });
 
-            userManager.getProfileImage(user)
-                    .onSuccess(image -> getActivity().runOnUiThread(() -> profileImage.setImageBitmap(image)))
-                    .onFailedOrError(result -> UiHelper.toastDataResult(getContext(), result));
+            if (!Strings.isNullOrEmpty(user.getProfileImageId())) {
+                userManager.getProfileImage(user)
+                        .onSuccess(image -> getActivity().runOnUiThread(() -> profileImage.setImageBitmap(image)))
+                        .onFailedOrError(result -> UiHelper.toastDataResult(getContext(), result));
+            }
 
             userManager.getStats(user).onSuccess(stats -> {
                 getActivity().runOnUiThread(() -> {

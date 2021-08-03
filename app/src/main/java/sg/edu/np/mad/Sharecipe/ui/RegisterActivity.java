@@ -73,23 +73,29 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
             File imageFile = profileImagePath == null ? null : new File(profileImagePath);
 
             App.getAccountManager().register(usernameText, passwordText, bioText).onSuccess(account -> {
-                App.getUserManager().setAccountProfileImage(imageFile).onFailed(reason -> {
-                    RegisterActivity.this.runOnUiThread(() -> Toast.makeText(RegisterActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show());
-                }).thenAccept(result -> {
-                    Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(
-                            RegisterActivity.this,
-                            android.R.anim.fade_in,
-                            android.R.anim.fade_out
-                    ).toBundle();
-                    Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent, bundle);
-                });
+                if (imageFile == null) {
+                    goToHome();
+                } else {
+                    App.getUserManager().setAccountProfileImage(imageFile)
+                            .onFailedOrError(result -> UiHelper.toastDataResult(RegisterActivity.this, result))
+                            .thenAccept(result -> goToHome());
+                }
             }).onFailedOrError(result -> UiHelper.uiThread(() -> {
                 UiHelper.toastDataResult(RegisterActivity.this, result);
                 signUp.setEnabled(true);
             }));
         });
+    }
+
+    private void goToHome() {
+        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(
+                RegisterActivity.this,
+                android.R.anim.fade_in,
+                android.R.anim.fade_out
+        ).toBundle();
+        Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent, bundle);
     }
 
     @Override
