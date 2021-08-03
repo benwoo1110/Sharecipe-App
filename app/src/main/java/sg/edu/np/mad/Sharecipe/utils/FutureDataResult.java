@@ -2,6 +2,7 @@ package sg.edu.np.mad.Sharecipe.utils;
 
 import java9.util.concurrent.CompletableFuture;
 import java9.util.function.Consumer;
+import sg.edu.np.mad.Sharecipe.contants.RunMode;
 
 /**
  * Wrapper for {@link CompletableFuture} to provide custom result handling of {@link DataResult}.
@@ -32,6 +33,9 @@ public class FutureDataResult<T> extends CompletableFuture<DataResult<T>> {
      */
     public static <T> FutureDataResult<T> completed(T t) {
         return completed(new DataResult.Success<T>(t));
+    }
+
+    public FutureDataResult() {
     }
 
     /**
@@ -81,10 +85,10 @@ public class FutureDataResult<T> extends CompletableFuture<DataResult<T>> {
      * @param consumer  Callback on error thrown.
      * @return The same {@link FutureDataResult} for chaining.
      */
-    public FutureDataResult<T> onError(Consumer<Throwable> consumer) {
+    public FutureDataResult<T> onError(Consumer<DataResult.Error<T>> consumer) {
         this.thenAccept(result -> {
             if (result instanceof DataResult.Error) {
-                consumer.accept(((DataResult.Error<T>)result).getError());
+                consumer.accept((DataResult.Error<T>) result);
             }
         });
         return this;
@@ -97,7 +101,23 @@ public class FutureDataResult<T> extends CompletableFuture<DataResult<T>> {
      * @return The same {@link FutureDataResult} for chaining.
      */
     public FutureDataResult<T> onError(FutureDataResult<?> otherFuture) {
-        onError(throwable -> otherFuture.complete(new DataResult.Error<>(throwable)));
+        onError(errorResult -> otherFuture.complete(new DataResult.Error<>(errorResult)));
+        return this;
+    }
+
+    /**
+     * When result is successful, i.e. can be either {@link DataResult.Failed} or {@link DataResult.Error}.
+     *
+     * @param consumer  Callback on result.
+     * @return The same {@link FutureDataResult} for chaining.
+     */
+    public FutureDataResult<T> onFailedOrError(Consumer<DataResult<T>> consumer) {
+        this.thenAccept(result -> {
+            if (!(result instanceof DataResult.Success)) {
+                consumer.accept(result);
+            }
+        });
+        printErrorForDebug();
         return this;
     }
 
@@ -121,5 +141,14 @@ public class FutureDataResult<T> extends CompletableFuture<DataResult<T>> {
     @Override
     public <U> CompletableFuture<U> newIncompleteFuture() {
         return (CompletableFuture<U>) new FutureDataResult<>();
+    }
+
+    @SuppressWarnings("ThrowableNotThrown")
+    private void printErrorForDebug() {
+        if (RunMode.IS_PRODUCTION) {
+            return;
+        }
+        onFailed(failedResult -> System.out.println("FAILED RESULT: " + failedResult.getMessages()));
+        onError(errorResult -> errorResult.getError().printStackTrace());
     }
 }

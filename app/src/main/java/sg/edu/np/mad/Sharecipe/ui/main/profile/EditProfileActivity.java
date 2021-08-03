@@ -29,6 +29,7 @@ import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
+import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.TextLengthChecker;
@@ -67,8 +68,7 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
 
             userManager.getProfileImage(user)
                     .onSuccess(image -> runOnUiThread(() -> profilePic.setImageBitmap(image)))
-                    .onFailed(reason -> Toast.makeText(this, reason.getMessage(), Toast.LENGTH_SHORT).show())
-                    .onError(Throwable::printStackTrace);
+                    .onFailedOrError(result -> UiHelper.toastDataResult(EditProfileActivity.this, result));
         });
 
         profilePic.setOnClickListener((OnSingleClickListener) v -> ImagePicker.with(EditProfileActivity.this)

@@ -23,12 +23,12 @@ import sg.edu.np.mad.Sharecipe.models.RecipeReview;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.OnTabSelectedListener;
+import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 import sg.edu.np.mad.Sharecipe.ui.view.reviews.RecipeReviewActivity;
 import sg.edu.np.mad.Sharecipe.ui.view.reviews.RecipeReviewAdapter;
 
 public class RecipeViewActivity extends AppCompatActivity {
-    public static int LAUNCH_REVIEW_CREATION = 1;
 
     private boolean ignoreSelect = false;
     private boolean isLiked;
@@ -84,11 +84,9 @@ public class RecipeViewActivity extends AppCompatActivity {
 
             int itemId = item.getItemId();
             if (itemId == R.id.recipe_review_menu) {
-                App.getRecipeManager().get(selectedRecipeId).onSuccess(recipe -> {
-                    Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
-                    review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
-                    startActivity(review);
-                }).onFailed(System.out::println).onError(Throwable::printStackTrace);
+                Intent review = new Intent(RecipeViewActivity.this, RecipeReviewActivity.class);
+                review.putExtra(IntentKeys.RECIPE_REVIEW, recipe);
+                startActivity(review);
             } else if (itemId == R.id.recipe_edit_menu) {
                 Intent editRecipe = new Intent(RecipeViewActivity.this, RecipeCreateActivity.class);
                 editRecipe.putExtra(IntentKeys.RECIPE_EDIT, recipe);
@@ -101,13 +99,19 @@ public class RecipeViewActivity extends AppCompatActivity {
                 if (isLiked) {
                     App.getRecipeManager().accountUnlikeRecipe(recipe).onSuccess(aVoid -> {
                         isLiked = false;
-                        runOnUiThread(() -> updateLikeItem(item));
-                    }).onFailed(System.out::println).onError(Throwable::printStackTrace);
+                        runOnUiThread(() -> {
+                            updateLikeItem(item);
+                            Toast.makeText(RecipeViewActivity.this, "Unliked", Toast.LENGTH_SHORT).show();
+                        });
+                    }).onFailedOrError(result -> UiHelper.toastDataResult(RecipeViewActivity.this, result));
                 } else {
                     App.getRecipeManager().accountLikeRecipe(recipe).onSuccess(aVoid -> {
                         isLiked = true;
-                        runOnUiThread(() -> updateLikeItem(item));
-                    }).onFailed(System.out::println).onError(Throwable::printStackTrace);
+                        runOnUiThread(() -> {
+                            updateLikeItem(item);
+                            Toast.makeText(RecipeViewActivity.this, "Liked", Toast.LENGTH_SHORT).show();
+                        });
+                    }).onFailedOrError(result -> UiHelper.toastDataResult(RecipeViewActivity.this, result));
                 }
             }
             return false;
@@ -142,12 +146,12 @@ public class RecipeViewActivity extends AppCompatActivity {
                 });
             });
 
-        }).onFailed(failed -> {
+        }).onFailedOrError(failed -> {
             runOnUiThread(() -> {
                 Toast.makeText(RecipeViewActivity.this, "Failed to load recipe.", Toast.LENGTH_SHORT).show();
                 finish();
             });
-        }).onError(Throwable::printStackTrace);
+        });
     }
 
     private void updateLikeItem(MenuItem likeItem) {

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 
 public class SplashActivity extends AppCompatActivity {
@@ -31,18 +32,18 @@ public class SplashActivity extends AppCompatActivity {
             Intent intent = new Intent(SplashActivity.this, MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent, bundle);
-        }).onFailed(reason -> {
-            SplashActivity.this.runOnUiThread(() -> Toast.makeText(SplashActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show());
+        }).onFailed(failResult -> {
+            UiHelper.toastDataResult(SplashActivity.this, failResult);
             Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent, bundle);
-        }).onError(error -> SplashActivity.this.runOnUiThread(this::showErrorDialog));
+        }).onError(error -> UiHelper.uiThread(this::showErrorDialog));
     }
 
     private void showErrorDialog() {
         new AlertDialog.Builder(SplashActivity.this)
-                .setTitle("Whoops!")
-                .setMessage("Server error. Make sure you are connected to the internet.")
+                .setTitle("Oh no ;(")
+                .setMessage("Server error! Make sure you are connected to the internet.")
                 .setCancelable(false)
                 .setPositiveButton("try again", (dialog, which) -> {
                     init();

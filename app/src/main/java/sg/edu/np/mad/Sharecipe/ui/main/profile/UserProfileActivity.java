@@ -22,6 +22,7 @@ import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
+import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.ui.main.recipe.UserRecipeActivity;
 
 public class UserProfileActivity extends AppCompatActivity {
@@ -71,8 +72,7 @@ public class UserProfileActivity extends AppCompatActivity {
 
             userManager.getProfileImage(user)
                     .onSuccess(image -> runOnUiThread(() -> profileImage.setImageBitmap(image)))
-                    .onFailed(reason -> runOnUiThread(() -> Toast.makeText(UserProfileActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show()))
-                    .onError(Throwable::printStackTrace);
+                    .onFailedOrError(result -> UiHelper.toastDataResult(UserProfileActivity.this, result));
 
             userManager.getStats(user).onSuccess(stats -> {
                 UserProfileActivity.this.runOnUiThread(() -> {

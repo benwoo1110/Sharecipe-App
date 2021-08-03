@@ -13,10 +13,12 @@ import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
+import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.ConfirmMatchCheck;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.TextLengthChecker;
+import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 
 public class EditPasswordActivity extends DynamicFocusAppCompatActivity {
 
@@ -40,8 +42,7 @@ public class EditPasswordActivity extends DynamicFocusAppCompatActivity {
         userManager.getAccountUser().onSuccess(user -> {
             userManager.getProfileImage(user)
                     .onSuccess(image -> runOnUiThread(() -> profileImage.setImageBitmap(image)))
-                    .onFailed(reason -> Toast.makeText(this, reason.getMessage(), Toast.LENGTH_SHORT).show())
-                    .onError(Throwable::printStackTrace);
+                    .onFailedOrError(result -> UiHelper.toastDataResult(EditPasswordActivity.this, result));
         });
 
         updateButton.setOnClickListener((OnSingleClickListener) v -> {

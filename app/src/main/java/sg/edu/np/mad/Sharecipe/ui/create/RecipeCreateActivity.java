@@ -29,8 +29,10 @@ import sg.edu.np.mad.Sharecipe.models.ImageRef;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
+import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.OnTabSelectedListener;
+import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 
 public class RecipeCreateActivity extends DynamicFocusAppCompatActivity {
 
@@ -111,9 +113,8 @@ public class RecipeCreateActivity extends DynamicFocusAppCompatActivity {
                 deleteImageGroup.setImageIds(imageRefs);
 
                 CompletableFuture.allOf(
-                        App.getRecipeManager().removeImages(updatedRecipe, deleteImageGroup).onFailed(recipeFailed -> {
-                            RecipeCreateActivity.this.runOnUiThread(() -> Toast.makeText(RecipeCreateActivity.this, recipeFailed.getMessage(), Toast.LENGTH_SHORT).show());
-                        }).onError(Throwable::printStackTrace),
+                        App.getRecipeManager().removeImages(updatedRecipe, deleteImageGroup)
+                                .onFailedOrError(result -> UiHelper.toastDataResult(RecipeCreateActivity.this, result)),
                         App.getRecipeManager().addImages(updatedRecipe, imageFiles)
                 ).thenAccept(aVoid -> {
                     App.getRecipeManager().invalidateRecipe(updatedRecipe);
@@ -125,9 +126,7 @@ public class RecipeCreateActivity extends DynamicFocusAppCompatActivity {
                         finish();
                     });
                 });
-            }).onFailed(recipeFailed -> {
-                RecipeCreateActivity.this.runOnUiThread(() -> Toast.makeText(RecipeCreateActivity.this, recipeFailed.getMessage(), Toast.LENGTH_SHORT).show());
-            });
+            }).onFailedOrError(result -> UiHelper.toastDataResult(RecipeCreateActivity.this, result));
         }
         else {
             App.getRecipeManager().create(recipe).onSuccess(createdRecipe -> {
@@ -141,9 +140,7 @@ public class RecipeCreateActivity extends DynamicFocusAppCompatActivity {
                         finish();
                     });
                 });
-            }).onFailed(recipeFailed -> {
-                RecipeCreateActivity.this.runOnUiThread(() -> Toast.makeText(RecipeCreateActivity.this, recipeFailed.getMessage(), Toast.LENGTH_SHORT).show());
-            });
+            }).onFailedOrError(result -> UiHelper.toastDataResult(RecipeCreateActivity.this, result));
         }
     }
 

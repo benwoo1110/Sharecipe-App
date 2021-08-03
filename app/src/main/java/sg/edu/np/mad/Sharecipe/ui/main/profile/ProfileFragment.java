@@ -28,6 +28,7 @@ import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
+import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
 
@@ -165,8 +166,7 @@ public class ProfileFragment extends Fragment {
 
             userManager.getProfileImage(user)
                     .onSuccess(image -> getActivity().runOnUiThread(() -> profileImage.setImageBitmap(image)))
-                    .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
-                    .onError(Throwable::printStackTrace);
+                    .onFailedOrError(result -> UiHelper.toastDataResult(getContext(), result));
 
             userManager.getStats(user).onSuccess(stats -> {
                 getActivity().runOnUiThread(() -> {

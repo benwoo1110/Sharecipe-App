@@ -19,6 +19,7 @@ import java.io.File;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
+import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.ConfirmMatchCheck;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
@@ -84,17 +85,10 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent, bundle);
                 });
-            }).onFailed(reason -> {
-                RegisterActivity.this.runOnUiThread(() -> {
-                    Toast.makeText(RegisterActivity.this, reason.getMessage(), Toast.LENGTH_SHORT).show();
-                    signUp.setEnabled(true);
-                });
-            }).onError(error -> {
-                RegisterActivity.this.runOnUiThread(() -> {
-                    Toast.makeText(RegisterActivity.this, "Server error ;(", Toast.LENGTH_SHORT).show();
-                    signUp.setEnabled(true);
-                });
-            });
+            }).onFailedOrError(result -> UiHelper.uiThread(() -> {
+                UiHelper.toastDataResult(RegisterActivity.this, result);
+                signUp.setEnabled(true);
+            }));
         });
     }
 

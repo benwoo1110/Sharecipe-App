@@ -24,6 +24,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.SectionAdapter;
+import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
+import sg.edu.np.mad.Sharecipe.ui.main.profile.EditPasswordActivity;
 
 public class SearchFragment extends Fragment {
 
@@ -95,9 +97,7 @@ public class SearchFragment extends Fragment {
                             shimmerFrameLayout.setVisibility(View.GONE);
                         });
                         hasDoneSearch = true;
-                    })
-                    .onFailed(reason -> getActivity().runOnUiThread(() -> Toast.makeText(getContext(), reason.getMessage(), Toast.LENGTH_SHORT).show()))
-                    .onError(Throwable::printStackTrace);
+                    }).onFailedOrError(result -> UiHelper.toastDataResult(getContext(), result));
 
             return true;
         });

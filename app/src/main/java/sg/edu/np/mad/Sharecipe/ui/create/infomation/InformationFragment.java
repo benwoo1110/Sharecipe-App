@@ -43,6 +43,8 @@ import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeTag;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
+import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
+import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
 public class InformationFragment extends Fragment {
@@ -122,7 +124,7 @@ public class InformationFragment extends Fragment {
                 );
                 tags.setAdapter(tagAdapter);
             });
-        }).onFailed(System.out::println).onError(Throwable::printStackTrace);
+        });
 
         tags.setOnItemClickListener((parent, view1, position, id) -> {
             createRecipientChip(tagAdapter.getItem(position));

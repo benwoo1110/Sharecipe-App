@@ -12,6 +12,13 @@ import java9.util.Optional;
 public abstract class DataResult<T> {
 
     /**
+     * Short phase/sentence of what happened while fetching data.
+     *
+     * @return Result message that can be shown to user.
+     */
+    public abstract String getMessage();
+
+    /**
      * When data is successfully received.
      *
      * @param <T>   Data type to get if result successful.
@@ -30,6 +37,11 @@ public abstract class DataResult<T> {
          */
         public T getData() {
             return data;
+        }
+
+        @Override
+        public String getMessage() {
+            return "Succeeded!";
         }
     }
 
@@ -55,26 +67,21 @@ public abstract class DataResult<T> {
             }};
         }
 
-        public String getMessage() {
-            return messages.containsKey("message") ? String.valueOf(messages.get("message")) : "Unknown issue occurred.";
+        public Map<String, Object> getMessages() {
+            return messages;
         }
 
         public <C> Optional<C> get(String key, Class<C> cClass) {
             try {
-                return Optional.ofNullable(cClass.cast(messages.get("message")));
+                return Optional.ofNullable(cClass.cast(messages.get(key)));
             } catch (ClassCastException e) {
                 return Optional.empty();
             }
         }
 
-        /**
-         * The reason for the issue to occur.
-         *
-         * @return The reason.
-         */
-        @Deprecated
-        public String getReason() {
-            return getMessage();
+        @Override
+        public String getMessage() {
+            return messages.containsKey("message") ? String.valueOf(messages.get("message")) : "An unknown issue occurred.";
         }
 
         @Override
@@ -93,6 +100,10 @@ public abstract class DataResult<T> {
     public static class Error<T> extends DataResult<T> {
         private final Throwable error;
 
+        public Error(Error<?> otherError) {
+            this.error = otherError.error;
+        }
+
         public Error(Throwable error) {
             this.error = error;
         }
@@ -104,6 +115,18 @@ public abstract class DataResult<T> {
          */
         public Throwable getError() {
             return this.error;
+        }
+
+        @Override
+        public String getMessage() {
+            return "An unknown server error occurred ;(";
+        }
+
+        @Override
+        public String toString() {
+            return "Error{" +
+                    "error=" + error +
+                    '}';
         }
     }
 }
