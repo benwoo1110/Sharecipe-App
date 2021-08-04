@@ -48,6 +48,7 @@
                 android:text="User"
                 android:textSize="20sp"
                 android:textStyle="bold"
+                android:fontFamily="@font/quicksand_regular"
                 app:layout_constraintStart_toEndOf="@+id/profilepicUser_review"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,6 +64,7 @@
                 android:minLines="2"
                 android:text="No content."
                 android:textSize="16sp"
+                android:fontFamily="@font/quicksand_regular"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/profilepicUser_review"
@@ -75,6 +77,7 @@
                 android:layout_marginStart="12dp"
                 android:text="- / 5"
                 android:textSize="16sp"
+                android:fontFamily="@font/quicksand_regular"
                 app:layout_constraintBottom_toBottomOf="@+id/usernameUser_review"
                 app:layout_constraintStart_toEndOf="@+id/usernameUser_review"
                 app:layout_constraintTop_toTopOf="@+id/usernameUser_review" />
