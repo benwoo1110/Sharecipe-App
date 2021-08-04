@@ -175,16 +175,16 @@ public class UserManager {
      * @param user  The target user.
      * @return Future result of follow data.
      */
-    public FutureDataResult<List<UserFollow>> getFollows(User user) {
-        FutureDataResult<List<UserFollow>> future = new FutureDataResult<>();
+    public FutureDataResult<List<User>> getFollows(User user) {
+        FutureDataResult<List<User>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getUserFollows(account.getAccessToken(), user.getUserId()).onSuccessJson(future, (response, json) -> {
-                List<UserFollow> followList = new ArrayList<>();
-                for (JsonElement followData : json.getAsJsonArray()) {
-                    followList.add(JsonUtils.convertToObject(followData, UserFollow.class));
+                List<User> userList = new ArrayList<>();
+                for (JsonElement userData : json.getAsJsonArray()) {
+                    userList.add(JsonUtils.convertToObject(userData, User.class));
                 }
-                future.complete(new DataResult.Success<>(followList));
+                future.complete(new DataResult.Success<>(userList));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
 
@@ -197,16 +197,16 @@ public class UserManager {
      * @param user  The target user.
      * @return Future result of followers data.
      */
-    public FutureDataResult<List<UserFollow>> getFollowers(User user) {
-        FutureDataResult<List<UserFollow>> future = new FutureDataResult<>();
+    public FutureDataResult<List<User>> getFollowers(User user) {
+        FutureDataResult<List<User>> future = new FutureDataResult<>();
 
         accountManager.getOrRefreshAccount().onSuccess(account -> {
             SharecipeRequests.getUserFollowers(account.getAccessToken(), user.getUserId()).onSuccessJson(future, (response, json) -> {
-                List<UserFollow> followList = new ArrayList<>();
-                for (JsonElement followData : json.getAsJsonArray()) {
-                    followList.add(JsonUtils.convertToObject(followData, UserFollow.class));
+                List<User> userList = new ArrayList<>();
+                for (JsonElement userData : json.getAsJsonArray()) {
+                    userList.add(JsonUtils.convertToObject(userData, User.class));
                 }
-                future.complete(new DataResult.Success<>(followList));
+                future.complete(new DataResult.Success<>(userList));
             }).onFailed(future).onError(future);
         }).onFailed(future).onError(future);
 

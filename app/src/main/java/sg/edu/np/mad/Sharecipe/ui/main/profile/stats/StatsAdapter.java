@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.main.profile;
+package sg.edu.np.mad.Sharecipe.ui.main.profile.stats;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +11,15 @@ import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Stats;
+import sg.edu.np.mad.Sharecipe.models.User;
 
 public class StatsAdapter extends RecyclerView.Adapter<StatsViewHolder> {
 
+    private User user;
     private final List<Stats> statsList;
 
-    public StatsAdapter(@NonNull List<Stats> statsList) {
+    public StatsAdapter(User user, @NonNull List<Stats> statsList) {
+        this.user = user;
         this.statsList = statsList;
     }
 
@@ -24,7 +27,18 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsViewHolder> {
     @Override
     public StatsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.view_holder_stats, parent, false);
-        return new StatsViewHolder(view);
+        StatsViewHolder holder = new StatsViewHolder(view);
+
+        // Dynamic on click action
+        holder.card.setOnClickListener(v -> {
+            if (user == null) {
+                // Just in case user have load.
+                return;
+            }
+            holder.action.onClick(holder.itemView.getContext(), user);
+        });
+
+        return holder;
     }
 
     @Override
@@ -32,6 +46,7 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsViewHolder> {
         Stats stats = statsList.get(position);
         holder.name.setText(stats.getName());
         holder.number.setText(String.valueOf(stats.getNumber()));
+        holder.action = StatsActions.forType(stats.getStatsType());
     }
 
     @Override
@@ -43,5 +58,9 @@ public class StatsAdapter extends RecyclerView.Adapter<StatsViewHolder> {
         this.statsList.clear();
         this.statsList.addAll(statsList);
         notifyDataSetChanged();
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

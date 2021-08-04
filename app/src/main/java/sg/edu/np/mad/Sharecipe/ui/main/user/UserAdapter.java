@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.main.search;
+package sg.edu.np.mad.Sharecipe.ui.main.user;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -68,5 +68,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserViewHolder> {
     public void setUserList(List<User> newUsers) {
         userList.clear();
         userList.addAll(newUsers);
+        notifyDataSetChanged();
     }
 }

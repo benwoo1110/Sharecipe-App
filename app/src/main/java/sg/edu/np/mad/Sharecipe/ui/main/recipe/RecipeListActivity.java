@@ -9,7 +9,7 @@ import android.widget.Toast;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 
-public class UserRecipeActivity extends AppCompatActivity {
+public class RecipeListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +21,7 @@ public class UserRecipeActivity extends AppCompatActivity {
         boolean showLiked = data.getBooleanExtra(IntentKeys.RECIPE_SHOW_LIKED, false);
 
         if (userId == -1) {
-            Toast.makeText(UserRecipeActivity.this, "Invalid user.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RecipeListActivity.this, "Invalid user.", Toast.LENGTH_SHORT).show();
             finish();
             return;
         }

@@ -22,12 +22,14 @@ import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
+import sg.edu.np.mad.Sharecipe.ui.main.profile.stats.StatsAdapter;
 
 public class PartialProfileFragment extends Fragment {
 
     private final int userId;
 
     private User user;
+    private OnUserLoadedListener userLoadedListener;
 
     private boolean isFirstTime = true;
     private TextView username;
@@ -54,7 +56,7 @@ public class PartialProfileFragment extends Fragment {
         profileImage = view.findViewById(R.id.profileImage);
         gridStatsView = view.findViewById(R.id.statsRecyclerView);
 
-        adapter = new StatsAdapter(new ArrayList<>());
+        adapter = new StatsAdapter(user, new ArrayList<>());
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_from_bottom);
         gridStatsView.setAdapter(adapter);
@@ -70,7 +72,12 @@ public class PartialProfileFragment extends Fragment {
 
         UserManager userManager = App.getUserManager();
         userManager.get(userId).onSuccess(user -> {
+            if (userLoadedListener != null) {
+                userLoadedListener.onLoaded(user);
+            }
+
             PartialProfileFragment.this.user = user;
+            adapter.setUser(user);
 
             getActivity().runOnUiThread(() -> {
                 username.setText(user.getUsername());
@@ -95,11 +102,20 @@ public class PartialProfileFragment extends Fragment {
         });
     }
 
+    public void setUserLoadedListener(OnUserLoadedListener userLoadedListener) {
+        this.userLoadedListener = userLoadedListener;
+    }
+
     public int getUserId() {
         return userId;
     }
 
     public User getUser() {
         return user;
+    }
+
+    @FunctionalInterface
+    interface OnUserLoadedListener {
+        void onLoaded(User user);
     }
 }

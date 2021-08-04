@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.main.search;
+package sg.edu.np.mad.Sharecipe.ui.main.user;
 
 import android.content.Context;
 import android.content.Intent;

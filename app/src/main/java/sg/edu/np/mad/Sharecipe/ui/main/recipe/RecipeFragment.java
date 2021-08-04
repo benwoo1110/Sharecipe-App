@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -30,7 +29,6 @@ import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
-import sg.edu.np.mad.Sharecipe.ui.main.profile.EditPasswordActivity;
 
 public class RecipeFragment extends Fragment {
 
@@ -91,7 +89,7 @@ public class RecipeFragment extends Fragment {
                     return false;
                 }
 
-                Intent intent = new Intent(getContext(), UserRecipeActivity.class);
+                Intent intent = new Intent(getContext(), RecipeListActivity.class);
                 intent.putExtra(IntentKeys.USER_ID, userId);
                 intent.putExtra(IntentKeys.RECIPE_SHOW_LIKED, true);
                 startActivity(intent);

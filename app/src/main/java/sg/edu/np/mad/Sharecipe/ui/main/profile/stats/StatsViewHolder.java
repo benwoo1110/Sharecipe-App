@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.main.profile;
+package sg.edu.np.mad.Sharecipe.ui.main.profile.stats;
 
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
@@ -20,6 +20,8 @@ public class StatsViewHolder extends RecyclerView.ViewHolder {
     final MaterialCardView card;
     final TextView name;
     final TextView number;
+
+    StatsAction action;
 
     public StatsViewHolder(@NonNull View itemView) {
         super(itemView);
