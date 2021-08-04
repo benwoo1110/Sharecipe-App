@@ -156,7 +156,6 @@ public class RecipeFragment extends Fragment {
         Recipe recipe = (Recipe) data.getSerializableExtra(IntentKeys.RECIPE_SAVE);
         recipeAdapter.addRecipe(recipe);
         App.getRecipeManager().getIcon(recipe)
-                .onSuccess(recipe::setIconEE)
                 .thenAccept(result -> getActivity().runOnUiThread(() ->  recipeAdapter.notifyItemChanged(recipeAdapter.getRecipeList().size())));
     }
 }
