@@ -21,6 +21,7 @@ import sg.edu.np.mad.Sharecipe.models.Discover;
 import sg.edu.np.mad.Sharecipe.models.DiscoverSection;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.SectionAdapter;
+import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 
 public class DiscoverFragment extends Fragment {
@@ -86,6 +87,14 @@ public class DiscoverFragment extends Fragment {
                 discoverRecyclerView.setAdapter(adapter);
                 discoverRecyclerView.scheduleLayoutAnimation();
                 discoverRefresh.setRefreshing(false);
+            });
+        }).onFailedOrError(result -> {
+            getActivity().runOnUiThread(() -> {
+                UiHelper.toastDataResult(getContext(), result);
+                discoverRefresh.setRefreshing(false);
+                discoverRecyclerView.setVisibility(View.GONE);
+                shimmerFrameLayout.stopShimmer();
+                shimmerFrameLayout.setVisibility(View.GONE);
             });
         });
     }

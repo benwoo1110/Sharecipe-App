@@ -76,12 +76,14 @@ public class UserListActivity extends AppCompatActivity {
         }
 
         shimmerFrameLayout.setVisibility(View.VISIBLE);
+        shimmerFrameLayout.startShimmer();
         usersView.setVisibility(View.GONE);
         noUsersMessage.setVisibility(View.GONE);
 
         futureUsers.onSuccess(users -> {
             runOnUiThread(() -> {
                 shimmerFrameLayout.setVisibility(View.GONE);
+                shimmerFrameLayout.stopShimmer();
                 adapter.setUserList(users);
                 if (users.size() > 0) {
                     usersView.setVisibility(View.VISIBLE);
