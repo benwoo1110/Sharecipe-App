@@ -15,6 +15,7 @@ import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
+import sg.edu.np.mad.Sharecipe.ui.common.textchecks.InputResult;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
 import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 
@@ -38,26 +39,25 @@ public class LoginActivity extends DynamicFocusAppCompatActivity {
         login.setOnClickListener((OnSingleClickListener) v -> {
             hideSoftKeyBoard();
 
-            if (!checkGroup.checkAll()) {
+            InputResult inputResult = checkGroup.parseInputs();
+            if (!inputResult.passedAllChecks()) {
                 login.setEnabled(true);
                 return;
             }
 
-            App.getAccountManager().login(username.getEditText().getText().toString(), password.getEditText().getText().toString())
-                    .onSuccess(result -> {
-                        Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(
-                                LoginActivity.this,
-                                android.R.anim.fade_in,
-                                android.R.anim.fade_out
-                        ).toBundle();
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent, bundle);
-                    })
-                    .onFailedOrError(result -> UiHelper.uiThread(() -> {
-                        UiHelper.toastDataResult(LoginActivity.this, result);
-                        login.setEnabled(true);
-                    }));
+            App.getAccountManager().login(inputResult.get(username), inputResult.get(password)).onSuccess(result -> {
+                Bundle bundle = ActivityOptionsCompat.makeCustomAnimation(
+                        LoginActivity.this,
+                        android.R.anim.fade_in,
+                        android.R.anim.fade_out
+                ).toBundle();
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent, bundle);
+            }).onFailedOrError(result -> UiHelper.uiThread(() -> {
+                login.setEnabled(true);
+                UiHelper.toastDataResult(LoginActivity.this, result);
+            }));
         });
 
         signUpNow.setOnClickListener(v -> {

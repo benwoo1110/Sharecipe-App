@@ -31,6 +31,7 @@ import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
+import sg.edu.np.mad.Sharecipe.ui.common.textchecks.InputResult;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
 
 public class ProfileFragment extends Fragment {
@@ -126,12 +127,13 @@ public class ProfileFragment extends Fragment {
                     .show();
 
             confirmDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v1 -> {
-                if (!checkGroup.checkAll()) {
+                InputResult inputResult = checkGroup.parseInputs();
+                if (!inputResult.passedAllChecks()) {
                     return;
                 }
+
                 Toast.makeText(getContext(), "Deleting account...", Toast.LENGTH_SHORT).show();
-                String passwordText = confirmInput.getEditText().getText().toString();
-                App.getAccountManager().delete(passwordText).onSuccess(aVoid -> {
+                App.getAccountManager().delete(inputResult.get(confirmInput)).onSuccess(aVoid -> {
                     getActivity().runOnUiThread(() -> {
                         Toast.makeText(getContext(), "Account deleted", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getContext(), LoginActivity.class);

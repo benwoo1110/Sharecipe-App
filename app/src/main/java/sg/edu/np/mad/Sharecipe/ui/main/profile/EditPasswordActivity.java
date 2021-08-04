@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.common.base.Strings;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
@@ -16,6 +17,7 @@ import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.ConfirmMatchCheck;
+import sg.edu.np.mad.Sharecipe.ui.common.textchecks.InputResult;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.TextLengthChecker;
 import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
@@ -40,13 +42,16 @@ public class EditPasswordActivity extends DynamicFocusAppCompatActivity {
 
         UserManager userManager = App.getUserManager();
         userManager.getAccountUser().onSuccess(user -> {
-            userManager.getProfileImage(user)
-                    .onSuccess(image -> runOnUiThread(() -> profileImage.setImageBitmap(image)))
-                    .onFailedOrError(result -> UiHelper.toastDataResult(EditPasswordActivity.this, result));
+            if (!Strings.isNullOrEmpty(user.getProfileImageId())) {
+                userManager.getProfileImage(user)
+                        .onSuccess(image -> runOnUiThread(() -> profileImage.setImageBitmap(image)))
+                        .onFailedOrError(result -> UiHelper.toastDataResult(EditPasswordActivity.this, result));
+            }
         });
 
         updateButton.setOnClickListener((OnSingleClickListener) v -> {
-            if (!checkGroup.checkAll()) {
+            InputResult inputResult = checkGroup.parseInputs();
+            if (!inputResult.passedAllChecks()) {
                 updateButton.setEnabled(true);
                 return;
             }
@@ -56,14 +61,16 @@ public class EditPasswordActivity extends DynamicFocusAppCompatActivity {
                     .setMessage("Are you sure you want to save changes?").setCancelable(false)
                     .setCancelable(false)
                     .setPositiveButton("Save", (dialog, which) -> {
-                        String oldPasswordText = oldPassword.getEditText().getText().toString();
-                        String newPasswordText = newPassword.getEditText().getText().toString();
-
-                        Toast.makeText(EditPasswordActivity.this, "Saving", Toast.LENGTH_SHORT).show();
-                        App.getAccountManager().changePassword(oldPasswordText, newPasswordText).onSuccess(aVoid -> {
+                        Toast.makeText(EditPasswordActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
+                        App.getAccountManager().changePassword(inputResult.get(oldPassword), inputResult.get(newPassword)).onSuccess(aVoid -> {
                             runOnUiThread(() -> {
                                 Toast.makeText(EditPasswordActivity.this, "Saved", Toast.LENGTH_SHORT).show();
                                 finish();
+                            });
+                        }).onFailedOrError(result -> {
+                            runOnUiThread(() -> {
+                                UiHelper.toastDataResult(EditPasswordActivity.this, result);
+                                updateButton.setEnabled(true);
                             });
                         });
                     })

@@ -22,6 +22,7 @@ import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.ConfirmMatchCheck;
+import sg.edu.np.mad.Sharecipe.ui.common.textchecks.InputResult;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.TextLengthChecker;
 import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
@@ -61,18 +62,15 @@ public class RegisterActivity extends DynamicFocusAppCompatActivity {
         signUp.setOnClickListener((OnSingleClickListener) v -> {
             hideSoftKeyBoard();
 
-            if (!checkGroup.checkAll()) {
+            InputResult inputResult = checkGroup.parseInputs();
+            if (!inputResult.passedAllChecks()) {
                 signUp.setEnabled(true);
                 return;
             }
 
-            String usernameText = username.getEditText().getText().toString();
-            String bioText = bio.getEditText().getText().toString();
-            String passwordText = password.getEditText().getText().toString();
-
             File imageFile = profileImagePath == null ? null : new File(profileImagePath);
 
-            App.getAccountManager().register(usernameText, passwordText, bioText).onSuccess(account -> {
+            App.getAccountManager().register(inputResult.get(username), inputResult.get(password), inputResult.get(bio)).onSuccess(account -> {
                 if (imageFile == null) {
                     goToHome();
                 } else {

@@ -137,8 +137,8 @@ public class AccountManager {
         refresh().onSuccess(refreshedAccount -> {
             SharecipeRequests.postChangePassword(refreshedAccount.getRefreshToken(), oldPassword, newPassword).onSuccess(response -> {
                 future.complete(new DataResult.Success<>(null));
-            });
-        });
+            }).onFailed(future).onError(future);
+        }).onFailed(future).onError(future);
 
         return future;
     }

@@ -62,4 +62,27 @@ public class CheckGroup {
         }
         return passCheck;
     }
+
+    public InputResult parseInputs() {
+        return parseInputs(true);
+    }
+
+    public InputResult parseInputs(boolean continueOnFail) {
+        InputResult inputResult = new InputResult();
+        inputResult.passedAllChecks = true;
+
+        for (TextInputLayout inputLayout : inputCheckers.keySet()) {
+            for (Checker checker : inputCheckers.get(inputLayout)) {
+                if (!checker.check()) {
+                    inputResult.passedAllChecks = false;
+                    if (!continueOnFail) {
+                        return inputResult;
+                    }
+                }
+            }
+            inputResult.inputMap.put(inputLayout, inputLayout.getEditText().getText().toString());
+        }
+
+        return inputResult;
+    }
 }
