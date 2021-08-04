@@ -3,9 +3,11 @@ package sg.edu.np.mad.Sharecipe.ui;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +18,7 @@ import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,9 +27,11 @@ public class SplashActivity extends AppCompatActivity {
         TextView version = findViewById(R.id.versionText);
         TextView development = findViewById(R.id.developmentText);
 
-        version.setText(RunMode.VERSION);
+        version.setText("Version " + RunMode.VERSION);
         if (!RunMode.IS_PRODUCTION) {
             development.setText("Development Build");
+        } else {
+            development.setVisibility(View.GONE);
         }
     }
 
