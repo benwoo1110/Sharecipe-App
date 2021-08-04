@@ -52,7 +52,7 @@
             app:srcCompat="@drawable/done" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editUsername"
+            android:id="@+id/input_StepDesc"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,7 +71,6 @@
             app:startIconDrawable="@drawable/ic_baseline_info_24">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/input_StepDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>

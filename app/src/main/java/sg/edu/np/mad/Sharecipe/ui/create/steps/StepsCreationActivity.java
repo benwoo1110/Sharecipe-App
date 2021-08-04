@@ -12,51 +12,60 @@ import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.Strings;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
+import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
+import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
+import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
+import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
+import sg.edu.np.mad.Sharecipe.ui.common.textchecks.TextLengthChecker;
 
-public class StepsCreationActivity extends AppCompatActivity {
+public class StepsCreationActivity extends DynamicFocusAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps_creation);
 
-        TextView displayStepNo = findViewById(R.id.display_StepNum);
-        MaterialButton close = findViewById(R.id.buttonCloseStep);
-        MaterialButton save = findViewById(R.id.buttonSaveStep);
-        TextInputEditText input = findViewById(R.id.input_StepDesc);
-
         Intent data = getIntent();
         RecipeStep step = (RecipeStep) data.getSerializableExtra(IntentKeys.RECIPE_STEP_EDIT);
 
+        TextView displayStepNo = findViewById(R.id.display_StepNum);
+        MaterialButton close = findViewById(R.id.buttonCloseStep);
+        MaterialButton save = findViewById(R.id.buttonSaveStep);
+        TextInputLayout input = findViewById(R.id.input_StepDesc);
+
+        CheckGroup checkGroup = new CheckGroup()
+                .add(input, new RequiredFieldCheck(), new TextLengthChecker(8, 1024));
+
         displayStepNo.setText("Step " + step.getStepNumber());
-        input.setText(step.getDescription());
+        input.getEditText().setText(step.getDescription());
 
         String originalDesc = step.getDescription();
 
-        input.addTextChangedListener((AfterTextChangedWatcher) s -> step.setDescription(s.toString()));
+        input.getEditText().addTextChangedListener((AfterTextChangedWatcher) s -> step.setDescription(s.toString()));
 
         close.setOnClickListener(v -> {
-            if (input.getText().toString().equals(originalDesc)) {
+            if (input.getEditText().getText().toString().equals(originalDesc)) {
                 finish();
-            } else if (input.getText().toString().equals("")) {
+            } else if (input.getEditText().getText().toString().equals("")) {
                 finish();
             } else {
                 checkSaveDialog(step, originalDesc);
             }
         });
 
-        save.setOnClickListener(v -> {
-            if (Strings.isNullOrEmpty(step.getDescription())) {
-                Toast.makeText(StepsCreationActivity.this, "You have not typed in anything", Toast.LENGTH_SHORT).show();
-            } else {
-                saveInput(step);
+        save.setOnClickListener((OnSingleClickListener) v -> {
+            if (!checkGroup.checkAll()) {
+                save.setEnabled(true);
+                return;
             }
+            saveInput(step);
         });
     }
 
