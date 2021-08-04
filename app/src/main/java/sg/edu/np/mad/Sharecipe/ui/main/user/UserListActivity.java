@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.TextView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 
@@ -31,6 +32,7 @@ public class UserListActivity extends AppCompatActivity {
     private User user;
     private RecyclerView usersView;
     private ShimmerFrameLayout shimmerFrameLayout;
+    private TextView noUsersMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,7 @@ public class UserListActivity extends AppCompatActivity {
         usersToolbar = findViewById(R.id.usersToolbar);
         usersView = findViewById(R.id.usersRecyclerView);
         shimmerFrameLayout = findViewById(R.id.usersShimmerLayout);
+        noUsersMessage = findViewById(R.id.noUsersMessage);
 
         adapter = new UserAdapter(new ArrayList<>());
         LinearLayoutManager layoutManager = new LinearLayoutManager(UserListActivity.this);
@@ -72,12 +75,28 @@ public class UserListActivity extends AppCompatActivity {
                 return;
         }
 
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        usersView.setVisibility(View.GONE);
+        noUsersMessage.setVisibility(View.GONE);
+
         futureUsers.onSuccess(users -> {
             runOnUiThread(() -> {
-                System.out.println(users);
                 shimmerFrameLayout.setVisibility(View.GONE);
                 adapter.setUserList(users);
-                usersView.scheduleLayoutAnimation();
+                if (users.size() > 0) {
+                    usersView.setVisibility(View.VISIBLE);
+                    usersView.scheduleLayoutAnimation();
+                } else {
+                    usersView.setVisibility(View.GONE);
+                    String emptyMessage = (App.getAccountManager().getAccount().getUserId() == user.getUserId())
+                            ? "You"
+                            : user.getUsername();
+                    emptyMessage += (type == UsersType.FOLLOW)
+                            ? " has not follow any account."
+                            : " does not have any followers.";
+                    noUsersMessage.setText(emptyMessage);
+                    noUsersMessage.setVisibility(View.VISIBLE);
+                }
             });
         }).onFailedOrError(result -> UiHelper.toastDataResult(UserListActivity.this, result));
     }
