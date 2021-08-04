@@ -1,13 +1,30 @@
 package sg.edu.np.mad.Sharecipe.ui.common.textchecks;
 
+import com.google.android.material.textfield.TextInputLayout;
+
 public class TextLengthChecker extends AbstractChecker {
 
     private final int minLength;
     private final int maxLength;
+    private final boolean showCounter;
 
     public TextLengthChecker(int minLength, int maxLength) {
+        this(minLength, maxLength, true);
+    }
+
+    public TextLengthChecker(int minLength, int maxLength, boolean showCounter) {
         this.minLength = minLength;
         this.maxLength = maxLength;
+        this.showCounter = showCounter;
+    }
+
+    @Override
+    public void init(TextInputLayout input) {
+        super.init(input);
+        if (showCounter && maxLength < Integer.MAX_VALUE) {
+            input.setCounterEnabled(true);
+            input.setCounterMaxLength(maxLength);
+        }
     }
 
     @Override
