@@ -74,7 +74,7 @@ public class DiscoverFragment extends Fragment {
                     case LARGE:
                         adapter.addSection(new LargeSectionCreator(section.getHeader(), section.getRecipes()));
                         break;
-                    case NORMAL:
+                    case SMALL:
                         adapter.addSection(new SmallSectionCreator(section.getHeader(), section.getRecipes()));
                         break;
                 }

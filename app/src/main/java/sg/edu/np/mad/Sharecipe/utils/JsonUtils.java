@@ -17,6 +17,7 @@ import java.util.Map;
 
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import sg.edu.np.mad.Sharecipe.ui.main.discover.SizeType;
 
 /**
  * Helper methods to facilitate conversion to and from json formats.
@@ -30,6 +31,7 @@ public class JsonUtils {
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ssX")
             .registerTypeAdapter(Duration.class, new DurationParser())
+            .registerTypeAdapter(SizeType.class, new SafeEnumParser<>(SizeType.class, SizeType.SMALL))
             .create();
 
     /**

@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 
 import java.util.List;
 
-import sg.edu.np.mad.Sharecipe.contants.SizeType;
+import sg.edu.np.mad.Sharecipe.ui.main.discover.SizeType;
 
 public class DiscoverSection {
 
