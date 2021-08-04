@@ -50,7 +50,7 @@ public class UserManager {
     private final AccountManager accountManager;
     private final BitmapCacheManager bitmapCacheManager;
     private final Cache<Integer, User> userCache = CacheBuilder.newBuilder()
-            .expireAfterAccess(1, TimeUnit.MINUTES)
+            .expireAfterAccess(5, TimeUnit.MINUTES)
             .maximumSize(500)
             .build();
 
@@ -72,7 +72,9 @@ public class UserManager {
             SharecipeRequests.getUsers(account.getAccessToken(), null).onSuccessJson(future, (response, json) -> {
                 List<User> userList = new ArrayList<>();
                 for (JsonElement userData : json.getAsJsonArray()) {
-                    userList.add(JsonUtils.convertToObject(userData, User.class));
+                    User user = JsonUtils.convertToObject(userData, User.class);
+                    userList.add(user);
+                    userCache.put(user.getUserId(), user);
                 }
                 future.complete(new DataResult.Success<>(userList));
             })
@@ -182,7 +184,9 @@ public class UserManager {
             SharecipeRequests.getUserFollows(account.getAccessToken(), user.getUserId()).onSuccessJson(future, (response, json) -> {
                 List<User> userList = new ArrayList<>();
                 for (JsonElement userData : json.getAsJsonArray()) {
-                    userList.add(JsonUtils.convertToObject(userData, User.class));
+                    User followUser = JsonUtils.convertToObject(userData, User.class);
+                    userList.add(followUser);
+                    userCache.put(followUser.getUserId(), followUser);
                 }
                 future.complete(new DataResult.Success<>(userList));
             }).onFailed(future).onError(future);
@@ -204,7 +208,9 @@ public class UserManager {
             SharecipeRequests.getUserFollowers(account.getAccessToken(), user.getUserId()).onSuccessJson(future, (response, json) -> {
                 List<User> userList = new ArrayList<>();
                 for (JsonElement userData : json.getAsJsonArray()) {
-                    userList.add(JsonUtils.convertToObject(userData, User.class));
+                    User followUser = JsonUtils.convertToObject(userData, User.class);
+                    userList.add(followUser);
+                    userCache.put(followUser.getUserId(), followUser);
                 }
                 future.complete(new DataResult.Success<>(userList));
             }).onFailed(future).onError(future);

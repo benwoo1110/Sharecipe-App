@@ -13,13 +13,14 @@ import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
+import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
 
 public class LargeCardAdapter extends RecyclerView.Adapter<LargeCardViewHolder> {
 
-    private final List<PartialRecipe> recipes;
+    private final List<Recipe> recipes;
 
-    public LargeCardAdapter(List<PartialRecipe> recipes) {
+    public LargeCardAdapter(List<Recipe> recipes) {
         this.recipes = recipes;
     }
 

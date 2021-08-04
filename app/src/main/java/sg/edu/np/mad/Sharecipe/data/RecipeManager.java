@@ -55,7 +55,7 @@ public class RecipeManager {
     private final AccountManager accountManager;
     private final BitmapCacheManager bitmapCacheManager;
     private final Cache<Integer, Recipe> recipeCache = CacheBuilder.newBuilder()
-            .expireAfterAccess(1, TimeUnit.MINUTES)
+            .expireAfterAccess(5, TimeUnit.MINUTES)
             .maximumSize(500)
             .build();
 
@@ -276,7 +276,9 @@ public class RecipeManager {
             SharecipeRequests.getUserRecipeLikes(account.getAccessToken(), user.getUserId()).onSuccessJson(future, (response, json) -> {
                 List<Recipe> recipes = new ArrayList<>();
                 for (JsonElement likeData : json.getAsJsonArray()) {
-                    recipes.add(JsonUtils.convertToObject(likeData, Recipe.class));
+                    Recipe recipe = JsonUtils.convertToObject(likeData, Recipe.class);
+                    recipes.add(recipe);
+                    recipeCache.put(recipe.getRecipeId(), recipe);
                 }
                 future.complete(new DataResult.Success<>(recipes));
             }).onFailed(future).onError(future);

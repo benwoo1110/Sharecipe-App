@@ -13,7 +13,7 @@ public class DiscoverSection {
     @Expose
     private SizeType size;
     @Expose
-    private List<PartialRecipe> recipes;
+    private List<Recipe> recipes;
 
     public String getHeader() {
         return header;
@@ -23,7 +23,7 @@ public class DiscoverSection {
         return size;
     }
 
-    public List<PartialRecipe> getRecipes() {
+    public List<Recipe> getRecipes() {
         return recipes;
     }
 

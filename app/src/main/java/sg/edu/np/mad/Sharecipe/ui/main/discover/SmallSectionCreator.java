@@ -14,15 +14,16 @@ import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
+import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.common.SectionCreator;
 import sg.edu.np.mad.Sharecipe.ui.common.SectionViewHolder;
 
 public class SmallSectionCreator implements SectionCreator {
 
     private final String headerText;
-    private final List<PartialRecipe> recipes;
+    private final List<Recipe> recipes;
 
-    public SmallSectionCreator(String headerText, List<PartialRecipe> recipes) {
+    public SmallSectionCreator(String headerText, List<Recipe> recipes) {
         this.headerText = headerText;
         this.recipes = recipes;
     }
