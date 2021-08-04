@@ -29,7 +29,6 @@ import sg.edu.np.mad.Sharecipe.ui.main.recipe.UserRecipeActivity;
 
 public class UserProfileActivity extends AppCompatActivity {
 
-    private User user;
     private boolean isFollowing = false;
     private Button follow;
 
@@ -38,53 +37,22 @@ public class UserProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile);
 
-        ImageView profileImage = findViewById(R.id.profileImage);
-        RecyclerView gridStatsView = findViewById(R.id.statsRecyclerView);
-        TextView username = findViewById(R.id.username);
-        TextView description = findViewById(R.id.description);
-        Button viewRecipe = findViewById(R.id.viewUserRecipesButton);
-        follow = findViewById(R.id.follow);
-
-        // Setup stats grid
-        StatsAdapter adapter = new StatsAdapter(new ArrayList<>());
-        GridLayoutManager layoutManager = new GridLayoutManager(UserProfileActivity.this, 2);
-        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(UserProfileActivity.this, R.anim.layout_animation_from_bottom);
-        gridStatsView.setAdapter(adapter);
-        gridStatsView.setLayoutManager(layoutManager);
-        gridStatsView.setLayoutAnimation(controller);
-
         // Grab the target user id to load
         Intent receivedData = getIntent();
-        int userId = receivedData.getIntExtra(IntentKeys.USER_ID, 0);
+        int userId = receivedData.getIntExtra(IntentKeys.USER_ID, -1);
+        if (userId == -1) {
+            Toast.makeText(UserProfileActivity.this, "Invalid user id.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
 
-        // Load the data from web
-        UserManager userManager = App.getUserManager();
-        userManager.get(userId).onSuccess(resultUser -> {
-            user = resultUser;
+        PartialProfileFragment profileFragment = new PartialProfileFragment(userId);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment, profileFragment)
+                .commit();
 
-            runOnUiThread(() -> {
-                username.setText(user.getUsername());
-                description.setText(user.getBio());
-            });
-
-            userManager.checkIfAccountFollow(user).onSuccess(state -> {
-                isFollowing = state.getState();
-                updateFollowButton();
-            });
-
-            if (!Strings.isNullOrEmpty(user.getProfileImageId())) {
-                userManager.getProfileImage(user)
-                        .onSuccess(image ->  UiHelper.uiThread(() -> profileImage.setImageBitmap(image)))
-                        .onFailedOrError(result -> UiHelper.toastDataResult(UserProfileActivity.this, result));
-            }
-
-            userManager.getStats(user).onSuccess(stats -> {
-                UserProfileActivity.this.runOnUiThread(() -> {
-                    adapter.setStatsList(stats);
-                    gridStatsView.scheduleLayoutAnimation();
-                });
-            });
-        });
+        Button viewRecipe = findViewById(R.id.viewUserRecipesButton);
+        follow = findViewById(R.id.follow);
 
         viewRecipe.setOnClickListener(v -> {
             Intent intent = new Intent(UserProfileActivity.this, UserRecipeActivity.class);
@@ -99,12 +67,12 @@ public class UserProfileActivity extends AppCompatActivity {
         follow.setOnClickListener(v -> {
             follow.setEnabled(false);
             if (isFollowing) {
-                userManager.accountUnfollowUser(user).onSuccess(aVoid -> {
+                App.getUserManager().accountUnfollowUser(profileFragment.getUser()).onSuccess(aVoid -> {
                     isFollowing = false;
                     updateFollowButton();
                 });
             } else {
-                userManager.accountFollowUser(user).onSuccess(aVoid -> {
+                App.getUserManager().accountFollowUser(profileFragment.getUser()).onSuccess(aVoid -> {
                     isFollowing = true;
                     updateFollowButton();
                 });

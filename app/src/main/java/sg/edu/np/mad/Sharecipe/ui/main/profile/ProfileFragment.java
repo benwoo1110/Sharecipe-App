@@ -33,15 +33,9 @@ import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.InputResult;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
+import sg.edu.np.mad.Sharecipe.ui.main.recipe.RecipeFragment;
 
 public class ProfileFragment extends Fragment {
-
-    private boolean isFirstTime = true;
-    private TextView username;
-    private TextView description;
-    private ImageView profileImage;
-    private RecyclerView gridStatsView;
-    private StatsAdapter adapter;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -56,21 +50,14 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
-        username = view.findViewById(R.id.username);
-        description = view.findViewById(R.id.description);
-        profileImage = view.findViewById(R.id.profileImage);
-        gridStatsView = view.findViewById(R.id.statsRecyclerView);
+        getActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment, new PartialProfileFragment(App.getAccountManager().getAccount().getUserId()))
+                .commit();
+
         Button editProfileButton = view.findViewById(R.id.editUserinfo);
         Button editPasswordButton = view.findViewById(R.id.passwordButton);
         Button logoutButton = view.findViewById(R.id.buttonLogout);
         Button deleteButton = view.findViewById(R.id.deletaAccountButton);
-
-        adapter = new StatsAdapter(new ArrayList<>());
-        GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
-        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_from_bottom);
-        gridStatsView.setAdapter(adapter);
-        gridStatsView.setLayoutManager(layoutManager);
-        gridStatsView.setLayoutAnimation(controller);
 
         editProfileButton.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EditProfileActivity.class);
@@ -154,34 +141,5 @@ public class ProfileFragment extends Fragment {
         });
 
         return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        UserManager userManager = App.getUserManager();
-        userManager.getAccountUser().onSuccess(user -> {
-            getActivity().runOnUiThread(() -> {
-                username.setText(user.getUsername());
-                description.setText(user.getBio());
-            });
-
-            if (!Strings.isNullOrEmpty(user.getProfileImageId())) {
-                userManager.getProfileImage(user)
-                        .onSuccess(image -> getActivity().runOnUiThread(() -> profileImage.setImageBitmap(image)))
-                        .onFailedOrError(result -> UiHelper.toastDataResult(getContext(), result));
-            }
-
-            userManager.getStats(user).onSuccess(stats -> {
-                getActivity().runOnUiThread(() -> {
-                    adapter.setStatsList(stats);
-                    if (isFirstTime) {
-                        gridStatsView.scheduleLayoutAnimation();
-                        isFirstTime = false;
-                    }
-                });
-            });
-        });
     }
 }
