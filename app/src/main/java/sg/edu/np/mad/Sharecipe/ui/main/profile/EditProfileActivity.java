@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.Strings;
 
@@ -85,7 +86,7 @@ public class EditProfileActivity extends DynamicFocusAppCompatActivity {
                 return;
             }
 
-            new AlertDialog.Builder(EditProfileActivity.this, R.style.AlertDialogCustom)
+            new MaterialAlertDialogBuilder(EditProfileActivity.this, R.style.AlertDialogCustom)
                     .setTitle("Save Changes")
                     .setMessage("Are you sure you want to save changes?").setCancelable(false)
                     .setCancelable(false)

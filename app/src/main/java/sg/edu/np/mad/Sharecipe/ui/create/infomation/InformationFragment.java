@@ -26,6 +26,7 @@ import androidx.appcompat.app.AlertDialog;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.chip.ChipDrawable;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -191,7 +192,7 @@ public class InformationFragment extends Fragment {
         inputHours.setValue((int) recipe.getTotalTimeNeeded().toHours());
         inputMinutes.setValue(recipe.getTotalTimeNeeded().toMinutesPart());
 
-        new AlertDialog.Builder(getActivity(), R.style.AlertDialogCustom)
+        new MaterialAlertDialogBuilder(getActivity(), R.style.AlertDialogCustom)
                 .setView(view)
                 .setTitle("Preparation time")
                 .setCancelable(false)

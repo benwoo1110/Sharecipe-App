@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 
 import sg.edu.np.mad.Sharecipe.R;
@@ -159,7 +160,7 @@ public class RecipeViewActivity extends AppCompatActivity {
     }
 
     private void confirmDeleteDialog(Recipe recipe) {
-        new AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        new MaterialAlertDialogBuilder(this, R.style.AlertDialogCustom)
                 .setTitle("Delete recipe")
                 .setMessage("Are you sure you want to delete '" + recipe.getName() + "'? This action cannot be reverted!")
                 .setPositiveButton("Delete", (dialog, which) -> {

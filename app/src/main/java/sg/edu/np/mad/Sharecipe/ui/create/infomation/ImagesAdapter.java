@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -116,7 +117,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         ImageView targetImage = view.findViewById(R.id.alertImage);
         imageFile.setImageView(targetImage);
 
-        new AlertDialog.Builder(activity, R.style.AlertDialogCustom)
+        new MaterialAlertDialogBuilder(activity, R.style.AlertDialogCustom)
                 .setView(view)
                 .setTitle("Remove image")
                 .setMessage("Would you like to remove this image?")

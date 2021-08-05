@@ -1,6 +1,5 @@
 package sg.edu.np.mad.Sharecipe.ui.main.profile;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -10,8 +9,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import sg.edu.np.mad.Sharecipe.R;
@@ -57,7 +58,7 @@ public class ProfileFragment extends Fragment {
         });
 
         logoutButton.setOnClickListener((OnSingleClickListener) v -> {
-            new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom)
+            new MaterialAlertDialogBuilder(getContext(), R.style.AlertDialogCustom)
                     .setTitle("Logout")
                     .setMessage("Are you sure you want to logout?").setCancelable(false)
                     .setPositiveButton("Logout", (dialog, which) -> {
@@ -91,7 +92,7 @@ public class ProfileFragment extends Fragment {
             CheckGroup checkGroup = new CheckGroup()
                     .add(confirmInput, new RequiredFieldCheck());
 
-            AlertDialog confirmDialog = new AlertDialog.Builder(getContext(), R.style.AlertDialogCustom)
+            AlertDialog confirmDialog = new MaterialAlertDialogBuilder(getContext(), R.style.AlertDialogCustom)
                     .setView(deleteConfirmView)
                     .setTitle("Delete account")
                     .setMessage("Are you sure you want to delete account? You cannot undo this action. Please type in your password to confirm.")

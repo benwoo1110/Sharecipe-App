@@ -15,6 +15,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.common.base.Strings;
 
@@ -104,7 +105,7 @@ public class RecipeReviewActivity extends DynamicFocusAppCompatActivity {
     }
 
     private void checkSubmit() {
-        new AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        new MaterialAlertDialogBuilder(this, R.style.AlertDialogCustom)
                 .setTitle("Submit review")
                 .setMessage("Are you sure you want to submit this review?")
                 .setCancelable(false)

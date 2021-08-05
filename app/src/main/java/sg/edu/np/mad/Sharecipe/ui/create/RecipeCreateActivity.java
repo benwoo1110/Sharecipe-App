@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
@@ -83,7 +84,7 @@ public class RecipeCreateActivity extends DynamicFocusAppCompatActivity {
     }
 
     public void confirmPublish() {
-        new AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        new MaterialAlertDialogBuilder(this, R.style.AlertDialogCustom)
                 .setTitle("Confirm changes")
                 .setMessage("Are you sure you want to publish this recipe?")
                 .setPositiveButton("Confirm", ((dialog, which) -> publishRecipe()))
@@ -141,7 +142,7 @@ public class RecipeCreateActivity extends DynamicFocusAppCompatActivity {
     }
 
     public void confirmExit() {
-        new AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        new MaterialAlertDialogBuilder(this, R.style.AlertDialogCustom)
                 .setTitle("Exit without saving")
                 .setMessage("You have unsaved changes. Would you like to exit without saving?")
                 .setNegativeButton("No", null)

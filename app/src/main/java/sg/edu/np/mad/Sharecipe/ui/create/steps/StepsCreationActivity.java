@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import sg.edu.np.mad.Sharecipe.R;
@@ -65,7 +66,7 @@ public class StepsCreationActivity extends DynamicFocusAppCompatActivity {
     }
 
     private void checkSaveDialog(RecipeStep step, String stepDesc) {
-        new AlertDialog.Builder(this, R.style.AlertDialogCustom)
+        new MaterialAlertDialogBuilder(StepsCreationActivity.this, R.style.AlertDialogCustom)
                 .setTitle("Unsaved changes")
                 .setMessage("Would you like to save your changes?")
                 .setPositiveButton("Yes", (dialog, which) -> saveInput(step))

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -54,7 +56,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsViewHold
     }
 
     public void removeDialog(RecipeIngredient ingredient) {
-        new AlertDialog.Builder(activity, R.style.AlertDialogCustom)
+        new MaterialAlertDialogBuilder(activity, R.style.AlertDialogCustom)
                 .setTitle("Remove ingredient")
                 .setMessage("Would you like to remove this ingredient?")
                 .setPositiveButton("Remove", (dialog, which) -> {

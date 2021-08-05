@@ -44,9 +44,8 @@
 
     <style name="AlertDialogCustom" parent="">
         <item name="android:fontFamily">@font/quicksand_semibold</item>
-        <item name="android:textColor">#F8AA9D</item>
-        <item name="colorSurface">@color/white</item>
         <item name="android:windowIsFloating">true</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.App.CornerSize16dp</item>
     </style>
 
 </resources>

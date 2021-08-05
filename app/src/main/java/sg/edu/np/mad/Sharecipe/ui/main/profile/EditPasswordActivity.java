@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.Strings;
 
@@ -55,7 +56,7 @@ public class EditPasswordActivity extends DynamicFocusAppCompatActivity {
                 return;
             }
 
-            new AlertDialog.Builder(EditPasswordActivity.this, R.style.AlertDialogCustom)
+            new MaterialAlertDialogBuilder(EditPasswordActivity.this, R.style.AlertDialogCustom)
                     .setTitle("Save Changes")
                     .setMessage("Are you sure you want to save changes?").setCancelable(false)
                     .setCancelable(false)
