@@ -1,7 +1,11 @@
 package sg.edu.np.mad.Sharecipe.ui.view;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentOnAttachListener;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.Activity;
@@ -127,7 +131,6 @@ public class RecipeViewActivity extends DataActivity<Recipe> {
                 bottomNavigation.setEnabled(true);
                 adapter = new RecipeViewAdapter(this, tabLayout.getTabCount(), recipe);
                 viewpager.setAdapter(adapter);
-                callDataLoaded(recipe);
             });
 
             App.getRecipeManager().checkIfAccountLikes(recipe).onSuccess(state -> {
@@ -156,6 +159,24 @@ public class RecipeViewActivity extends DataActivity<Recipe> {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode != RequestCode.RECIPE || resultCode != Activity.RESULT_OK || data == null) {
+            return;
+        }
+
+        Recipe recipe = (Recipe) data.getSerializableExtra(IntentKeys.RECIPE_SAVE);
+        this.recipe = recipe;
+        callDataLoaded();
+    }
+
+    @Override
+    protected Recipe supplyData() {
+        return recipe;
+    }
+
     private void updateLikeItem(MenuItem likeItem) {
         if (isLiked) {
             likeItem.setIcon(R.drawable.ic_baseline_favorite_24);
@@ -178,18 +199,5 @@ public class RecipeViewActivity extends DataActivity<Recipe> {
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode != RequestCode.RECIPE || resultCode != Activity.RESULT_OK || data == null) {
-            return;
-        }
-
-        Recipe recipe = (Recipe) data.getSerializableExtra(IntentKeys.RECIPE_SAVE);
-        this.recipe = recipe;
-        callDataLoaded(recipe);
     }
 }

@@ -37,6 +37,7 @@ public class RecipeViewAdapter extends FragmentStateAdapter {
                 return new ErrorFragment();
         }
     }
+
     @Override
     public int getItemCount() {
         return totalTabs;

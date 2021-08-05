@@ -15,8 +15,9 @@ import java.util.ArrayList;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
+import sg.edu.np.mad.Sharecipe.ui.common.data.DataSaveable;
 
-public class IngredientFragment extends Fragment {
+public class IngredientFragment extends Fragment implements DataSaveable<Recipe> {
 
     private final ArrayList<RecipeIngredient> ingredientsList = new ArrayList<>();
     private final Recipe recipe;
@@ -43,11 +44,8 @@ public class IngredientFragment extends Fragment {
         recyclerView.setLayoutManager(cLayoutManager);
 
         if (recipe.getIngredients() != null) {
-            for (RecipeIngredient ingredient : recipe.getIngredients()
-            ) {
-                ingredientsList.add(ingredient);
-                adapter.notifyDataSetChanged();
-            }
+            ingredientsList.addAll(recipe.getIngredients());
+            adapter.notifyDataSetChanged();
         }
 
         addIngredient.setOnClickListener(v -> {
@@ -59,8 +57,11 @@ public class IngredientFragment extends Fragment {
             adapter.notifyDataSetChanged();
         });
 
-        recipe.setIngredients(ingredientsList);
-
         return view;
+    }
+
+    @Override
+    public void onDataSaving(Recipe recipe) {
+        recipe.setIngredients(ingredientsList);
     }
 }

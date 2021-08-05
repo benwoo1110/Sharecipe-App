@@ -27,10 +27,11 @@ import sg.edu.np.mad.Sharecipe.models.ImageRef;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.BaseActivity;
+import sg.edu.np.mad.Sharecipe.ui.common.DataActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.listeners.OnTabSelectedListener;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 
-public class RecipeCreateActivity extends BaseActivity {
+public class RecipeCreateActivity extends DataActivity<Recipe> {
 
     private boolean checkEdit;
     private RecipeCreateAdapter adapter;
@@ -82,6 +83,11 @@ public class RecipeCreateActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected Recipe supplyData() {
+        return recipe;
+    }
+
     public void confirmPublish() {
         new MaterialAlertDialogBuilder(this, R.style.AlertDialogCustom)
                 .setTitle("Confirm changes")
@@ -98,6 +104,8 @@ public class RecipeCreateActivity extends BaseActivity {
         }
 
         Toast.makeText(RecipeCreateActivity.this, "Saving...", Toast.LENGTH_SHORT).show();
+
+        callDataSaving();
 
         if (checkEdit) {
             App.getRecipeManager().update(recipe).onSuccess(updatedRecipe -> {

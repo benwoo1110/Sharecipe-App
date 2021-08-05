@@ -6,43 +6,53 @@ import sg.edu.np.mad.Sharecipe.contants.RunMode;
 import sg.edu.np.mad.Sharecipe.ui.common.data.DataLoadable;
 import sg.edu.np.mad.Sharecipe.ui.common.data.DataSaveable;
 
-public abstract class DataActivity<T> extends BaseActivity implements DataLoadable<T>, DataSaveable<T> {
+@SuppressWarnings("unchecked")
+public abstract class DataActivity<T> extends BaseActivity {
 
-    @Override
-    public void onDataLoaded(T t) {
-    }
-
-    @Override
-    public void onDataSaving(T t) {
-    }
-
-    protected void callDataLoaded(T t) {
-        onDataLoaded(t);
+    protected void callDataLoaded() {
+        T data = supplyData();
+        if (data == null) {
+            return;
+        }
         for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-            if (fragment instanceof DataLoadable) {
-                try {
-                    ((DataLoadable<T>) fragment).onDataLoaded(t);
-                } catch (ClassCastException e) {
-                    if (!RunMode.IS_PRODUCTION) {
-                        e.printStackTrace();
-                    }
+            tryCallOnDataLoaded(fragment, data);
+        }
+    }
+
+    private void tryCallOnDataLoaded(Fragment fragment, T data) {
+        if (fragment instanceof DataLoadable) {
+            try {
+                ((DataLoadable<T>) fragment).onDataLoaded(data);
+            } catch (ClassCastException e) {
+                if (!RunMode.IS_PRODUCTION) {
+                    e.printStackTrace();
                 }
             }
         }
     }
 
-    protected void callDataSaving(T t) {
-        onDataSaving(t);
+    protected void callDataSaving() {
+        T data = supplyData();
+        if (data == null) {
+            return;
+        }
         for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-            if (fragment instanceof DataSaveable) {
-                try {
-                    ((DataSaveable<T>) fragment).onDataSaving(t);
-                } catch (ClassCastException e) {
-                    if (!RunMode.IS_PRODUCTION) {
-                        e.printStackTrace();
-                    }
+            tryCallOnDataSaving(fragment, data);
+        }
+    }
+
+    private void tryCallOnDataSaving(Fragment fragment, T data) {
+        if (fragment instanceof DataSaveable) {
+            try {
+                ((DataSaveable<T>) fragment).onDataSaving(data);
+            } catch (ClassCastException e) {
+                if (!RunMode.IS_PRODUCTION) {
+                    e.printStackTrace();
                 }
             }
         }
     }
+
+    //TODO Maybe use Optional?
+    protected abstract T supplyData();
 }
