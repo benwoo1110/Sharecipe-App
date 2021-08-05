@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
+
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.RecipeReview;
@@ -27,13 +29,14 @@ public class RecipeReviewViewholder extends RecyclerView.ViewHolder {
     public RecipeReviewViewholder(View itemView) {
         super(itemView);
 
+        MaterialCardView card = itemView.findViewById(R.id.reviewCard);
         profilePic = itemView.findViewById(R.id.profilepicUser_review);
         username = itemView.findViewById(R.id.usernameUser_review);
         rating = itemView.findViewById(R.id.score_review);
         comment = itemView.findViewById(R.id.comment_review);
         progressBar = itemView.findViewById(R.id.imageLoadProgress);
 
-        itemView.setOnClickListener(v -> {
+        card.setOnClickListener(v -> {
             Intent intent = new Intent(itemView.getContext(), UserProfileActivity.class);
             intent.putExtra(IntentKeys.USER_ID, review.getUserId());
             itemView.getContext().startActivity(intent);

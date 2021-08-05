@@ -11,7 +11,7 @@ android:layout_width="match_parent"
 android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/materialCardView"
+        android:id="@+id/reviewCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -99,7 +99,7 @@ android:layout_height="wrap_content">
         android:text="Reviews"
         android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/materialCardView" />
+        app:layout_constraintTop_toBottomOf="@+id/reviewCard" />
 
     <TextView
         android:id="@+id/reviewsNumber"

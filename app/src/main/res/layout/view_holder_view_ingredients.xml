@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/materialCardView"
+        android:id="@+id/ingredientCard"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -63,10 +63,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="12dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/quicksand_light"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="@font/quicksand_regular"
                 android:text="TextView"
                 android:textIsSelectable="true"
                 android:textSize="18sp"

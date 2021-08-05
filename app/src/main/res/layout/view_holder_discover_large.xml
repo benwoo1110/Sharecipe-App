@@ -11,7 +11,7 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/materialCardView"
+            android:id="@+id/discoverLargeCard"
             android:layout_width="0dp"
             android:layout_height="200dp"
             android:layout_marginStart="16dp"
