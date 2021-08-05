@@ -58,7 +58,7 @@ public class PartialProfileFragment extends Fragment {
 
         adapter = new StatsAdapter(user, new ArrayList<>());
         GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
-        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_from_bottom);
+        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_fall_down);
         gridStatsView.setAdapter(adapter);
         gridStatsView.setLayoutManager(layoutManager);
         gridStatsView.setLayoutAnimation(controller);
