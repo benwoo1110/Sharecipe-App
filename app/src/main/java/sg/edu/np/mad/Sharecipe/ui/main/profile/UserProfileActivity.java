@@ -41,7 +41,7 @@ public class UserProfileActivity extends AppCompatActivity {
         profileFragment.setUserLoadedListener(user -> {
             App.getUserManager().checkIfAccountFollow(user).onSuccess(state -> {
                 isFollowing = state.getState();
-                updateFollowButton();
+                updateFollowButton(false);
             });
         });
 
@@ -54,21 +54,28 @@ public class UserProfileActivity extends AppCompatActivity {
             if (isFollowing) {
                 App.getUserManager().accountUnfollowUser(profileFragment.getUser()).onSuccess(aVoid -> {
                     isFollowing = false;
-                    updateFollowButton();
+                    updateFollowButton(true);
                 });
             } else {
                 App.getUserManager().accountFollowUser(profileFragment.getUser()).onSuccess(aVoid -> {
                     isFollowing = true;
-                    updateFollowButton();
+                    updateFollowButton(true);
                 });
             }
         });
     }
 
-    private void updateFollowButton() {
+    private void updateFollowButton(boolean toast) {
         runOnUiThread(() -> {
             follow.setText(isFollowing ? "Unfollow" : "Follow");
             follow.setEnabled(true);
+            if (toast) {
+                if (isFollowing) {
+                    Toast.makeText(UserProfileActivity.this, "Followed", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(UserProfileActivity.this, "Unfollowed", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
     }
 }
