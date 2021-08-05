@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.TransitionManager;
 
 import com.google.common.base.Strings;
 
@@ -72,10 +73,6 @@ public class PartialProfileFragment extends Fragment {
 
         UserManager userManager = App.getUserManager();
         userManager.get(userId).onSuccess(user -> {
-            if (userLoadedListener != null) {
-                userLoadedListener.onLoaded(user);
-            }
-
             PartialProfileFragment.this.user = user;
             adapter.setUser(user);
 
@@ -98,6 +95,10 @@ public class PartialProfileFragment extends Fragment {
                         isFirstTime = false;
                     }
                 });
+            }).thenAccept(result -> {
+                if (userLoadedListener != null) {
+                    userLoadedListener.onLoaded(user);
+                }
             });
         });
     }

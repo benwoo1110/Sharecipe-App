@@ -11,11 +11,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.transition.TransitionManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputLayout;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.listeners.OnSingleClickListener;
@@ -38,8 +40,9 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        PartialProfileFragment partialProfileFragment = new PartialProfileFragment(App.getAccountManager().getAccount().getUserId());
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment, new PartialProfileFragment(App.getAccountManager().getAccount().getUserId()))
+                .replace(R.id.fragment, partialProfileFragment)
                 .commit();
 
         Button editProfileButton = view.findViewById(R.id.editUserinfo);

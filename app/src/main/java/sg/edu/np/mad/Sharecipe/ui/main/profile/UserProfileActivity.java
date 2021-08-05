@@ -2,11 +2,16 @@ package sg.edu.np.mad.Sharecipe.ui.main.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.transition.TransitionManager;
+
+import com.transitionseverywhere.ChangeText;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
@@ -41,16 +46,16 @@ public class UserProfileActivity extends AppCompatActivity {
         profileFragment.setUserLoadedListener(user -> {
             App.getUserManager().checkIfAccountFollow(user).onSuccess(state -> {
                 isFollowing = state.getState();
-                updateFollowButton(false);
+                runOnUiThread(() -> {
+                    TransitionManager.beginDelayedTransition((ViewGroup) follow.getRootView());
+                    follow.setVisibility(View.VISIBLE);
+                    updateFollowButton(false);
+                });
             });
         });
 
-        // Enabled only after data loaded.
-        follow.setEnabled(false);
-
         // Toggle follow on click
         follow.setOnClickListener(v -> {
-            follow.setEnabled(false);
             if (isFollowing) {
                 App.getUserManager().accountUnfollowUser(profileFragment.getUser()).onSuccess(aVoid -> {
                     isFollowing = false;
