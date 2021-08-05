@@ -7,13 +7,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
+import sg.edu.np.mad.Sharecipe.ui.common.data.DataLoadable;
+import sg.edu.np.mad.Sharecipe.ui.common.data.DataSaveable;
 
 /**
  * Activity class with some common behaviour
  */
 public abstract class BaseActivity extends AppCompatActivity {
-
-
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {

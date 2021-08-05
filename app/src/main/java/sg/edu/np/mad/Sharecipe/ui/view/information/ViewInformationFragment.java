@@ -21,11 +21,21 @@ import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeTag;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
+import sg.edu.np.mad.Sharecipe.ui.common.data.DataLoadable;
 import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
-public class ViewInformationFragment extends Fragment {
+public class ViewInformationFragment extends Fragment implements DataLoadable<Recipe> {
 
     private final Recipe recipe;
+    private TextView displayName;
+    private TextView displayAuthor;
+    private TextView displayPortion;
+    private TextView displayPrep;
+    private TextView displayDifficulty;
+    private TextView displayDesc;
+    private ChipGroup tags;
+    private RecyclerView recyclerView;
+    private ViewImagesAdapter adapter;
 
     public ViewInformationFragment(Recipe recipe) {
         this.recipe = recipe;
@@ -39,23 +49,31 @@ public class ViewInformationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_information, container, false);
-        TextView displayName = view.findViewById(R.id.viewRecipeName);
-        TextView displayAuthor = view.findViewById(R.id.viewAuthor);
-        TextView displayPortion = view.findViewById(R.id.viewPortion);
-        TextView displayPrep = view.findViewById(R.id.viewPrep);
-        TextView displayDifficulty = view.findViewById(R.id.viewDifficulty);
-        TextView displayDesc = view.findViewById(R.id.displayDescription);
-        ImageView enlargedImage = view.findViewById(R.id.view_enlargedimage);
-        RecyclerView recyclerView = view.findViewById(R.id.viewImages_recyclerView);
-        ChipGroup tags = view.findViewById(R.id.view_recipeTags);
 
-        ViewImagesAdapter adapter = new ViewImagesAdapter(getActivity(), enlargedImage, view);
+        displayName = view.findViewById(R.id.viewRecipeName);
+        displayAuthor = view.findViewById(R.id.viewAuthor);
+        displayPortion = view.findViewById(R.id.viewPortion);
+        displayPrep = view.findViewById(R.id.viewPrep);
+        displayDifficulty = view.findViewById(R.id.viewDifficulty);
+        displayDesc = view.findViewById(R.id.displayDescription);
+        recyclerView = view.findViewById(R.id.viewImages_recyclerView);
+        tags = view.findViewById(R.id.view_recipeTags);
+        ImageView enlargedImage = view.findViewById(R.id.view_enlargedimage);
+
+        adapter = new ViewImagesAdapter(getActivity(), enlargedImage, view);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(getContext(), R.anim.layout_animation_fall_down);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setLayoutAnimation(controller);
 
+        onDataLoaded(recipe);
+
+        return view;
+    }
+
+    @Override
+    public void onDataLoaded(Recipe recipe) {
         // Set name of recipe
         displayName.setText(recipe.getName());
 
@@ -76,7 +94,7 @@ public class ViewInformationFragment extends Fragment {
                 : FormatUtils.parseDurationLong(recipe.getTotalTimeNeeded()));
 
         // Set difficult level
-        displayDifficulty.setText(recipe.getDifficulty() > 0 ? "Difficulty: " + String.valueOf(recipe.getDifficulty()) + "/5" : "nil");
+        displayDifficulty.setText(recipe.getDifficulty() > 0 ? "Difficulty: " + recipe.getDifficulty() + "/5" : "nil");
 
         // Load images
         App.getRecipeManager().getImages(recipe).onSuccess(bitmaps -> {
@@ -95,7 +113,5 @@ public class ViewInformationFragment extends Fragment {
                 tags.addView(chip);
             }
         }
-
-        return view;
     }
 }

@@ -15,6 +15,7 @@ import java.util.Locale;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
+import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 
 public class ViewIngredientsAdapter extends RecyclerView.Adapter<ViewIngredientsViewholder> {
     List<RecipeIngredient> ingredients;
@@ -45,5 +46,11 @@ public class ViewIngredientsAdapter extends RecyclerView.Adapter<ViewIngredients
     @Override
     public int getItemCount() {
         return ingredients.size();
+    }
+
+    public void setIngredientList(List<RecipeIngredient> ingredients) {
+        this.ingredients.clear();
+        this.ingredients.addAll(ingredients);
+        notifyDataSetChanged();
     }
 }

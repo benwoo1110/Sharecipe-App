@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
 
 public class ViewStepsAdapter extends RecyclerView.Adapter<ViewStepsViewholder> {
@@ -40,5 +41,11 @@ public class ViewStepsAdapter extends RecyclerView.Adapter<ViewStepsViewholder> 
     @Override
     public int getItemCount() {
         return steps.size();
+    }
+
+    public void setStepList(List<RecipeStep> stepList) {
+        this.steps.clear();
+        this.steps.addAll(stepList);
+        notifyDataSetChanged();
     }
 }

@@ -10,12 +10,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
+import sg.edu.np.mad.Sharecipe.ui.common.data.DataLoadable;
 
-public class ViewIngredientsFragment extends Fragment {
+public class ViewIngredientsFragment extends Fragment  implements DataLoadable<Recipe> {
 
     private final Recipe recipe;
+    private RecyclerView recyclerView;
+    private TextView emptyText;
+    private ViewIngredientsAdapter adapter;
 
     public ViewIngredientsFragment(Recipe recipe) {
         this.recipe = recipe;
@@ -30,19 +36,29 @@ public class ViewIngredientsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view_ingredient, container, false);
 
-        RecyclerView recyclerView = view.findViewById(R.id.viewIngredients_recyclerView);
-        TextView emptyText = view.findViewById(R.id.empty_view_ingredients);
+        recyclerView = view.findViewById(R.id.viewIngredients_recyclerView);
+        emptyText = view.findViewById(R.id.empty_view_ingredients);
 
-        ViewIngredientsAdapter adapter = new ViewIngredientsAdapter(recipe.getIngredients());
+        adapter = new ViewIngredientsAdapter(new ArrayList<>());
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(cLayoutManager);
 
-        if (recipe.getIngredients().isEmpty()) {
-            recyclerView.setVisibility(view.GONE);
-            emptyText.setVisibility(view.VISIBLE);
-        }
+        onDataLoaded(recipe);
 
         return view;
+    }
+
+    @Override
+    public void onDataLoaded(Recipe recipe) {
+        adapter.setIngredientList(recipe.getIngredients());
+
+        if (recipe.getIngredients().isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            emptyText.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyText.setVisibility(View.GONE);
+        }
     }
 }
