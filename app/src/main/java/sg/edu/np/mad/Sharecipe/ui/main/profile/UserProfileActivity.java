@@ -38,7 +38,6 @@ public class UserProfileActivity extends AppCompatActivity {
                 .replace(R.id.fragment, profileFragment)
                 .commit();
 
-        Button viewRecipe = findViewById(R.id.viewUserRecipesButton);
         follow = findViewById(R.id.follow);
 
         profileFragment.setUserLoadedListener(user -> {
@@ -46,12 +45,6 @@ public class UserProfileActivity extends AppCompatActivity {
                 isFollowing = state.getState();
                 updateFollowButton();
             });
-        });
-
-        viewRecipe.setOnClickListener(v -> {
-            Intent intent = new Intent(UserProfileActivity.this, RecipeListActivity.class);
-            intent.putExtra(IntentKeys.USER_ID, userId);
-            startActivity(intent);
         });
 
         // Enabled only after data loaded.
