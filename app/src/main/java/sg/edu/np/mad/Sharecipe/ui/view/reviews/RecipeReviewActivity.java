@@ -8,6 +8,8 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -78,8 +80,10 @@ public class RecipeReviewActivity extends DynamicFocusAppCompatActivity {
 
         adapter = new RecipeReviewAdapter(recipeReviews);
         LinearLayoutManager cLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        LayoutAnimationController controller = AnimationUtils.loadLayoutAnimation(RecipeReviewActivity.this, R.anim.layout_animation_from_bottom);
         reviewsRecyclerView.setAdapter(adapter);
         reviewsRecyclerView.setLayoutManager(cLayoutManager);
+        reviewsRecyclerView.setLayoutAnimation(controller);
 
         App.getRecipeManager().getReviews(recipe).onSuccess(recipeReviewList -> {
             int accountId = App.getAccountManager().getAccount().getUserId();
@@ -143,6 +147,7 @@ public class RecipeReviewActivity extends DynamicFocusAppCompatActivity {
             noReviewsMessage.setVisibility(View.VISIBLE);
         } else {
             reviewsRecyclerView.setVisibility(View.VISIBLE);
+            reviewsRecyclerView.scheduleLayoutAnimation();
             noReviewsMessage.setVisibility(View.GONE);
         }
 
