@@ -129,7 +129,7 @@ public class RecipeManager {
 
     public FutureDataResult<Void> removeImages(PartialRecipe recipe, ImageGroup deleteImageGroup) {
         if (deleteImageGroup == null || deleteImageGroup.getImageIds().isEmpty()) {
-            return FutureDataResult.completed(new DataResult.Failed<>("No recipe images to upload"));
+            return FutureDataResult.completed(new DataResult.Failed<>("No recipe images to delete."));
         }
 
         FutureDataResult<Void> future = new FutureDataResult<>();

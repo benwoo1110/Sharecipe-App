@@ -139,15 +139,6 @@ public class InformationFragment extends Fragment implements DataSaveable<Recipe
             createChip(tagAdapter.getItem(position));
         });
 
-        tags.addTextChangedListener((AfterTextChangedWatcher) s -> {
-            String[] tagNames = s.toString().split(", ");
-            List<RecipeTag> selectedTags = new ArrayList<>();
-            for (String tagName : tagNames) {
-                selectedTags.add(new RecipeTag(tagName));
-            }
-            recipe.setTags(selectedTags);
-        });
-
         App.getRecipeManager().getTagSuggestions().onSuccess(tagsNames -> {
             getActivity().runOnUiThread(() -> {
                 tagAdapter = new TagNamesAdapter(
