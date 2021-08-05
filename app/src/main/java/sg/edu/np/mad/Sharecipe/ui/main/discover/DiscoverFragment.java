@@ -1,6 +1,5 @@
 package sg.edu.np.mad.Sharecipe.ui.main.discover;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,12 +16,10 @@ import android.view.animation.LayoutAnimationController;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.models.Discover;
 import sg.edu.np.mad.Sharecipe.models.DiscoverSection;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.SectionAdapter;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
-import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 
 public class DiscoverFragment extends Fragment {
 

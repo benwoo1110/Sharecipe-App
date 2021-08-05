@@ -1,7 +1,6 @@
 package sg.edu.np.mad.Sharecipe.ui.create.steps;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -10,7 +10,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -25,7 +24,6 @@ import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.SectionAdapter;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
-import sg.edu.np.mad.Sharecipe.ui.main.profile.EditPasswordActivity;
 
 public class SearchFragment extends Fragment {
 

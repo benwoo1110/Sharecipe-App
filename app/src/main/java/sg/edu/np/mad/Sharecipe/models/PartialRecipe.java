@@ -1,7 +1,5 @@
 package sg.edu.np.mad.Sharecipe.models;
 
-import android.graphics.Bitmap;
-
 import com.google.gson.annotations.Expose;
 
 import java.io.Serializable;

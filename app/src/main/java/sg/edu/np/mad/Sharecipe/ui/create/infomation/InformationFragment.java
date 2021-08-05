@@ -2,10 +2,7 @@ package sg.edu.np.mad.Sharecipe.ui.create.infomation;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Spanned;
@@ -34,7 +31,6 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.threeten.bp.Duration;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,8 +39,6 @@ import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeTag;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
-import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
-import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
 public class InformationFragment extends Fragment {

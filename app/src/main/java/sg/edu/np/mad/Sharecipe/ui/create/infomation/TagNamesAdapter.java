@@ -8,7 +8,6 @@ import android.widget.Filter;
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.models.RecipeTag;

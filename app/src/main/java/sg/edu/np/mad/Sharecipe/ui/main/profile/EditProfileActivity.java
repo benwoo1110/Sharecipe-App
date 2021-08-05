@@ -2,33 +2,26 @@ package sg.edu.np.mad.Sharecipe.ui.main.profile;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
-import com.github.dhaval2404.imagepicker.listener.DismissListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.Strings;
 
 import java.io.File;
 
-import java9.util.concurrent.CompletableFuture;
 import java9.util.function.Consumer;
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.data.AccountManager;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
-import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;

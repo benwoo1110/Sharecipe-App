@@ -10,9 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
-import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
-import sg.edu.np.mad.Sharecipe.ui.main.recipe.RecipeListActivity;
 
 public class UserProfileActivity extends AppCompatActivity {
 

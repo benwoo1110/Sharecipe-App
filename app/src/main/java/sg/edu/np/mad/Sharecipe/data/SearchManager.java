@@ -4,7 +4,6 @@ import android.content.Context;
 
 import sg.edu.np.mad.Sharecipe.models.Discover;
 import sg.edu.np.mad.Sharecipe.models.DiscoverSection;
-import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.SearchResult;
 import sg.edu.np.mad.Sharecipe.models.User;

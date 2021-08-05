@@ -13,7 +13,6 @@ import com.takusemba.multisnaprecyclerview.SnapGravity;
 import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.models.PartialRecipe;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.common.SectionCreator;
 import sg.edu.np.mad.Sharecipe.ui.common.SectionViewHolder;

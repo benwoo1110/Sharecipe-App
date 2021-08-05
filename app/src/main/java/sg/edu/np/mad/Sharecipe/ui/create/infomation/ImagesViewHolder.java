@@ -1,8 +1,6 @@
 package sg.edu.np.mad.Sharecipe.ui.create.infomation;
 
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;

@@ -21,7 +21,6 @@ import okhttp3.ResponseBody;
 import sg.edu.np.mad.Sharecipe.models.BooleanState;
 import sg.edu.np.mad.Sharecipe.models.Stats;
 import sg.edu.np.mad.Sharecipe.models.User;
-import sg.edu.np.mad.Sharecipe.models.UserFollow;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 import sg.edu.np.mad.Sharecipe.utils.FutureDataResult;
 import sg.edu.np.mad.Sharecipe.utils.JsonUtils;

@@ -20,7 +20,6 @@ import sg.edu.np.mad.Sharecipe.ui.common.textchecks.ConfirmMatchCheck;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.InputResult;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.TextLengthChecker;
-import sg.edu.np.mad.Sharecipe.ui.create.RecipeCreateActivity;
 
 public class EditPasswordActivity extends DynamicFocusAppCompatActivity {
 
