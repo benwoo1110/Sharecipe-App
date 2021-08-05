@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.ui.create.infomation.BitmapOrUri;
+import sg.edu.np.mad.Sharecipe.ui.common.BitmapOrUri;
 import sg.edu.np.mad.Sharecipe.ui.create.infomation.ImagesViewHolder;
 
 public class ViewImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {

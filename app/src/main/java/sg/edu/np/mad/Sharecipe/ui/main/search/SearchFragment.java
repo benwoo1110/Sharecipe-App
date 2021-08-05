@@ -22,7 +22,7 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.ui.App;
-import sg.edu.np.mad.Sharecipe.ui.common.SectionAdapter;
+import sg.edu.np.mad.Sharecipe.ui.common.section.SectionAdapter;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 
 public class SearchFragment extends Fragment {

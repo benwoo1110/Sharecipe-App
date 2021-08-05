@@ -5,7 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -26,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.ui.common.BitmapOrUri;
 
 public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
 

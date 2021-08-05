@@ -1,6 +1,5 @@
 package sg.edu.np.mad.Sharecipe.ui.main.profile;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,8 +12,8 @@ import com.google.common.base.Strings;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.ui.App;
-import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
-import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
+import sg.edu.np.mad.Sharecipe.ui.common.BaseActivity;
+import sg.edu.np.mad.Sharecipe.ui.common.listeners.OnSingleClickListener;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.ConfirmMatchCheck;
@@ -22,7 +21,7 @@ import sg.edu.np.mad.Sharecipe.ui.common.textchecks.InputResult;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.TextLengthChecker;
 
-public class EditPasswordActivity extends DynamicFocusAppCompatActivity {
+public class EditPasswordActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

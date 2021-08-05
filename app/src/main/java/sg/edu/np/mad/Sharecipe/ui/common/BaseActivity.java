@@ -8,7 +8,12 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class DynamicFocusAppCompatActivity extends AppCompatActivity {
+/**
+ * Activity class with some common behaviour
+ */
+public abstract class BaseActivity extends AppCompatActivity {
+
+
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {

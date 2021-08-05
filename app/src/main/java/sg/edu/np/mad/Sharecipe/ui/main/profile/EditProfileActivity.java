@@ -1,7 +1,6 @@
 package sg.edu.np.mad.Sharecipe.ui.main.profile;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,8 +22,8 @@ import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.data.UserManager;
 import sg.edu.np.mad.Sharecipe.models.User;
 import sg.edu.np.mad.Sharecipe.ui.App;
-import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
-import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
+import sg.edu.np.mad.Sharecipe.ui.common.BaseActivity;
+import sg.edu.np.mad.Sharecipe.ui.common.listeners.OnSingleClickListener;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.InputResult;
@@ -32,7 +31,7 @@ import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.TextLengthChecker;
 import sg.edu.np.mad.Sharecipe.utils.DataResult;
 
-public class EditProfileActivity extends DynamicFocusAppCompatActivity {
+public class EditProfileActivity extends BaseActivity {
 
     private User user;
     private ImageView profilePic;

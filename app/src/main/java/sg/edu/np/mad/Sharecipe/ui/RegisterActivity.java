@@ -17,8 +17,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.io.File;
 
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
-import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
+import sg.edu.np.mad.Sharecipe.ui.common.BaseActivity;
+import sg.edu.np.mad.Sharecipe.ui.common.listeners.OnSingleClickListener;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.ConfirmMatchCheck;
@@ -27,7 +27,7 @@ import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.TextLengthChecker;
 import sg.edu.np.mad.Sharecipe.ui.main.MainActivity;
 
-public class RegisterActivity extends DynamicFocusAppCompatActivity {
+public class RegisterActivity extends BaseActivity {
 
     private ImageView profileImage;
     private String profileImagePath;

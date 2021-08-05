@@ -10,14 +10,14 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import sg.edu.np.mad.Sharecipe.R;
-import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
+import sg.edu.np.mad.Sharecipe.ui.common.BaseActivity;
 import sg.edu.np.mad.Sharecipe.ui.common.MenuStateAdapter;
 import sg.edu.np.mad.Sharecipe.ui.main.discover.DiscoverFragment;
 import sg.edu.np.mad.Sharecipe.ui.main.profile.ProfileFragment;
 import sg.edu.np.mad.Sharecipe.ui.main.recipe.RecipeFragment;
 import sg.edu.np.mad.Sharecipe.ui.main.search.SearchFragment;
 
-public class MainActivity extends DynamicFocusAppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

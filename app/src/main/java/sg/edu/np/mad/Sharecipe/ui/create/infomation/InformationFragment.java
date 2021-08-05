@@ -22,7 +22,6 @@ import androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.app.AlertDialog;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.material.chip.ChipDrawable;
@@ -39,7 +38,8 @@ import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.models.RecipeTag;
 import sg.edu.np.mad.Sharecipe.ui.App;
-import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
+import sg.edu.np.mad.Sharecipe.ui.common.listeners.AfterTextChangedWatcher;
+import sg.edu.np.mad.Sharecipe.ui.common.BitmapOrUri;
 import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
 public class InformationFragment extends Fragment {

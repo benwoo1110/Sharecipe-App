@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,8 +35,8 @@ public class MenuStateAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         try {
-            return fragmentClasses.get(position).newInstance();
-        } catch (IllegalAccessException | InstantiationException e) {
+            return fragmentClasses.get(position).getConstructor().newInstance();
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
             return new ErrorFragment();
         }
     }

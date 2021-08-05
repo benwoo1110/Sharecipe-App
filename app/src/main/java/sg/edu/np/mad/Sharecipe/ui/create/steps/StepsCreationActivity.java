@@ -1,7 +1,5 @@
 package sg.edu.np.mad.Sharecipe.ui.create.steps;
 
-import androidx.appcompat.app.AlertDialog;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,14 +12,14 @@ import com.google.android.material.textfield.TextInputLayout;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.contants.IntentKeys;
 import sg.edu.np.mad.Sharecipe.models.RecipeStep;
-import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
-import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
-import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
+import sg.edu.np.mad.Sharecipe.ui.common.listeners.AfterTextChangedWatcher;
+import sg.edu.np.mad.Sharecipe.ui.common.BaseActivity;
+import sg.edu.np.mad.Sharecipe.ui.common.listeners.OnSingleClickListener;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.TextLengthChecker;
 
-public class StepsCreationActivity extends DynamicFocusAppCompatActivity {
+public class StepsCreationActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

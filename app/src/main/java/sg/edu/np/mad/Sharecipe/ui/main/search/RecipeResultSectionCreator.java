@@ -12,8 +12,8 @@ import java.util.List;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
-import sg.edu.np.mad.Sharecipe.ui.common.SectionCreator;
-import sg.edu.np.mad.Sharecipe.ui.common.SectionViewHolder;
+import sg.edu.np.mad.Sharecipe.ui.common.section.SectionCreator;
+import sg.edu.np.mad.Sharecipe.ui.common.section.SectionViewHolder;
 import sg.edu.np.mad.Sharecipe.ui.main.recipe.RecipeAdapter;
 
 public class RecipeResultSectionCreator implements SectionCreator {

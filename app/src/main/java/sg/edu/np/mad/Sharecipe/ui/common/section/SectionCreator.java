@@ -1,4 +1,4 @@
-package sg.edu.np.mad.Sharecipe.ui.common;
+package sg.edu.np.mad.Sharecipe.ui.common.section;
 
 import android.view.View;
 

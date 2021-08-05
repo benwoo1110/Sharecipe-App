@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import sg.edu.np.mad.Sharecipe.R;
+import sg.edu.np.mad.Sharecipe.ui.common.BitmapOrUri;
 
 public class ImagesViewHolder extends RecyclerView.ViewHolder {
 

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.RecipeIngredient;
-import sg.edu.np.mad.Sharecipe.ui.common.AfterTextChangedWatcher;
+import sg.edu.np.mad.Sharecipe.ui.common.listeners.AfterTextChangedWatcher;
 import sg.edu.np.mad.Sharecipe.utils.FormatUtils;
 
 public class IngredientsViewHolder extends RecyclerView.ViewHolder {

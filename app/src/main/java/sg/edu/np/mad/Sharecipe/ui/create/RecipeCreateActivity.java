@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,11 +26,11 @@ import sg.edu.np.mad.Sharecipe.models.ImageGroup;
 import sg.edu.np.mad.Sharecipe.models.ImageRef;
 import sg.edu.np.mad.Sharecipe.models.Recipe;
 import sg.edu.np.mad.Sharecipe.ui.App;
-import sg.edu.np.mad.Sharecipe.ui.common.DynamicFocusAppCompatActivity;
-import sg.edu.np.mad.Sharecipe.ui.common.OnTabSelectedListener;
+import sg.edu.np.mad.Sharecipe.ui.common.BaseActivity;
+import sg.edu.np.mad.Sharecipe.ui.common.listeners.OnTabSelectedListener;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 
-public class RecipeCreateActivity extends DynamicFocusAppCompatActivity {
+public class RecipeCreateActivity extends BaseActivity {
 
     private boolean checkEdit;
     private RecipeCreateAdapter adapter;

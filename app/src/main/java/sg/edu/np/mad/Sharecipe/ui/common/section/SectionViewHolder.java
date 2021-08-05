@@ -1,16 +1,15 @@
-package sg.edu.np.mad.Sharecipe.ui.common;
+package sg.edu.np.mad.Sharecipe.ui.common.section;
 
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SectionViewHolder extends RecyclerView.ViewHolder {
+public abstract class SectionViewHolder extends RecyclerView.ViewHolder {
     
     public SectionViewHolder(@NonNull View itemView) {
         super(itemView);
     }
     
-    public void onBind(int position) {
-    }
+    public abstract void onBind(int position);
 }

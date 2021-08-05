@@ -18,7 +18,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.ui.App;
 import sg.edu.np.mad.Sharecipe.ui.LoginActivity;
-import sg.edu.np.mad.Sharecipe.ui.common.OnSingleClickListener;
+import sg.edu.np.mad.Sharecipe.ui.common.listeners.OnSingleClickListener;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.CheckGroup;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.InputResult;
 import sg.edu.np.mad.Sharecipe.ui.common.textchecks.RequiredFieldCheck;

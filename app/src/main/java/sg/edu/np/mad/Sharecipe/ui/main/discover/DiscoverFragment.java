@@ -18,7 +18,7 @@ import com.facebook.shimmer.ShimmerFrameLayout;
 import sg.edu.np.mad.Sharecipe.R;
 import sg.edu.np.mad.Sharecipe.models.DiscoverSection;
 import sg.edu.np.mad.Sharecipe.ui.App;
-import sg.edu.np.mad.Sharecipe.ui.common.SectionAdapter;
+import sg.edu.np.mad.Sharecipe.ui.common.section.SectionAdapter;
 import sg.edu.np.mad.Sharecipe.ui.common.UiHelper;
 
 public class DiscoverFragment extends Fragment {
