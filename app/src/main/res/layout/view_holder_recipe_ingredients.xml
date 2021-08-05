@@ -27,12 +27,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="18dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="16dp"
+        android:hint="Ingredient"
+        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox."
         app:layout_constraintEnd_toStartOf="@+id/textInputLayout7"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/createdIngredientNumber"
-        app:layout_constraintTop_toTopOf="parent"
-        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputIngredientName"
@@ -48,10 +49,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="16dp"
+        android:hint="Qty"
+        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox."
         app:layout_constraintEnd_toStartOf="@+id/textInputLayout8"
-        app:layout_constraintTop_toTopOf="parent"
-        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputIngredientQuantity"
@@ -68,10 +70,11 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
-        android:layout_marginEnd="34dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Unit"
+        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox."
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:theme="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputIngredientUnit"
