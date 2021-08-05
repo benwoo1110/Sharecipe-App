@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +30,7 @@ import sg.edu.np.mad.Sharecipe.ui.common.BitmapOrUri;
 
 public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
 
-    private static final int LIMIT = 5;
+    private static final int LIMIT = 6;
 
     private final int shortAnimationDuration;
     private Animator currentAnimator;
@@ -65,11 +66,18 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesViewHolder> {
         ImagesViewHolder holder = new ImagesViewHolder(item);
 
         if (viewType == 0) {
-            holder.image.setOnClickListener(v -> ImagePicker.with(activity)
-                    .crop()
-                    .compress(1024)
-                    .maxResultSize(1080, 1080)
-                    .start());
+            holder.image.setOnClickListener(v -> {
+                if (imageList.size() >= LIMIT) {
+                    Toast.makeText(activity, "You have reached the limit of " + LIMIT + " images.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                ImagePicker.with(activity)
+                        .crop()
+                        .compress(1024)
+                        .maxResultSize(1080, 1080)
+                        .start();
+            });
             return holder;
         }
 
