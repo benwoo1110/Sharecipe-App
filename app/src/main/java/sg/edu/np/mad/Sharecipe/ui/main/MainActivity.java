@@ -35,6 +35,7 @@ public class MainActivity extends BaseActivity {
 
         mainViewPager.setAdapter(fragmentStateAdapter);
         mainViewPager.setUserInputEnabled(false);
+        mainViewPager.setOffscreenPageLimit(3);
 
         bottomNavigation.setOnItemSelectedListener(item -> {
             mainViewPager.setCurrentItem(fragmentStateAdapter.getMenuPosition(item.getItemId()), false);
